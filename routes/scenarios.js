@@ -5,8 +5,6 @@ module.exports = function(passport) {
 
     var validate = require('isvalid').validate;
 
-    var mongoose = require('mongoose');
-
     var Scenario = require('../models/Scenario.js');
 
     var ScenarioSchema = {
@@ -154,7 +152,6 @@ module.exports = function(passport) {
 
         })(req, res, next);
     }
-
 
     return router;
 }
