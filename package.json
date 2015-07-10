@@ -18,6 +18,7 @@
     "method-override": "~1.0.2",
     "express-session": "~1.0.4",
     "passport-github": "~0.1.5",
-    "passport-http": "~0.2.2"
+    "passport-http": "~0.2.2",
+    "isvalid": "~1.0.6"
   }
 }
