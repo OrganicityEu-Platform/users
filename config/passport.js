@@ -167,8 +167,9 @@ module.exports = function(passport) {
                         // if there is a user id already but no token (user was linked at one point and then removed)
                         if (!user.facebook.token) {
                             user.facebook.token = token;
-                            user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                            user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                            user.facebook.displayName = profile.displayName;
+//                            user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+//                            user.facebook.email = (profile.emails[0].value || '').toLowerCase();
 
                             user.save(function(err) {
                                 if (err)
@@ -181,18 +182,19 @@ module.exports = function(passport) {
                         return done(null, user); // user found, return that user
                     } else {
                         // if there is no user, create them
-                        var newUser            = new User();
+                        var user            = new User();
 
-                        newUser.facebook.id    = profile.id;
-                        newUser.facebook.token = token;
-                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                        newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                        user.facebook.id    = profile.id;
+                        user.facebook.token = token;
+                        user.facebook.displayName = profile.displayName;
+//                        user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+//                        user.facebook.email = (profile.emails[0].value || '').toLowerCase();
 
-                        newUser.save(function(err) {
+                        user.save(function(err) {
                             if (err)
                                 return done(err);
                                 
-                            return done(null, newUser);
+                            return done(null, user);
                         });
                     }
                 });
@@ -203,8 +205,9 @@ module.exports = function(passport) {
 
                 user.facebook.id    = profile.id;
                 user.facebook.token = token;
-                user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-                user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                user.facebook.displayName = profile.displayName;
+  //              user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+    //            user.facebook.email = (profile.emails[0].value || '').toLowerCase();
 
                 user.save(function(err) {
                     if (err)
