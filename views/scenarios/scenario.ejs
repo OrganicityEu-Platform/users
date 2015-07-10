@@ -1,0 +1,6 @@
+<h2><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></h2>
+<p><%=scenario.text %></p>
+<% if(user) { %>
+<button data-id="<%=scenario.id %>" class="scenarioEdit   btn btn-default">EDIT</button>
+<button data-id="<%=scenario.id %>" class="scenarioDelete btn btn-default btn-danger">DELETE</button>
+<% } %>

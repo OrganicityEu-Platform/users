@@ -21,6 +21,8 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
+app.use('/static', express.static('public'));
+
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
@@ -37,7 +39,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 app.use('/', require('./routes/routes')(app, passport));
-app.use('/rest/scenarios', require('./routes/scenarios')(passport));
+app.use('/rest/scenarios', require('./routes/scenarios-rest')(passport));
+app.use('/scenarios', require('./routes/scenarios')(passport));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

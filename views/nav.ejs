@@ -1,0 +1,9 @@
+<ul>
+    <li><a href="/scenarios">Browse Scenarios</a></li>
+    <% if (!user) { %><li><a href="/login">Login</a></li><% } %>
+    <% if (user) { %>
+    <li><a href="/profile">Profile</a></li>
+    <li><a href="/scenarios/create">Scenarios Create</a></li>
+    <% } %>
+</ul>
+

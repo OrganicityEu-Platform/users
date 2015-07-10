@@ -7,7 +7,14 @@ module.exports = function(app, passport) {
 
     // show the home page (will also have our login links)
     router.get('/', function(req, res) {
-        res.render('index.ejs');
+        res.render('index.ejs', {
+            user : req.user
+        });
+    });
+
+    // show the home page (will also have our login links)
+    router.get('/login', function(req, res) {
+        res.render('login.ejs', { user : undefined });
     });
 
     // PROFILE SECTION =========================
@@ -30,12 +37,12 @@ module.exports = function(app, passport) {
     // locally --------------------------------
         // LOGIN ===============================
         // show the login form
-        router.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
+        router.get('/local-login', function(req, res) {
+            res.render('local-login.ejs', { user : undefined, message: req.flash('loginMessage') });
         });
 
         // process the login form
-        router.post('/login', passport.authenticate('local-login', {
+        router.post('/local-login', passport.authenticate('local-login', {
             successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
@@ -44,7 +51,7 @@ module.exports = function(app, passport) {
         // SIGNUP =================================
         // show the signup form
         router.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
+            res.render('signup.ejs', { user : undefined, message: req.flash('signupMessage') });
         });
 
         // process the signup form
@@ -63,7 +70,7 @@ module.exports = function(app, passport) {
         router.get('/auth/facebook/callback',
             passport.authenticate('facebook', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
     // twitter --------------------------------
@@ -75,7 +82,7 @@ module.exports = function(app, passport) {
         router.get('/auth/twitter/callback',
             passport.authenticate('twitter', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
 
@@ -88,7 +95,7 @@ module.exports = function(app, passport) {
         router.get('/auth/google/callback',
             passport.authenticate('google', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
     // github ---------------------------------
@@ -100,7 +107,7 @@ module.exports = function(app, passport) {
         router.get('/auth/github/callback',
             passport.authenticate('github', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
 // =============================================================================
@@ -126,7 +133,7 @@ module.exports = function(app, passport) {
         router.get('/connect/facebook/callback',
             passport.authorize('facebook', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
     // twitter --------------------------------
@@ -138,7 +145,7 @@ module.exports = function(app, passport) {
         router.get('/connect/twitter/callback',
             passport.authorize('twitter', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
 
@@ -151,7 +158,7 @@ module.exports = function(app, passport) {
         router.get('/connect/google/callback',
             passport.authorize('google', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
 
@@ -164,7 +171,7 @@ module.exports = function(app, passport) {
         router.get('/connect/github/callback',
             passport.authorize('github', {
                 successRedirect : '/profile',
-                failureRedirect : '/'
+                failureRedirect : '/login'
             }));
 
 // =============================================================================
@@ -234,7 +241,7 @@ module.exports = function(app, passport) {
                 return next(err);
             }
             if (!user) {
-                return res.redirect('/');
+                return res.redirect('/login');
             }
             req.logIn(user, function(err) {
                 if (err) {

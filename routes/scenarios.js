@@ -3,129 +3,58 @@ module.exports = function(passport) {
     var express = require('express');
     var router = express.Router();
 
-    var validate = require('isvalid').validate;
-
     var Scenario = require('../models/Scenario.js');
 
-    var ScenarioSchema = {
-        'title': { type: String },
-        'text': { type: String }
-    }
+    // show the home page (will also have our login links)
+    router.get('/', function(req, res) {
 
-    var ScenarioSchemaPost = {
-        type : Object,
-        unknownKeys: 'remove',
-        schema : {
-            'title': { type: String, required: true },
-            'text': { type: String, required: true }            
-        }
-    }
-
-    var ScenarioSchemaPatch = {                    
-        type : Object,
-        unknownKeys: 'remove',
-        schema : {
-            'title': { type: String, required: false },
-            'text': { type: String, required: false }            
-        }
-    }
-    // GET /scenarios
-    router.get('/', [isLoggedIn], function(req, res, next) {
-        Scenario.find(function (err, todos) {
+        Scenario.find(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
-                res.json(todos);
+                res.render('scenarios/scenarios.ejs', {
+                    user : req.user,
+                    scenarios : scenarios
+                });
             }
         });
     });
 
-    // POST /scenarios
-    //      http://localhost:3000/scenarios 
-    //      {"title":"A2","text":"B2" }
-    router.post('/', [isLoggedIn, validate.body(ScenarioSchemaPost)], function(req, res, next) {
-
-        console.log("Body:", req.body);
-
-        Scenario.create(req.body, function (err, post) {
-            if (err) {
-                return next(err);
-            } else {
-                res.json(post);
-            }
+    // show the home page (will also have our login links)
+    router.get('/create', [isLoggedIn], function(req, res) {
+        res.render('scenarios/scenarios-form.ejs', {
+            user : req.user,
+            id : undefined
         });
     });
 
-    // GET /scenarios/id
-    router.get('/:id', [isLoggedIn], function(req, res, next) {
-        Scenario.findById(req.params.id, function (err, post) {
+    // show the home page (will also have our login links)
+    router.get('/:id', function(req, res) {
+        Scenario.findById(req.params.id, function (err, scenario) {
 
-            if(post == null) {
+            if(scenario == null) {
                 res.status(404);
             }
 
             if (err) {
                 return next(err);
             } else {
-                res.json(post);
+                res.render('scenarios/scenarios.ejs', {
+                    user : req.user,
+                    id : req.params.id,
+                    scenarios : [scenario]
+                });
             }
         });
     });
 
-    // PUT /scenarios/:id
-    //router.put('/:id', function(req, res, next) {
-    router.put('/:id', [isLoggedIn, validate.body(ScenarioSchemaPost)], function(req, res, next) {
-
-        console.log("Body:", req.body);
-
-        // Add updated_at
-        req.body.updated_at = Date.now();
-
-        Scenario.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-
-            if(post == null) {
-                res.status(404);
-            }
-
-            if (err) {
-                return next(err);
-            } else {
-                res.json(post);
-            }
+    // show the home page (will also have our login links)
+    router.get('/:id/edit', [isLoggedIn], function(req, res) {
+        res.render('scenarios/scenarios-form.ejs', {
+            user : req.user,
+            id : req.params.id
         });
     });
-
-    // PATCH /scenarios/:id
-    router.patch('/:id', [isLoggedIn], function(req, res, next) {
-
-        req.body.updated_at = Date.now();
-
-        Scenario.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-
-            if(post == null) {
-                res.status(404);
-            }
-
-            if (err) {
-                return next(err);
-            } else {
-                res.json(post);
-            }
-        });
-
-    });
-
-    // DELETE /todos/:id
-    router.delete('/:id', [isLoggedIn], function(req, res, next) {
-        Scenario.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-            if (err) {
-                return next(err);
-            } else {
-                res.json(post);
-            }
-        });
-    });
-
 
     // route middleware to ensure user is logged in
     function isLoggedIn(req, res, next) {
@@ -141,7 +70,7 @@ module.exports = function(passport) {
                 return next(err);
             }
             if (!user) {
-                return res.status(401).send("401 Unauthorized");
+                return res.redirect('/login');
             }
             req.logIn(user, function(err) {
                 if (err) {
@@ -154,5 +83,5 @@ module.exports = function(passport) {
     }
 
     return router;
-}
+};
 
