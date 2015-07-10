@@ -3,6 +3,7 @@ var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
 var GithubStrategy  = require('passport-github').Strategy;
+var BasicStrategy  = require('passport-http').BasicStrategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
@@ -30,6 +31,37 @@ module.exports = function(passport) {
             done(err, user);
         });
     });
+
+
+    // =========================================================================
+    // HTTP BASIC ==============================================================
+    // =========================================================================
+    passport.use(new BasicStrategy({},
+      function(email, password, done) {
+
+        // asynchronous verification, for effect...
+        process.nextTick(function () {
+
+            User.findOne({ 'local.email' :  email }, function(err, user) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+
+                // if no user is found, return the message
+                if (!user)
+                    return done(null, false);
+
+                // Password incorrect
+                if (!user.validPassword(password))
+                    return done(null, false);
+
+                // all is well, return user
+                else
+                    return done(null, user);
+            });
+        });
+      }
+    ));
 
     // =========================================================================
     // LOCAL LOGIN =============================================================
