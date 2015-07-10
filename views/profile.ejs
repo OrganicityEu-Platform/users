@@ -106,6 +106,32 @@
         </div>
     </div>
 
+
+   <div class="row">
+
+        <!-- GITHUB INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-info"><span class="fa fa-github"></span> Github</h3>
+
+                <% if (user.github.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.github.id %><br>
+                        <strong>token</strong>: <%= user.github.token %><br>
+                        <strong>username</strong>: <%= user.github.username %><br>
+                        <strong>displayName</strong>: <%= user.github.displayName %>
+                    </p>
+
+                    <a href="/unlink/github" class="btn btn-info">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/github" class="btn btn-info">Connect Github</a>
+                <% } %>
+
+            </div>
+        </div>
+
+    </div>
+
     <div class="text-center">
         <p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
         <p>Visit the <a href="http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local">tutorial</a>.</p>

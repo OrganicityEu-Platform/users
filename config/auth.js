@@ -19,6 +19,12 @@ module.exports = {
         'clientID'         : '89215756602-8e9a0t2go3ha3gmkopo0r64loehuvh3h.apps.googleusercontent.com',
         'clientSecret'     : 'CFPuPZa7l6YMFBBhXqgsRFlO',
         'callbackURL'      : 'http://localhost:8080/auth/google/callback'
+    },
+
+    'githubAuth' : {
+        'clientID'         : '646b3c1643b20170b3bb',
+        'clientSecret'     : '4117fc5d93c7e3e5065a01508f943758ba2f4365',
+        'callbackURL'      : 'http://localhost:8080/auth/github/callback'
     }
 
 };
