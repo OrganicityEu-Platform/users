@@ -231,7 +231,7 @@ module.exports = function(app, passport) {
                 return next(err);
             }
             if (!user) {
-                return res.redirect(401, '/');
+                return res.redirect('/');
             }
             req.logIn(user, function(err) {
                 if (err) {

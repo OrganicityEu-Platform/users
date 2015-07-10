@@ -37,8 +37,10 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-app.use('/rest/scenarios', require('./routes/scenarios'));
 
+app.use('/rest/scenarios', require('./routes/scenarios')(passport));
+
+/*
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -69,6 +71,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+*/
 
 
 // launch ======================================================================
