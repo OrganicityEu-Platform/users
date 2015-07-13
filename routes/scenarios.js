@@ -14,6 +14,14 @@ module.exports = function(passport) {
 
     var validate = require('isvalid').validate;
 
+    var searchSchema = {
+        type : Object,
+        unknownKeys: 'remove',
+        schema : {
+            'text': { type: String, required: true }
+        }
+    }
+
     var ScenarioSchema = {
         'title': { type: String },
         'text': { type: String }
@@ -74,6 +82,7 @@ module.exports = function(passport) {
         });
     });
 
+
     // POST /scenarios
     //      http://localhost:3000/scenarios 
     //      {"title":"A2","text":"B2" }
@@ -97,6 +106,7 @@ module.exports = function(passport) {
             }
         });
     });
+
 
     // GET /scenarios/create
     router.get('/create', [isLoggedIn], function(req, res, next) {
@@ -138,6 +148,54 @@ module.exports = function(passport) {
                 });
             }
         });
+    });
+
+    router.get('/search', function(req, res, next) {
+
+        res.format({
+            'text/html': function() {
+                res.render('scenarios/search.ejs', {
+                    user : req.user
+                });
+            },
+            'default': function() {
+                res.send(406, 'Not Acceptable');
+            }
+        });
+
+	});
+
+    // GET /scenarios/search
+    router.post('/search', [validate.body(searchSchema)], function(req, res, next) {
+
+		// https://github.com/freakycue/mongoose-search-plugin
+		Scenario.search(req.body.text, {}, {
+			sort: {title: 1},
+			limit: 10
+		}, function(err, searchresult) {
+
+            if (err) {
+                return next(err);
+            } else {
+                res.format({
+                    'text/html': function() {
+                        res.render('scenarios/scenarios-plain.ejs', {
+							title: "Scenarios Search Result",
+                            user : req.user,
+							count : searchresult.totalCount,
+                            scenarios : searchresult.results
+                        });
+                    },
+                    'application/json': function() {
+                        res.status(200);
+                        res.json(searchresult);
+                    },
+                    'default': function() {
+                        res.send(406, 'Not Acceptable');
+                    }
+                });
+            }
+		});
     });
 
     // GET /scenarios/id

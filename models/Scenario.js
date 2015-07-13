@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var searchPlugin = require('mongoose-search-plugin');
 
 var ScenarioSchema = new mongoose.Schema({
     title: String,
@@ -6,6 +7,10 @@ var ScenarioSchema = new mongoose.Schema({
     owner: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
+});
+
+ScenarioSchema.plugin(searchPlugin, {
+    fields: ['title', 'text']
 });
 
 ScenarioSchema.methods.hasOwner = function(user) {

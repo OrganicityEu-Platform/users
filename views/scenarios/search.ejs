@@ -1,0 +1,46 @@
+<% include ../header %>
+
+    <div class="row">
+        <h1>Scenario Search</h1>
+	
+		Search <input type="text" id="search-text"><br>
+		<button id="search-btn">Search</button>
+		<div id="search-result-cnt"></div>
+		<div id="search-result"></div>
+    </div>
+	
+
+	<script>
+		var handle = function() {
+
+			var o = {
+				"text" : $("#search-text").val()
+			};
+
+			$.ajax({
+                type : "POST",
+                url : "/scenarios/search",
+                data : JSON.stringify(o),
+                contentType : 'application/json',
+				//dataType : 'json',
+                success : function(res){
+					$("#search-result").html(res);
+                },
+                error: function(e){
+                    console.log("error", e);                
+                }
+            });		
+
+		};
+		$("#search-btn").click(handle);
+        $('#search-text').on("keypress", function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                handle();
+            }
+        });
+
+	</script>
+
+
+<% include ../footer %>

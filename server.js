@@ -22,6 +22,7 @@ mongoose.connect(configDB.url); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 
 app.use('/static', express.static('public'));
+app.use('/views', express.static('views'));
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
