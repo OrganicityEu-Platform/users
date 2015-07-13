@@ -1,20 +1,25 @@
 <% include ../header %>
 
     <div class="row">
-        <h2>Create a new Scenario</h2>
+        <% if(id) { %>
+        <h1>Edit Scenario</h1>
+        <% } else { %>
+        <h1>Create a new Scenario</h1>
+        <% } %>
+
+        <p>
         Title: <input type="title" id="scenario-title"><br>
         Text: <input type="text" id="scenario-text"><br>
         <% if(id) { %>
-        <button id="scenario-edit">Edit</button>
+        <button id="scenario-send">Edit</button>
         <% } else { %>
-        <button id="scenario-create">Create</button>
+        <button id="scenario-send">Create</button>
         <% } %>
-
+        </p>
 
         <script>
         
             <% if(id) { %>
-
                 $.ajax({
                     type : "GET",
                     url : "/rest/scenarios/<%=id %>",
@@ -27,45 +32,46 @@
                     }
                 });
 
-                $('#scenario-edit').click(function() {
-                    var o = {
-                        title : $('#scenario-title').val(),
-                        text : $('#scenario-text').val(),
-                    }
-                    $.ajax({
-                        type : 'PUT',
-                        url : "/rest/scenarios/<%=id %>",
-                        data : JSON.stringify(o),
-                        contentType : 'application/json',
-                        success : function(o){
-                            window.location = "/scenarios/<%=id %>";
-                        },
-                        error: function(){
-                            console.log("error", error);                
-                        }
-                    });
-                }); 
-
+                var ajaxType = "PUT";
+                var ajaxUrl = "/rest/scenarios/<%=id %>";
             <% } else { %>
-                $('#scenario-create').click(function() {
-                    var o = {
-                        title : $('#scenario-title').val(),
-                        text : $('#scenario-text').val(),
-                    }
-                    $.ajax({
-                        type : 'POST',
-                        url : "/rest/scenarios",
-                        data : JSON.stringify(o),
-                        contentType : 'application/json',
-                        success : function(o){
-                            window.location = "/scenarios";
-                        },
-                        error: function(){
-                            console.log("error", error);                
-                        }
-                    });
-                });   
+                var ajaxType = "POST";
+                var ajaxUrl = "/rest/scenarios";
             <% } %>
+
+            var handle = function() {
+                var o = {
+                    title : $('#scenario-title').val(),
+                    text : $('#scenario-text').val(),
+                }
+                $.ajax({
+                    type : ajaxType,
+                    url : ajaxUrl,
+                    data : JSON.stringify(o),
+                    contentType : 'application/json',
+                    success : function(o){
+                        window.location = "/scenarios/" + o._id;
+                    },
+                    error: function(){
+                        console.log("error", error);                
+                    }
+                });
+            };
+
+            $('#scenario-send').click(handle);
+            $('#scenario-title').on("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    handle();
+                }
+            });
+            $('#scenario-text').on("keypress", function (e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    handle();
+                }
+            });
+
         </script>
 
 <% include ../footer %>
