@@ -1,10 +1,28 @@
-<ul>
-    <li><a href="/scenarios">Browse Scenarios</a></li>
-    <% if (!user) { %><li><a href="/login">Login</a></li><% } %>
-    <% if (user) { %>
-    <li><a href="/profile">Profile</a></li>
-    <li><a href="/scenarios/create">Scenarios Create</a></li>
-    <li><a href="/users">Users</a></li>
-    <% } %>
-</ul>
+<div class="row">
+
+    <div class="col-sm-6">
+        <ul>
+            <li><a href="/scenarios">Browse Scenarios</a></li>
+            <% if (!user) { %><li><a href="/login">Login</a></li><% } %>
+            <% if (user) { %>
+            <li><a href="/scenarios/my">My Scenarios</a></li>
+            <li><a href="/scenarios/create">Create a Scenario</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <% } %>
+        </ul>
+    </div>
+
+
+    <div class="col-sm-6">
+        <% if (user && user.hasRole(["admin"])) { %>
+            <strong>Admin</strong>
+            <ul>
+                <li><a href="/users">Users</a></li>
+            </ul>
+        <% } %>
+
+    </div>
+
+</div>
+
 

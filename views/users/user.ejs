@@ -1,11 +1,11 @@
-<h2><a href="/users/<%=user.profile.uuid %>">User <%=user.profile.uuid %></a></h2>
+<h2><a href="/users/<%=u.uuid %>">User <%=u.uuid %></a></h2>
 
 <h3>Local</h3>
 <p>
     <ul>
-        <li>UUID: <%=user.profile.uuid %></li>
-        <% if(user.local.email) { %>
-        <li>E-Mail: <%=user.local.email %></li>
+        <li>UUID: <%=u.uuid %></li>
+        <% if(u.local.email) { %>
+        <li>E-Mail: <%=u.local.email %></li>
         <% } %> 
     </ul>
 </p>
@@ -13,20 +13,25 @@
 <h3>Social Networks</h3>
 <p>
 
-    <% if(user.facebook.id) { %>
-    <a target="_blank" href="https://facebook.com/<%=user.facebook.id %>"><span class="fa fa-lg fa-fw fa-facebook fa-border"></span></a>
+    <% if(u.facebook.id) { %>
+    <a target="_blank" href="https://facebook.com/<%=u.facebook.id %>"><span class="fa fa-lg fa-fw fa-facebook fa-border"></span></a>
     <% } %> 
 
-    <% if(user.google.id) { %>
-    <a target="_blank" class="text-danger" href="https://plus.google.com/<%=user.google.id %>"><span class="fa fa-lg fa-fw fa-google-plus fa-border"></span></a>
+    <% if(u.google.id) { %>
+    <a target="_blank" class="text-danger" href="https://plus.google.com/<%=u.google.id %>"><span class="fa fa-lg fa-fw fa-google-plus fa-border"></span></a>
     <% } %> 
 
-    <% if(user.twitter.id) { %>
-    <a target="_blank" class="text-info" href="https://twitter.com/<%=user.twitter.username %>"><span class="fa fa-lg fa-fw fa-twitter fa-border"></span></a>
+    <% if(u.twitter.id) { %>
+    <a target="_blank" class="text-info" href="https://twitter.com/<%=u.twitter.username %>"><span class="fa fa-lg fa-fw fa-twitter fa-border"></span></a>
     <% } %> 
 
-    <% if(user.github.id) { %>
-    <a target="_blank" style="color:black;" href="http://www.github.com/<%=user.github.username %>"><span class="fa fa-lg fa-fw fa-github fa-border"></span></a>
+    <% if(u.github.id) { %>
+    <a target="_blank" style="color:black;" href="http://www.github.com/<%=u.github.username %>"><span class="fa fa-lg fa-fw fa-github fa-border"></span></a>
     <% } %> 
 
 </p>
+
+<% if(user.hasRole(["admin"])) { %>
+    <button data-id="<%=u.uuid %>" class="userEdit   btn btn-default">EDIT</button>
+    <button data-id="<%=u.uuid %>" class="userDelete btn btn-default btn-danger">DELETE</button>
+<% } %>

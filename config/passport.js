@@ -130,7 +130,7 @@ module.exports = function(passport) {
 
                         // create the user
                         var newUser            = new User();
-                        newUser.profile.uuid   = uuid.v4();
+                        newUser.uuid   = uuid.v4();
                         newUser.local.email    = email;
                         newUser.local.password = newUser.generateHash(password);
 
@@ -219,7 +219,7 @@ module.exports = function(passport) {
                     } else {
                         // if there is no user, create them
                         var user            = new User();
-                        user.profile.uuid   = uuid.v4();
+                        user.uuid   = uuid.v4();
                         user.facebook.id    = profile.id;
                         user.facebook.token = token;
                         user.facebook.displayName = profile.displayName;
@@ -299,7 +299,7 @@ module.exports = function(passport) {
                     } else {
                         // if there is no user, create them
                         var newUser                 = new User();
-                        newUser.profile.uuid        = uuid.v4();
+                        newUser.uuid        = uuid.v4();
                         newUser.twitter.id          = profile.id;
                         newUser.twitter.token       = token;
                         newUser.twitter.username    = profile.username;
@@ -377,7 +377,7 @@ module.exports = function(passport) {
                         return done(null, user);
                     } else {
                         var newUser          = new User();
-                        newUser.profile.uuid = uuid.v4();
+                        newUser.uuid = uuid.v4();
                         newUser.google.id    = profile.id;
                         newUser.google.token = token;
                         newUser.google.name  = profile.displayName;
@@ -465,7 +465,7 @@ module.exports = function(passport) {
                     } else {
                         // if there is no user, create them
                         var newUser                = new User();
-                        newUser.profile.uuid       = uuid.v4();
+                        newUser.uuid       = uuid.v4();
                         newUser.github.token       = token;
                         newUser.github.id          = profile.id;
                         newUser.github.displayName = profile.displayName;

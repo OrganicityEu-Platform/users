@@ -2,8 +2,12 @@ module.exports = function(passport) {
 
     var express = require('express');
     var router = express.Router();
-    var isLoggedIn = require('../config/isLoggedIn.js')(passport);
 
+	var truncate = require('truncate');
+	
+    var isLoggedIn = require('../config/isLoggedIn.js')(passport);
+    var hasRole = require('../config/hasRole.js');
+	
     //###############################################################
     // is valid schemas
     //###############################################################
@@ -46,11 +50,17 @@ module.exports = function(passport) {
             if (err) {
                 return next(err);
             } else {
+
+				scenarios.forEach(function(e) {
+					e.text = truncate(e.text, 100);
+				});
+
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios.ejs', {
                             user : req.user,
-                            scenarios : scenarios
+                            scenarios : scenarios,
+							title: "Browse Scenarios"
                         });
                     },
                     'application/json': function() {
@@ -69,12 +79,15 @@ module.exports = function(passport) {
     //      {"title":"A2","text":"B2" }
     router.post('/', [isLoggedIn, validate.body(ScenarioSchemaPost)], function(req, res, next) {
 
+        req.body.owner = req.user.uuid;
+
         Scenario.create(req.body, function (err, scenario) {
             if (err) {
                 return next(err);
             } else {
                 res.format({
                     'application/json': function() {
+                        res.status(201);
                         res.json(scenario);
                     },
                     'default': function() {
@@ -86,7 +99,7 @@ module.exports = function(passport) {
     });
 
     // GET /scenarios/create
-    router.get('/create', [isLoggedIn], function(req, res) {
+    router.get('/create', [isLoggedIn], function(req, res, next) {
 
         res.format({
             'text/html': function() {
@@ -101,23 +114,48 @@ module.exports = function(passport) {
         });
     });
 
+    // GET /scenarios/my == SAME AS /users/:id/scenarios !!!
+    router.get('/my', [isLoggedIn], function(req, res, next) {
 
-    // GET /scenarios/id
-    router.get('/:id', [], function(req, res, next) {
-        Scenario.findById(req.params.id, function (err, scenario) {
-
-            if(scenario == null) {
-                res.status(404);
-            }
-
+        Scenario.find({ 'owner' : req.user.uuid }, function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios.ejs', {
+							title: "My Scenarios",
                             user : req.user,
-                            scenarios : [scenario]
+                            scenarios : scenarios
+                        });
+                    },
+                    'application/json': function() {
+                        res.json(scenarios);
+                    },
+                    'default': function() {
+                        res.send(406, 'Not Acceptable');
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /scenarios/id
+    router.get('/:id', [], function(req, res, next) {
+        Scenario.findById(req.params.id, function (err, scenario) {
+            if(scenario == null) {
+                var err = new Error("Scenario " + req.params.id + " not found");
+                err.status = 404;
+                return next(err);
+            } else if (err) {
+                return next(err);
+            } else {
+                res.format({
+                    'text/html': function() {
+                        res.render('scenarios/scenarios.ejs', {
+                            user : req.user,
+                            scenarios : [scenario],
+							title: "Scenario details"
                         });
                     },
                     'application/json': function() {
@@ -131,22 +169,19 @@ module.exports = function(passport) {
         });
     });
 
-    // PUT /scenarios/:id
-    //router.put('/:id', function(req, res, next) {
-    router.put('/:id', [isLoggedIn, validate.body(ScenarioSchemaPost)], function(req, res, next) {
+    var putOrPatchScenario = function(req, res, next) {
 
         // Add updated_at
         req.body.updated_at = Date.now();
 
         Scenario.findByIdAndUpdate(req.params.id, req.body, function (err, scenario) {
-
             if(scenario == null) {
-                res.status(404);
-            }
-
-            if (err) {
+                var err = new Error("Scenario " + req.params.id + " not found");
+                err.status = 404;
                 return next(err);
-            } else {
+            } else if (err) {
+                return next(err);
+            } else if(req.user.hasRole(["admin"]) || scenario.hasOwner(req.user)){
                 res.format({
                     'application/json': function() {
                         res.json(scenario);
@@ -155,39 +190,23 @@ module.exports = function(passport) {
                         res.send(406, 'Not Acceptable');
                     }
                 });
+            } else {
+                var err = new Error("Forbidden: Not allowed to edit Scenario " + req.params.id);
+                err.status = 403;
+                return next(err);
             }
         });
-    });
+    };
+
+
+    // PUT /scenarios/:id
+    router.put('/:id', [isLoggedIn, validate.body(ScenarioSchemaPost)], putOrPatchScenario);
 
     // PATCH /scenarios/:id
-    router.patch('/:id', [isLoggedIn], function(req, res, next) {
-
-        req.body.updated_at = Date.now();
-
-        Scenario.findByIdAndUpdate(req.params.id, req.body, function (err, scenario) {
-
-            if(scenario == null) {
-                res.status(404);
-            }
-
-            if (err) {
-                return next(err);
-            } else {
-                res.format({
-                    'application/json': function() {
-                        res.json(scenario);
-                    },
-                    'default': function() {
-                        res.send(406, 'Not Acceptable');
-                    }
-                });
-            }
-        });
-
-    });
+    router.patch('/:id', [isLoggedIn, hasRole(["user", "admin"])], putOrPatchScenario);
 
     // DELETE /scenarios/:id
-    router.delete('/:id', [isLoggedIn], function(req, res, next) {
+    router.delete('/:id', [isLoggedIn, hasRole(["admin"])], function(req, res, next) {
 
         Scenario.findByIdAndRemove(req.params.id, req.body, function (err, scenario) {
             if (err) {
@@ -207,17 +226,32 @@ module.exports = function(passport) {
 
 
     // GET /scenarios/:id
-    router.get('/:id/edit', [isLoggedIn], function(req, res) {
+    router.get('/:id/edit', [isLoggedIn], function(req, res, next) {
 
-        res.format({
-            'text/html': function() {
-                res.render('scenarios/scenarios-form.ejs', {
-                    user : req.user,
-                    id : req.params.id
+        Scenario.findById(req.params.id, function (err, scenario) {
+
+            if(scenario == null) {
+                var err = new Error("Scenario " + req.params.id + " not found");
+                err.status = 404;
+                return next(err);
+            } else if (err) {
+                return next(err);
+            } else if(req.user.hasRole(["admin"]) || scenario.hasOwner(req.user)){
+                res.format({
+                    'text/html': function() {
+                        res.render('scenarios/scenarios-form.ejs', {
+                            user : req.user,
+                            id : req.params.id
+                        });
+                    },
+                    'default': function() {
+                        res.send(406, 'Not Acceptable');
+                    }
                 });
-            },
-            'default': function() {
-                res.send(406, 'Not Acceptable');
+            } else {
+                var err = new Error("Forbidden: Not allowed to edit Scenario " + req.params.id);
+                err.status = 403;
+                return next(err);
             }
         });
     });

@@ -2,18 +2,17 @@
 
     <div class="row">
         <% if(id) { %>
-        <h1>Edit Scenario</h1>
+        <h1>Edit User</h1>
         <% } else { %>
-        <h1>Create a new Scenario</h1>
+        <h1>Create a new User</h1>
         <% } %>
 
         <p>
-        Title: <input type="title" id="scenario-title"><br>
-        Text: <textarea id="scenario-text"></textarea><br>
+        Roles: <input type="text" id="user-roles"><br>
         <% if(id) { %>
-        <button id="scenario-send">Edit</button>
+        <button id="user-send">Edit</button>
         <% } else { %>
-        <button id="scenario-send">Create</button>
+        <button id="user-send">Create</button>
         <% } %>
         </p>
 
@@ -22,11 +21,12 @@
             <% if(id) { %>
                 $.ajax({
                     type : "GET",
-                    url : "/scenarios/<%=id %>",
+                    url : "/users/<%=id %>",
                     dataType : 'json',
                     success : function(e){
-                        $('#scenario-title').val(e.title);
-                        $('#scenario-text').val(e.text);
+                        if(e.roles) {
+                            $('#user-roles').val(e.roles.join(" "));
+                        }
                     },
                     error: function(error){
                         console.log("error", error);                
@@ -34,16 +34,15 @@
                 });
 
                 var ajaxType = "PUT";
-                var ajaxUrl = "/scenarios/<%=id %>";
+                var ajaxUrl = "/users/<%=id %>";
             <% } else { %>
                 var ajaxType = "POST";
-                var ajaxUrl = "/scenarios";
+                var ajaxUrl = "/users";
             <% } %>
 
             var handle = function() {
                 var o = {
-                    title : $('#scenario-title').val(),
-                    text : $('#scenario-text').val(),
+                    roles : $('#user-roles').val().split(" ")
                 }
                 $.ajax({
                     type : ajaxType,
@@ -51,7 +50,7 @@
                     data : JSON.stringify(o),
                     contentType : 'application/json',
                     success : function(o){
-                        window.location = "/scenarios/" + o._id;
+                        window.location = "/users/" + o.uuid;
                     },
                     error: function(e){
                         console.log("error", e);                
@@ -59,13 +58,14 @@
                 });
             };
 
-            $('#scenario-send').click(handle);
-            $('#scenario-title').on("keypress", function (e) {
+            $('#user-send').click(handle);
+            $('#user-roles').on("keypress", function (e) {
                 if (e.keyCode == 13) {
                     e.preventDefault();
                     handle();
                 }
             });
+
         </script>
 
 <% include ../footer %>

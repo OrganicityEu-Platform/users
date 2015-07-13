@@ -4,8 +4,6 @@ module.exports = function(passport) {
 
     return function (req, res, next) {
 
-        console.log("ISLOGGEDIN");
-
         // Check, if logged in via non HTTP Basic auth
         if (req.isAuthenticated()) {
             return next();
@@ -17,7 +15,6 @@ module.exports = function(passport) {
                 return next(err);
             }
             if (!user) {
-                console.log("XXXXXXXXXXXXXXXXXXXXX");
                 res.format({
                     'text/html': function() {
                         return res.redirect('/login');
