@@ -1,10 +1,14 @@
 <h2><a href="/users/<%=user.profile.uuid %>">User <%=user.profile.uuid %></a></h2>
 
 <h3>Local</h3>
-<p>UUID: <%=user.profile.uuid %></p>
-<% if(user.local.email) { %>
-<p><%=user.local.email %></p>
-<% } %> 
+<p>
+    <ul>
+        <li>UUID: <%=user.profile.uuid %></li>
+        <% if(user.local.email) { %>
+        <li>E-Mail: <%=user.local.email %></li>
+        <% } %> 
+    </ul>
+</p>
 
 <h3>Social Networks</h3>
 <p>
