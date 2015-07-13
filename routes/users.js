@@ -2,6 +2,11 @@ module.exports = function(passport) {
 
     var express = require('express');
     var router = express.Router();
+    var isLoggedIn = require('../config/isLoggedIn.js')(passport);
+
+    //###############################################################
+    // Routes
+    //###############################################################
 
     var User = require('../models/user.js');
 
@@ -11,9 +16,19 @@ module.exports = function(passport) {
             if (err) {
                 return next(err);
             } else {
-                res.render('users/users.ejs', {
-                    user : req.user,
-                    users : users
+                res.format({
+                    'text/html': function() {
+                        res.render('users/users.ejs', {
+                            user : req.user,
+                            users : users
+                        });
+                    },
+                    'application/json': function() {
+                        res.json(users);
+                    },
+                    'default': function() {
+                        res.send(406, 'Not Acceptable');
+                    }
                 });
             }
         });
@@ -31,38 +46,23 @@ module.exports = function(passport) {
                 console.log(err);
                 return next(err);
             } else {
-                res.render('users/users.ejs', {
-                    user : req.user,
-                    users : [user]
+                res.format({
+                    'text/html': function() {
+                        res.render('users/users.ejs', {
+                            user : req.user,
+                            users : [user]
+                        });
+                    },
+                    'application/json': function() {
+                        res.json(user);
+                    },
+                    'default': function() {
+                        res.send(406, 'Not Acceptable');
+                    }
                 });
             }
         });
     });
-
-    function isLoggedIn(req, res, next) {
-
-        // Check, if logged in via non HTTP Basic auth
-        if (req.isAuthenticated()) {
-            return next();
-        }
-
-        // Check for HTTP Basic auth
-        passport.authenticate('basic', { session: false }, function(err, user, info) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.redirect('/login');
-            }
-            req.logIn(user, function(err) {
-                if (err) {
-                    return next(err);
-                }
-                return next();
-            });
-
-        })(req, res, next);
-    }
 
     return router;
 };

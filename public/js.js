@@ -1,10 +1,10 @@
 $( document ).ready(function() {
-    console.log( "ready!" );
+
     $("button.scenarioDelete").on('click', function() {
         var id = $(this).data("id");
         $.ajax({
             type : 'DELETE',
-            url : "/rest/scenarios/" + id,
+            url : "/scenarios/" + id,
             success : function(o){
                 // FIXME: REMOVE FROM OVERVIEW
                 window.location = "/scenarios";

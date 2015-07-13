@@ -22,7 +22,8 @@
             <% if(id) { %>
                 $.ajax({
                     type : "GET",
-                    url : "/rest/scenarios/<%=id %>",
+                    url : "/scenarios/<%=id %>",
+                    dataType : 'json',
                     success : function(e){
                         $('#scenario-title').val(e.title);
                         $('#scenario-text').val(e.text);
@@ -33,10 +34,10 @@
                 });
 
                 var ajaxType = "PUT";
-                var ajaxUrl = "/rest/scenarios/<%=id %>";
+                var ajaxUrl = "/scenarios/<%=id %>";
             <% } else { %>
                 var ajaxType = "POST";
-                var ajaxUrl = "/rest/scenarios";
+                var ajaxUrl = "/scenarios";
             <% } %>
 
             var handle = function() {
@@ -52,8 +53,8 @@
                     success : function(o){
                         window.location = "/scenarios/" + o._id;
                     },
-                    error: function(){
-                        console.log("error", error);                
+                    error: function(e){
+                        console.log("error", e);                
                     }
                 });
             };
