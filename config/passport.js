@@ -10,7 +10,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var uuid = require('node-uuid');
 
 // load up the user model
-var User       = require('../models/user');
+var User       = require('../models/userSchema');
 
 // load the auth variables
 var configAuth = require('./auth');
@@ -427,12 +427,6 @@ module.exports = function(passport) {
 
     },
     function(req, token, tokenSecret, profile, done) {
-
-        console.log("===================================================");
-        console.log(profile);
-        console.log("===================================================");
-        console.log(profile.id);
-        console.log("===================================================");
 
         // asynchronous
         process.nextTick(function() {

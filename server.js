@@ -33,13 +33,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+app.use(session({ secret: 'organicityScenarioTool' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-app.use('/', require('./routes/routes')(app, passport));
+
+app.get('/', function(req, res) {
+    res.render('index.ejs', {
+        user : req.user
+    });
+});
+
+
+app.use('/', require('./routes/auth')(app, passport));
 app.use('/scenarios', require('./routes/scenarios')(passport));
 app.use('/users', require('./routes/users')(passport));
 

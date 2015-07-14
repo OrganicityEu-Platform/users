@@ -1,11 +1,11 @@
-// server.js
+// mkAdminUser.js
 
 var mongoose = require('mongoose');
-var configDB = require('./config/database.js');
+var configDB = require('../config/database.js');
 var uuid = require('node-uuid');
 var crypto = require('crypto');
 
-var User = require('./models/user.js');
+var User = require('../models/userSchema.js');
 
 mongoose.connect(configDB.url); // connect to our database
 

@@ -2,7 +2,7 @@ server:
 	node server
 
 admin:
-	node mkAdminUser
+	node standalone/mkAdminUser
 
 dropDatabase:
 	mongo scenarios --eval "db.dropDatabase();"

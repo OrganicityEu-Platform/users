@@ -1,5 +1,8 @@
-// route middleware to ensure user is logged in
+/*
+ * Checks, if a given user has one of the given roles
+ */
 
+// @Param roles:  an array
 module.exports = function(roles) {
 
     return function (req, res, next) {

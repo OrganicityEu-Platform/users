@@ -1,6 +1,8 @@
 <% include ../header %>
 <div class="row">
     <h1><%=title %></h1>
-	<% include scenarios-plain %>
+	<% scenarios.forEach(function(scenario){ %>
+		<% include scenario %>
+	<% }) %>
 </div>
 <% include ../footer %>

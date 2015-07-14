@@ -5,9 +5,11 @@ module.exports = function(passport) {
 
 	var truncate = require('truncate');
 	
-    var isLoggedIn = require('../config/isLoggedIn.js')(passport);
-    var hasRole = require('../config/hasRole.js');
-	
+    var isLoggedIn = require('../models/isLoggedIn.js')(passport);
+    var hasRole = require('../models/hasRole.js');
+
+    var Scenario = require('../models/scenarioSchema.js');
+
     //###############################################################
     // is valid schemas
     //###############################################################
@@ -48,8 +50,6 @@ module.exports = function(passport) {
     //###############################################################
     // Routes
     //###############################################################
-
-    var Scenario = require('../models/Scenario.js');
 
     // GET /scenarios
     router.get('/', function(req, res) {
@@ -255,7 +255,6 @@ module.exports = function(passport) {
             }
         });
     };
-
 
     // PUT /scenarios/:id
     router.put('/:id', [isLoggedIn, validate.body(ScenarioSchemaPost)], putOrPatchScenario);

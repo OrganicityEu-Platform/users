@@ -6,13 +6,6 @@ module.exports = function(app, passport) {
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    router.get('/', function(req, res) {
-        res.render('index.ejs', {
-            user : req.user
-        });
-    });
-
-    // show the home page (will also have our login links)
     router.get('/login', function(req, res) {
         res.render('login.ejs', { user : undefined });
     });

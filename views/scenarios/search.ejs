@@ -2,14 +2,14 @@
 
     <div class="row">
         <h1>Scenario Search</h1>
-	
-		Search <input type="text" id="search-text"><br>
-		<button id="search-btn">Search</button>
-		<div id="search-result-cnt"></div>
-		<div id="search-result"></div>
+		<div class="form-group">
+			<input id="search-text" type="email" class="form-control" placeholder="Search for...">
+		</div>
+		<button id="search-btn" class="btn btn-default">Search</button>
     </div>
+	<br>
+	<p id="search-result"></p>
 	
-
 	<script>
 		var handle = function() {
 
@@ -22,9 +22,11 @@
                 url : "/scenarios/search",
                 data : JSON.stringify(o),
                 contentType : 'application/json',
-				//dataType : 'json',
+				dataType : 'json',
                 success : function(res){
-					$("#search-result").html(res);
+					console.log(res);
+					var html = new EJS({url: '/views/scenarios/scenarios-search-result.ejs'}).render(res);
+					$("#search-result").html(html);
                 },
                 error: function(e){
                     console.log("error", e);                

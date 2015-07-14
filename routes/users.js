@@ -2,8 +2,12 @@ module.exports = function(passport) {
 
     var express = require('express');
     var router = express.Router();
-    var isLoggedIn = require('../config/isLoggedIn.js')(passport);
-    var hasRole = require('../config/hasRole.js');
+
+    var isLoggedIn = require('../models/isLoggedIn.js')(passport);
+    var hasRole = require('../models/hasRole.js');
+
+    var User = require('../models/userSchema.js');
+    var Scenario = require('../models/scenarioSchema.js');
 
    //###############################################################
     // is valid schemas
@@ -28,9 +32,6 @@ module.exports = function(passport) {
     //###############################################################
     // Routes
     //###############################################################
-
-    var User = require('../models/user.js');
-    var Scenario = require('../models/Scenario.js');
 
     router.get('/', [isLoggedIn, hasRole(["admin"])], function(req, res) {
 

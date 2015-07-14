@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var searchPlugin = require('mongoose-search-plugin');
 
-var ScenarioSchema = new mongoose.Schema({
+var scenarioSchema = new mongoose.Schema({
     title: String,
     text: String,
     owner: String,
@@ -9,12 +9,13 @@ var ScenarioSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
 });
 
-ScenarioSchema.plugin(searchPlugin, {
+scenarioSchema.plugin(searchPlugin, {
     fields: ['title', 'text']
 });
 
-ScenarioSchema.methods.hasOwner = function(user) {
+// Chekfs, if the given user is the owner of the scenario
+scenarioSchema.methods.hasOwner = function(user) {
     return (user.uuid === this.owner);
 };
 
-module.exports = mongoose.model('Scenario', ScenarioSchema);
+module.exports = mongoose.model('Scenario', scenarioSchema);

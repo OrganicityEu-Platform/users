@@ -1,4 +1,6 @@
-// route middleware to ensure user is logged in
+/*
+ * Checks, if a user is logged in
+ */
 
 module.exports = function(passport) {
 
