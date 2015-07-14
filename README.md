@@ -1,12 +1,13 @@
 # OrganiCity Node.js Scenario Tool
 
-This application is baded on https://github.com/scotch-io/easy-node-authentication
+This application is based on https://github.com/scotch-io/easy-node-authentication
 
 ## Prepare Ubuntu 14.04
 
 ```
 sudo apt-get install curl
 sudo apt-get install build-essential
+```
 
 ## Install nodejs (last stable)
 
@@ -68,10 +69,16 @@ npm install
 
 Edit `config/config.js`
 
+## Create admin user
+
+```
+make admin
+```
+
 ## Start application project
 
 ```
-node server.js
+make
 ```
 
 ## Config Auths
