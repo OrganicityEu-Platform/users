@@ -1,27 +1,100 @@
-# Easy Node Authentication
+# OrganiCity Node.js Scenario Tool
 
-Code for the entire scotch.io tutorial series: Complete Guide to Node Authentication
+## Prepare Ubuntu 14.04
 
-We will be using Passport to authenticate users locally, with Facebook, Twitter, and Google.
+```
+sudo apt-get install curl
+sudo apt-get install build-essential
 
-#### Upgraded To Express 4.0
-This tutorial has been upgraded to use ExpressJS 4.0. See [the commit](https://github.com/scotch-io/easy-node-authentication/commit/020dea057d5a0664caaeb041b18978237528f9a3) for specific changes.
+## Install nodejs (last stable)
 
-## Instructions
+```
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+sudo apt-get install nodejs
+node --version                 ## v0.10.40
+```
 
-If you would like to download the code and try it for yourself:
+## Install MongoDB 2.6
 
-1. Clone the repo: `git clone git@github.com:scotch-io/easy-node-authentication`
-2. Install packages: `npm install`
-3. Change out the database configuration in config/database.js
-4. Change out auth keys in config/auth.js
-5. Launch: `node server.js`
-6. Visit in your browser at: `http://localhost:8080`
+```
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+sudo apt-get update
+sudo apt-get install mongodb-org
 
-## The Tutorials
+mongod --version		## v2.6.10
 
-- [Getting Started and Local Authentication](http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local)
-- [Facebook](http://scotch.io/tutorials/javascript/easy-node-authentication-facebook)
-- [Twitter](http://scotch.io/tutorials/javascript/easy-node-authentication-twitter)
-- [Google](http://scotch.io/tutorials/javascript/easy-node-authentication-google)
-- [Linking All Accounts Together](http://scotch.io/tutorials/javascript/easy-node-authentication-linking-all-accounts-together)
+sudo mkdir /opt/mongodb
+chmod 755 /opt/mongodb/
+chown mongodb:mongodb /opt/mongodb
+```
+
+Replace `/etc/mongodb.conf` with
+
+```
+systemLog:
+   destination: file
+   path: "/var/log/mongodb/mongodb.log"
+   logAppend: true
+
+storage:
+   dbPath: /opt/mongodb
+   smallFiles: true
+
+net:
+   bindIp: 127.0.0.1
+```
+
+Restart:
+
+```
+sudo service mongod stop
+sudo service mongod start
+sudo service mongod status
+```
+
+## Get, install and run project
+
+```
+git clone git@git.itm.uni-luebeck.de:organicity/node-scenario-tool.git
+cd node-scenario-tool
+npm install
+```
+
+## Config
+
+
+Edit `config/config.js`
+
+## Start application project
+
+```
+node server.js
+```
+
+## Config Auths
+
+Create API keys and edit `config/auth.js`
+
+### Facebook
+
+https://developers.facebook.com/apps
+
+### Twitter
+
+https://apps.twitter.com/app
+
+Callback: {SERVER}/auth/twitter/callbacl
+
+### Google+
+
+https://console.developers.google.com/project
+
+Callback: {SERVER}/auth/google/callback 
+
+### Github
+
+https://github.com/settings/applications/new
+
+Callback: {SERVER}/auth/github/callback
+
