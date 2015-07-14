@@ -201,6 +201,7 @@ module.exports = function(passport) {
     // GET /scenarios/id
     router.get('/:id', [], function(req, res, next) {
         Scenario.findById(req.params.id, function (err, scenario) {
+
             if(scenario == null) {
                 var err = new Error("Scenario " + req.params.id + " not found");
                 err.status = 404;

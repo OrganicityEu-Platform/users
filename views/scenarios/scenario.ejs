@@ -1,11 +1,24 @@
 <h2><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></h2>
-<p>Owner: <%=scenario.owner %></p>
-<p style="white-space: pre;"><%=scenario.text %></p>
+<div class="col-sm-12">
+	<h4>Description</h4>
+	<%=scenario.text %>
+</div>
+<div class="col-sm-6">
+	<% if(user && (user.hasRole(["admin"]) || scenario.hasOwner(user))) { %>
+	<button data-id="<%=scenario.id %>" class="scenarioEdit   btn btn-default">EDIT</button>
+	<% } %>
 
-<% if(user && (user.hasRole(["admin"]) || scenario.hasOwner(user))) { %>
-<button data-id="<%=scenario.id %>" class="scenarioEdit   btn btn-default">EDIT</button>
-<% } %>
+	<% if(user && user.hasRole(["admin"])) { %>
+	<button data-id="<%=scenario.id %>" class="scenarioDelete btn btn-default btn-danger">DELETE</button>
+	<% } %>
+</div>
+<div class="col-sm-6">
+	<h4>Owner</h4>
+	<%=scenario.owner %>
+	<h4>Created at</h4>
+	
+	<time class="timeago" datetime="<%=(new Date(scenario.created_at)).toISOString() %>"><%=(new Date(scenario.created_at)).toISOString() %></time>
+	<h4>Updated at</h4>
+	<time class="timeago" datetime="<%=(new Date(scenario.updated_at)).toISOString() %>"><%=(new Date(scenario.updated_at)).toISOString() %></time>
+</div>
 
-<% if(user && user.hasRole(["admin"])) { %>
-<button data-id="<%=scenario.id %>" class="scenarioDelete btn btn-default btn-danger">DELETE</button>
-<% } %>

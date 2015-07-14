@@ -48,5 +48,6 @@ $( document ).ready(function() {
         window.location = "/users/" + id + "/edit";
     });
 
+  	$("time.timeago").timeago();
 
 });
