@@ -1,10 +1,17 @@
 Results: <%=totalCount %>
 
-<% results.forEach(function(scenario){ %>
-	<h2><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></h2>
-	<p>Score: <%=scenario._relevance %></p>
-	<p>Owner: <%=scenario.owner %></p>
-	<p style="white-space: pre;"><%=scenario.text %></p>
-<% }) %>
+<div class="row">
+	<% results.forEach(function(scenario){ %>
+	<h2><a href="/scenarios/<%=scenario._id %>"><%=scenario.title %></a></h2>
 
+		<div class="row">
+			<div class="col-sm-12">
+				<strong>Score: <%=scenario._relevance.toFixed(2) %></strong>
+			</div>
+			<div class="col-sm-12">
+				<%=scenario.text %>
+			</div>
+		</div>
 
+	<% }) %>
+</div>

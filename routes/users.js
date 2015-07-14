@@ -57,7 +57,7 @@ module.exports = function(passport) {
         });
     });
 
-    router.get('/:id', [isLoggedIn], function(req, res) {
+    router.get('/:id', function(req, res) {
 
         User.findOne({ 'uuid' :  req.params.id }, function(err, user) {
 

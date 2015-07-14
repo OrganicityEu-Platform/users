@@ -5,13 +5,17 @@
 		<div class="form-group">
 			<input id="search-text" type="email" class="form-control" placeholder="Search for...">
 		</div>
+		<!--
 		<button id="search-btn" class="btn btn-default">Search</button>
+		-->
     </div>
 	<br>
 	<p id="search-result"></p>
 	
 	<script>
 		var handle = function() {
+
+			console.log($("#search-text").val());
 
 			var o = {
 				"text" : $("#search-text").val()
@@ -35,11 +39,11 @@
 
 		};
 		$("#search-btn").click(handle);
-        $('#search-text').on("keypress", function (e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
+        $('#search-text').on("keyup", function (e) {
+            //if (e.keyCode == 13) {
+                //e.preventDefault();
                 handle();
-            }
+            //}
         });
 
 	</script>

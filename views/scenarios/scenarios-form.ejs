@@ -7,15 +7,20 @@
         <h1>Create a new Scenario</h1>
         <% } %>
 
-        <p>
-        Title: <input type="title" id="scenario-title"><br>
-        Text: <textarea id="scenario-text"></textarea><br>
+
+		<div class="form-group">
+			<label for="scenario-title">Title</label>
+			<input type="email" class="form-control" id="scenario-title" placeholder="Title...">
+		</div>
+		<div class="form-group">
+			<label for="scenario-text">Text</label>
+			<textarea class="form-control" rows="12" id="scenario-text"></textarea>
+		</div>
         <% if(id) { %>
-        <button id="scenario-send">Edit</button>
+		<button id="scenario-send" type="submit" class="btn btn-default">Edit</button>
         <% } else { %>
-        <button id="scenario-send">Create</button>
+		<button id="scenario-send" type="submit" class="btn btn-default">Create</button>
         <% } %>
-        </p>
 
         <script>
         

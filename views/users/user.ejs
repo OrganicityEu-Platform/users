@@ -31,7 +31,7 @@
 
 </p>
 
-<% if(user.hasRole(["admin"])) { %>
+<% if(user && user.hasRole(["admin"])) { %>
     <button data-id="<%=u.uuid %>" class="userEdit   btn btn-default">EDIT</button>
     <button data-id="<%=u.uuid %>" class="userDelete btn btn-default btn-danger">DELETE</button>
 <% } %>

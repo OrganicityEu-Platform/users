@@ -170,13 +170,18 @@ module.exports = function(passport) {
 
 		// https://github.com/freakycue/mongoose-search-plugin
 		Scenario.search(req.body.text, {}, {
-			sort: {title: 1},
-			limit: 10
+//			sort: {title: 1},
+			limit: 25
 		}, function(err, searchresult) {
 
             if (err) {
                 return next(err);
             } else {
+
+				searchresult.results.forEach(function(e) {
+					e.text = truncate(e.text, 100);
+				});
+
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios-plain.ejs', {
