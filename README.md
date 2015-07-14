@@ -1,5 +1,7 @@
 # OrganiCity Node.js Scenario Tool
 
+This application is baded on https://github.com/scotch-io/easy-node-authentication
+
 ## Prepare Ubuntu 14.04
 
 ```
