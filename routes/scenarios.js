@@ -54,7 +54,7 @@ module.exports = function(passport) {
     // GET /scenarios
     router.get('/', function(req, res) {
 
-        Scenario.find(function (err, scenarios) {
+        Scenario.find({}).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
@@ -79,7 +79,7 @@ module.exports = function(passport) {
                     }
                 });
             }
-        });
+        })
     });
 
 
@@ -127,7 +127,7 @@ module.exports = function(passport) {
     // GET /scenarios/my == SAME AS /users/:id/scenarios !!!
     router.get('/my', [isLoggedIn], function(req, res, next) {
 
-        Scenario.find({ 'owner' : req.user.uuid }, function (err, scenarios) {
+		Scenario.find({ 'owner' : req.user.uuid }).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {

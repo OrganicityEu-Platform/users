@@ -4,7 +4,10 @@
 // get all the tools we need
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 8080;
+
+var config = require('./config/config.js');
+
+var port     = process.env.PORT || config.port;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');

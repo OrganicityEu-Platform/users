@@ -3,6 +3,8 @@ module.exports = function(passport) {
     var express = require('express');
     var router = express.Router();
 
+	var truncate = require('truncate');
+
     var isLoggedIn = require('../models/isLoggedIn.js')(passport);
     var hasRole = require('../models/hasRole.js');
 
@@ -69,20 +71,33 @@ module.exports = function(passport) {
                 console.log(err);
                 return next(err);
             } else {
-                res.format({
-                    'text/html': function() {
-                        res.render('users/users.ejs', {
-                            user : req.user,
-                            users : [user]
-                        });
-                    },
-                    'application/json': function() {
-                        res.json(user);
-                    },
-                    'default': function() {
-                        res.send(406, 'Not Acceptable');
-                    }
-                });
+
+				Scenario.find({ 'owner' : user.uuid }).sort({created_at: -1}).exec(function (err, scenarios) {
+				    if (err) {
+				        return next(err);
+				    } else {
+
+						scenarios.forEach(function(e) {
+							e.text = truncate(e.text, 100);
+						});
+
+				        res.format({
+				            'text/html': function() {
+				                res.render('users/users.ejs', {
+				                    user : req.user,
+				                    users : [user],
+									scenarios : scenarios
+				                });
+				            },
+				            'application/json': function() {
+				                res.json(user);
+				            },
+				            'default': function() {
+				                res.send(406, 'Not Acceptable');
+				            }
+				        });				       
+				    }
+				});
             }
         });
     });

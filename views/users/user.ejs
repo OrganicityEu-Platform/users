@@ -6,6 +6,9 @@
         <li>UUID: <%=u.uuid %></li>
         <% if(u.local.email) { %>
         <li>E-Mail: <%=u.local.email %></li>
+			<% if(user && user.hasRole(["admin"])) { %>
+				<li>Roles: <%= u.roles %></li>
+	        <% } %> 
         <% } %> 
     </ul>
 </p>
@@ -30,6 +33,16 @@
     <% } %> 
 
 </p>
+
+<h3>Scenarios</h3>
+
+<ul>
+<% scenarios.forEach(function(scenario){ %>
+	<li><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></li>
+<% }) %>
+</ul>
+
+
 
 <% if(user && user.hasRole(["admin"])) { %>
     <button data-id="<%=u.uuid %>" class="userEdit   btn btn-default">EDIT</button>
