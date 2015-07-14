@@ -131,6 +131,11 @@ module.exports = function(passport) {
             if (err) {
                 return next(err);
             } else {
+
+				scenarios.forEach(function(e) {
+					e.text = truncate(e.text, 100);
+				});
+
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios.ejs', {
