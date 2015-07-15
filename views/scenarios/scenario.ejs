@@ -9,11 +9,11 @@
 
 <div class="row top10">
 	<div class="col-sm-6">
-		<% if(user && (user.hasRole(["admin"]) || scenario.hasOwner(user))) { %>
+		<% if(req_user && (req_user.hasRole(["admin"]) || scenario.hasOwner(req_user))) { %>
 		<button data-id="<%=scenario.id %>" class="scenarioEdit   btn btn-default">EDIT</button>
 		<% } %>
 
-		<% if(user && user.hasRole(["admin"])) { %>
+		<% if(req_user && req_user.hasRole(["admin"])) { %>
 		<button data-id="<%=scenario.id %>" class="scenarioDelete btn btn-default btn-danger">DELETE</button>
 		<% } %>
 	</div>

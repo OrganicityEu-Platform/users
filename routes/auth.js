@@ -7,13 +7,14 @@ module.exports = function(app, passport) {
 
     // show the home page (will also have our login links)
     router.get('/login', function(req, res) {
-        res.render('login.ejs', { user : undefined });
+        res.render('login.ejs', { req_user : undefined });
     });
 
     // PROFILE SECTION =========================
     router.get('/profile', [isLoggedIn], function(req, res) {
         res.render('profile.ejs', {
-            user : req.user
+            user : req.user,
+			req_user : req.user
         });
     });
 
@@ -31,20 +32,20 @@ module.exports = function(app, passport) {
         // LOGIN ===============================
         // show the login form
         router.get('/local-login', function(req, res) {
-            res.render('local-login.ejs', { user : undefined, message: req.flash('loginMessage') });
+            res.render('local-login.ejs', { req_user : undefined, message: req.flash('loginMessage') });
         });
 
         // process the login form
         router.post('/local-login', passport.authenticate('local-login', {
             successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureRedirect : '/local-login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
 
         // SIGNUP =================================
         // show the signup form
         router.get('/signup', function(req, res) {
-            res.render('signup.ejs', { user : undefined, message: req.flash('signupMessage') });
+            res.render('signup.ejs', { req_user : undefined, message: req.flash('signupMessage') });
         });
 
         // process the signup form
@@ -167,59 +168,7 @@ module.exports = function(app, passport) {
                 failureRedirect : '/login'
             }));
 
-// =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
-// used to unlink accounts. for social accounts, just remove the token
-// for local account, remove email and password
-// user account will stay active in case they want to reconnect in the future
-
-    // local -----------------------------------
-    router.get('/unlink/local', [isLoggedIn], function(req, res) {
-        var user            = req.user;
-        user.local.email    = undefined;
-        user.local.password = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
-    });
-
-    // facebook -------------------------------
-    router.get('/unlink/facebook', [isLoggedIn], function(req, res) {
-        var user            = req.user;
-        user.facebook.token = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
-    });
-
-    // twitter --------------------------------
-    router.get('/unlink/twitter', [isLoggedIn], function(req, res) {
-        var user           = req.user;
-        user.twitter.token = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
-    });
-
-    // google ---------------------------------
-    router.get('/unlink/google', [isLoggedIn], function(req, res) {
-        var user          = req.user;
-        user.google.token = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
-    });
-
-    // google ---------------------------------
-    router.get('/unlink/github', [isLoggedIn], function(req, res) {
-        var user          = req.user;
-        user.github.token = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
-    });
-
+	// TODO: Load via require
     // route middleware to ensure user is logged in
     function isLoggedIn(req, res, next) {
 

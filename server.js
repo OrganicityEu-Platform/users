@@ -45,11 +45,9 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.get('/', function(req, res) {
     res.render('index.ejs', {
-        user : req.user
+        req_user : req.user
     });
 });
-
-
 app.use('/', require('./routes/auth')(app, passport));
 app.use('/scenarios', require('./routes/scenarios')(passport));
 app.use('/users', require('./routes/users')(passport));
@@ -68,10 +66,20 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err,
-      user : undefined
+    res.format({
+        'text/html': function() {
+			res.render('error', {
+			  message: err.message,
+			  error: err,
+			  user : undefined
+			});
+        },
+        'application/json': function() {
+            res.json(err);
+        },
+        'default': function() {
+            res.send(406, 'Not Acceptable');
+        }
     });
   });
 }
@@ -80,11 +88,21 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {},
-    user : undefined
-  });
+    res.format({
+        'text/html': function() {
+			res.render('error', {
+			  message: err.message,
+			  error: {},
+			  user : undefined
+			});
+        },
+        'application/json': function() {
+            res.json({});
+        },
+        'default': function() {
+            res.send(406, 'Not Acceptable');
+        }
+    });
 });
 
 // launch ======================================================================

@@ -1,21 +1,26 @@
 <!doctype html>
 <html>
 <head>
+
     <title>Scenarios</title>
+
     <link rel="stylesheet" href="/static/bootstrap-3.0.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/font-awesome-4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <script src="/static/js/jquery-2.1.4.min.js"></script>
+
+    <script src="/static/js/jquery-2.1.4.min.js"></script>	
     <script src="/static/js/jquery.timeago.js"></script>	
     <script src="/static/js/js.js"></script>
     <script src="/static/js/ejs_0.9_alpha_1_production.js"></script>
+
 </head>
 <body>
+
 <div class="container">
 
     <div class="page-header text-center">
         <h1>Scenarios</h1>
-        <% if(user) { %>
+        <% if(req_user) { %>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <% } %>
     </div>

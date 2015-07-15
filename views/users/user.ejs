@@ -1,50 +1,56 @@
-<h2><a href="/users/<%=u.uuid %>">User <%=u.uuid %></a></h2>
+<% include ../header %>
 
-<h3>Local</h3>
-<p>
-    <ul>
-        <li>UUID: <%=u.uuid %></li>
-        <% if(u.local.email) { %>
-        <li>E-Mail: <%=u.local.email %></li>
-			<% if(user && user.hasRole(["admin"])) { %>
-				<li>Roles: <%= u.roles %></li>
-	        <% } %> 
-        <% } %> 
-    </ul>
-</p>
+    <div class="row">
 
-<h3>Social Networks</h3>
-<p>
+		<h2><a href="/users/<%=user.uuid %>">User <%=user.uuid %></a></h2>
 
-    <% if(u.facebook.id) { %>
-    <a target="_blank" href="https://facebook.com/<%=u.facebook.id %>"><span class="fa fa-lg fa-fw fa-facebook fa-border"></span></a>
-    <% } %> 
+		<% if(req_user && req_user.hasRole(["admin"])) { %>
+			<button data-id="<%=user.uuid %>" class="userEdit   btn btn-default">EDIT</button>
+			<button data-id="<%=user.uuid %>" class="userDelete btn btn-default btn-danger">DELETE</button>
+		<% } %>
 
-    <% if(u.google.id) { %>
-    <a target="_blank" class="text-danger" href="https://plus.google.com/<%=u.google.id %>"><span class="fa fa-lg fa-fw fa-google-plus fa-border"></span></a>
-    <% } %> 
+		<h3>Local</h3>
+		<p>
+			<ul>
+				<li>UUID: <%=user.uuid %></li>
+				<% if(user.name) { %><li>Name: <%=user.name %></li><% } %> 
+				<% if(user.gender) { %><li>E-Mail: <%=user.gender %></li><% } %> 
+				<% if(req_user && req_user.hasRole(["admin"])) { %>
+					<li>Roles: <%= user.roles %></li>
+				<% } %> 
+			</ul>
+		</p>
 
-    <% if(u.twitter.id) { %>
-    <a target="_blank" class="text-info" href="https://twitter.com/<%=u.twitter.username %>"><span class="fa fa-lg fa-fw fa-twitter fa-border"></span></a>
-    <% } %> 
+		<h3>Social Networks</h3>
+		<p>
 
-    <% if(u.github.id) { %>
-    <a target="_blank" style="color:black;" href="http://www.github.com/<%=u.github.username %>"><span class="fa fa-lg fa-fw fa-github fa-border"></span></a>
-    <% } %> 
+			<% if(user.facebook.id) { %>
+			<a target="_blank" href="https://facebook.com/<%=user.facebook.id %>"><span class="fa fa-lg fa-fw fa-facebook fa-border"></span></a>
+			<% } %> 
 
-</p>
+			<% if(user.google.id) { %>
+			<a target="_blank" class="text-danger" href="https://plus.google.com/<%=user.google.id %>"><span class="fa fa-lg fa-fw fa-google-plus fa-border"></span></a>
+			<% } %> 
 
-<h3>Scenarios</h3>
+			<% if(user.twitter.id) { %>
+			<a target="_blank" class="text-info" href="https://twitter.com/<%=user.twitter.username %>"><span class="fa fa-lg fa-fw fa-twitter fa-border"></span></a>
+			<% } %> 
 
-<ul>
-<% scenarios.forEach(function(scenario){ %>
-	<li><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></li>
-<% }) %>
-</ul>
+			<% if(user.github.id) { %>
+			<a target="_blank" style="color:black;" href="http://www.github.com/<%=user.github.username %>"><span class="fa fa-lg fa-fw fa-github fa-border"></span></a>
+			<% } %> 
 
+		</p>
 
+		<h3>Scenarios</h3>
 
-<% if(user && user.hasRole(["admin"])) { %>
-    <button data-id="<%=u.uuid %>" class="userEdit   btn btn-default">EDIT</button>
-    <button data-id="<%=u.uuid %>" class="userDelete btn btn-default btn-danger">DELETE</button>
-<% } %>
+		<ul>
+		<% if(scenarios) {
+			scenarios.forEach(function(scenario){ %>
+				<li><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></li>
+		<% })} %>
+		</ul>
+
+    </div>
+
+<% include ../footer %>

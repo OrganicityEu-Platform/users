@@ -52,7 +52,7 @@ module.exports = function(passport) {
     //###############################################################
 
     // GET /scenarios
-    router.get('/', function(req, res) {
+    router.get('/', function(req, res, next) {
 
         Scenario.find({}).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
@@ -65,8 +65,8 @@ module.exports = function(passport) {
 
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios.ejs', {
-                            user : req.user,
+                        res.render('scenarios/scenarios', {
+                            req_user : req.user,
                             scenarios : scenarios,
 							title: "Browse Scenarios"
                         });
@@ -114,7 +114,7 @@ module.exports = function(passport) {
         res.format({
             'text/html': function() {
                 res.render('scenarios/scenarios-form.ejs', {
-                    user : req.user,
+					req_user : req.user,
                     id : undefined
                 });
             },
@@ -140,7 +140,7 @@ module.exports = function(passport) {
                     'text/html': function() {
                         res.render('scenarios/scenarios.ejs', {
 							title: "My Scenarios",
-                            user : req.user,
+                            req_user : req.user,
                             scenarios : scenarios
                         });
                     },
@@ -160,7 +160,7 @@ module.exports = function(passport) {
         res.format({
             'text/html': function() {
                 res.render('scenarios/search.ejs', {
-                    user : req.user
+                    req_user : req.user
                 });
             },
             'default': function() {
@@ -191,7 +191,7 @@ module.exports = function(passport) {
                     'text/html': function() {
                         res.render('scenarios/scenarios-plain.ejs', {
 							title: "Scenarios Search Result",
-                            user : req.user,
+                            req_user : req.user,
 							count : searchresult.totalCount,
                             scenarios : searchresult.results
                         });
@@ -222,7 +222,7 @@ module.exports = function(passport) {
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios.ejs', {
-                            user : req.user,
+                            req_user : req.user,
                             scenarios : [scenario],
 							title: "Scenario details"
                         });
@@ -250,6 +250,7 @@ module.exports = function(passport) {
                 return next(err);
             } else if (err) {
                 return next(err);
+			// FIXME: TO LATE !!!
             } else if(req.user.hasRole(["admin"]) || scenario.hasOwner(req.user)){
                 res.format({
                     'application/json': function() {
@@ -308,7 +309,7 @@ module.exports = function(passport) {
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios-form.ejs', {
-                            user : req.user,
+                            req_user : req.user,
                             id : req.params.id
                         });
                     },
