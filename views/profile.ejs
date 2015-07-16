@@ -10,58 +10,61 @@
 		<h2>Profile</h2>
 
         <!-- Profile -->
-        <div class="col-sm-12 well">
+        <div class="col-sm-12">
 
-			<div class="form-group">
-				<label for="profile-name">Name</label>
-				<input type="text" class="form-control" id="profile-name" placeholder="Name..." value="<%=(user.name || '') %>">
-			</div>
+			<div class="well">
 
-			<div class="form-group">
-				<div class="col-sm-12">
-					<label for="scenario-gender">Gender</label>
-				</div>
-				<div class="col-sm-12">
-					<input type="radio" name="gender" id="profile-gender-f" value="f" <% if(user.gender == "f") { %> checked<% } %>> Female<br>
-					<input type="radio" name="gender" id="profile-gender-m" value="m" <% if(user.gender == "m") { %> checked<% } %>> Male
-				</div>
-			</div>
-
-			<% if(req_user.hasRole(["admin"])) { %>
 				<div class="form-group">
-					<label for="profile-roles">Roles</label>
-					<input type="text" class="form-control" id="profile-roles" placeholder="Roles..." value="<%=user.roles.join(" ") %>">
+					<label for="profile-name">Name</label>
+					<input type="text" class="form-control" id="profile-name" placeholder="Name..." value="<%=(user.name || '') %>">
 				</div>
-			<% } %>
 
-			<button id="profile-send" type="submit" class="btn btn-default">Save Profile</button>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<label for="scenario-gender">Gender</label>
+					</div>
+					<div class="col-sm-12">
+						<input type="radio" name="gender" id="profile-gender-f" value="f" <% if(user.gender == "f") { %> checked<% } %>> Female<br>
+						<input type="radio" name="gender" id="profile-gender-m" value="m" <% if(user.gender == "m") { %> checked<% } %>> Male
+					</div>
+				</div>
 
-			<script>
-		    
-		        var handle = function() {
-		            var o = {
-		                name : $('#profile-name').val(),
-		                gender : $('input[name=gender]:checked').val()
-						<% if(req_user.hasRole(["admin"])) { %>
-		                , roles : $('#profile-roles').val().trim().split(" ")
-						<% } %>
-		            }
-		            $.ajax({
-		                type : "PATCH",
-		                url : "/users/<%=user.uuid %>",
-		                data : JSON.stringify(o),
-		                contentType : 'application/json',
-		                success : function(o){
-							alert("Success");
-		                },
-		                error: function(e){
-		                    console.log("error", e);                
-		                }
-		            });
-		        };
-		        $('#profile-send').click(handle);
-		    </script>
-        </div>
+				<% if(req_user.hasRole(["admin"])) { %>
+					<div class="form-group">
+						<label for="profile-roles">Roles</label>
+						<input type="text" class="form-control" id="profile-roles" placeholder="Roles..." value="<%=user.roles.join(" ") %>">
+					</div>
+				<% } %>
+
+				<button id="profile-send" type="submit" class="btn btn-default">Save Profile</button>
+
+				<script>
+				
+				    var handle = function() {
+				        var o = {
+				            name : $('#profile-name').val(),
+				            gender : $('input[name=gender]:checked').val()
+							<% if(req_user.hasRole(["admin"])) { %>
+				            , roles : $('#profile-roles').val().trim().split(" ")
+							<% } %>
+				        }
+				        $.ajax({
+				            type : "PATCH",
+				            url : "/users/<%=user.uuid %>",
+				            data : JSON.stringify(o),
+				            contentType : 'application/json',
+				            success : function(o){
+								alert("Success");
+				            },
+				            error: function(e){
+				                console.log("error", e);                
+				            }
+				        });
+				    };
+				    $('#profile-send').click(handle);
+				</script>
+		    </div>
+		</div>
 
 		<h2>Logins</h2>
 
