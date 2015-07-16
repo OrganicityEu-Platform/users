@@ -113,7 +113,7 @@ module.exports = function(passport) {
 
         res.format({
             'text/html': function() {
-                res.render('scenarios/scenarios-form.ejs', {
+                res.render('scenarios/scenarios-form', {
 					req_user : req.user,
                     id : undefined
                 });
@@ -138,7 +138,7 @@ module.exports = function(passport) {
 
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios.ejs', {
+                        res.render('scenarios/scenarios', {
 							title: "My Scenarios",
                             req_user : req.user,
                             scenarios : scenarios
@@ -159,7 +159,7 @@ module.exports = function(passport) {
 
         res.format({
             'text/html': function() {
-                res.render('scenarios/search.ejs', {
+                res.render('scenarios/search', {
                     req_user : req.user
                 });
             },
@@ -189,7 +189,7 @@ module.exports = function(passport) {
 
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios-plain.ejs', {
+                        res.render('scenarios/scenarios-list', {
 							title: "Scenarios Search Result",
                             req_user : req.user,
 							count : searchresult.totalCount,
@@ -221,7 +221,7 @@ module.exports = function(passport) {
             } else {
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios.ejs', {
+                        res.render('scenarios/scenarios', {
                             req_user : req.user,
                             scenarios : [scenario],
 							title: "Scenario details"
@@ -308,7 +308,7 @@ module.exports = function(passport) {
             } else if(req.user.hasRole(["admin"]) || scenario.hasOwner(req.user)){
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios-form.ejs', {
+                        res.render('scenarios/scenarios-form', {
                             req_user : req.user,
                             id : req.params.id
                         });

@@ -81,7 +81,7 @@ module.exports = function(passport) {
             } else {
                 res.format({
                     'text/html': function() {
-                        res.render('users/users-list.ejs', {
+                        res.render('users/users-list', {
                             req_user : req.user,
                             users : users
                         });
@@ -161,7 +161,7 @@ module.exports = function(passport) {
             } else {
 				res.format({
 				    'text/html': function() {
-						res.render('profile.ejs', {
+						res.render('profile', {
 							user : user,
 							req_user : req.user
 						});
@@ -183,9 +183,10 @@ module.exports = function(passport) {
             } else {
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios.ejs', {
+                        res.render('scenarios/scenarios', {
                             req_user : req.user,
-                            scenarios : scenarios
+                            scenarios : scenarios,
+							title : "Scenarios for User" + req.params.id
                         });
                     },
                     'application/json': function() {

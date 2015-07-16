@@ -1,3 +1,7 @@
+<% if(scenarios.length == 0) { %>
+	No scenarios yes!
+<% } %>
+
 <% scenarios.forEach(function(scenario){ %>
 	<% include scenario %>
 <% }) %>
