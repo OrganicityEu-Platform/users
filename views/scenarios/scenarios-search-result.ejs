@@ -1,5 +1,10 @@
 Results: <%=totalCount %>
 
+<ol class="breadcrumb">
+	<li><a href="/">Home</a></li>
+	<li class="active">Search Scenarios</li>
+</ol>
+
 <div class="row">
 	<% results.forEach(function(scenario){ %>
 	<h2><a href="/scenarios/<%=scenario._id %>"><%=scenario.title %></a></h2>

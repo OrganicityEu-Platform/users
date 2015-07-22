@@ -1,6 +1,14 @@
 <% include ../header %>
-<div class="row">
-    <h1><%=title %></h1>
-	  <% include scenarios-list %>
-</div>
+
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">Browse Scenarios</li>
+</ol>
+
+<script type="text/jsx" src="/static/js/scenarios.js"></script>
+<script type="text/jsx">
+    React.render(<ScenarioList />, document.getElementById('content'));
+</script>
+<div id="content"></div>
+
 <% include ../footer %>

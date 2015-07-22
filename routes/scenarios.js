@@ -103,7 +103,6 @@ module.exports = function(passport) {
         });
     });
 
-
     // GET /scenarios/create
     router.get('/create', [isLoggedIn], function(req, res, next) {
 
@@ -217,9 +216,9 @@ module.exports = function(passport) {
             } else {
                 res.format({
                     'text/html': function() {
-                        res.render('scenarios/scenarios', {
+                        res.render('scenarios/scenario', {
                             req_user : req.user,
-                            scenarios : [scenario],
+                            scenario : scenario,
 							title: "Scenario details"
                         });
                     },
