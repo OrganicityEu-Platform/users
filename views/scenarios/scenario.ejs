@@ -1,25 +1,5 @@
-<h2><a href="/scenarios/<%=scenario.id %>"><%=scenario.title %></a></h2>
-
-<div class="row">
-	<div class="col-sm-12">
-		<h4>Description</h4>
-		<%-scenario.text.replace(/(?:\r\n|\r|\n)/g, '<br>') %>
-	</div>
-</div>
-
-<div class="row top10">
-	<div class="col-sm-6">
-		<% if(req_user && (req_user.hasRole(["admin"]) || scenario.hasOwner(req_user))) { %>
-		<button data-id="<%=scenario.id %>" class="scenarioEdit   btn btn-default">EDIT</button>
-		<% } %>
-
-		<% if(req_user && req_user.hasRole(["admin"])) { %>
-		<button data-id="<%=scenario.id %>" class="scenarioDelete btn btn-default btn-danger">DELETE</button>
-		<% } %>
-	</div>
-	<div class="col-sm-6" style="border: 1px solid #000;padding:10px;">
-		<a href="/users/<%=scenario.owner %>"><%=scenario.owner %></a><br>
-		Created <time class="timeago" datetime="<%=(new Date(scenario.created_at)).toISOString() %>"><%=(new Date(scenario.created_at)).toISOString() %></time><br>
-		Edited <time class="timeago" datetime="<%=(new Date(scenario.updated_at)).toISOString() %>"><%=(new Date(scenario.updated_at)).toISOString() %></time>
-	</div>
-</div>
+<script type="text/jsx" src="/static/js/scenarios.js"></script>
+<script type="text/jsx">
+	React.render(<Scenario scenarioId="<%= scenario.id %>" />, document.getElementById('content'));
+</script>
+<div id="content"></div>

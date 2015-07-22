@@ -25,5 +25,3 @@ newUser.save(function(err) {
     }
     process.exit()
 });
-
-

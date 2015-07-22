@@ -49,6 +49,10 @@ app.get('/', function(req, res) {
 app.use('/', require('./routes/auth')(app, passport));
 app.use('/scenarios', require('./routes/scenarios')(passport));
 app.use('/users', require('./routes/users')(passport));
+app.get('/favicon.ico', function(req, res) {
+  console.log('favicon');
+  res.sendStatus(404);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,19 +69,19 @@ if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.format({
-        'text/html': function() {
-			res.render('error', {
-			  message: err.message,
-			  error: err,
-			  user : undefined
-			});
-        },
-        'application/json': function() {
-            res.json(err);
-        },
-        'default': function() {
-            res.send(406, 'Not Acceptable');
-        }
+      'text/html': function() {
+  			res.render('error', {
+  			  message  : err.message,
+  			  error    : err,
+  			  req_user : req.user
+  			});
+      },
+      'application/json': function() {
+          res.json(err);
+      },
+      'default': function() {
+          res.send(406, 'Not Acceptable');
+      }
     });
   });
 }
@@ -87,19 +91,19 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
     res.format({
-        'text/html': function() {
+      'text/html': function() {
 			res.render('error', {
-			  message: err.message,
-			  error: {},
-			  user : undefined
+			  message  : err.message,
+			  error    : {},
+			  req_user : req.user
 			});
-        },
-        'application/json': function() {
-            res.json({});
-        },
-        'default': function() {
-            res.send(406, 'Not Acceptable');
-        }
+      },
+      'application/json': function() {
+          res.json({});
+      },
+      'default': function() {
+          res.send(406, 'Not Acceptable');
+      }
     });
 });
 

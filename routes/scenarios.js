@@ -3,8 +3,8 @@ module.exports = function(passport) {
     var express = require('express');
     var router = express.Router();
 
-	var truncate = require('truncate');
-	
+    var truncate = require('truncate');
+
     var isLoggedIn = require('../models/isLoggedIn.js')(passport);
     var hasRole = require('../models/hasRole.js');
 
@@ -34,16 +34,16 @@ module.exports = function(passport) {
         unknownKeys: 'remove',
         schema : {
             'title': { type: String, required: true },
-            'text': { type: String, required: true }            
+            'text': { type: String, required: true }
         }
     }
 
-    var ScenarioSchemaPatch = {                    
+    var ScenarioSchemaPatch = {
         type : Object,
         unknownKeys: 'remove',
         schema : {
             'title': { type: String, required: false },
-            'text': { type: String, required: false }            
+            'text': { type: String, required: false }
         }
     }
 
@@ -53,22 +53,19 @@ module.exports = function(passport) {
 
     // GET /scenarios
     router.get('/', function(req, res, next) {
-
         Scenario.find({}).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
-
-				scenarios.forEach(function(e) {
-					e.text = truncate(e.text, 100);
-				});
-
+        				scenarios.forEach(function(e) {
+                    e.text = truncate(e.text, 100);
+        				});
                 res.format({
                     'text/html': function() {
                         res.render('scenarios/scenarios', {
-                            req_user : req.user,
+                            req_user  : req.user,
                             scenarios : scenarios,
-							title: "Browse Scenarios"
+                            title     : "Browse Scenarios"
                         });
                     },
                     'application/json': function() {
@@ -79,12 +76,11 @@ module.exports = function(passport) {
                     }
                 });
             }
-        })
+        });
     });
 
-
     // POST /scenarios
-    //      http://localhost:3000/scenarios 
+    //      http://localhost:3000/scenarios
     //      {"title":"A2","text":"B2" }
     router.post('/', [isLoggedIn, validate.body(ScenarioSchemaPost)], function(req, res, next) {
 
@@ -327,4 +323,3 @@ module.exports = function(passport) {
 
     return router;
 };
-

@@ -8,13 +8,26 @@
     <link rel="stylesheet" href="/static/font-awesome-4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 
-    <script src="/static/js/jquery-2.1.4.min.js"></script>	
-    <script src="/static/js/jquery.timeago.js"></script>	
+    <script src="/static/js/jquery-2.1.4.min.js"></script>
+    <script src="/static/js/jquery.timeago.js"></script>
     <script src="/static/js/js.js"></script>
     <script src="/static/js/ejs_0.9_alpha_1_production.js"></script>
+    <script src="/static/js/react.js"></script>
+    <script src="/static/js/JSXTransformer.js"></script>
+    <script src="/static/js/RoleRequiredMixin.js"></script>
 
 </head>
 <body>
+
+<script>
+<% if (req_user) { %>
+window.currentUser = {
+	uuid   : "<%= req_user.uuid %>",
+	name   : "<%= req_user.name %>",
+	roles  : ["<%= req_user.roles.join(",") %>"]
+};
+<% } %>
+</script>
 
 <div class="container">
 

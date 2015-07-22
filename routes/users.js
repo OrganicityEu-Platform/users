@@ -1,26 +1,26 @@
 module.exports = function(passport) {
 
-    var express = require('express');
-    var router = express.Router();
+  var express = require('express');
+  var router = express.Router();
 
-	var truncate = require('truncate');
+  var truncate = require('truncate');
 
-    var isLoggedIn = require('../models/isLoggedIn.js')(passport);
-    var hasRole = require('../models/hasRole.js');
+  var isLoggedIn = require('../models/isLoggedIn.js')(passport);
+  var hasRole = require('../models/hasRole.js');
 
-    var User = require('../models/userSchema.js');
-    var Scenario = require('../models/scenarioSchema.js');
+  var User = require('../models/userSchema.js');
+  var Scenario = require('../models/scenarioSchema.js');
 
 	var isUserOrAdmin = function (req, res, next) {
 		if(req.user.hasRole(["admin"])) {
-            return next();
+      return next();
 		} else if(req.user.uuid == req.params.id) {
-            return next();
+      return next();
 		} else {
 			// Other users are not allowed to edit anything!
-		    var err = new Error("Forbidden: Not allowed to edit User " + req.params.id);
-		    err.status = 403;
-		    return next(err);
+	    var err = new Error("Forbidden: Not allowed to edit User " + req.params.id);
+	    err.status = 403;
+	    return next(err);
 		}
 	}
 
@@ -137,7 +137,7 @@ module.exports = function(passport) {
 				            'default': function() {
 				                res.send(406, 'Not Acceptable');
 				            }
-				        });				       
+				        });
 				    }
 				});
             }
@@ -283,7 +283,7 @@ module.exports = function(passport) {
     // PATCH /users/:id
     router.patch('/:id', [isLoggedIn, isUserOrAdmin, validate.body(UserSchemaPatch)], function(req, res, next) {
 
-		// Non admin user cannot edit the roles 
+		// Non admin user cannot edit the roles
 		if(req.body.roles && !req.user.hasRole(['admin'])) {
 	        var err = new Error("Forbidden: Not allowed to edit roles for User " + req.params.id);
 	        err.status = 403;
@@ -341,4 +341,3 @@ module.exports = function(passport) {
 
     return router;
 };
-

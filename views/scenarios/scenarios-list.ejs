@@ -1,8 +1,5 @@
-<% if(scenarios.length == 0) { %>
-	No scenarios yes!
-<% } %>
-
-<% scenarios.forEach(function(scenario){ %>
-	<% include scenario %>
-<% }) %>
-
+<script type="text/jsx" src="/static/js/scenarios.js"></script>
+<script type="text/jsx">
+	React.render(<ScenarioList />, document.getElementById('content'));
+</script>
+<div id="content"></div>

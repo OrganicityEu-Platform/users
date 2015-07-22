@@ -1,52 +1,49 @@
 <% include ../header %>
 
-    <div class="row">
-        <h1>Scenario Search</h1>
-		<div class="form-group">
-			<input id="search-text" type="email" class="form-control" placeholder="Search for...">
-		</div>
-		<!--
-		<button id="search-btn" class="btn btn-default">Search</button>
-		-->
-    </div>
-	<br>
-	<p id="search-result"></p>
-	
-	<script>
-		var handle = function() {
+<div class="row">
+  <h1>Scenario Search</h1>
+  <div class="form-group">
+    <input id="search-text" type="email" class="form-control" placeholder="Search for...">
+  </div>
+  <!-- <button id="search-btn" class="btn btn-default">Search</button> -->
+</div>
 
-			console.log($("#search-text").val());
+<div class="row" id="search-result"></div>
 
-			var o = {
-				"text" : $("#search-text").val()
-			};
+<script>
+	var handle = function() {
 
-			$.ajax({
-                type : "POST",
-                url : "/scenarios/search",
-                data : JSON.stringify(o),
-                contentType : 'application/json',
-				dataType : 'json',
-                success : function(res){
-					console.log(res);
-					var html = new EJS({url: '/views/scenarios/scenarios-search-result.ejs'}).render(res);
-					$("#search-result").html(html);
-                },
-                error: function(e){
-                    console.log("error", e);                
-                }
-            });		
+		console.log($("#search-text").val());
 
+		var o = {
+			"text" : $("#search-text").val()
 		};
-		$("#search-btn").click(handle);
-        $('#search-text').on("keyup", function (e) {
-            //if (e.keyCode == 13) {
-                //e.preventDefault();
-                handle();
-            //}
-        });
 
-	</script>
+		$.ajax({
+      type : "POST",
+      url : "/scenarios/search",
+      data : JSON.stringify(o),
+      contentType : 'application/json',
+      dataType : 'json',
+      success : function(res){
+        console.log(res);
+        var html = new EJS({url: '/views/scenarios/scenarios-search-result.ejs'}).render(res);
+				$("#search-result").html(html);
+      },
+      error: function(e){
+        console.log("error", e);
+      }
+    });
+	};
 
+	$("#search-btn").click(handle);
+  $('#search-text').on("keyup", function (e) {
+    //if (e.keyCode == 13) {
+      //e.preventDefault();
+      handle();
+    //}
+  });
+
+</script>
 
 <% include ../footer %>

@@ -2,15 +2,15 @@
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
-var GithubStrategy  = require('passport-github').Strategy;
-var BasicStrategy  = require('passport-http').BasicStrategy;
+var GithubStrategy   = require('passport-github').Strategy;
+var BasicStrategy    = require('passport-http').BasicStrategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
 //
 var uuid = require('node-uuid');
 
 // load up the user model
-var User       = require('../models/userSchema');
+var User = require('../models/userSchema');
 
 // load the auth variables
 var configAuth = require('./auth');
@@ -88,7 +88,7 @@ module.exports = function(passport) {
 
                 // if no user is found, return the message
                 if (!user)
-                    return done(null, false, req.flash('loginMessage', 'No user found.'));
+                    return done(null, false, req.flash('loginMessage', 'User with email "'+email+'" not found!'));
 
                 if (!user.validPassword(password))
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
@@ -150,7 +150,7 @@ module.exports = function(passport) {
                 User.findOne({ 'local.email' :  email }, function(err, user) {
                     if (err)
                         return done(err);
-                    
+
                     if (user) {
                         return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
                         // Using 'loginMessage instead of signupMessage because it's used by /connect/local'
@@ -161,7 +161,7 @@ module.exports = function(passport) {
                         user.save(function (err) {
                             if (err)
                                 return done(err);
-                            
+
                             return done(null,user);
                         });
                     }
@@ -210,7 +210,7 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
+
                                 return done(null, user);
                             });
                         }
@@ -229,7 +229,7 @@ module.exports = function(passport) {
                         user.save(function(err) {
                             if (err)
                                 return done(err);
-                                
+
                             return done(null, user);
                         });
                     }
@@ -248,7 +248,7 @@ module.exports = function(passport) {
                 user.save(function(err) {
                     if (err)
                         return done(err);
-                        
+
                     return done(null, user);
                 });
 
@@ -290,7 +290,7 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
+
                                 return done(null, user);
                             });
                         }
@@ -308,7 +308,7 @@ module.exports = function(passport) {
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
-                                
+
                             return done(null, newUser);
                         });
                     }
@@ -326,7 +326,7 @@ module.exports = function(passport) {
                 user.save(function(err) {
                     if (err)
                         return done(err);
-                        
+
                     return done(null, user);
                 });
             }
@@ -369,7 +369,7 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
+
                                 return done(null, user);
                             });
                         }
@@ -386,7 +386,7 @@ module.exports = function(passport) {
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
-                                
+
                             return done(null, newUser);
                         });
                     }
@@ -404,7 +404,7 @@ module.exports = function(passport) {
                 user.save(function(err) {
                     if (err)
                         return done(err);
-                        
+
                     return done(null, user);
                 });
 
@@ -450,7 +450,7 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
+
                                 return done(null, user);
                             });
                         }
@@ -468,7 +468,7 @@ module.exports = function(passport) {
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
-                                
+
                             return done(null, newUser);
                         });
                     }
@@ -487,7 +487,7 @@ module.exports = function(passport) {
                 user.save(function(err) {
                     if (err)
                         return done(err);
-                        
+
                     return done(null, user);
                 });
             }
