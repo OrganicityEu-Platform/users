@@ -4,7 +4,7 @@ Use Case Tool Data Model and REST API Design
 Data models
 -----------
 
-The data models below are described in the mongoose notation for MongoDB data models. However, as this is an API documentation they don't have to be persisted to the DB 1:1. Some of them might even be only used as data transfer object between client and server.
+The data models below are described in the mongoose notation for MongoDB data models.
 
 ### User
 
@@ -147,7 +147,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td><pre>GET /api/v1/scenarios</pre></td>
+    <td>GET /api/v1/scenarios</td>
   </tr>
   <tr>
     <td>Response Body</td>
@@ -168,7 +168,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td><pre>GET /api/v1/scenarios?q=keyword(s)</pre></td>
+    <td>GET /api/v1/scenarios?q=keyword(s)</td>
   </tr>
   <tr>
     <td>Response Body</td>
@@ -192,8 +192,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      <pre>GET /api/v1/scenarios?actors=politicians,people&sectors=industry</pre><br/>
-      <pre>GET /api/v1/scenarios?creator=uuid</pre>
+      GET /api/v1/scenarios?actors=politicians,people&sectors=industry<br/>
+      GET /api/v1/scenarios?creator=uuid
     </td>
   </tr>
   <tr>
@@ -218,8 +218,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      <pre>GET /api/v1/scenarios/:id</pre><br/>
-      <pre>GET /api/v1/scenarios/:id&v=:version</pre>
+      GET /api/v1/scenarios/:id<br/>
+      GET /api/v1/scenarios/:id&v=:version
     </td>
   </tr>
   <tr>
@@ -229,8 +229,8 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      <pre>200 OK - if successful</pre><br/>
-      <pre>404 NOT FOUND - if not found</pre>
+      200 OK - if successful<br/>
+      404 NOT FOUND - if not found
     </td>
   </tr>
 </table>
@@ -246,7 +246,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td><pre>POST /api/v1/scenarios</pre></td>
+    <td>POST /api/v1/scenarios</td>
   </tr>
   <tr>
     <td>Request Body</td>
@@ -259,9 +259,9 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      <pre>201 CREATED      - if successful with Location header</pre><br/>
-      <pre>400 BAD REQUEST  - if request is malformed</pre><br/>
-      <pre>401 UNAUTHORIZED - need to be authenticated to create scenarios</pre>
+      201 CREATED      - if successful with Location header<br/>
+      400 BAD REQUEST  - if request is malformed<br/>
+      401 UNAUTHORIZED - need to be authenticated to create scenarios
     </td>
   </tr>
 </table>
@@ -272,12 +272,12 @@ Client REST API
   <tr>
     <td>Description</td>
     <td>
-      updates a scenario by creating a new scenario. in the backend this results in creating a new mongodb document that has “backlinks” to it’s older versions
+      updates a scenario by creating a new scenario. in the backend this results in creating a new MongoDB document that has “backlinks” to it’s older versions
     </td>
   </tr>
   <tr>
     <td>Request</td>
-    <td><pre>PUT /api/v1/scenarios/:id</pre></td>
+    <td>PUT /api/v1/scenarios/:id</td>
   </tr>
   <tr>
     <td>Request Body</td>
@@ -290,11 +290,11 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      <pre>201 CREATED      - if successful with Location header</pre><br/>
-      <pre>400 BAD REQUEST  - if request is malformed</pre><br/>
-      <pre>401 UNAUTHORIZED - need to be authenticated to create scenarios</pre><br/>
-      <pre>403 FORBIDDEN    - if you’re not creator or admin</pre><br/>
-      <pre>404 NOT FOUND    - if not found</pre>
+      201 CREATED      - if successful with Location header<br/>
+      400 BAD REQUEST  - if request is malformed<br/>
+      401 UNAUTHORIZED - need to be authenticated to create scenarios<br/>
+      403 FORBIDDEN    - if you’re not creator or admin<br/>
+      404 NOT FOUND    - if not found
     </td>
   </tr>
 </table>
@@ -311,8 +311,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      <pre>DELETE /api/v1/scenarios/:id</pre><br/>
-      <pre>DELETE /api/v1/scenarios/:id?v=:version</pre>
+      DELETE /api/v1/scenarios/:id<br/>
+      DELETE /api/v1/scenarios/:id?v=:version
     </td>
   </tr>
   <tr>
@@ -322,10 +322,10 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      <pre>204 NO CONTENT   - if successfully deleted</pre><br/>
-      <pre>401 UNAUTHORIZED - need to be authenticated to delete scenarios</pre><br/>
-      <pre>403 FORBIDDEN    - if you’re not creator or admin</pre><br/>
-      <pre>404 NOT FOUND    - if not found</pre>
+      204 NO CONTENT   - if successfully deleted<br/>
+      401 UNAUTHORIZED - need to be authenticated to delete scenarios<br/>
+      403 FORBIDDEN    - if you’re not creator or admin<br/>
+      404 NOT FOUND    - if not found
     </td>
   </tr>
 </table>
@@ -342,9 +342,9 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      <pre>GET /actors</pre><br/>
-      <pre>GET /devices</pre><br/>
-      <pre>GET /sectors</pre>
+      GET /actors<br/>
+      GET /devices<br/>
+      GET /sectors
     </td>
   </tr>
   <tr>
@@ -354,7 +354,7 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      <pre>200 OK - with empty array if none found or like above</pre>
+      200 OK - with empty array if none found or like above
     </td>
   </tr>
 </table>
