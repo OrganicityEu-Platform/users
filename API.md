@@ -3,9 +3,8 @@ Use Case Tool Data Model and REST API Design
 
 Data models
 -----------
-The data models below are described in the mongoose notation for MongoDB data models. However, as
-this is an API documentation they don't have to be persisted to the DB 1:1. Some of them might even
-be only used as data transfer object between client and server.
+
+The data models below are described in the mongoose notation for MongoDB data models.
 
 ### User
 
@@ -104,14 +103,14 @@ The scenario schema follows the immutable data type approach. Whenever something
 TODO: integrate some "done" solution, e.g., disqus via https://www.npmjs.com/package/disqus-node
 
 Data Transfer Objects (DTOs)
----------------------------
-In this context a DTOs sole purpose is to define the schema of data transferred in various API
-methods between client and server. They are not used as database schemas and are not persisted 1:1.
+----------------------------
+
+In this context a DTOs sole purpose is to define the schema of data transferred in various API methods between client and server. They are not used as database schemas and are not persisted 1:1.
 
 ### ScenarioUpdate
-Used by clients when creating or updating a scenario resource. Included fields are identical to
-fields in Scenario schema but type is stripped down to fields that users are allowed to set when
-creating or updating a scenario resource.
+
+Used by clients when creating or updating a scenario resource. Included fields are identical to fields in Scenario schema but type is stripped down to fields that users are allowed to set when creating or updating a scenario resource.
+
 ```
 {
   title       : { type: String, required: true  }, // plain text
@@ -124,8 +123,9 @@ creating or updating a scenario resource.
 ```
 
 ### Tag
-Used for creating tag clouds or tag suggestions in the UI, e.g., for sectors, actors and devices of
-a scenario.
+
+Used for creating tag clouds or tag suggestions in the UI, e.g., for sectors, actors and devices of a scenario.
+
 ```
 {
   name  : { type: String, required: true }, // tag string, might contain multiple words with spaces, but is trimmed
@@ -137,7 +137,9 @@ Client REST API
 ---------------
 
 ### Scenarios
+
 #### List all scenarios
+
 <table>
   <tr>
     <td>Description</td>
@@ -145,7 +147,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td>```GET /api/v1/scenarios```</td>
+    <td>GET /api/v1/scenarios</td>
   </tr>
   <tr>
     <td>Response Body</td>
@@ -158,6 +160,7 @@ Client REST API
 </table>
 
 #### Full text search
+
 <table>
   <tr>
     <td>Description</td>
@@ -165,7 +168,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td>```GET /api/v1/scenarios?q=keyword(s)```</td>
+    <td>GET /api/v1/scenarios?q=keyword(s)</td>
   </tr>
   <tr>
     <td>Response Body</td>
@@ -178,6 +181,7 @@ Client REST API
 </table>
 
 #### Fine-grained search
+
 <table>
   <tr>
     <td>Description</td>
@@ -188,8 +192,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      ```GET /api/v1/scenarios?actors=politicians,people&sectors=industry```<br/>
-      ```GET /api/v1/scenarios?creator=uuid```
+      GET /api/v1/scenarios?actors=politicians,people&sectors=industry<br/>
+      GET /api/v1/scenarios?creator=uuid
     </td>
   </tr>
   <tr>
@@ -203,6 +207,7 @@ Client REST API
 </table>
 
 #### Retrieval of a scenario (and it's old versions)
+
 <table>
   <tr>
     <td>Description</td>
@@ -213,8 +218,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      ```GET /api/v1/scenarios/:id```<br/>
-      ```GET /api/v1/scenarios/:id&v=:version```
+      GET /api/v1/scenarios/:id<br/>
+      GET /api/v1/scenarios/:id&v=:version
     </td>
   </tr>
   <tr>
@@ -224,13 +229,14 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      ```200 OK - if successful```<br/>
-      ```404 NOT FOUND - if not found```
+      200 OK - if successful<br/>
+      404 NOT FOUND - if not found
     </td>
   </tr>
 </table>
 
 #### Creation of new scenario
+
 <table>
   <tr>
     <td>Description</td>
@@ -240,7 +246,7 @@ Client REST API
   </tr>
   <tr>
     <td>Request</td>
-    <td>```POST /api/v1/scenarios```</td>
+    <td>POST /api/v1/scenarios</td>
   </tr>
   <tr>
     <td>Request Body</td>
@@ -253,24 +259,25 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      ```201 CREATED      - if successful with Location header```<br/>
-      ```400 BAD REQUEST  - if request is malformed```<br/>
-      ```401 UNAUTHORIZED - need to be authenticated to create scenarios```
+      201 CREATED      - if successful with Location header<br/>
+      400 BAD REQUEST  - if request is malformed<br/>
+      401 UNAUTHORIZED - need to be authenticated to create scenarios
     </td>
   </tr>
 </table>
 
 #### Update of existing scenario
+
 <table>
   <tr>
     <td>Description</td>
     <td>
-      updates a scenario by creating a new scenario. in the backend this results in creating a new mongodb document that has “backlinks” to it’s older versions
+      updates a scenario by creating a new scenario. in the backend this results in creating a new MongoDB document that has “backlinks” to it’s older versions
     </td>
   </tr>
   <tr>
     <td>Request</td>
-    <td>```PUT /api/v1/scenarios/:id```</td>
+    <td>PUT /api/v1/scenarios/:id</td>
   </tr>
   <tr>
     <td>Request Body</td>
@@ -283,16 +290,17 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      ```201 CREATED      - if successful with Location header```<br/>
-      ```400 BAD REQUEST  - if request is malformed```<br/>
-      ```401 UNAUTHORIZED - need to be authenticated to create scenarios```<br/>
-      ```403 FORBIDDEN    - if you’re not creator or admin```<br/>
-      ```404 NOT FOUND    - if not found```
+      201 CREATED      - if successful with Location header<br/>
+      400 BAD REQUEST  - if request is malformed<br/>
+      401 UNAUTHORIZED - need to be authenticated to create scenarios<br/>
+      403 FORBIDDEN    - if you’re not creator or admin<br/>
+      404 NOT FOUND    - if not found
     </td>
   </tr>
 </table>
 
 #### Deleting an existing scenario
+
 <table>
   <tr>
     <td>Description</td>
@@ -303,8 +311,8 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      ```DELETE /api/v1/scenarios/:id```<br/>
-      ```DELETE /api/v1/scenarios/:id?v=:version```
+      DELETE /api/v1/scenarios/:id<br/>
+      DELETE /api/v1/scenarios/:id?v=:version
     </td>
   </tr>
   <tr>
@@ -314,15 +322,16 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      ```204 NO CONTENT   - if successfully deleted```<br/>
-      ```401 UNAUTHORIZED - need to be authenticated to delete scenarios```<br/>
-      ```403 FORBIDDEN    - if you’re not creator or admin```<br/>
-      ```404 NOT FOUND    - if not found```
+      204 NO CONTENT   - if successfully deleted<br/>
+      401 UNAUTHORIZED - need to be authenticated to delete scenarios<br/>
+      403 FORBIDDEN    - if you’re not creator or admin<br/>
+      404 NOT FOUND    - if not found
     </td>
   </tr>
 </table>
 
 #### Querying for tags (same for actors, sectors, devices)
+
 <table>
   <tr>
     <td>Description</td>
@@ -333,9 +342,9 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>
-      ```GET /actors```<br/>
-      ```GET /devices```<br/>
-      ```GET /sectors```
+      GET /actors<br/>
+      GET /devices<br/>
+      GET /sectors
     </td>
   </tr>
   <tr>
@@ -345,7 +354,7 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      ```200 OK - with empty array if none found or like above```
+      200 OK - with empty array if none found or like above
     </td>
   </tr>
 </table>
