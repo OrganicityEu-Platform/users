@@ -2,12 +2,11 @@ module.exports = function(passport) {
 
     var express = require('express');
     var router = express.Router();
-
 	var truncate = require('truncate');
-	
+
+    // models
     var isLoggedIn = require('../models/isLoggedIn.js')(passport);
     var hasRole = require('../models/hasRole.js');
-
     var Scenario = require('../models/scenarioSchema.js');
 
     //###############################################################

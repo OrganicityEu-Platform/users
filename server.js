@@ -53,9 +53,15 @@ app.use('/scenarios', require('./routes/scenarios')(passport));
 app.use('/users', require('./routes/users')(passport));
 
 
-// api version
-var version = "v1";
-app.use('/api/' + version, require('./routes/api/' + version + '/api'));
+/*
+    API CONFIG */
+
+// get config
+var api_config = require('./routes/api/config.js');
+// get api version
+var api_version = api_config.version;
+// set api version
+app.use('/api/' + api_version, require('./routes/api/' + api_version + '/api'));
 
 
 // catch 404 and forward to error handler
