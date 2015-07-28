@@ -7,14 +7,15 @@ var app      = express();
 
 var config = require('./config/config.js');
 
-var port         = process.env.PORT || config.port;
-var mongoose     = require('mongoose');        // MongoDB connector (http://mongoosejs.com)
-var passport     = require('passport');        // authentication middleware (http://passportjs.org)
-var flash        = require('connect-flash');   // storage for flash messages (https://github.com/jaredhanson/connect-flash)
-var morgan       = require('morgan');          // HTTP request logger (https://github.com/expressjs/morgan)
-var cookieParser = require('cookie-parser');   // parses cookies in the request (https://github.com/expressjs/cookie-parser)
-var bodyParser   = require('body-parser');     // parses request bodies (json, raw, text, url-encoded forms, https://github.com/expressjs/body-parser)
-var session      = require('express-session'); // server-side session-storage (NOT FOR PRODUCTION, https://github.com/expressjs/session)
+var port     = process.env.PORT || config.port;
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
 
 var configDB = require('./config/database.js');
 
@@ -34,9 +35,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
+// required for passport
 app.use(session({ secret: 'organicityScenarioTool' })); // session secret
 app.use(passport.initialize());
-app.use(passport.session()); // passport stores login cookies in express session storage
+app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
@@ -53,6 +55,12 @@ app.get('/favicon.ico', function(req, res) {
   console.log('favicon');
   res.sendStatus(404);
 });
+
+
+// api version
+var version = "v1";
+app.use('/api/' + version, require('./routes/api/' + version + '/api'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -110,3 +118,4 @@ app.use(function(err, req, res, next) {
 // launch ======================================================================
 app.listen(port);
 console.log('App started on port ' + port);
+

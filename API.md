@@ -219,7 +219,7 @@ Client REST API
     <td>Request</td>
     <td>
       GET /api/v1/scenarios/:id<br/>
-      GET /api/v1/scenarios/:id&v=:version
+      GET /api/v1/scenarios/:id?v=version
     </td>
   </tr>
   <tr>
