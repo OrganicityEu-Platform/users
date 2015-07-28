@@ -12,9 +12,13 @@
     <script src="/static/js/jquery.timeago.js"></script>
     <script src="/static/js/js.js"></script>
     <script src="/static/js/ejs_0.9_alpha_1_production.js"></script>
+
     <script src="/static/js/react.js"></script>
     <script src="/static/js/JSXTransformer.js"></script>
+    
     <script src="/static/js/RoleRequiredMixin.js"></script>
+    <script src="/static/js/UserIsLoggedInMixin.js"></script>
+    <script src="/static/js/UserIsOwnerMixin.js"></script>
 
 </head>
 <body>
@@ -31,4 +35,8 @@ window.currentUser = {
 
 <div class="container">
 
-    <% include nav %>
+<script type="text/jsx" src="/static/js/NavigationBar.js"></script>
+<script type="text/jsx">
+    React.render(<NavigationBar />, document.getElementById('navigationBarDiv'));
+</script>
+<div id="navigationBarDiv"></div>
