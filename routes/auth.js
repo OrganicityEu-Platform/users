@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
     router.get('/profile', [isLoggedIn], function(req, res) {
         res.render('profile.ejs', {
             user : req.user,
-            req_user : req.user
+			req_user : req.user
         });
     });
 
@@ -197,3 +197,4 @@ module.exports = function(app, passport) {
 
     return router;
 };
+
