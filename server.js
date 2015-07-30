@@ -43,12 +43,20 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 
+// serve all requests to single-page-app contained in scenarios.html
+app.get('/scenarios*', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny'
+  };
+  res.sendFile('scenarios.html', options);
+});
 app.get('/', function(req, res) {
     res.render('index', {
         req_user : req.user
     });
 });
-app.use('/', require('./routes/auth')(app, passport));
+app.use('/auth', require('./routes/auth')(app, passport));
 app.use('/users', require('./routes/users')(passport));
 
 /* API CONFIG */
