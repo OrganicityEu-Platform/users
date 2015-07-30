@@ -25,7 +25,6 @@ mongoose.connect(configDB.url); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 
 app.use('/static', express.static('public'));
-app.use('/views', express.static('views'));
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -34,6 +33,7 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
+app.set('views', process.cwd() + '/views/ejs');
 
 // required for passport
 app.use(session({ secret: 'organicityScenarioTool' })); // session secret
@@ -44,18 +44,12 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 
 app.get('/', function(req, res) {
-    res.render('index.ejs', {
+    res.render('index', {
         req_user : req.user
     });
 });
 app.use('/', require('./routes/auth')(app, passport));
-app.use('/scenarios', require('./routes/scenarios')(passport));
 app.use('/users', require('./routes/users')(passport));
-app.get('/favicon.ico', function(req, res) {
-  console.log('favicon');
-  res.sendStatus(404);
-});
-
 
 // api version
 var version = "v1";
@@ -78,7 +72,7 @@ if (app.get('env') === 'development') {
     res.status(err.status || 500);
     res.format({
       'text/html': function() {
-  			res.render('error', {
+  			res.render('error.ejs', {
   			  message  : err.message,
   			  error    : err,
   			  req_user : req.user
@@ -100,7 +94,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
     res.format({
       'text/html': function() {
-			res.render('error', {
+			res.render('error.ejs', {
 			  message  : err.message,
 			  error    : {},
 			  req_user : req.user
@@ -118,4 +112,3 @@ app.use(function(err, req, res, next) {
 // launch ======================================================================
 app.listen(port);
 console.log('App started on port ' + port);
-
