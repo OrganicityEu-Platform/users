@@ -1,5 +1,5 @@
-var RoleRequiredMixin = {
-  permitted: function(requiredRole) {
+var UserHasRoleMixin = {
+  userHasRole: function(requiredRole) {
     if (undefined === window.currentUser || null == window.currentUser) {
       return false;
     }
@@ -7,4 +7,4 @@ var RoleRequiredMixin = {
   }
 };
 
-export default RoleRequiredMixin;
+export default UserHasRoleMixin;

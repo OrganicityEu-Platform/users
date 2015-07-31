@@ -44,16 +44,18 @@ var browserifyTask = function (options) {
   // The rebundle process
   var rebundle = function () {
     var start = Date.now();
-    console.log('Building APP bundle');
+    gutil.log('Building APP bundle');
     appBundler
       .bundle()
-      .on('error', gutil.log)
+      .on('error', function(err) {
+        gutil.log(gutil.colors.red(err.toString()));
+      })
       .pipe(source('App.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
       .pipe(gulpif(options.development, livereload()))
       .pipe(notify(function () {
-        console.log('APP bundle built in ' + (Date.now() - start) + 'ms');
+        gutil.log('APP bundle built in ' + (Date.now() - start) + 'ms');
       }));
   };
 
@@ -85,14 +87,14 @@ var browserifyTask = function (options) {
 
   	var rebundleTests = function () {
   		var start = Date.now();
-  		console.log('Building TEST bundle');
+  		gutil.log('Building TEST bundle');
   		testBundler.bundle()
-      .on('error', gutil.log)
+        .on('error', gutil.log)
 	      .pipe(source('specs.js'))
 	      .pipe(gulp.dest(options.dest))
 	      .pipe(livereload())
 	      .pipe(notify(function () {
-	        console.log('TEST bundle built in ' + (Date.now() - start) + 'ms');
+	        gutil.log('TEST bundle built in ' + (Date.now() - start) + 'ms');
 	      }));
   	};
 
@@ -113,14 +115,14 @@ var browserifyTask = function (options) {
 
     // Run the vendor bundle
     var start = new Date();
-    console.log('Building VENDORS bundle');
+    gutil.log('Building VENDORS bundle');
     vendorsBundler.bundle()
       .on('error', gutil.log)
       .pipe(source('vendors.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
       .pipe(notify(function () {
-        console.log('VENDORS bundle built in ' + (Date.now() - start) + 'ms');
+        gutil.log('VENDORS bundle built in ' + (Date.now() - start) + 'ms');
       }));
 
   }
@@ -130,14 +132,14 @@ var browserifyTask = function (options) {
 var cssTask = function (options) {
     if (options.development) {
       var run = function () {
-        console.log(arguments);
+        gutil.log(arguments);
         var start = new Date();
-        console.log('Building CSS bundle');
+        gutil.log('Building CSS bundle');
         gulp.src(options.src)
           .pipe(concat('main.css'))
           .pipe(gulp.dest(options.dest))
           .pipe(notify(function () {
-            console.log('CSS bundle built in ' + (Date.now() - start) + 'ms');
+            gutil.log('CSS bundle built in ' + (Date.now() - start) + 'ms');
           }));
       };
       run();
@@ -151,14 +153,14 @@ var cssTask = function (options) {
 }
 
 var staticTask = function(options) {
-  console.log('Copying newer static files');
+  gutil.log('Copying newer static files');
   var start = new Date();
   return gulp.src(options.src)
       .pipe(newer(options.dest))
       .pipe(debug({}))
       .pipe(gulp.dest(options.dest))
       .pipe(notify(function() {
-        console.log('Copied newer static files in ' + (Date.now() - start) + 'ms');
+        gutil.log('Copied newer static files in ' + (Date.now() - start) + 'ms');
       }));
 }
 

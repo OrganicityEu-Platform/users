@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
-var mixins = require('react-mixin');
+import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
 
 var Router = require('react-router')
@@ -21,8 +21,8 @@ export default class Scaffold extends React.Component {
       userLinks.push(<NavItemLink to="/auth/profile">Profile</NavItemLink>);
       userLinks.push(<NavItemLink to="/auth/logout">Logout</NavItemLink>);
     } else {
-      userLinks.push(<NavItemLink to="/auth/login">Login</NavItemLink>);
-      userLinks.push(<NavItemLink to="/auth/signup">Signup</NavItemLink>);
+      userLinks.push(<NavItemLink to="login">Login</NavItemLink>);
+      userLinks.push(<NavItemLink to="signup">Signup</NavItemLink>);
     }
     return (
       <div className="container">
@@ -38,4 +38,4 @@ export default class Scaffold extends React.Component {
   }
 }
 
-mixins(Scaffold.prototype, UserIsLoggedInMixin);
+ReactMixin(Scaffold.prototype, UserIsLoggedInMixin);

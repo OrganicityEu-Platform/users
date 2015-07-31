@@ -1,10 +1,8 @@
 import React from 'react';
-import RoleRequiredMixin from '../RoleRequiredMixin.jsx';
 import ScenarioEditButton from './ScenarioEditButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
 var ScenarioListItem = React.createClass({
-  mixins: [RoleRequiredMixin],
   render: function () {
     return (
       <tr>

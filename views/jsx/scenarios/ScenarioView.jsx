@@ -1,8 +1,6 @@
 import React from 'react';
-import RoleRequiredMixin from '../RoleRequiredMixin.jsx';
 
 var ScenarioView = React.createClass({
-    mixins: [RoleRequiredMixin],
     getInitialState: function () {
         return null;
     },

@@ -24,10 +24,10 @@ module.exports = function(app, passport) {
 
     // PROFILE SECTION =========================
     router.get('/profile', [isLoggedIn], function(req, res) {
-        res.render('auth/profile.ejs', {
-            user : req.user,
-			      req_user : req.user
-        });
+      res.render('auth/profile.ejs', {
+          user : req.user,
+          req_user : req.user
+      });
     });
 
     // LOGOUT ==============================
