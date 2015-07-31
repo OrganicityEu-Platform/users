@@ -16,6 +16,8 @@ var glob = require('glob');
 var livereload = require('gulp-livereload');
 var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 var express = require('gulp-express');
+var newer = require('gulp-newer');
+var debug = require('gulp-debug');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -148,6 +150,25 @@ var cssTask = function (options) {
     }
 }
 
+var staticTask = function(options) {
+  console.log('Copying newer static files');
+  var start = new Date();
+  return gulp.src(options.src)
+      .pipe(newer(options.dest))
+      .pipe(debug({}))
+      .pipe(gulp.dest(options.dest))
+      .pipe(notify(function() {
+        console.log('Copied newer static files in ' + (Date.now() - start) + 'ms');
+      }));
+}
+
+gulp.task('static', function() {
+  staticTask({
+    src: './static/**',
+    dest: './public'
+  });
+});
+
 // Starts our development workflow
 gulp.task('default', function () {
 
@@ -163,13 +184,14 @@ gulp.task('default', function () {
     dest: './public/css'
   });
 
-  express.run(['server.js']);
-  /*
-  connect.server({
-    root: 'public/',
-    port: 8080
+  staticTask({
+    src: './static/**',
+    dest: './public'
   });
-  */
+
+  gulp.watch('./static/**', ['static']);
+
+  express.run(['server.js']);
 
 });
 
@@ -185,6 +207,11 @@ gulp.task('deploy', function () {
     development: false,
     src: './styles/**/*.css',
     dest: './public/css'
+  });
+
+  staticTask({
+    src: './static/**',
+    dest: './public'
   });
 
 });
