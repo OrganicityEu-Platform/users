@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import ScenarioListItem from './ScenarioListItem.jsx';
 
 var ScenarioList = React.createClass({
     getInitialState: function () {
@@ -8,7 +9,7 @@ var ScenarioList = React.createClass({
         };
     },
     componentDidMount: function () {
-        $.getJSON('/scenarios', function (result) {
+        $.getJSON('/api/v1/scenarios', function (result) {
             if (this.isMounted()) {
                 this.setState({
                     scenarios: result

@@ -14,3 +14,7 @@ ROOT
      |-- jsx  // JSX (react components) sources
      |-- ejs  // EJS templates for server-side rendering by express
 ```
+
+## resources
+
+ * https://github.com/voronianski/flux-comparison

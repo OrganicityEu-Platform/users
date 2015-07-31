@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     },
     browserify: {
       dev : {
-        src:  'views/jsx/App.jsx',
+        src:  'views/jsx/*.jsx',
         dest: 'public/js/App.js',
         options: {
           watch: true,     // use watchify for incremental builds
