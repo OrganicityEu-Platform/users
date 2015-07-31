@@ -5,6 +5,18 @@ module.exports = function(app, passport) {
 
 // normal routes ===============================================================
 
+    router.get('/currentUser', function(req, res) {
+        if (req.user) {
+          res.json({
+            uuid : req.user.uuid,
+            name : req.user.name,
+            roles : req.user.roles
+          });
+        } else {
+          res.status(404).send("NOT FOUND");
+        }
+    });
+
     // show the home page (will also have our login links)
     router.get('/login', function(req, res) {
         res.render('auth/login.ejs', { req_user : undefined });

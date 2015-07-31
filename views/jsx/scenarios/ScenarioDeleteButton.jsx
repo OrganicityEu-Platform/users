@@ -1,9 +1,9 @@
 import React from 'react';
 import RoleRequiredMixin from '../RoleRequiredMixin.jsx';
-import UserIsOwnerMixin from '../UserIsOwnerMixin.jsx';
+import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
 
 var ScenarioDeleteButton = React.createClass({
-    mixins: [RoleRequiredMixin, UserIsOwnerMixin],
+    mixins: [RoleRequiredMixin, UserIsCreatorMixin],
     handleClick: function () {
         $.ajax({
             url: '/scenarios/' + this.props.data._id,
@@ -14,7 +14,7 @@ var ScenarioDeleteButton = React.createClass({
         });
     },
     render: function () {
-        if (this.permitted("admin") || this.userIsOwner()) {
+        if (this.permitted("admin") || this.userIsCreator()) {
             return (
                 <button className="scenarioDelete btn btn-default btn-danger" onClick={this.handleClick}>DELETE</button>
             );
