@@ -8,7 +8,10 @@ var ScenarioCreatePt1 = React.createClass({
       JSON.parse(window.localStorage.ocScenarioCreate) : {
         title : '',
         summary : '',
-        narrative : ''
+        narrative : '',
+        sectors : [],
+        actors : [],
+        devices : []
       };
   },
   handleChangedTitle : function(evt) {

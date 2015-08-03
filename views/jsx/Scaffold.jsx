@@ -8,14 +8,9 @@ var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
   , Link = Router.Link;
 
-export default class Scaffold extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
+var Scaffold = React.createClass({
+  mixins : [UserIsLoggedInMixin],
+  render : function() {
     var userLinks = [];
     if (this.userIsLoggedIn()) {
       userLinks.push(<NavItemLink key="/auth/profile" to="/auth/profile">Profile</NavItemLink>);
@@ -37,6 +32,6 @@ export default class Scaffold extends React.Component {
       </div>
     );
   }
-}
+});
 
-ReactMixin(Scaffold.prototype, UserIsLoggedInMixin);
+export default Scaffold;

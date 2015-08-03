@@ -25,9 +25,10 @@ var ScenarioCreatePt3 = React.createClass({
         <h2>Create your scenario <small>step three</small></h2>
         <h3>Select the Actor(s)!</h3>
         <p>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
-          quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere
-          erat a ante venenatis dapibus posuere velit aliquet.
+          Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
+          massa justo sit amet risus. Sed posuere consectetur est at lobortis. Morbi leo risus,
+          porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in,
+          egestas eget quam.
         </p>
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>

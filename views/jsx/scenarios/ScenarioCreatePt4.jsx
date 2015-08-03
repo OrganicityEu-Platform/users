@@ -25,9 +25,8 @@ var ScenarioCreatePt4 = React.createClass({
         <h2>Create your scenario <small>step four</small></h2>
         <h3>Select the Device(s)!</h3>
         <p>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
-          quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere
-          erat a ante venenatis dapibus posuere velit aliquet.
+          Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl
+          consectetur et. Donec sed odio dui.
         </p>
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
