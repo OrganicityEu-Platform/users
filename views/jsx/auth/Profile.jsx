@@ -9,38 +9,59 @@ var Router = require('react-router')
 export default class Profile extends React.Component {
 
   constructor(props) {
+
     super(props);
+
     this.state = {};
+    this.propTypes = {
+      name : React.PropTypes.string,
+      gender : React.PropTypes.oneOf(['m', 'f'])
+    };
+
+    this.handleChangedName.bind(this);
+    this.handleChangedGender.bind(this);
+    this.handleChangedRoles.bind(this);
+    this.handleSubmit.bind(this);
+
     $.ajax('/auth/currentUser', {
       dataType: 'json',
       error: (jqXHR, textStatus, errorThrown) => {
         console.log(jqXHR, textStatus, errorThrown);
       },
       success: (data) => {
-        console.log(data);
         this.setState(data);
       },
     });
   }
 
-  handleSaveProfile() {
-    var o = {
-      name   : $('#profile-name').val(),
-      gender : $('input[name=gender]:checked').val()
-    }
-    if (this.userHasRole("admin")) {
-      o.roles = $('#profile-roles').val().trim().split(",");
-    }
+  handleChangedName(evt) {
+    var newState = this.state;
+    newState.name = evt.target.value;
+    this.setState(newState);
+  }
 
+  handleChangedGender(evt) {
+    var newState = this.state;
+    newState.gender = evt.target.value;
+    this.setState(newState);
+  }
+
+  handleChangedRoles(evt) {
+    var newState = this.state;
+    newState.roles = evt.target.value.trim().split(",");
+    this.setState(newState);
+  }
+
+  handleSubmit() {
     $.ajax({
         type : "PATCH",
         url : "/users/" + this.state.uuid,
-        data : JSON.stringify(o),
+        data : JSON.stringify(this.state),
         contentType : 'application/json',
         success : function(o){
           alert("Success");
         },
-        error: function(e){
+        error : function(e) {
           console.log("error", e);
         }
     });
@@ -52,16 +73,17 @@ export default class Profile extends React.Component {
         <div className="col-sm-12">
           <div className="well">
             <div className="form-group">
+
   					  <label htmlFor="profile-name">Name</label>
-              <input type="text" className="form-control" id="profile-name" placeholder="Name..." value={(this.state.name || '')} />
+              <input type="text" className="form-control" id="profile-name" placeholder="Firstname Lastname" value={this.state.name} onChange={this.handleChangedName} />
     				</div>
             <div className="form-group">
               <div className="col-sm-12">
                 <label htmlFor="scenario-gender">Gender</label>
     					</div>
     					<div className="col-sm-12">
-    						<input type="radio" name="gender" id="profile-gender-f" value="f" /> Female<br/>
-    						<input type="radio" name="gender" id="profile-gender-m" value="m" /> Male
+    						<input type="radio" name="gender" id="profile-gender-f" value="f" onChange={this.handleChangedGender} /> Female<br/>
+    						<input type="radio" name="gender" id="profile-gender-m" value="m" onChange={this.handleChangedGender} /> Male
     					</div>
     				</div>
             {(() => {
@@ -69,14 +91,14 @@ export default class Profile extends React.Component {
                 return (
                   <div className="form-group">
         						<label htmlFor="profile-roles">Roles</label>
-        						<input type="text" className="form-control" id="profile-roles" placeholder="Roles..." value={this.state.roles ? this.state.roles.join(",") : ''} />
+        						<input type="text" className="form-control" id="profile-roles" placeholder="Roles..." value={this.state.roles ? this.state.roles.join(",") : ''} onChange={this.handleChangedRoles} />
         					</div>
                 );
               } else {
                 return null;
               }
             })()}
-            <button id="profile-send" type="submit" className="btn btn-default" onClick={this.handleSaveProfile}>Save Profile</button>
+            <button id="profile-send" type="submit" className="btn btn-default" onClick={this.handleSubmit}>Save Profile</button>
   		    </div>
         </div>
   		</div>

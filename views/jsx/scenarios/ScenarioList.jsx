@@ -33,11 +33,18 @@ var ScenarioList = React.createClass({
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.scenarios.map(function (scenario) {
+                    {(() => {
+                      if (this.state.scenarios.length == 0) {
                         return (
-                            <ScenarioListItem key={scenario.id} data={scenario}/>
+                          <tr>
+                            <td colSpan="7">No scenarios found....</td>
+                          </tr>
                         )
-                    }, this)}
+                      }
+                    })()}
+                    {
+                      this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.id} data={scenario}/>)
+                    }
                     </tbody>
                 </table>
             </div>

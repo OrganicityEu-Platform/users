@@ -18,17 +18,18 @@ export default class Scaffold extends React.Component {
   render() {
     var userLinks = [];
     if (this.userIsLoggedIn()) {
-      userLinks.push(<NavItemLink to="/auth/profile">Profile</NavItemLink>);
-      userLinks.push(<NavItemLink to="/auth/logout">Logout</NavItemLink>);
+      userLinks.push(<NavItemLink key="/auth/profile" to="/auth/profile">Profile</NavItemLink>);
+      userLinks.push(<NavItemLink key="/auth/logout" to="/auth/logout">Logout</NavItemLink>);
     } else {
-      userLinks.push(<NavItemLink to="login">Login</NavItemLink>);
-      userLinks.push(<NavItemLink to="signup">Signup</NavItemLink>);
+      userLinks.push(<NavItemLink key="login" to="login">Login</NavItemLink>);
+      userLinks.push(<NavItemLink key="signup" to="signup">Signup</NavItemLink>);
     }
     return (
       <div className="container">
         <Navbar brand={<Link to="/">Home</Link>}>
           <Nav>
             <NavItemLink to="scenarioList">Scenarios</NavItemLink>
+            <NavItemLink to="scenarioCreatePt1">Create Scenario</NavItemLink>
             {userLinks}
           </Nav>
         </Navbar>
