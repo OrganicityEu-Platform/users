@@ -14,7 +14,7 @@ var Logout = React.createClass({
   },
   componentDidMount : function() {
     window.setTimeout(() => {
-      $.ajax('/auth/logout', {
+      $.ajax('/api/v1/auth/logout', {
         error : console.log,
         success : () => {
           this.setState({ loggedOut : true });

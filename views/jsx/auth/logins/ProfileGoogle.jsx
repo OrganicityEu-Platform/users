@@ -21,9 +21,9 @@ export default class ProfileGoogle extends React.Component {
               <strong>email</strong>: <%= user.google.email %><br/>
               <strong>name</strong>: <%= user.google.name %>
           </div>
-          <a href="/users/<%=user.uuid %>/unlink/google" className="btn btn-danger top10">Unlink</a>
+          <a href="/api/v1/users/<%=user.uuid %>/unlink/google" className="btn btn-danger top10">Unlink</a>
       <% } else if(req_user.uuid == user.uuid) { %>
-          <a href="/auth/connect/google" className="btn btn-danger">Connect Google</a>
+          <a href="/api/v1/auth/connect/google" className="btn btn-danger">Connect Google</a>
       <% } %>
     );
   }

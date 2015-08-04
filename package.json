@@ -37,6 +37,7 @@
     "ejs": "~0.8.8",
     "express": "~4.13.1",
     "express-session": "~1.0.4",
+    "express-list-routes": "~0.1.4",
     "isvalid": "~1.0.6",
     "jquery": "^2.1.4",
     "method-override": "~1.0.2",

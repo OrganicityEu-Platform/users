@@ -26,7 +26,7 @@ var render = function() {
 }
 
 $(function(){
-  $.ajax('auth/currentUser', {
+  $.ajax('/api/v1/auth/currentUser', {
     accepts : 'application/json',
     success : function(data, textStatus, jqXHR) {
       window.currentUser = data;

@@ -1,14 +1,11 @@
-module.exports = function(passport) {
-
-  var express = require('express');
-  var router = express.Router();
+module.exports = function(router, passport) {
 
   var truncate = require('truncate');
 
-  var isLoggedIn = require('../models/isLoggedIn.js')(passport);
-  var hasRole = require('../models/hasRole.js');
+  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
+  var hasRole = require('../../../models/hasRole.js');
 
-  var User = require('../models/userSchema.js');
+  var User = require('../../../models/userSchema.js');
 
 	var isUserOrAdmin = function (req, res, next) {
 		if(req.user.hasRole(["admin"])) {

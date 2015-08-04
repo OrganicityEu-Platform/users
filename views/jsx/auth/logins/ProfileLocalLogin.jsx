@@ -23,7 +23,7 @@ export default class ProfileLocalLogin extends React.Component {
                       <strong>email</strong>: <%= user.local.email %><br/>
                       <strong>password</strong>: <%= user.local.password %>
                   </div>
-                  <a href="/users/<%=user.uuid %>/unlink/local" className="btn btn-default top10">Unlink</a>
+                  <a href="/api/v1/users/<%=user.uuid %>/unlink/local" className="btn btn-default top10">Unlink</a>
         <div className="form-group">
           <label htmlFor="profile-password">New Password</label>
           <input type="password" className="form-control" id="profile-password-new1" placeholder="New Password" value="">
@@ -31,7 +31,7 @@ export default class ProfileLocalLogin extends React.Component {
           <button id="password-send" type="submit" className="btn btn-default top5">Change Password</button>
         </div>
               <% } else if(req_user.uuid == user.uuid) { %>
-                  <a href="/auth/connect/local" className="btn btn-default">Connect Local</a>
+                  <a href="/api/v1/auth/connect/local" className="btn btn-default">Connect Local</a>
               <% } %>
 
       <script>
@@ -48,7 +48,7 @@ export default class ProfileLocalLogin extends React.Component {
             }
             $.ajax({
                 type : "PATCH",
-                url : "/users/<%=user.uuid %>",
+                url : "/api/v1/users/<%=user.uuid %>",
                 data : JSON.stringify(o),
                 contentType : 'application/json',
                 success : function(o){

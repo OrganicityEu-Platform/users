@@ -23,7 +23,7 @@ export default class Profile extends React.Component {
     this.handleChangedRoles.bind(this);
     this.handleSubmit.bind(this);
 
-    $.ajax('/auth/currentUser', {
+    $.ajax('/api/v1/auth/currentUser', {
       dataType: 'json',
       error: (jqXHR, textStatus, errorThrown) => {
         console.log(jqXHR, textStatus, errorThrown);
@@ -55,7 +55,7 @@ export default class Profile extends React.Component {
   handleSubmit() {
     $.ajax({
         type : "PATCH",
-        url : "/users/" + this.state.uuid,
+        url : "/api/v1/users/" + this.state.uuid,
         data : JSON.stringify(this.state),
         contentType : 'application/json',
         success : function(o){

@@ -24,9 +24,9 @@ export default class ProfileFacebook extends React.Component {
               <strong>displayName</strong>: <%= user.facebook.displayName %><br/>
           </div>
 
-          <a href="/users/<%=user.uuid %>/unlink/facebook" className="btn btn-primary top10">Unlink</a>
+          <a href="/api/v1/users/<%=user.uuid %>/unlink/facebook" className="btn btn-primary top10">Unlink</a>
       <% } else if(req_user.uuid == user.uuid) { %>
-          <a href="/auth/connect/facebook" className="btn btn-primary">Connect Facebook</a>
+          <a href="/api/v1/auth/connect/facebook" className="btn btn-primary">Connect Facebook</a>
       <% } %>
     );
   }

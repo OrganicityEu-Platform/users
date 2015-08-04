@@ -6,7 +6,7 @@ var ScenarioView = React.createClass({
     return null;
   },
   componentDidMount: function () {
-    $.getJSON('/scenarios/' + this.props.scenarioId, function (result) {
+    $.getJSON('/api/v1/scenarios/' + this.props.scenarioId, function (result) {
       if (this.isMounted()) {
         this.setState(result);
       }

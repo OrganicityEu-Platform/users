@@ -305,23 +305,6 @@ router.route('/scenarios/:id').put(function(req,res){
         }
     });
 });
-                            /* USERS */
-    /*                                                                  */
-    /*                                                                  */
-    /*                                                                  */
-    /*
-        GET /users                                                      */
-
-router.get('/users', function(req, res){
-    res.send("TODO: handle GET /users");
-});
-
-/*
-        GET /users/:_id                                                 */
-
-router.get('/users/:id', function(req, res){
-    res.send("TODO: handle GET /users/:_id");
-});
 
 /*
     HELPERS ..........................................................  */

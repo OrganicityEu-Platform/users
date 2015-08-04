@@ -22,9 +22,9 @@ export default class ProfileFacebook extends React.Component {
               <strong>displayName</strong>: <%= user.github.displayName %>
           </div>
 
-          <a href="/users/<%=user.uuid %>/unlink/github" className="btn btn-info top10">Unlink</a>
+          <a href="/api/v1/users/<%=user.uuid %>/unlink/github" className="btn btn-info top10">Unlink</a>
       <% } else if(req_user.uuid == user.uuid) { %>
-          <a href="/auth/connect/github" className="btn btn-info">Connect Github</a>
+          <a href="/api/v1/auth/connect/github" className="btn btn-info">Connect Github</a>
       <% } %>
     );
   }

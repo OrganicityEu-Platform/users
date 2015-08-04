@@ -15,7 +15,7 @@ export default class Signup extends React.Component {
       <div className="col-sm-6 col-sm-offset-3">
         <h1><span className="fa fa-sign-in"></span> Signup</h1>
         <div className="alert alert-danger">message</div>
-        <form action="/auth/signup" method="post">
+        <form action="/api/v1/auth/signup" method="post">
             <div className="form-group">
                 <label>Email</label>
                 <input type="text" className="form-control" name="email"/>
@@ -27,7 +27,7 @@ export default class Signup extends React.Component {
             <button type="submit" className="btn btn-warning btn-lg">Signup</button>
         </form>
         <hr/>
-        <p>Already have an account? <a href="/auth/login">Login</a></p>
+        <p>Already have an account? <a href="/api/v1/auth/login">Login</a></p>
         <p>Or go <a href="/">home</a>.</p>
       </div>
     );

@@ -19,19 +19,19 @@ var Router = require('react-router')
 
 var routes = (
   <Route handler={Scaffold}>
-    <Route name="home"              path="/?"                       handler={HomeView}          />
-    <Route name="scenarioList"      path="scenarios/?"              handler={ScenarioListView}  />
-    <Route name="scenarioCreatePt1" path="scenarios/new/step-one"   handler={ScenarioCreatePt1} />
-    <Route name="scenarioCreatePt2" path="scenarios/new/step-two"   handler={ScenarioCreatePt2} />
-    <Route name="scenarioCreatePt3" path="scenarios/new/step-three" handler={ScenarioCreatePt3} />
-    <Route name="scenarioCreatePt4" path="scenarios/new/step-four"  handler={ScenarioCreatePt4} />
-    <Route name="scenarioCreatePt5" path="scenarios/new/step-five"  handler={ScenarioCreatePt5} />
-    <Route name="scenarioView"      path="scenarios/:uuid"          handler={ScenarioView}      />
-    <Route name="login"             path="auth/login/?"             handler={Login}             />
-    <Route name="local-login"       path="auth/local-login/?"       handler={LocalLogin}        />
-    <Route name="signup"            path="auth/signup/?"            handler={Signup}            />
-    <Route name="profile"           path="auth/profile/?"           handler={Profile}           />
-    <Route name="logout"            path="auth/logout/?"            handler={Logout}            />
+    <Route name="home"              path="/?"                         handler={HomeView}          />
+    <Route name="scenarioList"      path="scenarios/?"                handler={ScenarioListView}  />
+    <Route name="scenarioCreatePt1" path="scenarios/new/step-one/?"   handler={ScenarioCreatePt1} />
+    <Route name="scenarioCreatePt2" path="scenarios/new/step-two/?"   handler={ScenarioCreatePt2} />
+    <Route name="scenarioCreatePt3" path="scenarios/new/step-three/?" handler={ScenarioCreatePt3} />
+    <Route name="scenarioCreatePt4" path="scenarios/new/step-four/?"  handler={ScenarioCreatePt4} />
+    <Route name="scenarioCreatePt5" path="scenarios/new/step-five/?"  handler={ScenarioCreatePt5} />
+    <Route name="scenarioView"      path="scenarios/:uuid"            handler={ScenarioView}      />
+    <Route name="login"             path="auth/login/?"               handler={Login}             />
+    <Route name="local-login"       path="auth/local-login/?"         handler={LocalLogin}        />
+    <Route name="signup"            path="auth/signup/?"              handler={Signup}            />
+    <Route name="profile"           path="auth/profile/?"             handler={Profile}           />
+    <Route name="logout"            path="auth/logout/?"              handler={Logout}            />
   </Route>
 );
 
