@@ -39,21 +39,21 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 var api_config  = require('./routes/api/config.js');
 var api_version = api_config.version;
 
-var routes_scenarios = require('./routes/api/' + api_version + '/api.js');
+var routes_scenarios = require('./routes/api/' + api_version + '/api.js')(router, passport);
 var routes_auth      = require('./routes/api/' + api_version + '/auth.js')(router, passport);
 var routes_users     = require('./routes/api/' + api_version + '/users.js')(router, passport);
 
-app.use('/api/' + api_version, routes_scenarios);
+app.use(routes_scenarios);
 app.use(routes_auth);
-app.use('/api/' + api_version + '/users', routes_users);
+app.use(routes_users);
 
 // serve all (other) requests to single-page-app contained in index.html
-app.get('*', function (req, res) {
+app.get('/*', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny'
   };
-  res.sendFile('scenarios.html', options);
+  res.sendFile('index.html', options);
 });
 
 // catch 404 and forward to error handler
@@ -61,10 +61,13 @@ app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+  console.log('404 ', req.path);
 });
 
 // error handlers
 if (app.get('env') === 'development') {
+
+  console.log('Starting server in development mode');
 
   // development error handler
   // will print stacktrace
@@ -99,5 +102,5 @@ if (app.get('env') === 'development') {
 
 // launch =====================================================================
 app.listen(port);
-console.log('App started on port ' + port);
-expressListRoutes({ prefix: '' }, 'API:', router );
+expressListRoutes({ prefix: '' }, 'Server REST API:', router );
+console.log('Server started on port ' + port);

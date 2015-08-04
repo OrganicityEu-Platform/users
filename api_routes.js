@@ -1,6 +1,7 @@
 var prefixes = {
-  'auth'       : '/api/v1/auth',
-  'sceanarios' : '/api/v1/scenarios'
+  'auth'      : '/api/v1/auth',
+  'users'     : '/api/v1/users',
+  'scenarios' : '/api/v1/scenarios'
 }
 
 var routes = {
@@ -25,8 +26,18 @@ var routes = {
   'login'                : prefixes.auth + '/login',
   'logout'               : prefixes.auth + '/logout',
 
-  // scenario routes
+  // users routes
+  'users'                : prefixes.users + '/?',
+  'user_by_uuid'         : prefixes.users + '/:uuid/?',
+  'disconnect_local'     : prefixes.users + '/:uuid/unlink/local/?',
+  'disconnect_facebook'  : prefixes.users + '/:uuid/unlink/facebook/?',
+  'disconnect_twitter'   : prefixes.users + '/:uuid/unlink/twitter/?',
+  'disconnect_google'    : prefixes.users + '/:uuid/unlink/google/?',
+  'disconnect_github'    : prefixes.users + '/:uuid/unlink/github/?',
 
+  // scenario routes
+  'scenario_list'        : prefixes.scenarios + '/?',
+  'scenario_by_uuid'     : prefixes.scenarios + '/:uuid/?'
 }
 
 module.exports = {

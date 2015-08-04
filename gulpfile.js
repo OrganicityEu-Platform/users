@@ -18,6 +18,8 @@ var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 var express = require('gulp-express');
 var newer = require('gulp-newer');
 var debug = require('gulp-debug');
+var clean = require('gulp-clean');
+var env = require('gulp-env');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -157,10 +159,9 @@ var staticTask = function(options) {
   var start = new Date();
   return gulp.src(options.src)
       .pipe(newer(options.dest))
-      .pipe(debug({}))
       .pipe(gulp.dest(options.dest))
-      .pipe(notify(function() {
-        gutil.log('Copied newer static files in ' + (Date.now() - start) + 'ms');
+      .pipe(notify(function(file) {
+				gutil.log('Copied', file.relative);
       }));
 }
 
@@ -171,53 +172,61 @@ gulp.task('static', function() {
   });
 });
 
-// Starts our development workflow
-gulp.task('default', function () {
+var serverTask = function() {
+	// Start the server at the beginning of the task
+	express.run(['server.js']);
+	// Restart the server when file changes
+	gulp.watch(['./*.js'], express.notify);
+	gulp.watch(['./public/**'], express.notify);
+	gulp.watch(['./routes/**'], express.notify);
+	gulp.watch(['./models/**'], express.notify);
+	gulp.watch(['./config/**'], express.notify);
+}
 
-  browserifyTask({
-    development: true,
+gulp.task('browserify', function() {
+	console.log(process.env.DEVELOPMENT);
+	browserifyTask({
+    development: process.env.DEVELOPMENT == "true",
     src: './views/jsx/App.jsx',
     dest: './public/js'
   });
+});
 
-  cssTask({
-    development: true,
-    src: './styles/**/*.css',
-    dest: './public/css'
-  });
+gulp.task('set-env-dev', function () {
+	console.log('set-env-dev');
+  env({
+    vars: {
+      /*DEBUG: "express:*",*/
+			DEVELOPMENT : "true"
+    }
+  })
+});
 
-  staticTask({
+gulp.task('set-env-prod', function () {
+	console.log('set-env-prod');
+});
+
+gulp.task('server', ['static', 'browserify'], function () {
+  serverTask();
+});
+
+gulp.task('static', function() {
+	staticTask({
     src: './static/**',
     dest: './public'
   });
-
-  gulp.watch('./static/**', ['static']);
-
-  express.run(['server.js']);
-
+	gulp.watch('./static/**', ['static']);
 });
 
-gulp.task('deploy', function () {
-
-  browserifyTask({
-    development: false,
-    src: './views/jsx/App.jsx',
-    dest: './public/js'
-  });
-
-  cssTask({
-    development: false,
-    src: './styles/**/*.css',
-    dest: './public/css'
-  });
-
-  staticTask({
-    src: './static/**',
-    dest: './public'
-  });
-
-});
+gulp.task('default', ['set-env-dev',  'browserify', 'static', 'server']);
+gulp.task('deploy',  ['set-env-prod', 'browserify', 'static', 'server']);
 
 gulp.task('test', function () {
-    return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+  return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+});
+
+gulp.task('clean', function () {
+  return gulp
+		.src('public', {read: false})
+    .pipe(clean());
 });
