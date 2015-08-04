@@ -13,8 +13,8 @@ var Scaffold = React.createClass({
   render : function() {
     var userLinks = [];
     if (this.userIsLoggedIn()) {
-      userLinks.push(<NavItemLink key="/auth/profile" to="/auth/profile">Profile</NavItemLink>);
-      userLinks.push(<NavItemLink key="/auth/logout" to="/auth/logout">Logout</NavItemLink>);
+      userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
+      userLinks.push(<NavItemLink key="logout" to="logout">Logout</NavItemLink>);
     } else {
       userLinks.push(<NavItemLink key="login" to="login">Login</NavItemLink>);
       userLinks.push(<NavItemLink key="signup" to="signup">Signup</NavItemLink>);

@@ -9,6 +9,7 @@ import ScenarioCreatePt4 from './scenarios/ScenarioCreatePt4.jsx';
 import ScenarioCreatePt5 from './scenarios/ScenarioCreatePt5.jsx';
 import ScenarioView      from './scenarios/ScenarioView.jsx';
 import Login             from './auth/Login.jsx';
+import Logout            from './auth/Logout.jsx';
 import LocalLogin        from './auth/LocalLogin.jsx';
 import Signup            from './auth/Signup.jsx';
 import Profile           from './auth/Profile.jsx';
@@ -30,6 +31,7 @@ var routes = (
     <Route name="local-login"       path="auth/local-login/?"       handler={LocalLogin}        />
     <Route name="signup"            path="auth/signup/?"            handler={Signup}            />
     <Route name="profile"           path="auth/profile/?"           handler={Profile}           />
+    <Route name="logout"            path="auth/logout/?"            handler={Logout}            />
   </Route>
 );
 
