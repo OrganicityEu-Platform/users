@@ -1,8 +1,8 @@
+var key = 'ocScenarioCreate';
 var ScenarioCreateMixin = {
   getInitialState: function () {
-    console.log(window.localStorage.ocScenarioCreate);
-    if (window.localStorage && window.localStorage.ocScenarioCreate && window.localStorage.ocScenarioCreate !== undefined) {
-      return JSON.parse(window.localStorage.ocScenarioCreate);
+    if (window.sessionStorage && window.sessionStorage.getItem(key) != null) {
+      return JSON.parse(window.sessionStorage.getItem(key));
     }
     return {
       title : '',
@@ -14,10 +14,10 @@ var ScenarioCreateMixin = {
     };
   },
   clearState : function() {
-    window.localStorage.ocScenarioCreate = undefined;
+    window.sessionStorage.removeItem('ocScenarioCreate');
   },
   saveState : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+    window.sessionStorage.setItem('ocScenarioCreate', JSON.stringify(this.state));
   }
 };
 

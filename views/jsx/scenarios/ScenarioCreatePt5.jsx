@@ -20,7 +20,7 @@ var ScenarioCreatePt5 = React.createClass({
       success: (scenario) => {
         console.log(scenario);
         this.clearState();
-        this.transitionTo('scenarioView', {uuid:scenario.uuid});
+        this.transitionTo('scenarioView', { uuid : scenario._id });
       }
     });
   },

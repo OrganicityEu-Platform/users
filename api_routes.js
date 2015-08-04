@@ -1,7 +1,10 @@
 var prefixes = {
   'auth'      : '/api/v1/auth',
   'users'     : '/api/v1/users',
-  'scenarios' : '/api/v1/scenarios'
+  'scenarios' : '/api/v1/scenarios',
+  'actors'    : '/api/v1/actors',
+  'sectors'   : '/api/v1/sectors',
+  'devices'   : '/api/v1/devices'
 }
 
 var routes = {
@@ -33,7 +36,10 @@ var routes = {
 
   // scenario routes
   'scenario_list'        : prefixes.scenarios + '/?',
-  'scenario_by_uuid'     : prefixes.scenarios + '/:uuid/?'
+  'scenario_by_uuid'     : prefixes.scenarios + '/:uuid/?',
+  'actors_list'          : prefixes.actors + '/?',
+  'sectors_list'         : prefixes.sectors + '/?',
+  'devices_list'         : prefixes.devices + '/?'
 }
 
 module.exports = {
