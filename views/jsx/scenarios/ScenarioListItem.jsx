@@ -4,25 +4,26 @@ import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
 var ScenarioListItem = React.createClass({
   render: function () {
+    console.log(this.props);
     return (
       <tr>
         <td className="scenarioListItemTitle">
-          <a href={"/scenarios/"+this.props.data.sid}>{this.props.data.title}</a>
+          <a href={"/scenarios/"+this.props.scenario.sid}>{this.props.scenario.title}</a>
         </td>
         <td className="scenarioListItemSummary">
-          { this.props.data.summary ? this.props.data.summary.replace(/(?:\r\n|\r|\n)/g, '<br>') : '' }
+          { this.props.scenario.summary ? this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g, '<br>') : '' }
         </td>
         <td className="scenarioListItemOwner">
-          <a href={"/users/"+this.props.data.creator}>{this.props.data.creator}</a>
+          <a href={"/users/"+this.props.scenario.creator}>{this.props.scenario.creator}</a>
         </td>
         <td className="scenarioListItemTimestamp">
-            { this.props.data.timestamp ?
-                  <time className="timeago" dateTime={(new Date(this.props.data.timestamp)).toISOString()}>{(new Date(this.props.data.timestamp)).toISOString()}</time> :
+            { this.props.scenario.timestamp ?
+                  <time className="timeago" dateTime={(new Date(this.props.scenario.timestamp)).toISOString()}>{(new Date(this.props.scenario.timestamp)).toISOString()}</time> :
                   ''
             }
         </td>
-        <td><ScenarioEditButton data={this.props.data}/></td>
-        <td><ScenarioDeleteButton data={this.props.data}/></td>
+        <td><ScenarioEditButton scenario={this.props.scenario}/></td>
+        <td><ScenarioDeleteButton scenario={this.props.scenario}/></td>
       </tr>
     )
   }

@@ -8,15 +8,19 @@ module.exports = function(router, passport) {
       res.json({
         uuid : req.user.uuid,
         name : req.user.name,
-        roles : req.user.roles
+        roles : req.user.roles,
+        gender : req.user.gender
       });
     } else {
       res.status(404).send("NOT FOUND");
     }
   });
 
+  var authSuccess = function(req,res) {
+    res.redirect(ui.route('profile'));
+  };
   var authCallbacks = {
-    successRedirect : ui.route('profile'), // redirect to the secure profile section
+    successRedirect : authSuccess, // redirect to the secure profile section
     failureRedirect : ui.route('local-login'), // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   };
@@ -28,7 +32,7 @@ module.exports = function(router, passport) {
   });
 
   // process the login form
-  router.post(api.route('local-login'), passport.authenticate('local-login', authCallbacks));
+  router.post(api.route('local-login'), passport.authenticate('local-login'), authSuccess);
   // process the signup form
   router.post(api.route('signup'), passport.authenticate('local-signup', authCallbacks));
 
@@ -47,9 +51,7 @@ module.exports = function(router, passport) {
   // login / signup using auth providers
   authProviders.forEach(function(provider) {
     router.get(api.route('auth_'+provider), passport.authenticate(provider, authScopes[provider]));
-    router.get(ui.route('callback_'+provider), passport.authenticate(provider), function(req, res) {
-      res.redirect(ui.route('profile'));
-    });
+    router.get(ui.route('callback_'+provider), passport.authenticate(provider), authSuccess);
   });
 
   // authorize / connect accounts for already existing users

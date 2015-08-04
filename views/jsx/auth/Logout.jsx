@@ -13,18 +13,20 @@ var Logout = React.createClass({
     };
   },
   componentDidMount : function() {
+    // timeout allows for load animations etc.
     window.setTimeout(() => {
       $.ajax('/api/v1/auth/logout', {
         error : console.log,
         success : () => {
           this.setState({ loggedOut : true });
           window.currentUser = undefined;
+          // timeout allows to display message
           window.setTimeout(() => {
             this.transitionTo('home');
-          }, 2000);
+          }, 1);
         }
       });
-    }, 1000);
+    }, 1);
   },
   render : function() {
     if (!this.state.loggedOut) {

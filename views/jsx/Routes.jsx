@@ -7,6 +7,7 @@ import ScenarioCreatePt2 from './scenarios/ScenarioCreatePt2.jsx';
 import ScenarioCreatePt3 from './scenarios/ScenarioCreatePt3.jsx';
 import ScenarioCreatePt4 from './scenarios/ScenarioCreatePt4.jsx';
 import ScenarioCreatePt5 from './scenarios/ScenarioCreatePt5.jsx';
+import ScenarioEditView  from './scenarios/ScenarioEditView.jsx';
 import ScenarioView      from './scenarios/ScenarioView.jsx';
 import Login             from './auth/Login.jsx';
 import Logout            from './auth/Logout.jsx';
@@ -26,6 +27,7 @@ var routes = (
     <Route name="scenarioCreatePt3" path="scenarios/new/step-three/?" handler={ScenarioCreatePt3} />
     <Route name="scenarioCreatePt4" path="scenarios/new/step-four/?"  handler={ScenarioCreatePt4} />
     <Route name="scenarioCreatePt5" path="scenarios/new/step-five/?"  handler={ScenarioCreatePt5} />
+    <Route name="scenarioEdit"      path="scenarios/:uuid/edit"       handler={ScenarioEditView}  />
     <Route name="scenarioView"      path="scenarios/:uuid"            handler={ScenarioView}      />
     <Route name="login"             path="auth/login/?"               handler={Login}             />
     <Route name="local-login"       path="auth/local-login/?"         handler={LocalLogin}        />

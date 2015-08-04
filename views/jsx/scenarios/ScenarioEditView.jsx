@@ -1,56 +1,29 @@
 import React from 'react';
+import ScenarioTableView from './ScenarioTableView.jsx';
 
-var ScenarioView = React.createClass({
-    getInitialState: function () {
-        return null;
-    },
-    componentDidMount: function () {
-        $.getJSON('/api/v1/scenarios/' + this.props.scenarioId, function (result) {
-            if (this.isMounted()) {
-                this.setState(result);
-            }
-        }.bind(this));
-    },
-    render: function () {
-        if (this.state === null) {
-            return null;
-        }
-        return (
-            <div class="row">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <td>{this.state.title}</td>
-                    </tr>
-                    <tr>
-                        <th>Created</th>
-                        <td><time className="timeago" dateTime={this.state.created_at}>{this.state.created_at}</time></td>
-                    </tr>
-                    <tr>
-                        <th>Created</th>
-                        <td><time className="timeago" dateTime={this.state.updated_at}>{this.state.updated_at}</time></td>
-                    </tr>
-                    <tr>
-                        <th>Creator</th>
-                        <td><a href={"/users/"+this.state.owner}>{this.state.owner}</a></td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td>{this.state.text.replace(/(?:\r\n|\r|\n)/g, '<br/>')}</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td>
-                            <ScenarioEditButton data={this.state}/>
-                            <ScenarioDeleteButton data={this.state}/>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        )
+var ScenarioEditView = React.createClass({
+  getInitialState: function () {
+    return null;
+  },
+  componentDidMount: function () {
+    $.getJSON('/api/v1/scenarios/' + this.props.scenarioId, (scenario) => {
+      if (this.isMounted()) {
+        this.setState(scenario);
+      }
+    });
+  },
+  render: function () {
+    if (this.state === null) {
+      return null;
     }
+    return (
+      <div>
+        <div class="row">
+          <ScenarioTableView scenario={this.state} />
+        </div>
+      </div>
+    )
+  }
 });
 
-export default ScenarioView;
+export default ScenarioEditView;

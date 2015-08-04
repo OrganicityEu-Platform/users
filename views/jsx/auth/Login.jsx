@@ -3,13 +3,7 @@ import React from 'react';
 var Router = require('react-router')
   , Link = Router.Link;
 
-export default class Login extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+var Login = React.createClass({
   render() {
     return (
       <div class="jumbotron text-center">
@@ -23,4 +17,6 @@ export default class Login extends React.Component {
       </div>
     );
   }
-}
+});
+
+export default Login;

@@ -15,6 +15,15 @@ var LocalLogin = React.createClass({
       password : ''
     };
   },
+  isValid : function() {
+    // TODO improve validation
+    return (
+      this.state.email != '' &&
+      this.state.email !== undefined &&
+      this.state.password !== undefined &&
+      this.state.password != ''
+    );
+  },
   handleChangedEmail : function(evt) {
     this.state.email = evt.target.value;
     this.setState(this.state);
@@ -50,7 +59,9 @@ var LocalLogin = React.createClass({
                 <label>Password</label>
                 <input type="password" className="form-control" name="password" id="password" value={this.state.password} onChange={this.handleChangedPassword} />
             </div>
-            <button type="submit" className="btn btn-warning btn-lg">Login</button>
+            <button type="submit"
+                    className="btn btn-warning btn-lg"
+                    disabled={this.isValid() ? '' : 'disabled'}>Login</button>
           </form>
           <hr/>
           <p>Need an account? <Link to="signup" >Signup</Link></p>
