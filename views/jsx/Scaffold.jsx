@@ -11,8 +11,10 @@ var Router = require('react-router')
 var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin],
   render : function() {
+    var loggedInLinks = [];
     var userLinks = [];
     if (this.userIsLoggedIn()) {
+      loggedInLinks.push(<NavItemLink key="scenarioCreatePt1" to="scenarioCreatePt1">Create Scenario</NavItemLink>)
       userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
       userLinks.push(<NavItemLink key="logout" to="logout">Logout</NavItemLink>);
     } else {
@@ -24,7 +26,7 @@ var Scaffold = React.createClass({
         <Navbar brand={<Link to="/">Home</Link>}>
           <Nav>
             <NavItemLink to="scenarioList">Scenarios</NavItemLink>
-            <NavItemLink to="scenarioCreatePt1">Create Scenario</NavItemLink>
+            {loggedInLinks}
             {userLinks}
           </Nav>
         </Navbar>

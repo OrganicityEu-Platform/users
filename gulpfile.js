@@ -177,7 +177,6 @@ var serverTask = function() {
 	express.run(['server.js']);
 	// Restart the server when file changes
 	gulp.watch(['./*.js'], express.notify);
-	gulp.watch(['./public/**'], express.notify);
 	gulp.watch(['./routes/**'], express.notify);
 	gulp.watch(['./models/**'], express.notify);
 	gulp.watch(['./config/**'], express.notify);
@@ -196,7 +195,7 @@ gulp.task('set-env-dev', function () {
 	console.log('set-env-dev');
   env({
     vars: {
-      /*DEBUG: "express:*",*/
+      //DEBUG: "express:*",
 			DEVELOPMENT : "true"
     }
   })

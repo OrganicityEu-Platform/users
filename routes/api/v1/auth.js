@@ -38,19 +38,24 @@ module.exports = function(router, passport) {
 
   var authProviders = ['facebook', 'twitter', 'google', 'github'];
   var authScopes = {
-    scope : ['profile', 'email']
+    'facebook' : { scope : ['email'] },
+    'twitter'  : { scope : ['profile','email'] },
+    'google'   : { scope : ['profile','email'] },
+    'github'   : { scope : ['profile','email'] },
   };
 
   // login / signup using auth providers
   authProviders.forEach(function(provider) {
-    router.get(api.route('auth_'+provider), passport.authenticate(provider, authScopes));
-    router.get(api.route('callback_'+provider), passport.authenticate(provider, authCallbacks));
+    router.get(api.route('auth_'+provider), passport.authenticate(provider, authScopes[provider]));
+    router.get(ui.route('callback_'+provider), passport.authenticate(provider), function(req, res) {
+      res.redirect(ui.route('profile'));
+    });
   });
 
   // authorize / connect accounts for already existing users
   authProviders.forEach(function(provider) {
     router.post(api.route('connect_'+provider), passport.authenticate(provider, authScopes));
-    router.get(api.route('callback_'+provider), passport.authorize(provider, authCallbacks));
+    router.get(ui.route('callback_'+provider), passport.authorize(provider, authCallbacks));
   });
 
   // special case: connecting local-login
