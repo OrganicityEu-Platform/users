@@ -1,5 +1,6 @@
 import React from 'react';
 var Router = require('react-router');
+import ScenarioTableView from './ScenarioTableView.jsx';
 
 var ScenarioCreatePt5 = React.createClass({
   mixins : [Router.Navigation],
@@ -14,12 +15,15 @@ var ScenarioCreatePt5 = React.createClass({
         devices : []
       };
   },
-  clickedPrevious : function() {
+  saveState : function() {
     window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+  },
+  clickedPrevious : function() {
+    this.saveState();
     this.transitionTo('scenarioCreatePt4');
   },
-  clickedNext : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+  clickedSubmit : function() {
+    this.saveState();
     alert('submitted');
   },
   render: function () {
@@ -31,6 +35,7 @@ var ScenarioCreatePt5 = React.createClass({
           Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor
           fringilla.
         </p>
+        <ScenarioTableView scenario={this.state} />
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
           <button type="button" className="btn btn-default" onClick={this.clickedSubmit}>Submit</button>

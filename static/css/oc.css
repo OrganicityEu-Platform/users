@@ -2,20 +2,6 @@
   width: 100%;
 }
 
-.navigation-enter {
-  opacity: 0.01;
-  transition: opacity .5s ease-in;
-}
-
-.navigation-enter.example-enter-active {
-  opacity: 1;
-}
-
-.navigation-leave {
-  opacity: 1;
-  transition: opacity .5s ease-in;
-}
-
-.navigation-leave.oc_navigation-leave-active {
-  opacity: 0.01;
+.scenarioTableView td {
+  padding: 5px;
 }

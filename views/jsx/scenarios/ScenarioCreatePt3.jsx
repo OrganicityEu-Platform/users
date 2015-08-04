@@ -1,5 +1,6 @@
 import React from 'react';
 var Router = require('react-router');
+import TagField from '../form-components/TagField.jsx';
 
 var ScenarioCreatePt3 = React.createClass({
   mixins : [Router.Navigation],
@@ -8,15 +9,25 @@ var ScenarioCreatePt3 = React.createClass({
       JSON.parse(window.localStorage.ocScenarioCreate) : {
         title : '',
         summary : '',
-        narrative : ''
+        narrative : '',
+        sectors : [],
+        actors : [],
+        devices : []
       };
   },
-  clickedPrevious : function() {
+  handleChangedActors : function(actors) {
+    this.state.actors = actors;
+    this.setState(this.state);
+  },
+  saveState : function() {
     window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+  },
+  clickedPrevious : function() {
+    this.saveState();
     this.transitionTo('scenarioCreatePt2');
   },
   clickedNext : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+    this.saveState();
     this.transitionTo('scenarioCreatePt4');
   },
   render: function () {
@@ -30,6 +41,12 @@ var ScenarioCreatePt3 = React.createClass({
           porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in,
           egestas eget quam.
         </p>
+        <table>
+          <tr>
+            <th>Actors</th>
+            <td><TagField tags={this.state.actors} onChange={this.handleChangedActors} /></td>
+          </tr>
+        </table>
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
           <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>

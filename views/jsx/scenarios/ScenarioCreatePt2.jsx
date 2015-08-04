@@ -1,36 +1,35 @@
 import React from 'react';
 var Router = require('react-router');
+import TagField from '../form-components/TagField.jsx';
 
 var ScenarioCreatePt2 = React.createClass({
   mixins : [Router.Navigation],
   getInitialState: function () {
-    var state = window.localStorage && window.localStorage.ocScenarioCreate ?
-      JSON.parse(window.localStorage.ocScenarioCreate) : {
-        title : '',
-        summary : '',
-        narrative : '',
-        sectors : [],
-        actors : [],
-        devices : []
-      };
-    if (!state.sectors) {
-      state.sectors = [];
+    if (window.localStorage && window.localStorage.ocScenarioCreate) {
+      return JSON.parse(window.localStorage.ocScenarioCreate);
     }
-    state.sectorsString = state.sectors.join(",");
-    return state;
+    return {
+      title : '',
+      summary : '',
+      narrative : '',
+      sectors : [],
+      actors : [],
+      devices : []
+    };
   },
-  handleChangedSectors : function(evt) {
-    this.state.sectorsString = evt.target.value;
+  handleChangedSectors : function(sectors) {
+    this.state.sectors = sectors;
     this.setState(this.state);
   },
-  clickedPrevious : function() {
+  saveState : function() {
     window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+  },
+  clickedPrevious : function() {
+    this.saveState();
     this.transitionTo('scenarioCreatePt1');
   },
   clickedNext : function() {
-    this.state.sectors = this.state.sectorsString.split(",").map((s) => s.trim()).filter((s) => s.length > 0);
-    this.setState(this.state);
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+    this.saveState();
     this.transitionTo('scenarioCreatePt3');
   },
   render: function () {
@@ -44,7 +43,7 @@ var ScenarioCreatePt2 = React.createClass({
         <table>
           <tr>
             <th>Sectors</th>
-            <td><input type="text" name="sectors" id="sectors" value={this.state.sectorsString} onChange={this.handleChangedSectors} /></td>
+            <td><TagField tags={this.state.sectors} onChange={this.handleChangedSectors} /></td>
           </tr>
         </table>
         <p>
