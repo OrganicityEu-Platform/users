@@ -1,4 +1,4 @@
-/*
+
 var mongoose = require('mongoose');
 var searchPlugin = require('mongoose-search-plugin');
 
@@ -19,5 +19,4 @@ scenarioSchema.methods.hasOwner = function(user) {
     return (user.uuid === this.owner);
 };
 
-module.exports = mongoose.model('Scenario', scenarioSchema);
-*/
+module.exports = mongoose.model('ScenarioModel', scenarioSchema);

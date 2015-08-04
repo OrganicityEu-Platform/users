@@ -7,7 +7,7 @@ module.exports = function(passport) {
     // models
     var isLoggedIn = require('../models/isLoggedIn.js')(passport);
     var hasRole = require('../models/hasRole.js');
-    var Scenario = require('../models/scenarioSchema.js');
+    var ScenarioModel = require('../models/scenarioSchema.js');
 
     //###############################################################
     // is valid schemas
@@ -53,7 +53,7 @@ module.exports = function(passport) {
     // GET /scenarios
     router.get('/', function(req, res, next) {
 
-        Scenario.find({}).sort({created_at: -1}).exec(function (err, scenarios) {
+        ScenarioModel.find({}).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
@@ -89,7 +89,7 @@ module.exports = function(passport) {
 
         req.body.owner = req.user.uuid;
 
-        Scenario.create(req.body, function (err, scenario) {
+        ScenarioModel.create(req.body, function (err, scenario) {
             if (err) {
                 return next(err);
             } else {
@@ -126,7 +126,7 @@ module.exports = function(passport) {
     // GET /scenarios/my == SAME AS /users/:id/scenarios !!!
     router.get('/my', [isLoggedIn], function(req, res, next) {
 
-		Scenario.find({ 'owner' : req.user.uuid }).sort({created_at: -1}).exec(function (err, scenarios) {
+        ScenarioModel.find({ 'owner' : req.user.uuid }).sort({created_at: -1}).exec(function (err, scenarios) {
             if (err) {
                 return next(err);
             } else {
@@ -173,7 +173,7 @@ module.exports = function(passport) {
     router.post('/search', [validate.body(searchSchema)], function(req, res, next) {
 
 		// https://github.com/freakycue/mongoose-search-plugin
-		Scenario.search(req.body.text, {}, {
+        ScenarioModel.search(req.body.text, {}, {
 //			sort: {title: 1},
 			limit: 25
 		}, function(err, searchresult) {
@@ -209,7 +209,7 @@ module.exports = function(passport) {
 
     // GET /scenarios/id
     router.get('/:id', [], function(req, res, next) {
-        Scenario.findById(req.params.id, function (err, scenario) {
+        ScenarioModel.findById(req.params.id, function (err, scenario) {
 
             if(scenario == null) {
                 var err = new Error("Scenario " + req.params.id + " not found");
@@ -242,7 +242,7 @@ module.exports = function(passport) {
         // Add updated_at
         req.body.updated_at = Date.now();
 
-        Scenario.findByIdAndUpdate(req.params.id, req.body, function (err, scenario) {
+        ScenarioModel.findByIdAndUpdate(req.params.id, req.body, function (err, scenario) {
             if(scenario == null) {
                 var err = new Error("Scenario " + req.params.id + " not found");
                 err.status = 404;
@@ -276,7 +276,7 @@ module.exports = function(passport) {
     // DELETE /scenarios/:id
     router.delete('/:id', [isLoggedIn, hasRole(["admin"])], function(req, res, next) {
 
-        Scenario.findByIdAndRemove(req.params.id, req.body, function (err, scenario) {
+        ScenarioModel.findByIdAndRemove(req.params.id, req.body, function (err, scenario) {
             if (err) {
                 return next(err);
             } else {
@@ -296,7 +296,7 @@ module.exports = function(passport) {
     // GET /scenarios/:id
     router.get('/:id/edit', [isLoggedIn], function(req, res, next) {
 
-        Scenario.findById(req.params.id, function (err, scenario) {
+        ScenarioModel.findById(req.params.id, function (err, scenario) {
 
             if(scenario == null) {
                 var err = new Error("Scenario " + req.params.id + " not found");
