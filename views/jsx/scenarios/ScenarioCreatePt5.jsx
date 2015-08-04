@@ -13,6 +13,8 @@ var ScenarioCreatePt5 = React.createClass({
   clickedSubmit : function() {
     $.ajax('/api/v1/scenarios', {
       dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(this.state),
       method: 'POST',
       error: console.log,
       success: (scenario) => {
