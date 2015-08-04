@@ -1,28 +1,13 @@
 import React from 'react';
 var Router = require('react-router');
 import TagField from '../form-components/TagField.jsx';
+import ScenarioCreateMixin from './ScenarioCreateMixin.jsx';
 
 var ScenarioCreatePt2 = React.createClass({
-  mixins : [Router.Navigation],
-  getInitialState: function () {
-    if (window.localStorage && window.localStorage.ocScenarioCreate) {
-      return JSON.parse(window.localStorage.ocScenarioCreate);
-    }
-    return {
-      title : '',
-      summary : '',
-      narrative : '',
-      sectors : [],
-      actors : [],
-      devices : []
-    };
-  },
+  mixins : [Router.Navigation, ScenarioCreateMixin],
   handleChangedSectors : function(sectors) {
     this.state.sectors = sectors;
     this.setState(this.state);
-  },
-  saveState : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
   },
   clickedPrevious : function() {
     this.saveState();

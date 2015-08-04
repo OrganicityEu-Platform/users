@@ -1,30 +1,26 @@
 import React from 'react';
 var Router = require('react-router');
 import ScenarioTableView from './ScenarioTableView.jsx';
+import $ from 'jquery';
+import ScenarioCreateMixin from './ScenarioCreateMixin.jsx';
 
 var ScenarioCreatePt5 = React.createClass({
-  mixins : [Router.Navigation],
-  getInitialState: function () {
-    return window.localStorage && window.localStorage.ocScenarioCreate ?
-      JSON.parse(window.localStorage.ocScenarioCreate) : {
-        title : '',
-        summary : '',
-        narrative : '',
-        sectors : [],
-        actors : [],
-        devices : []
-      };
-  },
-  saveState : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
-  },
+  mixins : [Router.Navigation, ScenarioCreateMixin],
   clickedPrevious : function() {
     this.saveState();
     this.transitionTo('scenarioCreatePt4');
   },
   clickedSubmit : function() {
-    this.saveState();
-    alert('submitted');
+    $.ajax('/api/v1/scenarios', {
+      dataType: 'json',
+      method: 'POST',
+      error: console.log,
+      success: (scenario) => {
+        console.log(scenario);
+        this.clearState();
+        this.transitionTo('scenarioView', {uuid:scenario.uuid});
+      }
+    });
   },
   render: function () {
     return (

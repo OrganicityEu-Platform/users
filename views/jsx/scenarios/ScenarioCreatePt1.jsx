@@ -1,19 +1,9 @@
 import React from 'react';
 var Router = require('react-router');
+import ScenarioCreateMixin from './ScenarioCreateMixin.jsx';
 
 var ScenarioCreatePt1 = React.createClass({
-  mixins : [Router.Navigation],
-  getInitialState: function () {
-    return window.localStorage && window.localStorage.ocScenarioCreate ?
-      JSON.parse(window.localStorage.ocScenarioCreate) : {
-        title : '',
-        summary : '',
-        narrative : '',
-        sectors : [],
-        actors : [],
-        devices : []
-      };
-  },
+  mixins : [Router.Navigation, ScenarioCreateMixin],
   handleChangedTitle : function(evt) {
     this.state.title = evt.target.value;
     this.setState(this.state);
@@ -27,7 +17,7 @@ var ScenarioCreatePt1 = React.createClass({
     this.setState(this.state);
   },
   clickedNext : function() {
-    window.localStorage.ocScenarioCreate = JSON.stringify(this.state);
+    this.saveState();
     this.transitionTo('scenarioCreatePt2');
   },
   render: function () {
