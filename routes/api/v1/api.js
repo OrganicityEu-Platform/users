@@ -122,7 +122,7 @@ module.exports = function(passport) {
                 { "$sort": { "version": -1 } },
                 { "$group": {
                     "_id"           : "$uuid",
-                    "docId"         : { "$first": "$_id" },
+                    "uuid"          : { "$first": "$_id" },
                     "version"       : { "$first": "$version" },
                     "title"         : { "$first": "$title"},
                     "sectors"       : { "$first": "$sectors"},
