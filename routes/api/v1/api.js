@@ -141,17 +141,17 @@ module.exports = function(router, passport) {
     /** SCENARIOS
      *
      * GET
-     *  /scenarios/_id
+     *  /scenarios/sid
      *      # returns newest version of the scenario
-     *  /scenarios/_id?v=
+     *  /scenarios/sid?v=
      *      # returns the specific version the scenario
      */
     router.get(api.route('scenario_by_uuid'), function(req, res) {
 
-        // find by _id:
+        // find by sid:
 
         if(isEmptyObject(req.query)){
-            Scenario.findOne({ '_id' :  req.params.uuid }, function(err, scenario, next) {
+            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
                 if (err) {
                     return res.status(404).send("NOT FOUND");
                 }else {
@@ -163,21 +163,21 @@ module.exports = function(router, passport) {
                         if(err){
                             return res.send("ERROR: " + err);
                         }else{
-                            res.status(200).json(scenario);
+                            res.status(200).json(scenario[0]);
                         }
                     });
                 }
             });
 
-        // find by _id and version:
+        // find by sid and version:
 
         }else{
-            // grab version and _id from url
+            // grab version and sid from url
             var version = req.query.v;
             var id = req.params.uuid;
 
-            // find by _id
-            Scenario.find({ '_id' :  id },  function(err, scenario, next) {
+            // find by sid
+            Scenario.find({ 'sid' :  id },  function(err, scenario, next) {
                 // get group sid
                 var sid = scenario[0].sid;
 
@@ -219,7 +219,7 @@ module.exports = function(router, passport) {
                     if (err) {
                         return res.send(err);
                     }else{
-                        res.location('api/' + api_version + '/scenarios/' + scenario._id);
+                        res.location('api/' + api_version + '/scenarios/' + scenario.sid);
                         //res.send(201, "SUCCESSFULLY CREATED NEW SCENARIO.");
                         res.status(201).json(scenario);
                     }
@@ -232,27 +232,27 @@ module.exports = function(router, passport) {
     /** SCENARIOS
      *
      * DELETE
-     *  /scenarios/_id
-     *      # delete by _id
-     *  /scenarios/_id?v=
-     *      # delete by _id and version
+     *  /scenarios/sid
+     *      # delete by sid
+     *  /scenarios/sid?v=
+     *      # delete by sid and version
      */
     router.route(api.route('scenario_by_uuid')).delete(function(req, res) {
 
-        // if delete by _id:
+        // if delete by sid:
 
         if(isEmptyObject(req.query)){
-            // find scenario by _id
-            Scenario.findOne({ '_id' :  req.params.uuid }, function(err, scenario, next) {
+            // find scenario by sid
+            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
                 if (err) {
                     return res.send("ERROR: " + err);
                 // if scenario not exist
                 }else if(!scenario){
                     return res.status(404).send("NOT FOUND");
-                // do delete scenario by _id
+                // do delete scenario by sid
                 }else {
                     Scenario.remove({
-                        _id: req.params.uuid
+                        sid: req.params.uuid
                     }, function(err, scenario) {
                         if (err) {
                             return res.send("ERROR: " + err);
@@ -263,11 +263,11 @@ module.exports = function(router, passport) {
                 }
             });
 
-        // delete by _id and version:
+        // delete by sid and version:
 
         }else{
-            // find by _id
-            Scenario.findOne({ '_id' :  req.params.uuid }, function(err, scenario, next) {
+            // find by sid
+            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
                 if (err) {
                     return res.send("ERROR: " + err);
                 // if scenario not exist
@@ -303,13 +303,13 @@ module.exports = function(router, passport) {
     /** SCENARIOS
      *
      * PUT
-     *  /scenarios/_id
-     *      # creates a new scenario under umbrella of _id
+     *  /scenarios/sid
+     *      # creates a new scenario under umbrella of sid
      *      # and increments version
      */
     router.route(api.route('scenario_by_uuid')).put(function(req,res){
-        // find by _id
-        Scenario.findOne({ _id: req.params.uuid }, function(err, scenario) {
+        // find by sid
+        Scenario.findOne({ sid: req.params.uuid }, function(err, scenario) {
             if (err) {
                 return res.status(404);
             // if scenario not exist
@@ -338,7 +338,7 @@ module.exports = function(router, passport) {
                             if (err) {
                                 return res.send(err);
                             }
-                            res.location('api/' + api_version + '/scenarios/' + scenario._id);
+                            res.location('api/' + api_version + '/scenarios/' + scenario.sid);
                             res.status(201).send("SUCCESSFULLY UPDATED SCENARIO.");
                         });
                     }
