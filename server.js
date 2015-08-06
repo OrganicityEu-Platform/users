@@ -47,6 +47,10 @@ app.use(routes_scenarios);
 app.use(routes_auth);
 app.use(routes_users);
 
+if (app.get('env') === 'development') {
+  app.use(require('./routes/api/' + api_version + '/error.js')(router, passport));
+}
+
 // serve all (other) requests to single-page-app contained in index.html
 app.get('/*', function (req, res) {
   var options = {

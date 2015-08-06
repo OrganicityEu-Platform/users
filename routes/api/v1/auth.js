@@ -32,7 +32,28 @@ module.exports = function(router, passport) {
   });
 
   // process the login form
-  router.post(api.route('local-login'), passport.authenticate('local-login'), authSuccess);
+  router.post(api.route('local-login'),
+    function(req, res, next) {
+      passport.authenticate('local-login', function(err, user, info) {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          return res.status(422).send('Email address and/or password unknown');
+        }
+        req.logIn(user, function(err) {
+          if (err) {
+            return next(err);
+          }
+          return res.json({
+            uuid : user.uuid,
+            name : user.name,
+            roles : user.roles,
+            gender : user.gender
+          });
+        });
+      })(req, res, next);
+    });
   // process the signup form
   router.post(api.route('signup'), passport.authenticate('local-signup', authCallbacks));
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import $ from 'jquery';
+import FlashQueue from '../FlashQueue.jsx';
+import api from '../../../api_routes.js';
 
 var Router = require('react-router')
   , Navigation = Router.Navigation
   , Link = Router.Link;
 
 var Logout = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [FlashQueue.Mixin, Router.Navigation],
   getInitialState : function() {
     return {
       loggedOut : false
@@ -15,8 +17,8 @@ var Logout = React.createClass({
   componentDidMount : function() {
     // timeout allows for load animations etc.
     window.setTimeout(() => {
-      $.ajax('/api/v1/auth/logout', {
-        error : console.log,
+      $.ajax(api.route('logout'), {
+        error : this.flashOnAjaxError(api.route('logout'), 'Error while logging out'),
         success : () => {
           this.setState({ loggedOut : true });
           window.currentUser = undefined;

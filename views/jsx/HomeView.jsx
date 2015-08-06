@@ -1,19 +1,28 @@
+import $ from 'jquery';
 import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
+import FlashQueue from './FlashQueue.jsx';
+import api from '../../api_routes.js';
 
 var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
   , Link = Router.Link;
 
-export default class HomeView extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
+var HomeView = React.createClass({
+  mixins : [FlashQueue.Mixin],
+  onClickNotification : function() {
+    this.flash('info', 'A friendly notice');
+  },
+  onClickAjaxError : function() {
+    $.ajax(api.route('error'), {
+      error: this.flashOnAjaxError(api.route('error'), 'Error while demonstrating error handling'),
+      success: (data) => {
+        alert('Non-existing resource exists... WTF?');
+      }
+    })
+  },
+  render : function() {
     return (
       <div className="row">
         <div className="col-md-12">
@@ -47,8 +56,14 @@ export default class HomeView extends React.Component {
             amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Maecenas
             sed diam eget risus varius blandit sit amet non magna.
           </p>
+          <p>
+            <button className="btn btn-primary" onClick={this.onClickNotification}>Notification</button>
+            <button className="btn btn-error" onClick={this.onClickAjaxError}>Create AJAX error</button>
+          </p>
         </div>
       </div>
     );
   }
-}
+});
+
+export default HomeView;

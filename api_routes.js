@@ -4,7 +4,8 @@ var prefixes = {
   'scenarios' : '/api/v1/scenarios',
   'actors'    : '/api/v1/actors',
   'sectors'   : '/api/v1/sectors',
-  'devices'   : '/api/v1/devices'
+  'devices'   : '/api/v1/devices',
+  'error'     : '/api/v1/error'
 }
 
 var routes = {
@@ -39,7 +40,10 @@ var routes = {
   'scenario_by_uuid'     : prefixes.scenarios + '/:uuid/?',
   'actors_list'          : prefixes.actors + '/?',
   'sectors_list'         : prefixes.sectors + '/?',
-  'devices_list'         : prefixes.devices + '/?'
+  'devices_list'         : prefixes.devices + '/?',
+
+  // erroring resource (for testing)
+  'error'                : prefixes.error + '/?'
 }
 
 module.exports = {

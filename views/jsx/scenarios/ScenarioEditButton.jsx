@@ -6,7 +6,7 @@ var Router = require('react-router');
 var ScenarioEditButton = React.createClass({
   mixins: [Router.Navigation, UserHasRoleMixin, UserIsCreatorMixin],
   handleClick: function () {
-    this.transitionTo('scenarioEdit', { uuid: this.props.scenario.sid });
+    this.transitionTo('scenarioEdit', { uuid: this.props.scenario.uuid });
   },
   render: function () {
     if (this.userHasRole("admin") || this.userIsCreator(this.props.scenario)) {

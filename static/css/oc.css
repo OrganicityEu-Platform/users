@@ -5,3 +5,50 @@
 .scenarioTableView td {
   padding: 5px;
 }
+
+.flash-queue {
+  font-family: Helvetica Neue, Helvetica, Arial;
+  font-size: 12px;
+}
+
+@media only screen and (max-width: 420px) {
+  .flash-queue {
+    width: 96%;
+    margin-left: -48%;
+  }
+}
+
+.flash-message {
+  position: relative;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  padding: 8px 20px 8px 8px;
+}
+
+.flash-delete {
+  line-height: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 13px 10px 17px;
+}
+
+.flashfade-enter {
+  opacity: 0.01;
+  transition: opacity .3s ease-in;
+}
+
+.flashfade-enter.flashfade-enter-active {
+  opacity: 1;
+}
+
+.flashfade-leave {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+}
+
+.flashfade-leave.flashfade-leave-active {
+  opacity: 0.01;
+}

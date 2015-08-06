@@ -42,7 +42,7 @@ var ScenarioList = React.createClass({
               }
             })()}
             {
-              this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.sid} scenario={scenario}/>)
+              this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario}/>)
             }
           </tbody>
         </table>

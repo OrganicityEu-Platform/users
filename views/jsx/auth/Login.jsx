@@ -6,7 +6,7 @@ var Router = require('react-router')
 var Login = React.createClass({
   render() {
     return (
-      <div class="jumbotron text-center">
+      <div className="jumbotron text-center">
         <h1><span className="fa fa-lock"></span> Login or Register</h1>
         <Link to="local-login" className="btn btn-default"><span className="fa fa-user"></span> Local Login</Link>
         <a href="/api/v1/auth/signup" className="btn btn-default"><span className="fa fa-user"></span> Local Signup</a>

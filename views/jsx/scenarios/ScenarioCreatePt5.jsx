@@ -3,22 +3,23 @@ var Router = require('react-router');
 import ScenarioTableView from './ScenarioTableView.jsx';
 import $ from 'jquery';
 import ScenarioCreateMixin from './ScenarioCreateMixin.jsx';
+import FlashQueue from '../FlashQueue.jsx';
+import api from '../../../api_routes.js';
 
 var ScenarioCreatePt5 = React.createClass({
-  mixins : [Router.Navigation, ScenarioCreateMixin],
+  mixins : [FlashQueue.Mixin, Router.Navigation, ScenarioCreateMixin],
   clickedPrevious : function() {
     this.saveState();
     this.transitionTo('scenarioCreatePt4');
   },
   clickedSubmit : function() {
-    $.ajax('/api/v1/scenarios', {
+    $.ajax(api.route('scenario_list'), {
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(this.state),
       method: 'POST',
-      error: console.log,
+      error: this.flashOnAjaxError(api.route('scenario_list'), 'Error while submitting new scenario'),
       success: (scenario) => {
-        console.log(scenario);
         this.clearState();
         this.transitionTo('scenarioView', { uuid : scenario._id });
       }
