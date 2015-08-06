@@ -1,20 +1,21 @@
-var api = require('../../../api_routes.js');
-var ui  = require('../../../ui_routes.js');
+module.exports = function(passport) {
 
-module.exports = function(router, passport) {
-
-    /*
+/*
     API CONFIG ............................................................................ */
 
     var api_config = require('../config.js');
     var api_version = api_config.version;
 
-    /*
+/*
     DEPENDENCIES .......................................................................... */
+
+    var express = require('express');
+    var router = express.Router();
 
     // @see: https://en.wikipedia.org/wiki/Umbrella_title
     var crypto = require('crypto'); // used to generate umbrella: sid
 
+    var mongodb = require('mongodb');
     var mongojs = require('mongojs');
     var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
 
@@ -50,7 +51,7 @@ module.exports = function(router, passport) {
      *  /scenarios?actors=rapper,scientist&sector=fishing
      *      # filtered search, newest versions only
      */
-    router.get(api.route('scenario_list'), function(req, res){
+    router.get('/scenarios?', function(req, res){
 
         // full text search on narrative:
 
@@ -146,52 +147,30 @@ module.exports = function(router, passport) {
      *  /scenarios/sid?v=
      *      # returns the specific version the scenario
      */
-    router.get(api.route('scenario_by_uuid'), function(req, res) {
+    router.get('/scenarios/:id?', function(req, res) {
 
         // find by sid:
 
         if(isEmptyObject(req.query)){
-            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
-                if (err) {
-                    return res.status(404).send("NOT FOUND");
-                }else {
-                    // grab sid
-                    var sid = scenario.sid;
-                    // find by sid, sort by version
-                    Scenario.find({sid:sid}, null, {sort:{version:-1},
-                                    limit:1}, function(err, scenario) {
-                        if(err){
-                            return res.send("ERROR: " + err);
-                        }else{
-                            res.status(200).json(scenario[0]);
-                        }
-                    });
+
+            db.scenarios.find({"sid":req.params.id}).sort({version: -1}).limit(1, function(err, scenario){
+                if(err){
+                    return res.status(400).send("");
+                }else{
+                    res.status(200).json(scenario);
                 }
             });
 
         // find by sid and version:
 
         }else{
-            // grab version and sid from url
-            var version = req.query.v;
-            var id = req.params.uuid;
 
-            // find by sid
-            Scenario.find({ 'sid' :  id },  function(err, scenario, next) {
-                // get group sid
-                var sid = scenario[0].sid;
-
-                // find by sid and version
-                Scenario.findOne({ 'sid': sid, 'version': version},
-                                    function(err, scenario, next){
-                    if(err){
-                        res.status(400).send("");
-                    }else if(!scenario){
-                        res.status(404).send("VERSION NOT FOUND");
-                    }else{
-                        res.status(200).json(scenario);
-                    }
-                });
+            Scenario.find({sid : req.params.id , version: req.query.v}, function(err, scenario){
+                if(err){
+                    res.status(400).send("");
+                }else{
+                    res.json(scenario);
+                }
             });
         }
     });
@@ -200,7 +179,7 @@ module.exports = function(router, passport) {
      *
      * POST
      */
-    router.route(api.route('scenario_list')).post(function(req, res) {
+    router.route('/scenarios').post(function(req, res) {
 
         var scenario = new Scenario(req.body);
 
@@ -219,7 +198,7 @@ module.exports = function(router, passport) {
                     if (err) {
                         return res.send(err);
                     }else{
-                        res.location('api/' + api_version + '/scenarios/' + scenario.sid);
+                        res.location('api/' + api_version + '/scenarios/' + scenario._id);
                         //res.send(201, "SUCCESSFULLY CREATED NEW SCENARIO.");
                         res.status(201).json(scenario);
                     }
@@ -233,31 +212,31 @@ module.exports = function(router, passport) {
      *
      * DELETE
      *  /scenarios/sid
-     *      # delete by sid
-     *  /scenarios/sid?v=
+     *      # delete latest version
+     *  /scenarios/_id?v=
      *      # delete by sid and version
      */
-    router.route(api.route('scenario_by_uuid')).delete(function(req, res) {
+    router.route('/scenarios/:id?').delete(function(req, res) {
 
         // if delete by sid:
 
         if(isEmptyObject(req.query)){
-            // find scenario by sid
-            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
-                if (err) {
-                    return res.send("ERROR: " + err);
-                // if scenario not exist
-                }else if(!scenario){
+            db.scenarios.find({"sid":req.params.id}).sort({version: -1}).limit(1, function(err, scenario){
+                if(err){
+                    return res.status(400).send("");
+                }else if(scenario === undefined || scenario.length == 0){
                     return res.status(404).send("NOT FOUND");
-                // do delete scenario by sid
-                }else {
-                    Scenario.remove({
-                        sid: req.params.uuid
-                    }, function(err, scenario) {
+                }else{
+                    // @see: http://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove
+
+                    db.scenarios.remove({
+                        sid: scenario[0].sid, version: scenario[0].version
+                    }, function(err, data) {
                         if (err) {
                             return res.send("ERROR: " + err);
                         }else{
                             res.status(204);
+                            res.send(data);
                         }
                     });
                 }
@@ -266,33 +245,20 @@ module.exports = function(router, passport) {
         // delete by sid and version:
 
         }else{
-            // find by sid
-            Scenario.findOne({ 'sid' :  req.params.uuid }, function(err, scenario, next) {
-                if (err) {
-                    return res.send("ERROR: " + err);
-                // if scenario not exist
+            db.scenarios.find({"sid":req.params.id, "version":parseInt(req.query.v)}, function(err, scenario){
+                if(err){
+                    res.send("ERROR: " + err);
                 }else if(!scenario){
                     return res.status(404).send("NOT FOUND");
-                }else {
-                    // grab version and unique scenario group identifier
-                    var version = req.query.v;
-                    var sid = scenario.sid;
-                    // find by unique scenario group identifier and version
-                    Scenario.findOne({sid:sid, version:version}, function(err, scenario){
-                        if(err){
+                }else{
+                    db.scenarios.remove({
+                        "sid": req.params.id, "version": parseInt(req.query.v)
+                    }, function(err, data) {
+                        if (err) {
                             return res.send("ERROR: " + err);
-                        // if scenario not exist
-                        }else if(!scenario){
-                            return res.status(404).send("VERSION NOT FOUND");
-                        // remove scenario by unique scenario group identifier and version
                         }else{
-                            Scenario.remove({sid:sid, version:version}, function(err, scenario){
-                                if(err){
-                                    return res.send("ERROR: " + err);
-                                }else{
-                                    res.status(204).send("NO CONTENT");
-                                }
-                            });
+                            res.status(204);
+                            res.send(data);
                         }
                     });
                 }
@@ -303,13 +269,13 @@ module.exports = function(router, passport) {
     /** SCENARIOS
      *
      * PUT
-     *  /scenarios/sid
-     *      # creates a new scenario under umbrella of sid
+     *  /scenarios/_id
+     *      # creates a new scenario under umbrella of _id
      *      # and increments version
      */
-    router.route(api.route('scenario_by_uuid')).put(function(req,res){
-        // find by sid
-        Scenario.findOne({ sid: req.params.uuid }, function(err, scenario) {
+    router.route('/scenarios/:id').put(function(req,res){
+        // find by _id
+        Scenario.findOne({ _id: req.params.id }, function(err, scenario) {
             if (err) {
                 return res.status(404);
             // if scenario not exist
@@ -338,7 +304,7 @@ module.exports = function(router, passport) {
                             if (err) {
                                 return res.send(err);
                             }
-                            res.location('api/' + api_version + '/scenarios/' + scenario.sid);
+                            res.location('api/' + api_version + '/scenarios/' + scenario._id);
                             res.status(201).send("SUCCESSFULLY UPDATED SCENARIO.");
                         });
                     }
@@ -351,30 +317,104 @@ module.exports = function(router, passport) {
      *
      * GET
      */
-    router.get(api.route('actors_list'), function(req, res) {
-        res.send("ACTORS");
+    router.get('/actors', function(req, res) {
+        db.scenarios.aggregate([
+
+            { $project: { actors: 1 } },
+            { $unwind: '$actors' },
+            { $group:
+                {
+                    _id: { actor: '$actors' },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort : { count : -1 } }
+        ], function(err, counts){
+            if(err){
+                res.send("ERROR: " + err);
+            }else{
+                res.status(200).json(counts);
+            }
+        });
     });
 
     /** SECTORS
      *
      * GET
      */
-    router.get(api.route('sectors_list'), function(req, res) {
-        res.send("SECTOR");
+    router.get('/sectors', function(req, res) {
+        db.scenarios.aggregate([
+
+            { $project: { sectors: 1 } },
+            { $unwind: '$sectors' },
+            { $group:
+                {
+                    _id: { sector: '$sectors' },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort : { count : -1 } }
+        ], function(err, counts){
+            if(err){
+                res.send("ERROR: " + err);
+            }else{
+                res.status(200).json(counts);
+            }
+        });
     });
 
     /** DEVICES
      *
      * GET
      */
-    router.get(api.route('devices_list'), function(req, res) {
-        res.send("DEVICES");
+    router.get('/devices', function(req, res) {
+        db.scenarios.aggregate([
+
+            { $project: { devices: 1 } },
+            { $unwind: '$devices' },
+            { $group:
+                {
+                    _id: { device: '$devices' },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort : { count : -1 } }
+        ], function(err, counts){
+            if(err){
+                res.send("ERROR: " + err);
+            }else{
+                res.status(200).json(counts);
+            }
+        });
     });
 
 
     /**
         * HELPER FUNCTIONS
         ********************************************************************************** */
+
+    function getCount(name){
+        db.scenarios.aggregate([
+
+            { $project: { name: 1 } },
+            { $unwind: '$'+name },
+            { $group:
+            {
+                _id: { toCount: '$'+name },
+                count: { $sum: 1 }
+            }
+            },
+            { $sort : { count : -1 } }
+        ], function(err, counts){
+            if(err){
+                res.send("ERROR: " + err);
+            }else{
+                return counts;
+            }
+        });
+    }
+
+
 
     /**
      * checks if json is empty
