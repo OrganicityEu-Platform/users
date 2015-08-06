@@ -15,7 +15,7 @@ module.exports = function(passport) {
     var express = require('express');
     var router = express.Router();
 
-    // @see: https://en.wikipedia.org/wiki/Umbrella_title
+
     var crypto = require('crypto'); // used to generate umbrella: sid
 
     var mongodb = require('mongodb');
@@ -121,7 +121,7 @@ module.exports = function(passport) {
             Scenario.aggregate([
                 { "$sort": { "version": -1 } },
                 { "$group": {
-                    "_id"           : "$sid",
+                    "_id"           : "$uuid",
                     "docId"         : { "$first": "$_id" },
                     "version"       : { "$first": "$version" },
                     "title"         : { "$first": "$title"},
@@ -145,18 +145,18 @@ module.exports = function(passport) {
     /** SCENARIOS
      *
      * GET
-     *  /scenarios/sid
+     *  /scenarios/uuid
      *      # returns newest version of the scenario
-     *  /scenarios/sid?v=
+     *  /scenarios/uuid?v=
      *      # returns the specific version the scenario
      */
     router.get(api.route('scenario_by_uuid'), function(req, res) {
 
-        // find by sid:
+        // find by uuid:
 
         if(isEmptyObject(req.query)){
 
-            db.scenarios.find({"sid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
+            db.scenarios.find({"uuid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
                 if(err){
                     return res.status(400).send("");
                 }else{
@@ -164,11 +164,11 @@ module.exports = function(passport) {
                 }
             });
 
-        // find by sid and version:
+        // find by uuid and version:
 
         }else{
 
-            Scenario.find({sid : req.params.uuid , version: req.query.v}, function(err, scenario){
+            Scenario.find({uuid : req.params.uuid , version: req.query.v}, function(err, scenario){
                 if(err){
                     res.status(400).send("");
                 }else{
@@ -193,16 +193,15 @@ module.exports = function(passport) {
             }
             else{
                 // all new scenarios start with version 29
-                scenario.version = 29;
+                scenario.version = 1;
                 // generate unique grouping id
-                scenario.sid = crypto.randomBytes(10).toString('hex');
+                scenario.uuid = crypto.randomBytes(10).toString('hex');
                 // save the scenario
                 scenario.save(function(err) {
                     if (err) {
                         return res.send(err);
                     }else{
                         res.location('api/' + api_version + '/scenarios/' + scenario._id);
-                        //res.send(201, "SUCCESSFULLY CREATED NEW SCENARIO.");
                         res.status(201).json(scenario);
                     }
 
@@ -214,26 +213,24 @@ module.exports = function(passport) {
     /** SCENARIOS
      *
      * DELETE
-     *  /scenarios/sid
+     *  /scenarios/uuid
      *      # delete latest version
      *  /scenarios/_id?v=
-     *      # delete by sid and version
+     *      # delete by uuid and version
      */
     router.route(api.route('scenario_by_uuid')).delete(function(req, res) {
 
-        // if delete by sid:
+        // if delete by uuid:
 
         if(isEmptyObject(req.query)){
-            db.scenarios.find({"sid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
+            db.scenarios.find({"uuid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
                 if(err){
                     return res.status(400).send("");
-                }else if(scenario === undefined || scenario.length == 0){
+                }else if(!scenario){
                     return res.status(404).send("NOT FOUND");
                 }else{
-                    // @see: http://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove
-
                     db.scenarios.remove({
-                        sid: scenario[0].sid, version: scenario[0].version
+                        uuid: scenario[0].uuid, version: scenario[0].version
                     }, function(err, data) {
                         if (err) {
                             return res.send("ERROR: " + err);
@@ -245,17 +242,17 @@ module.exports = function(passport) {
                 }
             });
 
-        // delete by sid and version:
+        // delete by uuid and version:
 
         }else{
-            db.scenarios.find({"sid":req.params.uuid, "version":parseInt(req.query.v)}, function(err, scenario){
+            db.scenarios.find({"uuid":req.params.uuid, "version":parseInt(req.query.v)}, function(err, scenario){
                 if(err){
                     res.send("ERROR: " + err);
                 }else if(!scenario){
                     return res.status(404).send("NOT FOUND");
                 }else{
                     db.scenarios.remove({
-                        "sid": req.params.uuid, "version": parseInt(req.query.v)
+                        "uuid": req.params.uuid, "version": parseInt(req.query.v)
                     }, function(err, data) {
                         if (err) {
                             return res.send("ERROR: " + err);
@@ -272,45 +269,28 @@ module.exports = function(passport) {
     /** SCENARIOS
      *
      * PUT
-     *  /scenarios/_id
-     *      # creates a new scenario under umbrella of _id
-     *      # and increments version
+     *  /scenarios/uuid
+     *      # creates a new scenario under uuid and increments version
      */
     router.route(api.route('scenario_by_uuid')).put(function(req,res){
-        // find by _id
-        Scenario.findOne({ _id: req.params.uuid }, function(err, scenario) {
-            if (err) {
-                return res.status(404);
-            // if scenario not exist
-            }else if(!scenario){
-                return res.status(404).send("SCENARIO NOT FOUND");
-            // if exist
+
+        db.scenarios.find({"uuid":req.params.uuid}).sort({version: -1}).limit(1, function(err, data){
+            if(err){
+                res.send(err);
+            }else if(data === undefined || data.length == 0){
+                res.status(404).send("SCENARIO NOT FOUND");
             }else{
-                // grab umbrella
-                var sid = scenario.sid;
-                // grab body
+
                 var scenario = new Scenario(req.body);
-                // set umbrella to body
-                scenario.sid = sid;
-                // find by umbrella, sort by version
-                db.scenarios.find({"sid":sid}).sort({version: -1}).limit(1, function(err, data){
-                    if(err){
-                        res.send("ERROR: " + err);
-                    }else{
-                        var trunk = data[0];
-                        var version = trunk.version + 1; // increment version
-                        var sid = trunk.sid; // grab the unique scenario entity id
-                        scenario.version = version;
-                        scenario.sid = sid;
-                        // save the scenario
-                        scenario.save(function(err) {
-                            if (err) {
-                                return res.send(err);
-                            }
-                            res.location('api/' + api_version + '/scenarios/' + scenario._id);
-                            res.status(201).send("SUCCESSFULLY UPDATED SCENARIO.");
-                        });
+                scenario.version = data[0].version + 1;
+                scenario.uuid = data[0].uuid;
+
+                scenario.save(function(err, result) {
+                    if (err) {
+                        return res.send(err);
                     }
+                    res.location('api/' + api_version + '/scenarios/' + scenario._id);
+                    res.status(201).json(result);
                 });
             }
         });
@@ -438,7 +418,7 @@ module.exports = function(passport) {
     }
     /**
      *
-     * @param data array of json documents with a version key and an umbrella key called sid
+     * @param data array of json documents with a version key and uuid
      * @returns {Array} of newest json documents
      */
     function getLatestVersions(data){
@@ -452,8 +432,8 @@ module.exports = function(passport) {
             var curr_doc = data[i];
             // if current document's umbrella is not registered, then register umbrella
             // and add the document to results
-            if(!isInArray(curr_doc.sid, umbrellas)){
-                umbrellas.push(curr_doc.sid); // register umbrella
+            if(!isInArray(curr_doc.uuid, umbrellas)){
+                umbrellas.push(curr_doc.uuid); // register umbrella
                 results.push(curr_doc); // add document to results
             // if current document's umbrella is already registered
             }else{
@@ -462,7 +442,7 @@ module.exports = function(passport) {
                     var doc = results[e];
                     // if results document version older than data document
                     // then overwrite results document with new document
-                    if(doc.sid == curr_doc.sid && doc.version < curr_doc.version){
+                    if(doc.uuid == curr_doc.uuid && doc.version < curr_doc.version){
                         results[e] = curr_doc;
                     }
                 }
