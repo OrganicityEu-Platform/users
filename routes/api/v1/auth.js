@@ -12,7 +12,7 @@ module.exports = function(router, passport) {
         gender : req.user.gender
       });
     } else {
-      res.status(404).send("NOT FOUND");
+      res.status(204).send();
     }
   });
 

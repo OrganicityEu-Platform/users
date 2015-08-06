@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import React from 'react';
 import ScenarioTableView from './ScenarioTableView.jsx';
+import ScenarioEditButton from './ScenarioEditButton.jsx';
+import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api from '../../../api_routes.js';
 
 var ScenarioView = React.createClass({
