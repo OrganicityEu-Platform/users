@@ -16,7 +16,7 @@ module.exports = function(passport) {
     var router = express.Router();
 
 
-    var crypto = require('crypto'); // used to generate uuid 
+    var crypto = require('crypto'); // used to generate uuid
 
     var mongodb = require('mongodb');
     var mongojs = require('mongojs');
@@ -289,7 +289,7 @@ module.exports = function(passport) {
                     if (err) {
                         return res.send(err);
                     }
-                    res.location('api/' + api_version + '/scenarios/' + scenario._id);
+                    res.location('api/' + api_version + '/scenarios/' + scenario.uuid);
                     res.status(201).json(result);
                 });
             }
