@@ -16,7 +16,7 @@ module.exports = function(passport) {
     var router = express.Router();
 
 
-    var crypto = require('crypto'); // used to generate umbrella: sid
+    var crypto = require('crypto'); // used to generate uuid 
 
     var mongodb = require('mongodb');
     var mongojs = require('mongojs');
