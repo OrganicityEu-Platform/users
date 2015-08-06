@@ -10,7 +10,7 @@ var ScenarioListItem = React.createClass({
     return (
       <tr>
         <td className="scenarioListItemTitle">
-          <Link to="scenarioView" params={{ uuid: this.props.scenario._id }}>{this.props.scenario.title}</Link>
+          <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>{this.props.scenario.title}</Link>
         </td>
         <td className="scenarioListItemSummary">
           { this.props.scenario.summary ? this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g, '<br>') : '' }

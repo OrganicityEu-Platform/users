@@ -7,7 +7,7 @@ var ScenarioDeleteButton = React.createClass({
   mixins: [Router.Navigation, UserHasRoleMixin, UserIsCreatorMixin],
   handleClick: function () {
     $.ajax({
-      url: '/api/v1/scenarios/' + this.props.scenario._id,
+      url: '/api/v1/scenarios/' + this.props.scenario.uuid,
       type: 'DELETE',
       success: function (result) {
         this.transitionTo('scenarioList');

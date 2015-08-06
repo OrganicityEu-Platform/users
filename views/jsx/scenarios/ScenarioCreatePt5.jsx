@@ -21,7 +21,7 @@ var ScenarioCreatePt5 = React.createClass({
       error: this.flashOnAjaxError(api.route('scenario_list'), 'Error while submitting new scenario'),
       success: (scenario) => {
         this.clearState();
-        this.transitionTo('scenarioView', { uuid : scenario._id });
+        this.transitionTo('scenarioView', { uuid : scenario.uuid });
       }
     });
   },
