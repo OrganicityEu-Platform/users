@@ -1,3 +1,6 @@
+var api = require('../../../api_routes.js');
+var ui  = require('../../../ui_routes.js');
+
 module.exports = function(passport) {
 
 /*
@@ -51,7 +54,7 @@ module.exports = function(passport) {
      *  /scenarios?actors=rapper,scientist&sector=fishing
      *      # filtered search, newest versions only
      */
-    router.get('/scenarios?', function(req, res){
+    router.get(api.route('scenario_list'), function(req, res){
 
         // full text search on narrative:
 
@@ -147,17 +150,17 @@ module.exports = function(passport) {
      *  /scenarios/sid?v=
      *      # returns the specific version the scenario
      */
-    router.get('/scenarios/:id?', function(req, res) {
+    router.get(api.route('scenario_by_uuid'), function(req, res) {
 
         // find by sid:
 
         if(isEmptyObject(req.query)){
 
-            db.scenarios.find({"sid":req.params.id}).sort({version: -1}).limit(1, function(err, scenario){
+            db.scenarios.find({"sid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
                 if(err){
                     return res.status(400).send("");
                 }else{
-                    res.status(200).json(scenario);
+                    res.status(200).json(scenario[0]);
                 }
             });
 
@@ -165,11 +168,11 @@ module.exports = function(passport) {
 
         }else{
 
-            Scenario.find({sid : req.params.id , version: req.query.v}, function(err, scenario){
+            Scenario.find({sid : req.params.uuid , version: req.query.v}, function(err, scenario){
                 if(err){
                     res.status(400).send("");
                 }else{
-                    res.json(scenario);
+                    res.json(scenario[0]);
                 }
             });
         }
@@ -179,7 +182,7 @@ module.exports = function(passport) {
      *
      * POST
      */
-    router.route('/scenarios').post(function(req, res) {
+    router.route(api.route('scenario_list')).post(function(req, res) {
 
         var scenario = new Scenario(req.body);
 
@@ -216,12 +219,12 @@ module.exports = function(passport) {
      *  /scenarios/_id?v=
      *      # delete by sid and version
      */
-    router.route('/scenarios/:id?').delete(function(req, res) {
+    router.route(api.route('scenario_by_uuid')).delete(function(req, res) {
 
         // if delete by sid:
 
         if(isEmptyObject(req.query)){
-            db.scenarios.find({"sid":req.params.id}).sort({version: -1}).limit(1, function(err, scenario){
+            db.scenarios.find({"sid":req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario){
                 if(err){
                     return res.status(400).send("");
                 }else if(scenario === undefined || scenario.length == 0){
@@ -245,14 +248,14 @@ module.exports = function(passport) {
         // delete by sid and version:
 
         }else{
-            db.scenarios.find({"sid":req.params.id, "version":parseInt(req.query.v)}, function(err, scenario){
+            db.scenarios.find({"sid":req.params.uuid, "version":parseInt(req.query.v)}, function(err, scenario){
                 if(err){
                     res.send("ERROR: " + err);
                 }else if(!scenario){
                     return res.status(404).send("NOT FOUND");
                 }else{
                     db.scenarios.remove({
-                        "sid": req.params.id, "version": parseInt(req.query.v)
+                        "sid": req.params.uuid, "version": parseInt(req.query.v)
                     }, function(err, data) {
                         if (err) {
                             return res.send("ERROR: " + err);
@@ -273,9 +276,9 @@ module.exports = function(passport) {
      *      # creates a new scenario under umbrella of _id
      *      # and increments version
      */
-    router.route('/scenarios/:id').put(function(req,res){
+    router.route(api.route('scenario_by_uuid')).put(function(req,res){
         // find by _id
-        Scenario.findOne({ _id: req.params.id }, function(err, scenario) {
+        Scenario.findOne({ _id: req.params.uuid }, function(err, scenario) {
             if (err) {
                 return res.status(404);
             // if scenario not exist
@@ -317,7 +320,7 @@ module.exports = function(passport) {
      *
      * GET
      */
-    router.get('/actors', function(req, res) {
+    router.get(api.route('actors_list'), function(req, res) {
         db.scenarios.aggregate([
 
             { $project: { actors: 1 } },
@@ -342,7 +345,7 @@ module.exports = function(passport) {
      *
      * GET
      */
-    router.get('/sectors', function(req, res) {
+    router.get(api.route('sectors_list'), function(req, res) {
         db.scenarios.aggregate([
 
             { $project: { sectors: 1 } },
@@ -367,7 +370,7 @@ module.exports = function(passport) {
      *
      * GET
      */
-    router.get('/devices', function(req, res) {
+    router.get(api.route('devices_list'), function(req, res) {
         db.scenarios.aggregate([
 
             { $project: { devices: 1 } },
