@@ -114,11 +114,30 @@ module.exports = function(passport) {
         // get all new scenarios listing
 
         }else{
+
+            var filterLatestVersions = function(allScenariosAndVersions) {
+              var scenarios = {};
+              allScenariosAndVersions.forEach(function(scenario) {
+                if (!Array.isArray(allScenariosAndVersions[scenario.uuid])) {
+                  allScenariosAndVersions[scenario.uuid] = [];
+                }
+                allScenariosAndVersions[scenario.uuid].push(scenario);
+              });
+              return allScenariosAndVersions;
+            }
+
+            db.scenarios.find({}, function(err, allScenariosAndVersions){
+                if (err) {
+                    return res.send("ERROR: " + err);
+                } else {
+                    res.json(filterLatestVersions(allScenariosAndVersions));
+                }
+            });
             // @see: http://docs.mongodb.org/manual/core/aggregation-introduction/
             // @see: http://docs.mongodb.org/manual/reference/method/db.collection.aggregate/
             // @see: http://docs.mongodb.org/manual/reference/operator/aggregation/group/
             // @see: http://docs.mongodb.org/manual/reference/operator/aggregation/first/
-            Scenario.aggregate([
+            /*Scenario.aggregate([
                 { "$sort": { "version": -1 } },
                 { "$group": {
                     "_id"           : "$uuid",
@@ -138,7 +157,7 @@ module.exports = function(passport) {
                 }else{
                     res.status(200).json(scenarios);
                 }
-            });
+            });*/
         }
     });
 

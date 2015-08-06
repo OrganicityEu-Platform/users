@@ -21,15 +21,15 @@ var ScenarioTableView = React.createClass({
         </tr>
         <tr>
           <th>Actors</th>
-          <td>{this.props.scenario.actors.join(", ")}</td>
+          <td>{this.props.scenario.actors ? this.props.scenario.actors.join(", ") : ''}</td>
         </tr>
         <tr>
           <th>Sectors</th>
-          <td>{this.props.scenario.sectors.join(", ")}</td>
+          <td>{this.props.scenario.sectors ? this.props.scenario.sectors.join(", ") : ''}</td>
         </tr>
         <tr>
           <th>Devices</th>
-          <td>{this.props.scenario.devices.join(", ")}</td>
+          <td>{this.props.scenario.devices ? this.props.scenario.devices.join(", ") : ''}</td>
         </tr>
       </table>
     )
