@@ -26,8 +26,8 @@ var ScenarioView = React.createClass({
           <ScenarioTableView scenario={this.state} />
         </div>
         <div class="row">
-          <ScenarioEditButton data={this.state}/>
-          <ScenarioDeleteButton data={this.state}/>
+          <ScenarioEditButton scenario={this.state}/>
+          <ScenarioDeleteButton scenario={this.state}/>
         </div>
       </div>
     )
