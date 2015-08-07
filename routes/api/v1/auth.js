@@ -28,7 +28,7 @@ module.exports = function(router, passport) {
   // process logout
   router.get(api.route('logout'), function(req, res) {
     req.logout();
-    res.redirect('/');
+    res.status(204).send();
   });
 
   // process the login form

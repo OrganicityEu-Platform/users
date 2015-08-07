@@ -15,7 +15,7 @@ var TagField = React.createClass({
   },
   render : function() {
     return (
-      <input type="text" name="sectors" id="sectors" value={this.state.tagsString} onChange={this.handleChange} />
+      <input type="text" className="form-control" name="sectors" id="sectors" value={this.state.tagsString} onChange={this.handleChange} />
     );
   }
 });

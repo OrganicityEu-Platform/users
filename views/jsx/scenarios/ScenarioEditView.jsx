@@ -119,103 +119,138 @@ var ScenarioEditView = React.createClass({
   },
   step1 : function() {
     return (
-      <div className="row" key="scenarioEditStep1">
-        <h2>Create your scenario <small>step one</small></h2>
-        <h3>Write your short story!</h3>
-        <p>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
-          quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere
-          erat a ante venenatis dapibus posuere velit aliquet.
-        </p>
-        <table>
-            <thead>
-            <tr>
-                <th>Title</th>
-                <td><input type="text" name="title" id="title" value={this.state.title} onChange={this.handleChangedTitle} /></td>
-            </tr>
-            <tr>
-                <th>Summary</th>
-                <td><input type="text" name="summary" id="summary" value={this.state.summary} onChange={this.handleChangedSummary} /></td>
-            </tr>
-            <tr>
-                <th>Narrative</th>
-                <td><textarea name="narrative" id="narrative" value={this.state.narrative} onChange={this.handleChangedNarrative} /></td>
-            </tr>
-            <tr>
-                <th></th>
-                <td>
-                  <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
-                </td>
-            </tr>
-            </thead>
-        </table>
+      <div>
+        <div className="row" key="scenarioEditStep1">
+          <h2>Create your scenario <small>step one</small></h2>
+          <h3>Write your short story!</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
+            quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere
+            erat a ante venenatis dapibus posuere velit aliquet.
+          </p>
+        </div>
+        <div className="row well">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="title">Title</label>
+              <div className="col-sm-10">
+                <input type="text" className="form-control" name="title" id="title" value={this.state.title} onChange={this.handleChangedTitle} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="summary">Summary</label>
+              <div className="col-sm-10">
+                <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary} onChange={this.handleChangedSummary} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="narrative">Narrative</label>
+              <div className="col-sm-10">
+                <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative} onChange={this.handleChangedNarrative} />
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-2"></div>
+              <div className="col-sm-10">
+                <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   },
   step2 : function() {
     return (
-      <div className="row" key="scenarioEditStep2">
-        <h2>Create your scenario <small>step two</small></h2>
-        <h3>Select the Sector(s)!</h3>
-        <p>
-          Donec sed odio dui. Maecenas sed diam eget risus varius blandit sit amet non magna.
-        </p>
-        <table>
-          <tr>
-            <th>Sectors</th>
-            <td><TagField tags={this.state.sectors} onChange={this.handleChangedSectors} /></td>
-          </tr>
-        </table>
-        <p>
-          <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
-          <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
-        </p>
+      <div>
+        <div className="row" key="scenarioEditStep2">
+          <h2>Create your scenario <small>step two</small></h2>
+          <h3>Select the Sector(s)!</h3>
+          <p>
+            Donec sed odio dui. Maecenas sed diam eget risus varius blandit sit amet non magna.
+          </p>
+        </div>
+        <div className="row well">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="sectors">Sectors</label>
+              <div className="col-sm-10">
+                <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-2"></div>
+              <div className="col-sm-10">
+                <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
+                <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   },
   step3 : function () {
     return (
-      <div className="row" key="scenarioEditStep3">
-        <h2>Create your scenario <small>step three</small></h2>
-        <h3>Select the Actor(s)!</h3>
-        <p>
-          Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
-          massa justo sit amet risus. Sed posuere consectetur est at lobortis. Morbi leo risus,
-          porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in,
-          egestas eget quam.
-        </p>
-        <table>
-          <tr>
-            <th>Actors</th>
-            <td><TagField tags={this.state.actors} onChange={this.handleChangedActors} /></td>
-          </tr>
-        </table>
-        <p>
-          <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
-          <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
-        </p>
+      <div>
+        <div className="row" key="scenarioEditStep3">
+          <h2>Create your scenario <small>step three</small></h2>
+          <h3>Select the Actor(s)!</h3>
+          <p>
+            Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
+            massa justo sit amet risus. Sed posuere consectetur est at lobortis. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros. Cras justo odio, dapibus ac facilisis in,
+            egestas eget quam.
+          </p>
+          <div className="row well">
+            <form className="form-horizontal">
+              <div className="form-group">
+                <label className="control-label col-sm-2" htmlFor="sectors">Actors</label>
+                <div className="col-sm-10">
+                  <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="col-sm-2"></div>
+                <div className="col-sm-10">
+                  <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
+                  <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     )
   },
   step4 : function() {
     return (
-      <div className="row" key="scenarioEditStep4">
-        <h2>Create your scenario <small>step four</small></h2>
-        <h3>Select the Device(s)!</h3>
-        <p>
-          Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl
-          consectetur et. Donec sed odio dui.
-        </p>
-        <table>
-          <tr>
-            <th>Devices</th>
-            <td><TagField tags={this.state.devices} onChange={this.handleChangedDevices} /></td>
-          </tr>
-        </table>
-        <p>
-          <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
-          <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
-        </p>
+      <div>
+        <div className="row" key="scenarioEditStep4">
+          <h2>Create your scenario <small>step four</small></h2>
+          <h3>Select the Device(s)!</h3>
+          <p>
+            Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl
+            consectetur et. Donec sed odio dui.
+          </p>
+          <div className="row well">
+            <form className="form-horizontal">
+              <div className="form-group">
+                <label className="control-label col-sm-2" htmlFor="sectors">Devices</label>
+                <div className="col-sm-10">
+                  <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="col-sm-2"></div>
+                <div className="col-sm-10">
+                  <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
+                  <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     );
   },
