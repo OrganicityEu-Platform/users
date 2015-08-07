@@ -38,9 +38,6 @@ module.exports = function(passport) {
 
     var Scenario = require('../../../models/scenario.js');
 
-    var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
-    var hasRole = require('../../../models/hasRole.js');
-
 /*
     ROUTES ................................................................................ */
 
@@ -116,14 +113,22 @@ module.exports = function(passport) {
         }else{
 
             var filterLatestVersions = function(allScenariosAndVersions) {
-              var scenarios = {};
+              var scenariosByUUID = {};
               allScenariosAndVersions.forEach(function(scenario) {
-                if (!Array.isArray(allScenariosAndVersions[scenario.uuid])) {
-                  allScenariosAndVersions[scenario.uuid] = [];
+                if (!Array.isArray(scenariosByUUID[scenario.uuid])) {
+                  scenariosByUUID[scenario.uuid] = [];
                 }
-                allScenariosAndVersions[scenario.uuid].push(scenario);
+                scenariosByUUID[scenario.uuid].push(scenario);
               });
-              return allScenariosAndVersions;
+              var result = [];
+              for (var uuid in scenariosByUUID) {
+                var newestVersion = 0;
+                var newest = function(prev, curr) {
+                  return prev.version > curr.version ? prev : curr;
+                };
+                result.push(scenariosByUUID[uuid].reduce(newest, scenariosByUUID[uuid][0]));
+              }
+              return result;
             }
 
             db.scenarios.find({}, function(err, allScenariosAndVersions){
@@ -133,6 +138,7 @@ module.exports = function(passport) {
                     res.json(filterLatestVersions(allScenariosAndVersions));
                 }
             });
+
             // @see: http://docs.mongodb.org/manual/core/aggregation-introduction/
             // @see: http://docs.mongodb.org/manual/reference/method/db.collection.aggregate/
             // @see: http://docs.mongodb.org/manual/reference/operator/aggregation/group/
@@ -201,7 +207,7 @@ module.exports = function(passport) {
      *
      * POST
      */
-    router.route(api.route('scenario_list')).post(function(req, res) {
+    router.post(api.route('scenario_list'), function(req, res) {
 
         var scenario = new Scenario(req.body);
 
@@ -215,6 +221,7 @@ module.exports = function(passport) {
                 scenario.version = 1;
                 // generate unique grouping id
                 scenario.uuid = crypto.randomBytes(10).toString('hex');
+                scenario.creator = req.user.uuid;
                 // save the scenario
                 scenario.save(function(err) {
                     if (err) {
@@ -237,7 +244,7 @@ module.exports = function(passport) {
      *  /scenarios/_id?v=
      *      # delete by uuid and version
      */
-    router.route(api.route('scenario_by_uuid')).delete(function(req, res) {
+    router.delete(api.route('scenario_by_uuid'), function(req, res) {
 
         // if delete by uuid:
 
@@ -291,24 +298,30 @@ module.exports = function(passport) {
      *  /scenarios/uuid
      *      # creates a new scenario under uuid and increments version
      */
-    router.route(api.route('scenario_by_uuid')).put(function(req,res){
+    router.put(api.route('scenario_by_uuid'), function(req,res){
 
-        db.scenarios.find({"uuid":req.params.uuid}).sort({version: -1}).limit(1, function(err, data){
-            if(err){
+        db.scenarios.find({"uuid":req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion){
+            if(err) {
                 res.send(err);
-            }else if(data === undefined || data.length == 0){
+            } else if(oldVersion === undefined || oldVersion.length == 0) {
                 res.status(404).send("SCENARIO NOT FOUND");
-            }else{
+            } else {
 
-                var scenario = new Scenario(req.body);
-                scenario.version = data[0].version + 1;
-                scenario.uuid = data[0].uuid;
+                var fieldsInUpdate = ['title','summary','narrative','sectors','actors','devices'];
+                var update = req.body;
+                var newVersion = new Scenario();
+                fieldsInUpdate.forEach(function(field) {
+                  newVersion[field] = update[field];
+                });
+                newVersion.uuid = oldVersion[0].uuid;
+                newVersion.version = oldVersion[0].version + 1;
+                newVersion.creator = req.user.uuid;
 
-                scenario.save(function(err, result) {
+                newVersion.save(function(err, result) {
                     if (err) {
                         return res.send(err);
                     }
-                    res.location('api/' + api_version + '/scenarios/' + scenario.uuid);
+                    res.location('/api/' + api_version + '/scenarios/' + result.uuid);
                     res.status(201).json(result);
                 });
             }

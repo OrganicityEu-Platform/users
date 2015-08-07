@@ -7,6 +7,9 @@ var ScenarioList = React.createClass({
     return null;
   },
   componentDidMount: function () {
+    this.reload();
+  },
+  reload: function() {
     $.getJSON('/api/v1/scenarios', (scenarios) => {
       if (this.isMounted()) {
         this.setState({
@@ -27,6 +30,7 @@ var ScenarioList = React.createClass({
               <th>Title</th>
               <th>Summary</th>
               <th>Last Updated</th>
+              <th>Creator</th>
               <th></th>
               <th></th>
             </tr>
@@ -42,7 +46,7 @@ var ScenarioList = React.createClass({
               }
             })()}
             {
-              this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario}/>)
+              this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario} onChange={this.reload}/>)
             }
           </tbody>
         </table>

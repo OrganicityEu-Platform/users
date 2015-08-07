@@ -108,14 +108,20 @@ gulp.task('static', function() {
   });
 });
 
-var serverTask = function() {
-	// Start the server at the beginning of the task
-	express.run(['server.js']);
-	// Restart the server when file changes
-	gulp.watch(['./*.js'], express.notify);
-	gulp.watch(['./routes/**'], express.notify);
-	gulp.watch(['./models/**'], express.notify);
-	gulp.watch(['./config/**'], express.notify);
+var server = {
+	instance : null,
+	start : function() {
+		gutil.log('Starting server');
+		server.instance = express.run(['server.js'], {}, false);
+		gutil.log('Started server');
+	},
+	stop : function() {
+		if (server.instance) {
+			gutil.log('Stopping server');
+			server.instance.stop();
+			gutil.log('Stopped server');
+		}
+	}
 }
 
 gulp.task('browserify', function() {
@@ -141,8 +147,22 @@ gulp.task('set-env-prod', function () {
 	console.log('set-env-prod');
 });
 
-gulp.task('server', ['static', 'browserify'], function () {
-  serverTask();
+var serverAppFiles = [
+	'./config/**',
+	'./models/**',
+	'./routes/**',
+	'./server.js',
+	'./api_routes.js/**',
+	'./ui_routes.js/**'
+];
+
+gulp.task('server', function () {
+  server.start();
+	gulp.watch(serverAppFiles).on('change', function(event) {
+		gutil.log('File ' + event.path + ' was ' + event.type + ', restarting server...');
+		server.stop();
+		server.start();
+	});
 });
 
 gulp.task('static', function() {

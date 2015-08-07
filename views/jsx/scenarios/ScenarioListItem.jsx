@@ -1,6 +1,7 @@
 import React from 'react';
 import ScenarioEditButton from './ScenarioEditButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
+import UserAvatar from '../users/UserAvatar.jsx';
 
 var Router = require('react-router')
   , Link = Router.Link;
@@ -21,8 +22,9 @@ var ScenarioListItem = React.createClass({
                 ''
           }
         </td>
-        <td><ScenarioEditButton scenario={this.props.scenario}/></td>
-        <td><ScenarioDeleteButton scenario={this.props.scenario}/></td>
+        <td><UserAvatar uuid={this.props.scenario.creator} /></td>
+        <td><ScenarioEditButton scenario={this.props.scenario} onChange={this.props.onChange} /></td>
+        <td><ScenarioDeleteButton scenario={this.props.scenario} onChange={this.props.onChange} /></td>
       </tr>
     )
   }

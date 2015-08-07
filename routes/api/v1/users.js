@@ -73,10 +73,10 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.get(api.route('user_by_uuid'), [isLoggedIn, hasRole(["admin"])], function(req, res, next) {
-    User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
+  var findUser = function(uuid, res, success) {
+    User.findOne({ 'uuid' :  uuid }, function(err, user) {
       if(user == null) {
-		    var err = new Error("User " + req.params.uuid + " not found");
+		    var err = new Error("User " + uuid + " not found");
 		    err.status = 404;
 		    return next(err);
       }
@@ -86,13 +86,28 @@ module.exports = function(router, passport) {
       } else {
         res.format({
           'application/json': function() {
-              res.json(user);
+              success(user);
           },
           'default': function() {
               res.send(406, 'Not Acceptable');
           }
         });
       }
+    });
+  }
+
+  router.get(api.route('user_info'), function(req, res, next) {
+    findUser(req.params.uuid, res, function(user) {
+      res.json({
+        uuid : user.uuid,
+        name : user.name
+      });
+    });
+  });
+
+  router.get(api.route('user_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
+    findUser(req.params.uuid, res, function(user) {
+      res.json(user);
     });
   });
 

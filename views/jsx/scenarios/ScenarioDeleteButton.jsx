@@ -1,16 +1,23 @@
+import $ from 'jquery';
 import React from 'react';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
-var Router = require('react-router');
+import FlashQueue from '../FlashQueue.jsx';
+var Router = require('react-router'),
+    Navigation = Router.Navigation;
 
 var ScenarioDeleteButton = React.createClass({
-  mixins: [Router.Navigation, UserHasRoleMixin, UserIsCreatorMixin],
+  mixins: [Navigation, UserHasRoleMixin, UserIsCreatorMixin, FlashQueue.Mixin],
   handleClick: function () {
     $.ajax({
       url: '/api/v1/scenarios/' + this.props.scenario.uuid,
       type: 'DELETE',
-      success: function (result) {
+      error: this.flashOnAjaxError('/api/v1/scenarios/' + this.props.scenario.uuid, 'Error trying to delete scenario'),
+      success: (result) => {
         this.transitionTo('scenarioList');
+        if (typeof this.props.onChange == 'function') {
+          this.props.onChange();
+        }
       }
     });
   },

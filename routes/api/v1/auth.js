@@ -55,7 +55,29 @@ module.exports = function(router, passport) {
       })(req, res, next);
     });
   // process the signup form
-  router.post(api.route('signup'), passport.authenticate('local-signup', authCallbacks));
+  router.post(api.route('signup'),
+    function(req, res, next) {
+      passport.authenticate('local-signup', function(err, user, info) {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          console.error('Signup failed due to unknown error');
+          return res.status(500).send('Signup failed');
+        }
+        req.logIn(user, function(err) {
+          if (err) {
+            return next(err);
+          }
+          return res.json({
+            uuid : user.uuid,
+            name : user.name,
+            roles : user.roles,
+            gender : user.gender
+          });
+        });
+      })(req, res, next);
+    });
 
   // =============================================================================
   // LOGIN USING OAUTH / OPEN ID CONNECT PROVIDERS ===============================

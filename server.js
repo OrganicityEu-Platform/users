@@ -76,6 +76,9 @@ if (app.get('env') === 'development') {
   // development error handler
   // will print stacktrace
   app.use(function(err, req, res, next) {
+    if (!err.status || err.status == 500) {
+      console.log(err.stack);
+    }
     res.status(err.status || 500);
     res.format({
       'application/json': function() {

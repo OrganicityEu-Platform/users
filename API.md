@@ -57,7 +57,7 @@ The scenario schema follows the immutable data type approach. Whenever something
   title       : { type: String, required: true  }, // plain text
   summary     : { type: String, required: true  }, // plain text
   narrative   : { type: String, required: true  }, // markdown
-  creator     : { type: String                  }, // user uuid
+  creator     : { type: String, required: true  }, // user uuid
   timestamp   : { type: Date, default: Date.now }, // set when created
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)

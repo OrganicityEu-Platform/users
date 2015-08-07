@@ -56,7 +56,7 @@ var LocalLogin = React.createClass({
         email: self.state.email,
         password: self.state.password
       }
-    })
+    });
   },
   render : function() {
     return (

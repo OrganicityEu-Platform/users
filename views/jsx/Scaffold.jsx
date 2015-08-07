@@ -49,7 +49,7 @@ var Scaffold = React.createClass({
     var loggedInLinks = [];
     var userLinks = [];
     if (this.userIsLoggedIn()) {
-      loggedInLinks.push(<NavItemLink key="scenarioCreatePt1" to="scenarioCreatePt1">Create Scenario</NavItemLink>)
+      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate">Create Scenario</NavItemLink>)
       userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
       userLinks.push(<NavItemLink key="logout" to="logout">Logout</NavItemLink>);
     } else {

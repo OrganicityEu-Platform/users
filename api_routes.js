@@ -28,6 +28,7 @@ var routes = {
 
   // users routes
   'users'                : prefixes.users + '/?',
+  'user_info'            : prefixes.users + '/info/:uuid/?',
   'user_by_uuid'         : prefixes.users + '/:uuid/?',
   'disconnect_local'     : prefixes.users + '/:uuid/unlink/local?',
   'disconnect_facebook'  : prefixes.users + '/:uuid/unlink/facebook?',
