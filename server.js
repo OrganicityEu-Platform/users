@@ -15,12 +15,13 @@ var router            = express.Router();
 var config            = require('./config/config.js');
 var configDB          = require('./config/database.js');
 var port              = process.env.PORT || config.port;
+var ui                = require('./ui_routes.js');
 
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-app.use('/static', express.static('public'));
+app.use(ui.asset('/static'), express.static('public'));
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -36,28 +37,23 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes =====================================================================
 
-var api_config  = require('./routes/api/config.js');
-var api_version = api_config.version;
-
-var routes_scenarios = require('./routes/api/' + api_version + '/api.js')(router, passport);
-var routes_auth      = require('./routes/api/' + api_version + '/auth.js')(router, passport);
-var routes_users     = require('./routes/api/' + api_version + '/users.js')(router, passport);
+var routes_scenarios = require('./routes/api/v1/api.js')(router, passport);
+var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
+var routes_users     = require('./routes/api/v1/users.js')(router, passport);
+var routes_error     = require('./routes/api/v1/error.js')(router, passport);
 
 app.use(routes_scenarios);
 app.use(routes_auth);
 app.use(routes_users);
-
-if (app.get('env') === 'development') {
-  app.use(require('./routes/api/' + api_version + '/error.js')(router, passport));
-}
+app.use(routes_error);
 
 // serve all (other) requests to single-page-app contained in index.html
-app.get('/*', function (req, res) {
-  var options = {
-    root: __dirname + '/public/',
-    dotfiles: 'deny'
-  };
-  res.sendFile('index.html', options);
+var index = require('./index.js');
+var contextPath = config.contextPath;
+contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;
+contextPath = contextPath.substr(contextPath.length-1) == '/' ? contextPath : contextPath + '/';
+app.get(contextPath + '*', function (req, res) {
+  res.status(200).send(index);
 });
 
 // catch 404 and forward to error handler

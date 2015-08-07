@@ -1,28 +1,18 @@
 var api = require('../../../api_routes.js');
 var ui  = require('../../../ui_routes.js');
 
-module.exports = function(passport) {
-
-/*
-    API CONFIG ............................................................................ */
-
-    var api_config = require('../config.js');
-    var api_version = api_config.version;
+module.exports = function(router, passport) {
 
 /*
     DEPENDENCIES .......................................................................... */
 
-    var express = require('express');
-    var router = express.Router();
-
-
-    var crypto = require('crypto'); // used to generate uuid
-
+    var crypto  = require('crypto'); // used to generate uuid
     var mongodb = require('mongodb');
     var mongojs = require('mongojs');
+    var isvalid = require('isvalid');
+
     var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
 
-    var isvalid = require('isvalid');
     var validScenario = {
         type : Object,
         unknownKeys: 'remove',
@@ -227,7 +217,7 @@ module.exports = function(passport) {
                     if (err) {
                         return res.send(err);
                     }else{
-                        res.location('api/' + api_version + '/scenarios/' + scenario._id);
+                        res.location(api.reverse('scenario_by_uuid', { uuid : scenario.uuid }));
                         res.status(201).json(scenario);
                     }
 
@@ -317,12 +307,12 @@ module.exports = function(passport) {
                 newVersion.version = oldVersion[0].version + 1;
                 newVersion.creator = req.user.uuid;
 
-                newVersion.save(function(err, result) {
+                newVersion.save(function(err, scenario) {
                     if (err) {
                         return res.send(err);
                     }
-                    res.location('/api/' + api_version + '/scenarios/' + result.uuid);
-                    res.status(201).json(result);
+                    res.location(api.reverse('scenario_by_uuid', { uuid : scenario.uuid }));
+                    res.status(201).json(scenario);
                 });
             }
         });

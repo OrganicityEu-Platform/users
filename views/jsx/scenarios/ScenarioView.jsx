@@ -10,7 +10,8 @@ var ScenarioView = React.createClass({
     return null;
   },
   componentDidMount: function () {
-    $.getJSON('/api/v1/scenarios/' + this.props.params.uuid, (scenario) => {
+    var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
+    $.getJSON(url, (scenario) => {
       if (this.isMounted()) {
         this.setState(scenario);
       }

@@ -1,9 +1,9 @@
-import $ from 'jquery';
-import React from 'react';
+import $                   from 'jquery';
+import React               from 'react';
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx'
-import FlashQueue from '../FlashQueue.jsx';
-import api from '../../../api_routes.js';
-import ui  from '../../../ui_routes.js';
+import FlashQueue          from '../FlashQueue.jsx';
+import api                 from '../../../api_routes.js';
+import ui                  from '../../../ui_routes.js';
 
 var Router = require('react-router')
   , Link = Router.Link
@@ -38,7 +38,7 @@ var LocalLogin = React.createClass({
   handleSubmit : function(evt) {
     evt.preventDefault();
     var self = this;
-    $.ajax(api.route('local-login'), {
+    $.ajax(api.reverse('local-login'), {
       error: (jqXHR, textStatus, errorThrown) => {
         if (jqXHR.status == 422) {
           self.state.error = "Error logging in: username and/or password unknown";
@@ -49,7 +49,7 @@ var LocalLogin = React.createClass({
       },
       success: (currentUser) => {
         self.props.onLogin(currentUser);
-        self.transitionTo(ui.route('profile'));
+        self.transitionTo(ui.reverse('profile'));
       },
       method: 'POST',
       data: {
@@ -67,7 +67,7 @@ var LocalLogin = React.createClass({
               return <div className="alert alert-warning">{this.state.error}</div>
             }
           })()}
-          <form action={api.route('local-login')} method="post">
+          <form action={api.reverse('local-login')} method="post">
             <div className="form-group">
                 <label>Email</label>
                 <input type="text" className="form-control" name="email" id="email" value={this.state.email} onChange={this.handleChangedEmail} />

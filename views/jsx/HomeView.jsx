@@ -15,8 +15,8 @@ var HomeView = React.createClass({
     this.flash('info', 'A friendly notice');
   },
   onClickAjaxError : function() {
-    $.ajax(api.route('error'), {
-      error: this.flashOnAjaxError(api.route('error'), 'Error while demonstrating error handling'),
+    $.ajax(api.reverse('error'), {
+      error: this.flashOnAjaxError(api.reverse('error'), 'Error while demonstrating error handling'),
       success: (data) => {
         alert('Non-existing resource exists... WTF?');
       }

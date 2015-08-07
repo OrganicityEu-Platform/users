@@ -1,8 +1,8 @@
-import $ from 'jquery';
-import React from 'react';
+import $          from 'jquery';
+import React      from 'react';
 import FlashQueue from '../FlashQueue.jsx';
-import api from '../../../api_routes.js';
-import ui  from '../../../ui_routes.js';
+import api        from '../../../api_routes.js';
+import ui         from '../../../ui_routes.js';
 
 var Router = require('react-router')
   , Link = Router.Link
@@ -43,7 +43,7 @@ var Signup = React.createClass({
   handleSubmit : function(evt) {
     evt.preventDefault();
     var self = this;
-    $.ajax(api.route('signup'), {
+    $.ajax(api.reverse('signup'), {
       error: (jqXHR, textStatus, errorThrown) => {
         if (jqXHR.status == 500) {
           self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
@@ -72,7 +72,7 @@ var Signup = React.createClass({
             return <div className="alert alert-warning">{this.state.error}</div>
           }
         })()}
-        <form action="/api/v1/auth/signup" method="post">
+        <form action={api.reverse('signup')} method="post">
             <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input type="text" className="form-control" name="email" value={this.state.email} onChange={this.handleChangedEmail} />

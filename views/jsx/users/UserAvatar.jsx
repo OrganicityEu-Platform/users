@@ -1,6 +1,7 @@
-import $ from 'jquery';
-import React from 'react';
+import $          from 'jquery';
+import React      from 'react';
 import FlashQueue from '../FlashQueue.jsx';
+import api        from '../../../api_routes.js';
 
 var Router = require('react-router')
   , Link = Router.Link;
@@ -11,7 +12,7 @@ var UserAvatar = React.createClass({
     return null;
   },
   componentDidMount: function() {
-    var url = '/api/v1/users/info/' + this.props.uuid;
+    var url = api.reverse('user_info', { uuid : this.props.uuid });
     $.ajax(url, {
       dataType : 'json',
       error : this.flashOnAjaxError(url, 'Error loading user info'),

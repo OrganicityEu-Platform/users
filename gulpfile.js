@@ -2,6 +2,7 @@ var gulp             = require('gulp');
 var source           = require('vinyl-source-stream');
 var browserify       = require('browserify');
 var watchify         = require('watchify');
+var sequence         = require('run-sequence');
 var reactify         = require('reactify');
 var gulpif           = require('gulp-if');
 var babelify         = require("babelify");
@@ -45,7 +46,7 @@ var browserifyTask = function (options) {
   // The rebundle process
   var rebundle = function () {
     var start = Date.now();
-    gutil.log('Building APP bundle');
+    gutil.log('Rebundling front end');
     appBundler
       .bundle()
       .on('error', function(err) {
@@ -55,7 +56,7 @@ var browserifyTask = function (options) {
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
       .pipe(notify(function () {
-        gutil.log('APP bundle built in ' + (Date.now() - start) + 'ms');
+        gutil.log('Front end rebundled in ' + (Date.now() - start) + 'ms');
       }));
   };
 
@@ -91,41 +92,28 @@ var cssTask = function (options) {
   }
 }
 
-var staticTask = function(options) {
-  var start = new Date();
-  return gulp.src(options.src)
-      .pipe(newer(options.dest))
-      .pipe(gulp.dest(options.dest))
-      .pipe(notify(function(file) {
-				gutil.log('Copied', file.relative);
-      }));
-}
-
-gulp.task('static', function() {
-  staticTask({
-    src: './static/**',
-    dest: './public'
-  });
-});
-
 var server = {
 	instance : null,
 	start : function() {
 		gutil.log('Starting server');
 		server.instance = express.run(['server.js'], {}, false);
-		gutil.log('Started server');
 	},
 	stop : function() {
 		if (server.instance) {
 			gutil.log('Stopping server');
 			server.instance.stop();
-			gutil.log('Stopped server');
 		}
+	},
+	restart : function() {
+		gutil.log('Restarting server');
+		if (server.instance) {
+			server.instance.stop();
+		}
+		server.instance = express.run(['server.js'], {}, false);
 	}
 }
 
 gulp.task('browserify', function() {
-	console.log(process.env.DEVELOPMENT);
 	browserifyTask({
     development: process.env.DEVELOPMENT == "true",
     src: './views/jsx/App.jsx',
@@ -133,8 +121,12 @@ gulp.task('browserify', function() {
   });
 });
 
+var watches = {
+	'static' : ['./static/**'],
+	'server' : ['./config/**','./models/**','./routes/**','./server.js','./api_routes.js','./ui_routes.js','./routes.js']
+}
+
 gulp.task('set-env-dev', function () {
-	console.log('set-env-dev');
   env({
     vars: {
       //DEBUG: "express:*",
@@ -147,41 +139,31 @@ gulp.task('set-env-prod', function () {
 	console.log('set-env-prod');
 });
 
-var serverAppFiles = [
-	'./config/**',
-	'./models/**',
-	'./routes/**',
-	'./server.js',
-	'./api_routes.js/**',
-	'./ui_routes.js/**'
-];
-
 gulp.task('server', function () {
   server.start();
-	gulp.watch(serverAppFiles).on('change', function(event) {
-		gutil.log('File ' + event.path + ' was ' + event.type + ', restarting server...');
-		server.stop();
-		server.start();
-	});
 });
 
 gulp.task('static', function() {
-	staticTask({
-    src: './static/**',
-    dest: './public'
-  });
-	gulp.watch('./static/**', ['static']);
+	var src = './static/**';
+	var dst = './public';
+	return gulp.src(src)
+      .pipe(newer(dst))
+      .pipe(gulp.dest(dst))
+      .pipe(notify(function(file) {
+				gutil.log('Copied', file.relative);
+      }));
 });
 
-gulp.task('default', ['set-env-dev',  'browserify', 'static', 'server']);
-gulp.task('deploy',  ['set-env-prod', 'browserify', 'static', 'server']);
+gulp.task('default', function(callback) {
+	sequence('set-env-dev', ['browserify', 'static'], 'server', callback);
+	gulp.watch(watches.static, ['static']);
+	gulp.watch(watches.server, server.restart);
+});
 
-gulp.task('test', function () {
-  return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+gulp.task('build', function(callback) {
+	sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
 });
 
 gulp.task('clean', function () {
-  return gulp
-		.src('public', {read: false})
-    .pipe(clean());
+  return gulp.src('public', {read: false}).pipe(clean());
 });

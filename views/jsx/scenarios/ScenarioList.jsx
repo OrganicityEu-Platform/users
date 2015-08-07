@@ -1,6 +1,7 @@
-import React from 'react';
-import $ from 'jquery';
+import $                from 'jquery';
+import React            from 'react';
 import ScenarioListItem from './ScenarioListItem.jsx';
+import api              from '../../../api_routes.js';
 
 var ScenarioList = React.createClass({
   getInitialState: function () {
@@ -10,7 +11,11 @@ var ScenarioList = React.createClass({
     this.reload();
   },
   reload: function() {
-    $.getJSON('/api/v1/scenarios', (scenarios) => {
+    var url = api.reverse('scenario_list');
+    console.log(api);
+    console.log(api.reverse);
+    console.log(url);
+    $.getJSON(url, (scenarios) => {
       if (this.isMounted()) {
         this.setState({
           scenarios: scenarios

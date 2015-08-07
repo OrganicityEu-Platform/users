@@ -17,8 +17,8 @@ var Logout = React.createClass({
   componentDidMount : function() {
     // timeout allows for load animations etc.
     window.setTimeout(() => {
-      $.ajax(api.route('logout'), {
-        error : this.flashOnAjaxError(api.route('logout'), 'Error while logging out'),
+      $.ajax(api.reverse('logout'), {
+        error : this.flashOnAjaxError(api.reverse('logout'), 'Error while logging out'),
         success : () => {
           this.setState({ loggedOut : true });
           window.currentUser = undefined;

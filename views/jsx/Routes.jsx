@@ -9,22 +9,23 @@ import Logout           from './auth/Logout.jsx';
 import LocalLogin       from './auth/LocalLogin.jsx';
 import Signup           from './auth/Signup.jsx';
 import Profile          from './auth/Profile.jsx';
+import ui               from '../../ui_routes.js';
 
 var Router = require('react-router')
   , Route = Router.Route;
 
 var routes = (
   <Route handler={Scaffold}>
-    <Route name="home"              path="/?"                         handler={HomeView}          />
-    <Route name="scenarioList"      path="scenarios/?"                handler={ScenarioListView}  />
-    <Route name="scenarioCreate"    path="scenarios/new"              handler={ScenarioEditView} />
-    <Route name="scenarioEdit"      path="scenarios/edit/:uuid"       handler={ScenarioEditView} />
-    <Route name="scenarioView"      path="scenarios/:uuid"            handler={ScenarioView}      />
-    <Route name="login"             path="auth/login/?"               handler={Login}             />
-    <Route name="local-login"       path="auth/local-login/?"         handler={LocalLogin}        />
-    <Route name="signup"            path="auth/signup/?"              handler={Signup}            />
-    <Route name="profile"           path="auth/profile/?"             handler={Profile}           />
-    <Route name="logout"            path="auth/logout/?"              handler={Logout}            />
+    <Route name="home"              path={ui.route('home')}           handler={HomeView}         />
+    <Route name="scenarioList"      path={ui.route('scenarioList')}   handler={ScenarioListView} />
+    <Route name="scenarioCreate"    path={ui.route('scenarioCreate')} handler={ScenarioEditView} />
+    <Route name="scenarioEdit"      path={ui.route('scenarioEdit')}   handler={ScenarioEditView} />
+    <Route name="scenarioView"      path={ui.route('scenarioView')}   handler={ScenarioView}     />
+    <Route name="login"             path={ui.route('login')}          handler={Login}            />
+    <Route name="local-login"       path={ui.route('local-login')}    handler={LocalLogin}       />
+    <Route name="signup"            path={ui.route('signup')}         handler={Signup}           />
+    <Route name="profile"           path={ui.route('profile')}        handler={Profile}          />
+    <Route name="logout"            path={ui.route('logout')}         handler={Logout}           />
   </Route>
 );
 

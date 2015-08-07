@@ -1,9 +1,10 @@
-import $ from 'jquery';
-import React from 'react';
-import ReactMixin from 'react-mixin';
+import $                from 'jquery';
+import React            from 'react';
+import ReactMixin       from 'react-mixin';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
-import api from '../../../api_routes.js';
-import FlashQueue from '../FlashQueue.jsx';
+import api              from '../../../api_routes.js';
+import FlashQueue       from '../FlashQueue.jsx';
+import config           from '../../../config/config.js';
 
 var Router = require('react-router')
   , Link = Router.Link;
@@ -20,9 +21,9 @@ var Profile = React.createClass({
     return state;
   },
   componentDidMount: function() {
-    $.ajax(api.route('currentUser'), {
+    $.ajax(api.reverse('currentUser'), {
       dataType: 'json',
-      error: this.flashOnAjaxError(api.route('currentUser'), 'Error retrieving current user'),
+      error: this.flashOnAjaxError(api.reverse('currentUser'), 'Error retrieving current user'),
       success: (data) => {
         this.state.dirty = false;
         this.setState(data);
@@ -51,12 +52,12 @@ var Profile = React.createClass({
     if (!this.userHasRole("admin")) {
       data.roles = undefined;
     }
-    $.ajax({
+    var url = config.contextPath + "api/v1/users/" + this.state.uuid;
+    $.ajax(url, {
         type : "PATCH",
-        url : "/api/v1/users/" + this.state.uuid,
         data : JSON.stringify(data),
         contentType : 'application/json',
-        error : this.flashOnAjaxError("/api/v1/users/" + this.state.uuid, 'Error updating user profile'),
+        error : this.flashOnAjaxError(url, 'Error updating user profile'),
         success : () => {
           this.state.dirty = false;
           this.setState(this.state);

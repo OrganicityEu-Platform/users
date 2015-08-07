@@ -1,28 +1,31 @@
-var prefixes = {
-  'auth'       : '/auth',
-  'sceanarios' : '/scenarios'
-}
+var config   = require('./config/config.js');
+var routes   = require('./routes.js');
 
-var routes = {
+var ui_routes = {
 
-  // authentication routes
-  'profile'           : prefixes.auth + '/profile',
-  'local-login'       : prefixes.auth + '/local-login',
-  'signup'            : prefixes.auth + '/signup',
-  'callback_facebook' : prefixes.auth + '/facebook/callback',
-  'callback_twitter'  : prefixes.auth + '/twitter/callback',
-  'callback_google'   : prefixes.auth + '/google/callback',
-  'callback_github'   : prefixes.auth + '/github/callback',
+  'root'              : '/?',
+  'home'              : '/?',
 
   // scenario routes
+  'scenarioList'      : '/scenarios/?',
+  'scenarioCreate'    : '/scenarios/new/?',
+  'scenarioEdit'      : '/scenarios/edit/:uuid/?',
+  'scenarioView'      : '/scenarios/:uuid/?',
 
+  // authentication routes
+  'profile'           : '/auth/profile/?',
+  'login'             : '/auth/login/?',
+  'logout'            : '/auth/logout/?',
+  'local-login'       : '/auth/local-login/?',
+  'signup'            : '/auth/signup/?',
+  'callback_facebook' : '/auth/facebook/callback/?',
+  'callback_twitter'  : '/auth/twitter/callback/?',
+  'callback_google'   : '/auth/google/callback/?',
+  'callback_github'   : '/auth/github/callback/?',
 }
 
 module.exports = {
-  route : function(routeName) {
-    if (!routes[routeName] || undefined === routes[routeName]) {
-      console.log('No route for "%s" found!', routeName);
-    }
-    return routes[routeName];
-  }
-}
+  route   : routes.route(config.contextPath, ui_routes),
+  reverse : routes.reverse(config.contextPath, ui_routes),
+  asset   : routes.asset(config.contextPath)
+};
