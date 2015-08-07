@@ -58,7 +58,7 @@ var Scaffold = React.createClass({
     }
     return (
       <div className="container">
-        <Navbar brand={<Link to="/">Home</Link>}>
+        <Navbar brand={<Link to="home">Home</Link>}>
           <Nav navbar>
             <NavItemLink to="scenarioList">Scenarios</NavItemLink>
             {loggedInLinks}
