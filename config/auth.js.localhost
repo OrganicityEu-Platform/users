@@ -7,8 +7,8 @@ var ui     = require('../ui_routes.js');
 
 module.exports = {
   'facebookAuth' : {
-    'clientID'         : '1639113973042055', // your App ID
-    'clientSecret'     : 'd37b20984e357cc71867784c5d29cd5d', // your App Secret
+    'clientID'         : '131530127187026', // your App ID
+    'clientSecret'     : '94e0cfde0be3d3b119bc4dbbaa8b3c1f', // your App Secret
     'callbackURL'      : config.host + ':' + config.port + ui.route('callback_facebook')
   },
   'twitterAuth' : {
