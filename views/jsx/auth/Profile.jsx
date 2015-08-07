@@ -4,7 +4,6 @@ import ReactMixin       from 'react-mixin';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
 import api              from '../../../api_routes.js';
 import FlashQueue       from '../FlashQueue.jsx';
-import config           from '../../../config/config.js';
 
 var Router = require('react-router')
   , Link = Router.Link;
@@ -52,7 +51,7 @@ var Profile = React.createClass({
     if (!this.userHasRole("admin")) {
       data.roles = undefined;
     }
-    var url = config.contextPath + "api/v1/users/" + this.state.uuid;
+    var url = api.reverse('user_by_uuid', { uuid : this.state.uuid});
     $.ajax(url, {
         type : "PATCH",
         data : JSON.stringify(data),
