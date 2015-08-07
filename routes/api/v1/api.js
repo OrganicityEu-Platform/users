@@ -49,11 +49,12 @@ module.exports = function(router, passport) {
 
             db.scenarios.find(
                 // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
+                // @see: http://docs.mongodb.org/manual/core/index-text/#create-text-index
                 { $text: { $search: req.query.q} },
                 { score: { $meta: "textScore" } }
             ).sort( { score: { $meta: "textScore" } }, function(err, data){
                     if(err){
-                        return res.send("ERROR: " + err);
+                        return res.send("ERRROR: " + err);
                     }else{
                         res.json(getLatestVersions(data));
                     }
@@ -61,7 +62,15 @@ module.exports = function(router, passport) {
 
         // filtered search:
 
-        }else if(!isEmptyObject(req.query) && !req.query.q){
+        }else if(req.query.creator && Object.keys(req.query).length == 1){
+            db.scenarios.find({creator: req.query.creator}, function(err, scenarios){
+                if(err){
+                    res.send(err);
+                }else{
+                    res.status(200).json(getLatestVersions(scenarios));
+                }
+            });
+        }else if(!isEmptyObject(req.query) && !req.query.q && !req.query.creator){
 
             // make filter
             var filtered_search = {};
@@ -94,7 +103,7 @@ module.exports = function(router, passport) {
                 if(err){
                     res.send("ERROR: " + err);
                 }else{
-                   res.json(getLatestVersions(scenario));
+                   res.json(scenario);
                 }
             });
 
