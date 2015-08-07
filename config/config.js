@@ -1,5 +1,5 @@
 module.exports = {
 	host : "http://localhost",
 	port : 8080,
-	contextPath : "/"
+	contextPath : "/organicity-scenario-tool"
 }

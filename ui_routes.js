@@ -25,7 +25,7 @@ var ui_routes = {
 }
 
 module.exports = {
-  route   : routes.route(config.contextPath, ui_routes),
-  reverse : routes.reverse(config.contextPath, ui_routes),
-  asset   : routes.asset(config.contextPath)
+  route   : routes.route(config.contextPath, ui_routes, { relative : false }),
+  reverse : routes.reverse(config.contextPath, ui_routes, { relative : false }),
+  asset   : routes.asset(config.contextPath, { relative : false })
 };
