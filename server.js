@@ -50,7 +50,7 @@ app.use(routes_error);
 // serve all (other) requests to single-page-app contained in index.html
 var index = require('./index.js');
 var contextPath = config.contextPath;
-contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;
+contextPath = contextPath.substr(0, 1) == '/' ? contextPath.substr(1) : contextPath;
 contextPath = contextPath.substr(contextPath.length-1) == '/' ? contextPath : contextPath + '/';
 app.get(contextPath + '*', function (req, res) {
   res.status(200).send(index);
