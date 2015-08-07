@@ -26,6 +26,7 @@
     "gutil": "^1.6.4",
     "phantomjs": "^1.9.17",
     "reactify": "^1.1.1",
+    "run-sequence": "^1.1.2",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
   },
@@ -59,6 +60,7 @@
     "react-bootstrap": "^0.24.2",
     "react-mixin": "^1.7.0",
     "react-router": "^0.13.3",
-    "react-router-bootstrap": "^0.18.0"
+    "react-router-bootstrap": "^0.18.0",
+    "route-parser": "0.0.4"
   }
 }

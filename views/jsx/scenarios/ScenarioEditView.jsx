@@ -1,9 +1,9 @@
-import $ from 'jquery';
-import React from 'react';
-import FlashQueue from '../FlashQueue.jsx';
-import TagField from '../form-components/TagField.jsx';
-import api from '../../../api_routes.js';
-import Router from 'react-router';
+import $                 from 'jquery';
+import React             from 'react';
+import FlashQueue        from '../FlashQueue.jsx';
+import TagField          from '../form-components/TagField.jsx';
+import api               from '../../../api_routes.js';
+import Router            from 'react-router';
 import ScenarioTableView from './ScenarioTableView.jsx';
 
 var ScenarioEditView = React.createClass({
@@ -42,7 +42,8 @@ var ScenarioEditView = React.createClass({
   },
   componentDidMount() {
     if (this.editMode()) {
-      $.getJSON('/api/v1/scenarios/' + this.props.params.uuid, (scenario) => {
+      var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
+      $.getJSON(url, (scenario) => {
         if (this.isMounted()) {
           this.setState(scenario);
         }
@@ -103,13 +104,13 @@ var ScenarioEditView = React.createClass({
   },
   clickedSubmit : function() {
     var method = this.editMode() ? 'PUT' : 'POST';
-    var url    = this.editMode() ? '/api/v1/scenarios/' + this.props.params.uuid : api.route('scenario_list');
+    var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid }) : api.reverse('scenario_list');
     $.ajax(url, {
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(this.state),
       method: method,
-      error: this.flashOnAjaxError(api.route('scenario_list'), 'Error while submitting scenario'),
+      error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
       success: (scenario) => {
         this.clearState();
         this.transitionTo('scenarioView', { uuid : scenario.uuid });

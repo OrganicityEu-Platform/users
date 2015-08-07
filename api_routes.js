@@ -1,3 +1,6 @@
+var config   = require('./config/config.js');
+var routes   = require('./routes.js');
+
 var prefixes = {
   'auth'      : '/api/v1/auth',
   'users'     : '/api/v1/users',
@@ -8,7 +11,7 @@ var prefixes = {
   'error'     : '/api/v1/error'
 }
 
-var routes = {
+var api_routes = {
 
   // authentication routes
   'currentUser'          : prefixes.auth + '/currentUser',
@@ -48,10 +51,7 @@ var routes = {
 }
 
 module.exports = {
-  route : function(routeName) {
-    if (!routes[routeName] || undefined === routes[routeName]) {
-      console.log('No route for "%s" found!', routeName);
-    }
-    return routes[routeName];
-  }
-}
+  route   : routes.route(config.contextPath, api_routes),
+  reverse : routes.reverse(config.contextPath, api_routes),
+  asset   : routes.asset(config.contextPath)
+};
