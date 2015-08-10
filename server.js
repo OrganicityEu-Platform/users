@@ -107,4 +107,4 @@ if (app.get('env') === 'development') {
 // launch =====================================================================
 app.listen(port);
 expressListRoutes({ prefix: '' }, 'Server REST API:', router);
-console.log('Server started on port ' + port);
+console.log('Server started on ' + config.host + ':' + port + config.contextPath);

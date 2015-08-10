@@ -66,44 +66,91 @@ npm install
 
 ## Config
 
-
-Edit `config/config.js`
-
-## Create admin user
+Create/Copy config files:
 
 ```
-make admin
+cd config/
+cp config.localhost.js config.js
+cp database.localhost.js database.js
+cp auth.localhost.js auth.js
 ```
 
-## Start application project
+### config.js - OAuth
 
-```
-make
-```
+The general server configuration like the IP and the port
 
-## Config Auths
+### database.js - Database
+
+The MongoDB database configuration
+
+### auth.js - OAuth
 
 Create API keys and edit `config/auth.js`
 
-### Facebook
+#### Facebook
 
 https://developers.facebook.com/apps
 
-### Twitter
+#### Twitter
 
 https://apps.twitter.com/app
 
 Callback: {SERVER}/auth/twitter/callbacl
 
-### Google+
+#### Google+
 
 https://console.developers.google.com/project
 
 Callback: {SERVER}/auth/google/callback 
 
-### Github
+#### Github
 
 https://github.com/settings/applications/new
 
 Callback: {SERVER}/auth/github/callback
 
+
+## Create admin user
+
+An admin user can be created like this:
+
+```
+cd scripts/
+node mkAdminUser {USERNAME}
+```
+
+## Start application project
+
+### Development mode
+
+```
+gulp
+```
+
+### Production mode
+
+```
+gulp build
+forever restart server.js
+```
+
+## Code Style
+
+```
+gulp lint
+```
+
+or
+
+```
+gulp jscs
+gulp jshint
+gulp eslint
+```
+
+
+## Drop Database (During development)
+
+```
+mongo scenarios --eval "db.dropDatabase();"
+```
