@@ -16,7 +16,7 @@ module.exports = function(router, passport) {
     }
   });
 
-  var authSuccess = function(req,res) {
+  var authSuccess = function(req, res) {
     res.redirect(ui.route('profile'));
   };
   var authCallbacks = {
@@ -86,21 +86,21 @@ module.exports = function(router, passport) {
   var authProviders = ['facebook', 'twitter', 'google', 'github'];
   var authScopes = {
     'facebook' : { scope : ['email'] },
-    'twitter'  : { scope : ['profile','email'] },
-    'google'   : { scope : ['profile','email'] },
-    'github'   : { scope : ['profile','email'] },
+    'twitter'  : { scope : ['profile', 'email'] },
+    'google'   : { scope : ['profile', 'email'] },
+    'github'   : { scope : ['profile', 'email'] },
   };
 
   // login / signup using auth providers
   authProviders.forEach(function(provider) {
-    router.get(api.route('auth_'+provider), passport.authenticate(provider, authScopes[provider]));
-    router.get(ui.route('callback_'+provider), passport.authenticate(provider), authSuccess);
+    router.get(api.route('auth_' + provider), passport.authenticate(provider, authScopes[provider]));
+    router.get(ui.route('callback_' + provider), passport.authenticate(provider), authSuccess);
   });
 
   // authorize / connect accounts for already existing users
   authProviders.forEach(function(provider) {
-    router.post(api.route('connect_'+provider), passport.authenticate(provider, authScopes));
-    router.get(ui.route('callback_'+provider), passport.authorize(provider, authCallbacks));
+    router.post(api.route('connect_' + provider), passport.authenticate(provider, authScopes));
+    router.get(ui.route('callback_' + provider), passport.authorize(provider, authCallbacks));
   });
 
   // special case: connecting local-login
