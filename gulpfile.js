@@ -20,6 +20,7 @@ var newer            = require('gulp-newer');   // determines which files are ne
 var debug            = require('gulp-debug');   // debug log messages in gulp pipelines
 var clean            = require('gulp-clean');   // clean tasks
 var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
+var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -152,6 +153,12 @@ gulp.task('static', function() {
       .pipe(notify(function(file) {
 				gutil.log('Copied', file.relative);
       }));
+});
+
+gulp.task('jscs', function () {
+    var src = ['routes/api/v1/*']
+    return gulp.src(src)
+        .pipe(jscs());
 });
 
 gulp.task('default', function(callback) {
