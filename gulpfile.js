@@ -20,6 +20,8 @@ var newer            = require('gulp-newer');   // determines which files are ne
 var debug            = require('gulp-debug');   // debug log messages in gulp pipelines
 var clean            = require('gulp-clean');   // clean tasks
 var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
+var marked           = require('gulp-marked');  // used for generating API documentation from markdown files
+var open             = require('gulp-open');    // can open applications and URLs in the host OS default application
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -122,6 +124,7 @@ gulp.task('browserify', function() {
 });
 
 var watches = {
+	'api'    : ['./API.md'],
 	'static' : ['./static/**'],
 	'server' : ['./config/**','./models/**','./routes/**','./server.js','./api_routes.js','./ui_routes.js','./routes.js']
 }
@@ -166,4 +169,25 @@ gulp.task('build', function(callback) {
 
 gulp.task('clean', function () {
   return gulp.src('public', {read: false}).pipe(clean());
+});
+
+var api = {
+	build : function() {
+		gutil.log('Rebuild API.md');
+		gulp.src('./API.md')
+	    .pipe(marked())
+	    .pipe(gulp.dest('./tmp/'));
+	},
+	buildAndOpen : function() {
+		gutil.log('Building API.md');
+		gulp.src('./API.md')
+	    .pipe(marked())
+	    .pipe(gulp.dest('./tmp/'))
+			.pipe(open());
+	}
+}
+
+gulp.task('api', function() {
+	api.buildAndOpen();
+	gulp.watch(watches.api, api.build);
 });
