@@ -1,8 +1,15 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+.ocTable {
+  .table;
+  .table-striped;
+  .table-bordered;
+  .table-hover;
+}
+
 .scenarioListTable {
   width: 100%;
-  .table-striped
+  .ocTable
 }
 
 .scenarioTableView td {
@@ -12,6 +19,10 @@
 .flash-queue {
   font-family: Helvetica Neue, Helvetica, Arial;
   font-size: 12px;
+}
+
+.scenarioTableView {
+  .ocTable;
 }
 
 .scenarioEditButton {
