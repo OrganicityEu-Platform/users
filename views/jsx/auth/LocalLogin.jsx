@@ -21,10 +21,10 @@ var LocalLogin = React.createClass({
   isValid : function() {
     // TODO improve validation
     return (
-      this.state.email != '' &&
+      this.state.email !== '' &&
       this.state.email !== undefined &&
       this.state.password !== undefined &&
-      this.state.password != ''
+      this.state.password !== ''
     );
   },
   handleChangedEmail : function(evt) {
@@ -40,7 +40,7 @@ var LocalLogin = React.createClass({
     var self = this;
     $.ajax(api.reverse('local-login'), {
       error: (jqXHR, textStatus, errorThrown) => {
-        if (jqXHR.status == 422) {
+        if (jqXHR.status === 422) {
           self.state.error = 'Error logging in: username and/or password unknown';
           self.setState(this.state);
         } else {

@@ -195,8 +195,8 @@ gulp.task('eslint', function() {
 
   return gulp.src(jscsSrc)
     .pipe(eslint({
-      baseConfig:{
-        parser: "babel-eslint"
+      baseConfig: {
+        parser: 'babel-eslint'
       }
     }))
     .pipe(eslint.format())
@@ -221,7 +221,7 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('lint', function(callback) {
-  sequence(['jscs', 'jshint'], callback);
+  sequence(['jscs', 'jshint', 'eslint'], callback);
 });
 
 gulp.task('default', function(callback) {
@@ -231,7 +231,7 @@ gulp.task('default', function(callback) {
 });
 
 gulp.task('build', function(callback) {
-  sequence(['clean', 'set-env-prod'], 'lint', ['browserify', 'static'], callback);
+  sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {

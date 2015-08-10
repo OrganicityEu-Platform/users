@@ -24,7 +24,7 @@ var Scaffold = React.createClass({
       accepts : 'application/json',
       success : self.onLogin,
       error : function(jqXHR, textStatus, errorThrown) {
-        if (jqXHR.status == 422) {
+        if (jqXHR.status === 422) {
           self.onLogout();
         } else {
           this.flashOnAjaxError(

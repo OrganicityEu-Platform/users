@@ -21,11 +21,11 @@ var Signup = React.createClass({
   isValid : function() {
     // TODO improve validation
     return (
-      this.state.email != '' &&
+      this.state.email !== '' &&
       this.state.email !== undefined &&
       this.state.password !== undefined &&
-      this.state.password != '' &&
-      this.state.password == this.state.password_repeat
+      this.state.password !== '' &&
+      this.state.password === this.state.password_repeat
     );
   },
   handleChangedEmail : function(evt) {
@@ -45,7 +45,7 @@ var Signup = React.createClass({
     var self = this;
     $.ajax(api.reverse('signup'), {
       error: (jqXHR, textStatus, errorThrown) => {
-        if (jqXHR.status == 500) {
+        if (jqXHR.status === 500) {
           self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
         } else {
           self.state.error = 'Error signing up: ' + textStatus;

@@ -53,7 +53,7 @@ module.exports = function(router, passport) {
 
     // full text search on narrative:
 
-    if (req.query.q && Object.keys(req.query).length == 1) {
+    if (req.query.q && Object.keys(req.query).length === 1) {
 
       db.scenarios.find(
           // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
@@ -70,7 +70,7 @@ module.exports = function(router, passport) {
 
     // filtered search:
 
-    } else if (req.query.creator && Object.keys(req.query).length == 1) {
+    } else if (req.query.creator && Object.keys(req.query).length === 1) {
       db.scenarios.find({creator: req.query.creator}, function(err, scenarios) {
         if (err) {
           res.send(err);
@@ -479,7 +479,7 @@ module.exports = function(router, passport) {
           var doc = results[e];
           // if results document version older than data document
           // then overwrite results document with new document
-          if (doc.uuid == curr_doc.uuid && doc.version < curr_doc.version) {
+          if (doc.uuid === curr_doc.uuid && doc.version < curr_doc.version) {
             results[e] = curr_doc;
           }
         }

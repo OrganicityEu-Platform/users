@@ -2,7 +2,7 @@ module.exports = function(passport) {
   return function(req, res, next) {
     if (req.user.hasRole(['admin'])) {
       return next();
-    } else if (req.user.uuid == req.params.uuid) {
+    } else if (req.user.uuid === req.params.uuid) {
       return next();
     } else {
       // Other users are not allowed to edit anything!

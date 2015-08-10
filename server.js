@@ -50,8 +50,8 @@ app.use(routes_error);
 // serve all (other) requests to single-page-app contained in index.html
 var index = require('./index.js');
 var contextPath = config.contextPath;
-contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;
-contextPath = contextPath.substr(contextPath.length - 1) == '/' ? contextPath + '?' : contextPath + '/?';
+contextPath = contextPath.substr(0, 1) === '/' ? contextPath : '/' + contextPath;
+contextPath = contextPath.substr(contextPath.length - 1) === '/' ? contextPath + '?' : contextPath + '/?';
 var catchAllRoute = contextPath + '*';
 app.get(catchAllRoute, function(req, res) {
   res.status(200).send(index);
@@ -73,7 +73,7 @@ if (app.get('env') === 'development') {
   // development error handler
   // will print stacktrace
   app.use(function(err, req, res, next) {
-    if (!err.status || err.status == 500) {
+    if (!err.status || err.status === 500) {
       console.log(err.stack);
     }
     res.status(err.status || 500);

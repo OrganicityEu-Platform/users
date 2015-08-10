@@ -11,21 +11,21 @@ var prefix = function(contextPath, options) {
     options = options || defaultOptions;
     // ensure contextPath is relative or absolute, depending on options
     if (options.relative) {
-      if (contextPath == '/') {
-        return suffix.substr(0, 1) == '/' ? suffix.substr(1) : suffix;
+      if (contextPath === '/') {
+        return suffix.substr(0, 1) === '/' ? suffix.substr(1) : suffix;
       } else {
-        contextPath = contextPath.substr(0, 1) == '/' ? contextPath.substr(1) : contextPath;
+        contextPath = contextPath.substr(0, 1) === '/' ? contextPath.substr(1) : contextPath;
       }
     } else { // absolute
       if (contextPath === '') {
         contextPath = '/';
       } else {
-        contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;
+        contextPath = contextPath.substr(0, 1) === '/' ? contextPath : '/' + contextPath;
       }
     }
     // ensure contextPath ends with /
     contextPath = endsWith(contextPath, '/') ? contextPath : contextPath + '/';
-    return contextPath + (suffix.substr(0, 1) == '/' ? suffix.substr(1) : suffix);
+    return contextPath + (suffix.substr(0, 1) === '/' ? suffix.substr(1) : suffix);
   };
 };
 

@@ -80,9 +80,9 @@ var Profile = React.createClass({
           <div className="form-group">
             <label className="control-label col-sm-2" htmlFor="profile-gender">Gender</label>
             <div className="col-sm-10">
-              <input type="radio" name="gender" id="profile-gender-f" value="f" checked={this.state.gender == 'f'}
+              <input type="radio" name="gender" id="profile-gender-f" value="f" checked={this.state.gender === 'f'}
                 onChange={this.handleChangedGender} /> Female<br/>
-              <input type="radio" name="gender" id="profile-gender-m" value="m" checked={this.state.gender == 'm'}
+              <input type="radio" name="gender" id="profile-gender-m" value="m" checked={this.state.gender === 'm'}
                 onChange={this.handleChangedGender} /> Male
             </div>
           </div>

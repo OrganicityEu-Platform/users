@@ -17,7 +17,7 @@ var Queue = React.createClass({
     mountedInstance = this;
   },
   dismissMessage: function(id) {
-    this.state.messages = this.state.messages.filter((message) => message.id != id);
+    this.state.messages = this.state.messages.filter((message) => message.id !== id);
     this.setState(this.state);
   },
   flash: function(type, text, opts) {
@@ -63,7 +63,7 @@ var Message = React.createClass({
 
 var Mixin = {
   flash: function(type, text, opts) {
-    if (type != '' && type != 'success' && type != 'info' && type != 'warning' && type != 'danger') {
+    if (type !== '' && type !== 'success' && type !== 'info' && type !== 'warning' && type !== 'danger') {
       console.log('Wrong flash type "' + type + '". Use one of ["", "info", "success", "warning", "danger"].)');
     }
     mountedInstance.flash(type, text, opts);

@@ -1,0 +1,17 @@
+// All Rules: http://eslint.org/docs/rules/
+
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6" : true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "rules": {
+    "eqeqeq": [2, "smart"],
+    "quotes" : [1, "single"],
+    "no-trailing-spaces": [2, { "skipBlankLines": false }]
+  }
+}

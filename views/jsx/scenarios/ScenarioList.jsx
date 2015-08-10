@@ -70,7 +70,7 @@ var ScenarioList = React.createClass({
             </thead>
             <tbody>
               {(() => {
-                if (this.state.scenarios.length == 0) {
+                if (this.state.scenarios.length === 0) {
                   return (
                     <tr>
                       <td colSpan="5">No scenarios found....</td>
