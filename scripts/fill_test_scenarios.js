@@ -6,6 +6,6 @@ var scenarioDir = __dirname + '/test_scenarios/';
 
 var files = fs.readdirSync(scenarioDir);
 files.forEach(function(file) {
-	var json = fs.readFileSync(scenarioDir + file);
-	console.log(JSON.parse(json));
+  var json = fs.readFileSync(scenarioDir + file);
+  console.log(JSON.parse(json));
 });

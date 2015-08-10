@@ -13,15 +13,15 @@ var token = crypto.randomBytes(5).toString('hex');
 
 var newUser    = new User();
 newUser.uuid   = uuid.v4();
-newUser.roles = ["admin"];
-newUser.local.email    = "admin2";
+newUser.roles = ['admin'];
+newUser.local.email    = 'admin@admin';
 newUser.local.password = newUser.generateHash(token);
 newUser.save(function(err) {
-    if (err) {
-        console.log("Error", error);
-    } else {
-        console.log("User: admin2");
-        console.log("Password: " + token);
-    }
-    process.exit()
+  if (err) {
+    console.log('Error', error);
+  } else {
+    console.log('User: admin2');
+    console.log('Password: ' + token);
+  }
+  process.exit();
 });

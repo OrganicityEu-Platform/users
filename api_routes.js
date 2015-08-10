@@ -9,7 +9,7 @@ var prefixes = {
   'sectors'   : '/api/v1/sectors',
   'devices'   : '/api/v1/devices',
   'error'     : '/api/v1/error'
-}
+};
 
 var api_routes = {
 
@@ -48,7 +48,7 @@ var api_routes = {
 
   // erroring resource (for testing)
   'error'                : prefixes.error + '/?'
-}
+};
 
 module.exports = {
   route   : routes.route(config.contextPath, api_routes, { relative : false }),

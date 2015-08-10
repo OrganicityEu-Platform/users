@@ -81,5 +81,5 @@
     "validateParameterSeparator": ", ",
     "fileExtensions": [".js", ".jsx"],
     "esnext": true,
-    "esprima": "./node_modules/esprima-fb"    
+    "esprima": "./node_modules/esprima-fb"
   }

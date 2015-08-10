@@ -3,12 +3,12 @@
  */
 
 module.exports = function(passport) {
-  return function (req, res, next) {
+  return function(req, res, next) {
 
     console.log('isLoggedIn()');
 
     // Check, if logged in via non HTTP Basic auth
-    if (typeof req.isAuthenticated === "function" && req.isAuthenticated()) {
+    if (typeof req.isAuthenticated === 'function' && req.isAuthenticated()) {
       console.log('isLoggedIn(): is authenticated!');
       return next();
     }
@@ -25,10 +25,10 @@ module.exports = function(passport) {
             return res.redirect('/login');
           },
           'application/json': function() {
-            return res.status(401).send("401 Unauthorized");
+            return res.status(401).send('401 Unauthorized');
           },
           'default': function() {
-            return res.status(406).send("406 Not Acceptable");
+            return res.status(406).send('406 Not Acceptable');
           }
         });
       } else {
@@ -42,5 +42,5 @@ module.exports = function(passport) {
         });
       }
     })(req, res, next);
-  }
-}
+  };
+};
