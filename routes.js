@@ -26,8 +26,8 @@ var prefix = function(contextPath, options) {
     // ensure contextPath ends with /
     contextPath = endsWith(contextPath, '/') ? contextPath : contextPath + '/';
     return contextPath + (suffix.substr(0, 1) == '/' ? suffix.substr(1) : suffix);
-  }
-}
+  };
+};
 
 var route = function(contextPath, routes, options) {
   var prefixFn = prefix(contextPath, options);
@@ -36,8 +36,8 @@ var route = function(contextPath, routes, options) {
       return undefined;
     }
     return prefixFn(routes[routeName]);
-  }
-}
+  };
+};
 
 var reverse = function(contextPath, routes, options) {
   var routeFn = route(contextPath, routes, options || defaultOptions);
@@ -47,17 +47,17 @@ var reverse = function(contextPath, routes, options) {
       return undefined;
     }
     if (endsWith(unparsed, '/?')) {
-      unparsed = unparsed.substr(0, unparsed.length-2);
+      unparsed = unparsed.substr(0, unparsed.length - 2);
     }
     return UrlAssembler().template(unparsed).param(params).query(query).toString();
   };
-}
+};
 
 var asset = function(contextPath, options) {
   var prefixFn = prefix(contextPath, options);
   return function(path) {
     return prefixFn(path);
-  }
-}
+  };
+};
 
 module.exports = { route : route, reverse : reverse, asset : asset };

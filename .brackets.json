@@ -1,0 +1,11 @@
+{
+    "styleActiveLine": true,
+    "showLineNumbers": true,
+    "linting.enabled": true,
+    "linting.prefer": [
+        "JSCS"
+    ],
+    "linting.usePreferredOnly": true,
+    "tabSize": 2,
+    "spaceUnits": 2
+}

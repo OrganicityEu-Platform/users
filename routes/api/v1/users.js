@@ -26,7 +26,7 @@ module.exports = function(router, passport) {
       'name': { type: String, required: true },
       'gender': { type: String, required: true },
     }
-  }
+  };
 
   var UserSchemaPatch = {
     type : Object,
@@ -36,28 +36,28 @@ module.exports = function(router, passport) {
         type: Array,
         required: false,
         schema: {
-            type: String
+          type: String
         }
       },
       'name': { type: String, required: false },
       'gender': { type: String, required: false },
       'local' : {
-  			type : Object,
-  			schema : {
+        type : Object,
+        schema : {
           'email' : { type: String, required: false },
           'password' : { type: String, required: false }
         }
       }
     }
-  }
+  };
 
   // ###############################################################
   // Routes
   // ###############################################################
 
-  router.get(api.route('users'), [isLoggedIn, hasRole(["admin"])], function(req, res, next) {
+  router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
 
-    User.find(function (err, users) {
+    User.find(function(err, users) {
       if (err) {
         return next(err);
       } else {
@@ -75,10 +75,10 @@ module.exports = function(router, passport) {
 
   var findUser = function(uuid, res, success) {
     User.findOne({ 'uuid' :  uuid }, function(err, user) {
-      if(user == null) {
-		    var err = new Error("User " + uuid + " not found");
-		    err.status = 404;
-		    return next(err);
+      if (user == null) {
+        var err = new Error('User ' + uuid + ' not found');
+        err.status = 404;
+        return next(err);
       }
       if (err) {
         console.log(err);
@@ -86,15 +86,15 @@ module.exports = function(router, passport) {
       } else {
         res.format({
           'application/json': function() {
-              success(user);
+            success(user);
           },
           'default': function() {
-              res.send(406, 'Not Acceptable');
+            res.send(406, 'Not Acceptable');
           }
         });
       }
     });
-  }
+  };
 
   router.get(api.route('user_info'), function(req, res, next) {
     findUser(req.params.uuid, res, function(user) {
@@ -111,46 +111,50 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.patch(api.route('user_by_uuid'), [isLoggedIn, isUserOrAdmin, validate.body(UserSchemaPatch)], function(req, res, next) {
+  router.patch(
+    api.route('user_by_uuid'),
+    [isLoggedIn, isUserOrAdmin, validate.body(UserSchemaPatch)],
+    function(req, res, next) {
 
-		// Non admin user cannot edit the roles
-		if(req.body.roles && !req.user.hasRole(['admin'])) {
-      var err = new Error("Forbidden: Not allowed to edit roles for User " + req.params.uuid);
-      err.status = 403;
-      return next(err);
-		}
+      // Non admin user cannot edit the roles
+      if (req.body.roles && !req.user.hasRole(['admin'])) {
+        var err = new Error('Forbidden: Not allowed to edit roles for User ' + req.params.uuid);
+        err.status = 403;
+        return next(err);
+      }
 
-    User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-  		if(req.body.local && (req.body.local.password != "")) {
-          	user.local.password = user.generateHash(req.body.local.password);
-  		}
-  		if(req.body.name && (req.body.name != "")) {
-          	user.name = req.body.name;
-  		}
-  		if(req.body.gender && (req.body.gender != "")) {
-          	user.gender = req.body.gender;
-  		}
-  		if(req.body.roles && (req.body.roles != "")) {
-          	user.roles = req.body.roles;
-  		}
-  		user.save(function (err) {
-        if (err) {
-          return next(err);
+      User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
+        if (req.body.local && (req.body.local.password != '')) {
+          user.local.password = user.generateHash(req.body.local.password);
         }
-        res.format({
-          'application/json': function() {
-              res.json(user);
-          },
-          'default': function() {
-              res.send(406, 'Not Acceptable');
+        if (req.body.name && (req.body.name != '')) {
+          user.name = req.body.name;
+        }
+        if (req.body.gender && (req.body.gender != '')) {
+          user.gender = req.body.gender;
+        }
+        if (req.body.roles && (req.body.roles != '')) {
+          user.roles = req.body.roles;
+        }
+        user.save(function(err) {
+          if (err) {
+            return next(err);
           }
+          res.format({
+            'application/json': function() {
+              res.json(user);
+            },
+            'default': function() {
+              res.send(406, 'Not Acceptable');
+            }
+          });
         });
       });
-	  });
-  });
+    }
+  );
 
-  router.delete(api.route('user_by_uuid'), [isLoggedIn, hasRole(["admin"])], function(req, res, next) {
-    User.findOneAndRemove({ 'uuid' :  req.params.uuid }, req.body, function (err, user) {
+  router.delete(api.route('user_by_uuid'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
+    User.findOneAndRemove({ 'uuid' :  req.params.uuid }, req.body, function(err, user) {
       if (err) {
         return next(err);
       } else {
@@ -180,11 +184,11 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
-      	user.local.email    = undefined;
-      	user.local.password = undefined;
-      	user.save(function(err) {
-      	  res.redirect(req.header("Referer"));
-      	});
+        user.local.email    = undefined;
+        user.local.password = undefined;
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
       }
     });
   });
@@ -195,11 +199,11 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
-  			user.facebook.token = undefined;
-  			user.save(function(err) {
-  			  res.redirect(req.header("Referer"));
-  			});
-		  }
+        user.facebook.token = undefined;
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
+      }
     });
   });
 
@@ -209,11 +213,11 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
-    		user.twitter.token = undefined;
-    		user.save(function(err) {
-    		  res.redirect(req.header("Referer"));
-    		});
-	    }
+        user.twitter.token = undefined;
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
+      }
     });
   });
 
@@ -223,10 +227,10 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
-      	user.google.token = undefined;
-      	user.save(function(err) {
-      	    res.redirect(req.header("Referer"));
-      	});
+        user.google.token = undefined;
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
       }
     });
   });
@@ -238,10 +242,10 @@ module.exports = function(router, passport) {
         return next(err);
       } else {
         user.github.token = undefined;
-		    user.save(function(err) {
-		      res.redirect(req.header("Referer"));
-		    });
-	    }
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
+      }
     });
   });
 

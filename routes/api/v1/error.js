@@ -5,7 +5,7 @@ module.exports = function(router, passport) {
 
   var error = function(req, res) {
     res.status(500).send('Interacting with this resource always results in an error!');
-  }
+  };
 
   router.get(api.route('error'), error);
   router.post(api.route('error'), error);
@@ -13,4 +13,4 @@ module.exports = function(router, passport) {
   router.delete(api.route('error'), error);
 
   return router;
-}
+};

@@ -22,7 +22,7 @@ var ui_routes = {
   'callback_twitter'  : '/auth/twitter/callback/?',
   'callback_google'   : '/auth/google/callback/?',
   'callback_github'   : '/auth/github/callback/?',
-}
+};
 
 module.exports = {
   route   : routes.route(config.contextPath, ui_routes, { relative : false }),

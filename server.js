@@ -51,9 +51,9 @@ app.use(routes_error);
 var index = require('./index.js');
 var contextPath = config.contextPath;
 contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;
-contextPath = contextPath.substr(contextPath.length-1) == '/' ? contextPath + '?' : contextPath + '/?';
+contextPath = contextPath.substr(contextPath.length - 1) == '/' ? contextPath + '?' : contextPath + '/?';
 var catchAllRoute = contextPath + '*';
-app.get(catchAllRoute, function (req, res) {
+app.get(catchAllRoute, function(req, res) {
   res.status(200).send(index);
 });
 
@@ -79,10 +79,10 @@ if (app.get('env') === 'development') {
     res.status(err.status || 500);
     res.format({
       'application/json': function() {
-          res.json(err);
+        res.json(err);
       },
       'default': function() {
-          res.status(406).send('Not Acceptable');
+        res.status(406).send('Not Acceptable');
       }
     });
   });
@@ -93,12 +93,12 @@ if (app.get('env') === 'development') {
   // no stacktraces leaked to user
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-      res.format({
+    res.format({
         'application/json': function() {
-            res.json({});
+          res.json({});
         },
         'default': function() {
-            res.send(406, 'Not Acceptable');
+          res.send(406, 'Not Acceptable');
         }
       });
   });
@@ -106,5 +106,5 @@ if (app.get('env') === 'development') {
 
 // launch =====================================================================
 app.listen(port);
-expressListRoutes({ prefix: '' }, 'Server REST API:', router );
+expressListRoutes({ prefix: '' }, 'Server REST API:', router);
 console.log('Server started on port ' + port);

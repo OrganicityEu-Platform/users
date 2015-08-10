@@ -5,7 +5,7 @@ var watchify         = require('watchify');
 var sequence         = require('run-sequence');
 var reactify         = require('reactify');
 var gulpif           = require('gulp-if');
-var babelify         = require("babelify");
+var babelify         = require('babelify');
 var uglify           = require('gulp-uglify');
 var streamify        = require('gulp-streamify');
 var notify           = require('gulp-notify');
@@ -22,6 +22,7 @@ var clean            = require('gulp-clean');   // clean tasks
 var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
 var marked           = require('gulp-marked');  // used for generating API documentation from markdown files
 var open             = require('gulp-open');    // can open applications and URLs in the host OS default application
+var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -30,23 +31,23 @@ var dependencies = [
   'react/addons'*/
 ];
 
-var browserifyTask = function (options) {
+var browserifyTask = function(options) {
 
   // Our app bundler
-	var appBundler = browserify({
-		entries: [options.src], // Only need initial file, browserify finds the rest
-   	transform: [babelify], // We want to convert JSX to ES6 and ES6 to normal JavaScript
-		debug: options.development, // Gives us sourcemapping
-		cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
-	});
+  var appBundler = browserify({
+    entries: [options.src], // Only need initial file, browserify finds the rest
+    transform: [babelify], // We want to convert JSX to ES6 and ES6 to normal JavaScript
+    debug: options.development, // Gives us sourcemapping
+    cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
+  });
 
-	// We set our dependencies as externals on our app bundler when developing
-	(options.development ? dependencies : []).forEach(function (dep) {
-		appBundler.external(dep);
-	});
+  // We set our dependencies as externals on our app bundler when developing
+  (options.development ? dependencies : []).forEach(function(dep) {
+    appBundler.external(dep);
+  });
 
   // The rebundle process
-  var rebundle = function () {
+  var rebundle = function() {
     var start = Date.now();
     gutil.log('Rebundling front end');
     appBundler
@@ -57,7 +58,7 @@ var browserifyTask = function (options) {
       .pipe(source('App.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
-      .pipe(notify(function () {
+      .pipe(notify(function() {
         gutil.log('Front end rebundled in ' + (Date.now() - start) + 'ms');
       }));
   };
@@ -69,18 +70,18 @@ var browserifyTask = function (options) {
   }
 
   rebundle();
-}
+};
 
-var cssTask = function (options) {
+var cssTask = function(options) {
   if (options.development) {
-    var run = function () {
+    var run = function() {
       gutil.log(arguments);
       var start = new Date();
       gutil.log('Building CSS bundle');
       gulp.src(options.src)
         .pipe(concat('main.css'))
         .pipe(gulp.dest(options.dest))
-        .pipe(notify(function () {
+        .pipe(notify(function() {
           gutil.log('CSS bundle built in ' + (Date.now() - start) + 'ms');
         }));
     };
@@ -92,32 +93,32 @@ var cssTask = function (options) {
       .pipe(cssmin())
       .pipe(gulp.dest(options.dest));
   }
-}
+};
 
 var server = {
-	instance : null,
-	start : function() {
-		gutil.log('Starting server');
-		server.instance = express.run(['server.js'], {}, false);
-	},
-	stop : function() {
-		if (server.instance) {
-			gutil.log('Stopping server');
-			server.instance.stop();
-		}
-	},
-	restart : function() {
-		gutil.log('Restarting server');
-		if (server.instance) {
-			server.instance.stop();
-		}
-		server.instance = express.run(['server.js'], {}, false);
-	}
-}
+  instance : null,
+  start : function() {
+    gutil.log('Starting server');
+    server.instance = express.run(['server.js'], {}, false);
+  },
+  stop : function() {
+    if (server.instance) {
+      gutil.log('Stopping server');
+      server.instance.stop();
+    }
+  },
+  restart : function() {
+    gutil.log('Restarting server');
+    if (server.instance) {
+      server.instance.stop();
+    }
+    server.instance = express.run(['server.js'], {}, false);
+  }
+};
 
 gulp.task('browserify', function() {
-	browserifyTask({
-    development: process.env.DEVELOPMENT == "true",
+  browserifyTask({
+    development: process.env.DEVELOPMENT == 'true',
     src: './views/jsx/App.jsx',
     dest: './public/js'
   });
@@ -125,49 +126,68 @@ gulp.task('browserify', function() {
 
 var watches = {
 	'api'    : ['./API.md'],
-	'static' : ['./static/**'],
-	'server' : ['./config/**','./models/**','./routes/**','./server.js','./api_routes.js','./ui_routes.js','./routes.js']
-}
+  'static' : ['./static/**'],
+  'server' : [
+    './config/**', './models/**', './routes/**', './server.js', './api_routes.js', './ui_routes.js', './routes.js'
+  ]
+};
 
-gulp.task('set-env-dev', function () {
+gulp.task('set-env-dev', function() {
   env({
     vars: {
       //DEBUG: "express:*",
-			DEVELOPMENT : "true"
+      DEVELOPMENT : 'true'
     }
-  })
+  });
 });
 
-gulp.task('set-env-prod', function () {
-	console.log('set-env-prod');
+gulp.task('set-env-prod', function() {
+  console.log('set-env-prod');
 });
 
-gulp.task('server', function () {
+gulp.task('server', function() {
   server.start();
 });
 
 gulp.task('static', function() {
-	var src = './static/**';
-	var dst = './public';
-	return gulp.src(src)
-      .pipe(newer(dst))
-      .pipe(gulp.dest(dst))
+  var src = './static/**';
+  var dst = './public';
+  return gulp.src(src)
+        .pipe(newer(dst))
+        .pipe(gulp.dest(dst))
       .pipe(notify(function(file) {
-				gutil.log('Copied', file.relative);
+        gutil.log('Copied', file.relative);
       }));
 });
 
+/*
+ * TODO:
+ * 'views/jsx'
+ */
+gulp.task('jscs', function() {
+  var src = [
+    '*.js',
+    'config/**',
+    'models/**',
+    'routes/**',
+    'script/**',
+    'utils/**'
+  ];
+  return gulp.src(src)
+      .pipe(jscs());
+});
+
 gulp.task('default', function(callback) {
-	sequence('set-env-dev', ['browserify', 'static'], 'server', callback);
-	gulp.watch(watches.static, ['static']);
-	gulp.watch(watches.server, server.restart);
+  sequence('set-env-dev', ['browserify', 'static'], 'server', callback);
+  gulp.watch(watches.static, ['static']);
+  gulp.watch(watches.server, server.restart);
 });
 
 gulp.task('build', function(callback) {
-	sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
+  sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
 });
 
-gulp.task('clean', function () {
+gulp.task('clean', function() {
   return gulp.src('public', {read: false}).pipe(clean());
 });
 
