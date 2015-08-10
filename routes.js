@@ -17,7 +17,7 @@ var prefix = function(contextPath, options) {
         contextPath = contextPath.substr(0, 1) == '/' ? contextPath.substr(1) : contextPath;
       }
     } else { // absolute
-      if (contextPath == '') {
+      if (contextPath === '') {
         contextPath = '/';
       } else {
         contextPath = contextPath.substr(0, 1) == '/' ? contextPath : '/' + contextPath;

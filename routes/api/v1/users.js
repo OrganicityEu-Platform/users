@@ -73,10 +73,11 @@ module.exports = function(router, passport) {
     });
   });
 
-  var findUser = function(uuid, res, success) {
+  var findUser = function(uuid, res, next, success) {
+    var err;
     User.findOne({ 'uuid' :  uuid }, function(err, user) {
-      if (user == null) {
-        var err = new Error('User ' + uuid + ' not found');
+      if (user === null) {
+        err = new Error('User ' + uuid + ' not found');
         err.status = 404;
         return next(err);
       }
@@ -97,7 +98,7 @@ module.exports = function(router, passport) {
   };
 
   router.get(api.route('user_info'), function(req, res, next) {
-    findUser(req.params.uuid, res, function(user) {
+    findUser(req.params.uuid, res, next, function(user) {
       res.json({
         uuid : user.uuid,
         name : user.name
@@ -106,7 +107,7 @@ module.exports = function(router, passport) {
   });
 
   router.get(api.route('user_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
-    findUser(req.params.uuid, res, function(user) {
+    findUser(req.params.uuid, res, next, function(user) {
       res.json(user);
     });
   });
@@ -124,16 +125,16 @@ module.exports = function(router, passport) {
       }
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-        if (req.body.local && (req.body.local.password != '')) {
+        if (req.body.local && (req.body.local.password !== '')) {
           user.local.password = user.generateHash(req.body.local.password);
         }
-        if (req.body.name && (req.body.name != '')) {
+        if (req.body.name && (req.body.name !== '')) {
           user.name = req.body.name;
         }
-        if (req.body.gender && (req.body.gender != '')) {
+        if (req.body.gender && (req.body.gender !== '')) {
           user.gender = req.body.gender;
         }
-        if (req.body.roles && (req.body.roles != '')) {
+        if (req.body.roles && (req.body.roles !== '')) {
           user.roles = req.body.roles;
         }
         user.save(function(err) {
@@ -178,7 +179,7 @@ module.exports = function(router, passport) {
   // user account will stay active in case they want to reconnect in the future
 
   // local -----------------------------------
-  router.get(api.route('disconnect_local'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.get(api.route('disconnect_local'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
 
     User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
       if (err) {
@@ -194,7 +195,7 @@ module.exports = function(router, passport) {
   });
 
   // facebook -------------------------------
-  router.get(api.route('disconnect_facebook'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.get(api.route('disconnect_facebook'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
     User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
       if (err) {
         return next(err);
@@ -208,7 +209,7 @@ module.exports = function(router, passport) {
   });
 
   // twitter --------------------------------
-  router.get(api.route('disconnect_twitter'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.get(api.route('disconnect_twitter'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
     User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
       if (err) {
         return next(err);
@@ -222,7 +223,7 @@ module.exports = function(router, passport) {
   });
 
   // google ---------------------------------
-  router.get(api.route('disconnect_google'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.get(api.route('disconnect_google'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
     User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
       if (err) {
         return next(err);
@@ -236,7 +237,7 @@ module.exports = function(router, passport) {
   });
 
   // github ---------------------------------
-  router.get(api.route('disconnect_github'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.get(api.route('disconnect_github'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
     User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
       if (err) {
         return next(err);

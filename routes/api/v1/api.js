@@ -309,7 +309,7 @@ module.exports = function(router, passport) {
     db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion) {
       if (err) {
         res.send(err);
-      } else if (oldVersion === undefined || oldVersion.length == 0) {
+      } else if (oldVersion === undefined || oldVersion.length === 0) {
         res.status(404).send('SCENARIO NOT FOUND');
       } else {
 
@@ -415,7 +415,7 @@ module.exports = function(router, passport) {
    * ########################################################################################
    */
 
-  function getCount(name) {
+  function getCount(name, res) {
     db.scenarios.aggregate([
 
         { $project: { name: 1 } },
@@ -461,8 +461,8 @@ module.exports = function(router, passport) {
   function getLatestVersions(data) {
 
     // @see: https://en.wikipedia.org/wiki/Umbrella_title
-    var umbrellas  = new Array();
-    var results     = new Array();
+    var umbrellas  = [];
+    var results     = [];
     // read data array
     for (var i = 0; i < data.length; i++) {
       // the current document being filtered from data

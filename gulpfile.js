@@ -21,6 +21,7 @@ var debug            = require('gulp-debug');   // debug log messages in gulp pi
 var clean            = require('gulp-clean');   // clean tasks
 var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
 var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
+var jshint           = require('gulp-jshint');  // JSHint plugin for gulp
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -116,7 +117,7 @@ var server = {
 
 gulp.task('browserify', function() {
   browserifyTask({
-    development: process.env.DEVELOPMENT == 'true',
+    development: process.env.DEVELOPMENT === 'true',
     src: './views/jsx/App.jsx',
     dest: './public/js'
   });
@@ -164,17 +165,40 @@ gulp.task('static', function() {
 });
 
 gulp.task('jscs', function() {
-  var src = [
+
+  var jscsSrc = [
+  '*.js',
+  './config/**',
+  './models/**',
+  './routes/**',
+  './script/**',
+  './utils/**',
+  './views/**'
+];
+
+  return gulp.src(jscsSrc)
+      .pipe(jscs());
+});
+
+gulp.task('jshint', function() {
+
+  // JSHINt cant handle JSX files!
+  var jscsSrc = [
     '*.js',
     './config/**',
     './models/**',
     './routes/**',
     './script/**',
-    './utils/**',
-    './views/**'
+    './utils/**'
   ];
-  return gulp.src(src)
-      .pipe(jscs());
+
+  return gulp.src(jscsSrc)
+      .pipe(jshint())
+      .pipe(jshint.reporter('default'));
+});
+
+gulp.task('lint', function(callback) {
+  sequence('jscs', 'jshint', callback);
 });
 
 gulp.task('default', function(callback) {
