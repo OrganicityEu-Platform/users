@@ -5,9 +5,9 @@ import FlashQueue          from '../FlashQueue.jsx';
 import api                 from '../../../api_routes.js';
 import ui                  from '../../../ui_routes.js';
 
-var Router = require('react-router')
-  , Link = Router.Link
-  , Navigation = Router.Navigation;
+var Router = require('react-router');
+var Link = Router.Link;
+var Navigation = Router.Navigation;
 
 var LocalLogin = React.createClass({
   mixins: [Navigation, UserIsLoggedInMixin, FlashQueue.Mixin],
@@ -41,7 +41,7 @@ var LocalLogin = React.createClass({
     $.ajax(api.reverse('local-login'), {
       error: (jqXHR, textStatus, errorThrown) => {
         if (jqXHR.status == 422) {
-          self.state.error = "Error logging in: username and/or password unknown";
+          self.state.error = 'Error logging in: username and/or password unknown';
           self.setState(this.state);
         } else {
           self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
@@ -64,17 +64,19 @@ var LocalLogin = React.createClass({
           <h1><span className="fa fa-sign-in"></span> Login</h1>
           {(() => {
             if (this.state.error) {
-              return <div className="alert alert-warning">{this.state.error}</div>
+              return (<div className="alert alert-warning">{this.state.error}</div>);
             }
           })()}
           <form action={api.reverse('local-login')} method="post">
             <div className="form-group">
                 <label>Email</label>
-                <input type="text" className="form-control" name="email" id="email" value={this.state.email} onChange={this.handleChangedEmail} />
+                <input type="text" className="form-control" name="email" id="email"
+                  value={this.state.email} onChange={this.handleChangedEmail} />
             </div>
             <div className="form-group">
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" id="password" value={this.state.password} onChange={this.handleChangedPassword} />
+                <input type="password" className="form-control" name="password" id="password"
+                  value={this.state.password} onChange={this.handleChangedPassword} />
             </div>
             <button type="submit"
                     className="btn btn-warning btn-lg"

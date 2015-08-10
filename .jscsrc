@@ -1,10 +1,12 @@
 //
-// THIS FILE WORKS with
-// - grunt-jscs 1.8.0
-// - brackets-jscs 0.7.3
+// This file works with
+// - gulp-jscs 1.6.0
+// - brackets-jscs 0.7.3 (with React.JS 0.0.2)
 //
-
+// Based on Google preset:
 // https://github.com/jscs-dev/node-jscs/blob/master/presets/google.json
+//
+// Rules
 // http://jscs.info/rules.html
 
 {

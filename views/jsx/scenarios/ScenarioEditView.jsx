@@ -18,10 +18,10 @@ var ScenarioEditView = React.createClass({
   },
   componentWillMount : function() {
     if (!this.props.query.step) {
-      this.props.query.step = "" + this.firstStep;
+      this.props.query.step = '' + this.firstStep;
     }
   },
-  getInitialState: function () {
+  getInitialState: function() {
 
     // if we're in the process of editing a scenario the browser session storage will remember
     // values until users persisted it on the server
@@ -104,7 +104,9 @@ var ScenarioEditView = React.createClass({
   },
   clickedSubmit : function() {
     var method = this.editMode() ? 'PUT' : 'POST';
-    var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid }) : api.reverse('scenario_list');
+    var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
+      : api.reverse('scenario_list');
+
     $.ajax(url, {
       dataType: 'json',
       contentType: 'application/json',
@@ -134,19 +136,22 @@ var ScenarioEditView = React.createClass({
             <div className="form-group">
               <label className="control-label col-sm-2" htmlFor="title">Title</label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" name="title" id="title" value={this.state.title} onChange={this.handleChangedTitle} />
+                <input type="text" className="form-control" name="title" id="title" value={this.state.title}
+                  onChange={this.handleChangedTitle} />
               </div>
             </div>
             <div className="form-group">
               <label className="control-label col-sm-2" htmlFor="summary">Summary</label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary} onChange={this.handleChangedSummary} />
+                <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
+                  onChange={this.handleChangedSummary} />
               </div>
             </div>
             <div className="form-group">
               <label className="control-label col-sm-2" htmlFor="narrative">Narrative</label>
               <div className="col-sm-10">
-                <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative} onChange={this.handleChangedNarrative} />
+                <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
+                  onChange={this.handleChangedNarrative} />
               </div>
             </div>
             <div className="form-group">
@@ -190,7 +195,7 @@ var ScenarioEditView = React.createClass({
       </div>
     );
   },
-  step3 : function () {
+  step3 : function() {
     return (
       <div>
         <div className="row" key="scenarioEditStep3">
@@ -221,7 +226,7 @@ var ScenarioEditView = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   },
   step4 : function() {
     return (
@@ -271,9 +276,9 @@ var ScenarioEditView = React.createClass({
       </div>
     );
   },
-  render: function () {
+  render: function() {
     var steps = [this.step1, this.step2, this.step3, this.step4, this.step5];
-    return steps[this.currentStep()-1]();
+    return steps[this.currentStep() - 1]();
   }
 });
 

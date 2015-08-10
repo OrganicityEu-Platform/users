@@ -3,9 +3,9 @@ import $ from 'jquery';
 import FlashQueue from '../FlashQueue.jsx';
 import api from '../../../api_routes.js';
 
-var Router = require('react-router')
-  , Navigation = Router.Navigation
-  , Link = Router.Link;
+var Router = require('react-router');
+var Navigation = Router.Navigation;
+var Link = Router.Link;
 
 var Logout = React.createClass({
   mixins: [FlashQueue.Mixin, Router.Navigation],

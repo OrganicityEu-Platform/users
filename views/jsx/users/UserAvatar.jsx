@@ -3,8 +3,8 @@ import React      from 'react';
 import FlashQueue from '../FlashQueue.jsx';
 import api        from '../../../api_routes.js';
 
-var Router = require('react-router')
-  , Link = Router.Link;
+var Router = require('react-router');
+var Link = Router.Link;
 
 var UserAvatar = React.createClass({
   mixins: [FlashQueue.Mixin],
@@ -21,7 +21,7 @@ var UserAvatar = React.createClass({
       }
     });
   },
-  render: function () {
+  render: function() {
     var text;
     if (!this.state) {
       text = 'Loading...';

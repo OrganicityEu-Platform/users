@@ -6,10 +6,10 @@ import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api from '../../../api_routes.js';
 
 var ScenarioView = React.createClass({
-  getInitialState: function () {
+  getInitialState: function() {
     return null;
   },
-  componentDidMount: function () {
+  componentDidMount: function() {
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
     $.getJSON(url, (scenario) => {
       if (this.isMounted()) {
@@ -17,7 +17,7 @@ var ScenarioView = React.createClass({
       }
     });
   },
-  render: function () {
+  render: function() {
     if (this.state === null) {
       return null;
     }
@@ -31,7 +31,7 @@ var ScenarioView = React.createClass({
           <ScenarioDeleteButton scenario={this.state}/>
         </div>
       </div>
-    )
+    );
   }
 });
 

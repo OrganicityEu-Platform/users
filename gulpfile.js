@@ -125,7 +125,13 @@ gulp.task('browserify', function() {
 var watches = {
   'static' : ['./static/**'],
   'server' : [
-    './config/**', './models/**', './routes/**', './server.js', './api_routes.js', './ui_routes.js', './routes.js'
+    './config/**',
+    './models/**',
+    './routes/**',
+    './server.js',
+    './api_routes.js',
+    './ui_routes.js',
+    './routes.js',
   ]
 };
 
@@ -157,31 +163,28 @@ gulp.task('static', function() {
       }));
 });
 
-/*
- * TODO:
- * 'views/jsx'
- */
 gulp.task('jscs', function() {
   var src = [
     '*.js',
-    'config/**',
-    'models/**',
-    'routes/**',
-    'script/**',
-    'utils/**'
+    './config/**',
+    './models/**',
+    './routes/**',
+    './script/**',
+    './utils/**',
+    './views/**'
   ];
   return gulp.src(src)
       .pipe(jscs());
 });
 
 gulp.task('default', function(callback) {
-  sequence('set-env-dev', ['browserify', 'static'], 'server', callback);
+  sequence('set-env-dev', 'jscs', ['browserify', 'static'], 'server', callback);
   gulp.watch(watches.static, ['static']);
   gulp.watch(watches.server, server.restart);
 });
 
 gulp.task('build', function(callback) {
-  sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
+  sequence(['clean', 'set-env-prod'], 'jscs', ['browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {

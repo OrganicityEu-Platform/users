@@ -5,12 +5,12 @@ import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
 import FlashQueue         from '../FlashQueue.jsx';
 import api                from '../../../api_routes.js';
 
-var Router = require('react-router'),
-    Navigation = Router.Navigation;
+var Router = require('react-router');
+var Navigation = Router.Navigation;
 
 var ScenarioDeleteButton = React.createClass({
   mixins: [Navigation, UserHasRoleMixin, UserIsCreatorMixin, FlashQueue.Mixin],
-  handleClick: function () {
+  handleClick: function() {
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.scenario.uuid });
     $.ajax(url, {
       type: 'DELETE',
@@ -23,8 +23,8 @@ var ScenarioDeleteButton = React.createClass({
       }
     });
   },
-  render: function () {
-    if (this.userHasRole("admin") || this.userIsCreator(this.props.scenario)) {
+  render: function() {
+    if (this.userHasRole('admin') || this.userIsCreator(this.props.scenario)) {
       return (
         <button className="scenarioDelete btn btn-default btn-danger" onClick={this.handleClick}>DELETE</button>
       );

@@ -11,7 +11,7 @@ var Queue = React.createClass({
     return {
       id : 0,
       messages: []
-    }
+    };
   },
   componentDidMount: function() {
     mountedInstance = this;
@@ -51,9 +51,9 @@ var Queue = React.createClass({
 
 var Message = React.createClass({
   render: function() {
-    var classes = ['alert', 'flash-message', 'alert-'+this.props.type];
+    var classes = ['alert', 'flash-message', 'alert-' + this.props.type];
     return (
-      <div className={classes.join(" ")}>
+      <div className={classes.join(' ')}>
         {this.props.text}
         <i className="flash-delete" onClick={() => this.props.dismissMessage(this.props.key)}>&times;</i>
       </div>
@@ -63,14 +63,14 @@ var Message = React.createClass({
 
 var Mixin = {
   flash: function(type, text, opts) {
-    if (type != '' && type != 'success' && type != 'info' && type != 'warning' && type != 'danger'){
-      console.log('Wrong flash type "'+type+'". Use one of ["", "info", "success", "warning", "danger"].)');
+    if (type != '' && type != 'success' && type != 'info' && type != 'warning' && type != 'danger') {
+      console.log('Wrong flash type "' + type + '". Use one of ["", "info", "success", "warning", "danger"].)');
     }
-    mountedInstance.flash(type,text,opts);
+    mountedInstance.flash(type, text, opts);
   },
   flashOnAjaxError: function(url, message) {
     return function(jqXHR, textStatus, errorThrown) {
-      var content = <div>
+      var content = (<div>
         <b>Error doing AJAX request to {url}:</b> {message}<br/>
         <b>jqXHR</b><br/>
         <pre>{jqXHR}</pre>
@@ -78,11 +78,11 @@ var Mixin = {
         <pre>{textStatus}</pre>
         <b>errorThrown</b>
         <pre>{errorThrown}</pre>
-      </div>
+      </div>);
       mountedInstance.flash('danger', content);
-    }
+    };
   }
-}
+};
 
 export default {
   Mixin : Mixin,

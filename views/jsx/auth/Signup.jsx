@@ -4,9 +4,9 @@ import FlashQueue from '../FlashQueue.jsx';
 import api        from '../../../api_routes.js';
 import ui         from '../../../ui_routes.js';
 
-var Router = require('react-router')
-  , Link = Router.Link
-  , Navigation = Router.Navigation;
+var Router = require('react-router');
+var Link = Router.Link;
+var Navigation = Router.Navigation;
 
 var Signup = React.createClass({
   mixins: [Navigation, FlashQueue.Mixin],
@@ -48,7 +48,7 @@ var Signup = React.createClass({
         if (jqXHR.status == 500) {
           self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
         } else {
-          self.state.error = "Error signing up: " + textStatus;
+          self.state.error = 'Error signing up: ' + textStatus;
           self.setState(this.state);
         }
       },
@@ -61,7 +61,7 @@ var Signup = React.createClass({
         email: self.state.email,
         password: self.state.password
       }
-    })
+    });
   },
   render : function() {
     return (
@@ -69,21 +69,24 @@ var Signup = React.createClass({
         <h1><span className="fa fa-sign-in"></span> Signup</h1>
         {(() => {
           if (this.state.error) {
-            return <div className="alert alert-warning">{this.state.error}</div>
+            return (<div className="alert alert-warning">{this.state.error}</div>);
           }
         })()}
         <form action={api.reverse('signup')} method="post">
             <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input type="text" className="form-control" name="email" value={this.state.email} onChange={this.handleChangedEmail} />
+                <input type="text" className="form-control" name="email" value={this.state.email}
+                  onChange={this.handleChangedEmail} />
             </div>
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleChangedPassword} />
+                <input type="password" className="form-control" name="password" value={this.state.password}
+                  onChange={this.handleChangedPassword} />
             </div>
             <div className="form-group">
                 <label htmlFor="password_repeat">Repeat Password</label>
-                <input type="password" className="form-control" name="password_repeat" value={this.state.password_repeat} onChange={this.handleChangedPasswordRepeat} />
+                <input type="password" className="form-control" name="password_repeat"
+                  value={this.state.password_repeat} onChange={this.handleChangedPasswordRepeat} />
             </div>
             <button type="submit"
                     className="btn btn-warning btn-lg"

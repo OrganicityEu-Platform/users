@@ -5,9 +5,9 @@ import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstr
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
 
-var Router = require('react-router')
-  , RouteHandler = Router.RouteHandler
-  , Link = Router.Link;
+var Router = require('react-router');
+var RouteHandler = Router.RouteHandler;
+var Link = Router.Link;
 
 var HomeView = React.createClass({
   mixins : [FlashQueue.Mixin],
@@ -20,7 +20,7 @@ var HomeView = React.createClass({
       success: (data) => {
         alert('Non-existing resource exists... WTF?');
       }
-    })
+    });
   },
   render : function() {
     return (

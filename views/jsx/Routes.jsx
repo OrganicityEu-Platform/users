@@ -11,8 +11,8 @@ import Signup           from './auth/Signup.jsx';
 import Profile          from './auth/Profile.jsx';
 import ui               from '../../ui_routes.js';
 
-var Router = require('react-router')
-  , Route = Router.Route;
+var Router = require('react-router');
+var Route = Router.Route;
 
 var routes = (
   <Route handler={Scaffold}>

@@ -6,13 +6,13 @@ import api              from '../../../api_routes.js';
 
 var ScenarioList = React.createClass({
   mixins: [FlashQueue.Mixin],
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       scenarios: [],
       searchTerm: ''
-    }
+    };
   },
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.reload();
   },
   reload: function() {
@@ -42,13 +42,14 @@ var ScenarioList = React.createClass({
       }
     });
   },
-  render: function () {
+  render: function() {
     return (
       <div className="scenarioList">
         <div className="row col-sm-4 pull-right">
           <form name="scenario_search_form" onSubmit={this.handleSearch}>
           <div className="input-group">
-            <input type="text" name="q" className="form-control" placeholder="Search for..." value={this.state.searchTerm} onChange={this.handleUpdatedSearchTerm} />
+            <input type="text" name="q" className="form-control" placeholder="Search for..."
+              value={this.state.searchTerm} onChange={this.handleUpdatedSearchTerm} />
             <span className="input-group-btn">
               <input type="submit" value="Search" className="btn btn-default">Go!</input>
             </span>
@@ -74,11 +75,12 @@ var ScenarioList = React.createClass({
                     <tr>
                       <td colSpan="5">No scenarios found....</td>
                     </tr>
-                  )
+                  );
                 }
               })()}
               {
-                this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario} onChange={this.reload}/>)
+                this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario}
+                  onChange={this.reload}/>)
               }
             </tbody>
           </table>

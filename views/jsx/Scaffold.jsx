@@ -7,9 +7,9 @@ import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
 
-var Router = require('react-router')
-  , RouteHandler = Router.RouteHandler
-  , Link = Router.Link;
+var Router = require('react-router');
+var RouteHandler = Router.RouteHandler;
+var Link = Router.Link;
 
 var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin, FlashQueue.Mixin],
@@ -49,7 +49,7 @@ var Scaffold = React.createClass({
     var loggedInLinks = [];
     var userLinks = [];
     if (this.userIsLoggedIn()) {
-      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate">Create Scenario</NavItemLink>)
+      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate">Create Scenario</NavItemLink>);
       userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
       userLinks.push(<NavItemLink key="logout" to="logout">Logout</NavItemLink>);
     } else {
