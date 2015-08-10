@@ -31,6 +31,7 @@ var less               = require('gulp-less');
 var LessPluginCleanCSS = require('less-plugin-clean-css');
 var sourcemaps         = require('gulp-sourcemaps');
 var minifyCSS          = require('gulp-minify-css');
+var livereload         = require('gulp-livereload');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -66,6 +67,7 @@ var browserifyTask = function(options) {
       .pipe(source('App.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
+      .pipe(livereload())
       .pipe(notify(function() {
         gutil.log('Front end rebundled in ' + (Date.now() - start) + 'ms');
       }));
@@ -93,6 +95,7 @@ var server = {
       server.instance.stop();
     }
     server.instance = express.run(['server.js'], {}, false);
+    livereload.reload();
     callback();
   }
 };
@@ -175,6 +178,7 @@ gulp.task('static', ['lint'], function() {
         .pipe(newer(dst))
         .pipe(cache('static'))
         .pipe(gulp.dest(dst))
+        .pipe(livereload())
         .pipe(notify(function(file) {
           gutil.log('Copied', file.relative);
         }));
@@ -224,7 +228,8 @@ gulp.task('less', ['lint'], function() {
         gutil.log(gutil.colors.red(err.toString()));
       })
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest('./public/css'));
+      .pipe(gulp.dest('./public/css'))
+      .pipe(livereload());
   }
   return gulp.src('./assets/less/**/*.less')
     .pipe(less({ plugins: [cleancss] }))
@@ -240,6 +245,7 @@ gulp.task('default', function(callback) {
     if (err) {
       return callback(err);
     }
+    livereload.listen();
     gulp.watch(watches.less,   ['less']);
     gulp.watch(watches.static, ['static']);
     gulp.watch(watches.server, ['server']);

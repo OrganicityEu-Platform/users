@@ -38,6 +38,13 @@ Gulp will then:
 
 For building the project for deployment in a production environment run ```gulp deploy``` instead.
 
+## livereload
+
+The gulpfile is set up with livereload-feature (i.e. Chrome can automatically reload changed files
+upon notification by a gulp plugin!!!). For the feature to work install the Chrome livereload
+extension: https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei and
+activate livereload on the locally opened site.
+
 ## resources
 
  * https://github.com/voronianski/flux-comparison
