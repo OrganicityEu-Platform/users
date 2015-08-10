@@ -41,8 +41,8 @@ var Scaffold = React.createClass({
     this.setState(this.state);
   },
   onLogout: function() {
-    window.currentUser = null;
-    this.state.currentUser = null;
+    window.currentUser = undefined;
+    this.state.currentUser = undefined;
     this.setState(this.state);
   },
   render : function() {
