@@ -22,6 +22,7 @@ var clean            = require('gulp-clean');   // clean tasks
 var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
 var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
 var jshint           = require('gulp-jshint');  // JSHint plugin for gulp
+var eslint           = require('gulp-eslint');  // Plugin for processing files with eslint
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -167,17 +168,39 @@ gulp.task('static', function() {
 gulp.task('jscs', function() {
 
   var jscsSrc = [
-  '*.js',
-  './config/**',
-  './models/**',
-  './routes/**',
-  './script/**',
-  './utils/**',
-  './views/**'
-];
+    '*.js',
+    './config/**',
+    './models/**',
+    './routes/**',
+    './script/**',
+    './utils/**',
+    './views/**'
+  ];
 
   return gulp.src(jscsSrc)
       .pipe(jscs());
+});
+
+gulp.task('eslint', function() {
+
+  var jscsSrc = [
+    '*.js',
+    './config/**',
+    './models/**',
+    './routes/**',
+    './script/**',
+    './utils/**',
+    './views/**'
+  ];
+
+  return gulp.src(jscsSrc)
+    .pipe(eslint({
+      baseConfig:{
+        parser: "babel-eslint"
+      }
+    }))
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
 });
 
 gulp.task('jshint', function() {
@@ -198,17 +221,17 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('lint', function(callback) {
-  sequence('jscs', 'jshint', callback);
+  sequence(['jscs', 'jshint'], callback);
 });
 
 gulp.task('default', function(callback) {
-  sequence('set-env-dev', 'jscs', ['browserify', 'static'], 'server', callback);
+  sequence('set-env-dev', 'lint', ['browserify', 'static'], 'server', callback);
   gulp.watch(watches.static, ['static']);
   gulp.watch(watches.server, server.restart);
 });
 
 gulp.task('build', function(callback) {
-  sequence(['clean', 'set-env-prod'], 'jscs', ['browserify', 'static'], callback);
+  sequence(['clean', 'set-env-prod'], 'lint', ['browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {
