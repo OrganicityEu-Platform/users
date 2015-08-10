@@ -26,7 +26,7 @@ var ScenarioDeleteButton = React.createClass({
   render: function () {
     if (this.userHasRole("admin") || this.userIsCreator(this.props.scenario)) {
       return (
-        <button className="scenarioDelete btn btn-default btn-danger" onClick={this.handleClick}>DELETE</button>
+        <button className="scenarioDeleteButton" onClick={this.handleClick}>DELETE</button>
       );
     }
     return null;

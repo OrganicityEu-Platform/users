@@ -4,15 +4,16 @@
 
 ```
 ROOT
+ |-- assets   // application assets that will be compiled to the "public" folder (e.g. less files)
  |-- config   // configuration files
  |-- models   // database schemas
  |-- public   // compiled assets for web server delivery
  |-- routes   // route definitions and handler methods (i.e. the backend business logic and API)
  |-- scripts  // administration scripts
  |-- static   // static resources (copied to public by grunt)
+ |-- util     // utility javascript files
  |-- views    // views to be rendered by backend or frontend
      |-- jsx  // JSX (react components) sources
-     |-- ejs  // EJS templates for server-side rendering by express
 ```
 
 ## building (dev mode)
@@ -29,6 +30,7 @@ gulp
 ```
 
 Gulp will then:
+ * Compile assets from ```assets``` to ```public```
  * Copy static files from ```static``` to ```public```
  * Compile ES6 and JSX view sources to ```public```
  * Watch sources for changes and recompile on changes
