@@ -150,6 +150,10 @@ Client REST API
     <td>GET /api/v1/scenarios</td>
   </tr>
   <tr>
+    <td>Query Options</td>
+    <td>sortBy -- column name to sort by, corresponds to the field name in Scenario type, e.g., one of ['title', 'timestamp']</td>
+  </tr>
+  <tr>
     <td>Response Body</td>
     <td>[Scenario]</td>
   </tr>

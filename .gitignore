@@ -19,6 +19,7 @@ node_modules
 # Ignore Config
 config/auth.js
 config/config.js
+tmp
 config/database.js
 
 # Ignore public folder, because it will be created

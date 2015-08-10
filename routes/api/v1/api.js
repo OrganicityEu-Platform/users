@@ -120,25 +120,32 @@ module.exports = function(router, passport) {
     } else {
 
       var filterLatestVersions = function(allScenariosAndVersions) {
-              var scenariosByUUID = {};
-              allScenariosAndVersions.forEach(function(scenario) {
-                if (!Array.isArray(scenariosByUUID[scenario.uuid])) {
-                  scenariosByUUID[scenario.uuid] = [];
-                }
-                scenariosByUUID[scenario.uuid].push(scenario);
-              });
-              var result = [];
-              for (var uuid in scenariosByUUID) {
-                var newestVersion = 0;
-                var newest = function(prev, curr) {
-                  return prev.version > curr.version ? prev : curr;
-                };
-                result.push(scenariosByUUID[uuid].reduce(newest, scenariosByUUID[uuid][0]));
-              }
-              return result;
-            };
+        var scenariosByUUID = {};
+        allScenariosAndVersions.forEach(function(scenario) {
+          if (!Array.isArray(scenariosByUUID[scenario.uuid])) {
+            scenariosByUUID[scenario.uuid] = [];
+          }
+          scenariosByUUID[scenario.uuid].push(scenario);
+        });
+        var result = [];
+        for (var uuid in scenariosByUUID) {
+          var newestVersion = 0;
+          var newest = function(prev, curr) {
+            return prev.version > curr.version ? prev : curr;
+          };
+          result.push(scenariosByUUID[uuid].reduce(newest, scenariosByUUID[uuid][0]));
+        }
+        return result;
+      };
 
-      db.scenarios.find({}, function(err, allScenariosAndVersions) {
+      var query = Scenario.find();
+
+      var validSortFields = ['title', 'timestamp'];
+      if (req.query.sortBy && validSortFields.indexOf(req.query.sortBy) > -1) {
+        query = query.sort(req.query.sortBy);
+      }
+
+      query.exec(function(err, allScenariosAndVersions) {
         if (err) {
           return res.send('ERROR: ' + err);
         } else {

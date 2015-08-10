@@ -2,25 +2,45 @@ import $                from 'jquery';
 import React            from 'react';
 import FlashQueue       from '../FlashQueue.jsx';
 import ScenarioListItem from './ScenarioListItem.jsx';
+import Router           from 'react-router';
 import api              from '../../../api_routes.js';
+import ui               from '../../../ui_routes.js';
+
+var Link = Router.Link;
 
 var ScenarioList = React.createClass({
-  mixins: [FlashQueue.Mixin],
+  mixins: [FlashQueue.Mixin, Router.Navigation],
   getInitialState: function() {
     return {
       scenarios: [],
-      searchTerm: ''
+      searchTerm: null,
+      sortBy : null
     };
   },
   componentDidMount: function() {
     this.reload();
   },
+  buildQueryUrl: function() {
+    var query = {};
+    if (this.state.searchTerm) {
+      query = $.extend(query, { q : this.state.searchTerm });
+    }
+    if (this.state.sortBy) {
+      query = $.extend(query, { sortBy : this.state.sortBy });
+    }
+    return api.reverse('scenario_list', {}, query);
+  },
   reload: function() {
-    var url = api.reverse('scenario_list');
-    $.getJSON(url, (scenarios) => {
-      if (this.isMounted()) {
-        this.state.scenarios = scenarios;
-        this.setState(this.state);
+    var url = this.buildQueryUrl();
+    console.log(url);
+    $.ajax(url, {
+      dataType: 'json',
+      error: this.flashOnAjaxError(url, 'Error querying scenario list'),
+      success: (scenarios) => {
+        if (this.isMounted()) {
+          this.state.scenarios = scenarios;
+          this.setState(this.state);
+        }
       }
     });
   },
@@ -30,17 +50,12 @@ var ScenarioList = React.createClass({
   },
   handleSearch : function(evt) {
     evt.preventDefault();
-    var url = api.reverse('scenario_list', {}, { q : this.state.searchTerm });
-    $.ajax(url, {
-      dataType: 'json',
-      error: this.flashOnAjaxError(url, 'Error querying scenario list'),
-      sucess: (scenarios) => {
-        if (this.isMounted()) {
-          this.state.scenarios = scenarios;
-          this.setState(this.state);
-        }
-      }
-    });
+    this.reload();
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.state.sortBy = nextProps.query.sortBy;
+    this.setState(this.state);
+    this.reload();
   },
   render: function() {
     return (
@@ -60,9 +75,11 @@ var ScenarioList = React.createClass({
           <table className="scenarioListTable">
             <thead>
               <tr>
-                <th>Title</th>
+                <th><Link to={ui.route('scenarioList')} params={this.props.params}
+                  query={$.extend({}, this.props.query, { sortBy : 'title' })}>Title</Link></th>
                 <th>Summary</th>
-                <th>Last Updated</th>
+                <th><Link to={ui.route('scenarioList')} params={this.props.params}
+                  query={$.extend({}, this.props.query, { sortBy : 'timestamp' })}>Last Updated</Link></th>
                 <th>Creator</th>
                 <th></th>
                 <th></th>
