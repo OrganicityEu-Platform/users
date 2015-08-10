@@ -1,4 +1,5 @@
-var Route = require('route-parser');
+var isEmptyObject = require('is-empty-object');
+var UrlAssembler = require('url-assembler');
 var endsWith = require('./util/endsWith.js');
 
 var defaultOptions = {
@@ -40,20 +41,15 @@ var route = function(contextPath, routes, options) {
 
 var reverse = function(contextPath, routes, options) {
   var routeFn = route(contextPath, routes, options || defaultOptions);
-  return function(routeName, params) {
+  return function(routeName, params, query) {
     var unparsed = routeFn(routeName);
     if (!unparsed || unparsed === undefined) {
       return undefined;
     }
-    var parsed = new Route(unparsed);
-    var reverse = parsed.reverse(params);
-    if (!reverse) {
-      return undefined;
+    if (endsWith(unparsed, '/?')) {
+      unparsed = unparsed.substr(0, unparsed.length-2);
     }
-    if (endsWith(reverse, '/?')) {
-      return reverse.substr(0, reverse.length-2);
-    }
-    return reverse;
+    return UrlAssembler().template(unparsed).param(params).query(query).toString();
   };
 }
 
