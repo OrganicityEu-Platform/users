@@ -1,6 +1,6 @@
 # OrganiCity Scenario Tool
 
-Please note the main [documentation folder]() under `/doc`.
+Please note the main [documentation folder](doc/) under `doc/`.
 
 ## Directory structure
 
