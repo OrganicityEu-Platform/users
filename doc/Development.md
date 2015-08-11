@@ -180,3 +180,4 @@ that feels like server-rendered but fast and responsive.
 ## Nice-to-Haves
  * Build unit test with [Jest](https://facebook.github.io/jest/)
  * Allow executing unit tests with [Karma](http://karma-runner.github.io/)
+ * ES6 in the backend code
