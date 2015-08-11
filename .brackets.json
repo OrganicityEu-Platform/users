@@ -3,7 +3,7 @@
   "showLineNumbers": true,
   "linting.enabled": true,
   "linting.prefer": [
-    "JSHint",
+    "ESLint",
     "JSCS"
   ],
   "linting.usePreferredOnly": true,

@@ -24,7 +24,6 @@ var env              = require('gulp-env');     // allows to set environment var
 var marked           = require('gulp-marked');  // used for generating API documentation from markdown files
 var open             = require('gulp-open');    // can open applications and URLs in the host OS default application
 var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
-var jshint           = require('gulp-jshint');  // JSHint plugin for gulp
 var eslint           = require('gulp-eslint');  // Plugin for processing files with eslint
 
 var less               = require('gulp-less');
@@ -152,35 +151,23 @@ gulp.task('static', function() {
         }));
 });
 
+var srcFiles = [
+  '*.js',
+  './config/**',
+  './models/**',
+  './routes/**',
+  './script/**',
+  './utils/**',
+  './views/**'
+];
+
 gulp.task('jscs', function() {
-
-  var jscsSrc = [
-    '*.js',
-    './config/**',
-    './models/**',
-    './routes/**',
-    './script/**',
-    './utils/**',
-    './views/**'
-  ];
-
-  return gulp.src(jscsSrc)
+  return gulp.src(srcFiles)
       .pipe(jscs());
 });
 
 gulp.task('eslint', function() {
-
-  var jscsSrc = [
-    '*.js',
-    './config/**',
-    './models/**',
-    './routes/**',
-    './script/**',
-    './utils/**',
-    './views/**'
-  ];
-
-  return gulp.src(jscsSrc)
+  return gulp.src(srcFiles)
     .pipe(eslint({
       baseConfig: {
         parser: 'babel-eslint'
@@ -190,25 +177,8 @@ gulp.task('eslint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('jshint', function() {
-
-  // JSHINt cant handle JSX files!
-  var jscsSrc = [
-    '*.js',
-    './config/**',
-    './models/**',
-    './routes/**',
-    './script/**',
-    './utils/**'
-  ];
-
-  return gulp.src(jscsSrc)
-      .pipe(jshint())
-      .pipe(jshint.reporter('default'));
-});
-
 gulp.task('lint', function(callback) {
-  sequence(['jscs', 'jshint', 'eslint'], callback);
+  sequence(['jscs', 'eslint'], callback);
 });
 
 var lessTask = {

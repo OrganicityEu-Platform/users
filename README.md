@@ -144,7 +144,6 @@ or
 
 ```
 gulp jscs
-gulp jshint
 gulp eslint
 ```
 
