@@ -54,6 +54,7 @@
     "express": "~4.13.1",
     "express-list-routes": "~0.1.4",
     "express-session": "~1.0.4",
+    "git-rev": "^0.2.1",
     "is-empty-object": "^1.1.0",
     "isvalid": "~1.0.6",
     "jquery": "^2.1.4",

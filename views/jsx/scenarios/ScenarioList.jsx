@@ -32,7 +32,6 @@ var ScenarioList = React.createClass({
   },
   reload: function() {
     var url = this.buildQueryUrl();
-    console.log(url);
     $.ajax(url, {
       dataType: 'json',
       error: this.flashOnAjaxError(url, 'Error querying scenario list'),

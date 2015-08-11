@@ -16,16 +16,16 @@ var concat             = require('gulp-concat');
 var gutil              = require('gulp-util');
 var shell              = require('gulp-shell');
 var glob               = require('glob');
-var express            = require('gulp-express'); 		// run express.js from gulp tasks
-var newer              = require('gulp-newer');   		// determines which files are newer in one dir compared to another dir
-var debug              = require('gulp-debug');   		// debug log messages in gulp pipelines
-var clean              = require('gulp-clean');   		// clean tasks
-var env                = require('gulp-env');     		// allows to set environment variables from gulp tasks
-var markdownpdf        = require('gulp-markdown-pdf'); 	// Converts
-var marked             = require('gulp-marked');  		// used for generating API documentation from markdown files
-var open               = require('gulp-open');    		// can open applications and URLs in the host OS default application
-var jscs               = require('gulp-jscs');    		// JavaScript code style with jscs
-var eslint             = require('gulp-eslint');  		// Plugin for processing files with eslint
+var express            = require('gulp-express'); // run express.js from gulp tasks
+var newer              = require('gulp-newer'); // determines which files are newer in one dir compared to another dir
+var debug              = require('gulp-debug'); // debug log messages in gulp pipelines
+var clean              = require('gulp-clean'); // clean tasks
+var env                = require('gulp-env'); // allows to set environment variables from gulp tasks
+var markdownpdf        = require('gulp-markdown-pdf'); // Converts
+var marked             = require('gulp-marked'); // used for generating API documentation from markdown files
+var open               = require('gulp-open'); // can open applications and URLs in the host OS default application
+var jscs               = require('gulp-jscs'); // JavaScript code style with jscs
+var eslint             = require('gulp-eslint'); // Plugin for processing files with eslint
 var cache              = require('gulp-cached');
 var less               = require('gulp-less');
 var LessPluginCleanCSS = require('less-plugin-clean-css');
@@ -102,7 +102,7 @@ var server = {
   }
 };
 
-gulp.task('browserify', ['lint', 'test'], function() {
+gulp.task('browserify', function() {
   return browserifyTask({
     development: process.env.DEVELOPMENT === 'true',
     src: './views/jsx/App.jsx',
@@ -129,6 +129,7 @@ var watches = {
     './models/**',
     './routes/**',
     './script/**',
+    './test/**',
     './utils/**',
     './views/**'
   ],
@@ -138,11 +139,12 @@ var watches = {
     './models/**',
     './routes/**',
     './script/**',
+    './test/**',
     './utils/**',
     './views/**'
   ],
-  'md' : [
-    'README.md'
+  'doc' : [
+    'doc/*.md'
   ],
   'test' : 'test/*.spec.js'
 };
@@ -168,7 +170,7 @@ gulp.task('server', function(callback) {
   }
 });
 
-gulp.task('static', ['lint', 'test'], function() {
+gulp.task('static', function() {
   var src = './static/**';
   var dst = './public';
   return gulp.src(src)
@@ -184,10 +186,7 @@ gulp.task('static', ['lint', 'test'], function() {
 gulp.task('jscs', function() {
   return gulp.src(watches.jscs)
     .pipe(cache('jscs'))
-    .pipe(jscs())
-    .on('error', function(err) {
-      gutil.log(err);
-    });
+    .pipe(jscs());
 });
 
 gulp.task('eslint', ['jscs'], function() {
@@ -204,7 +203,7 @@ gulp.task('eslint', ['jscs'], function() {
 
 gulp.task('lint', ['jscs', 'eslint']);
 
-gulp.task('less', ['lint'], function() {
+gulp.task('less', function() {
   var cleancss = new LessPluginCleanCSS({ advanced: true });
   if (process.env.DEVELOPMENT) {
     return gulp.src('./assets/less/**/*.less')
@@ -233,12 +232,14 @@ gulp.task('less', ['lint'], function() {
 gulp.task('default', function(callback) {
   sequence('set-env-dev', 'lint', 'test', ['browserify', 'static', 'less'], 'server', function(err) {
     if (err) {
-      return callback(err);
+      gutil.log(err.toString());
     }
     livereload.listen();
     gulp.watch(watches.less,   ['less']);
     gulp.watch(watches.static, ['static']);
     gulp.watch(watches.server, ['server']);
+    gulp.watch(watches.jscs,   ['jscs']);
+    gulp.watch(watches.eslint, ['eslint']);
     gulp.watch(watches.test,   ['test']);
   });
 });
@@ -273,7 +274,7 @@ gulp.task('api', function() {
 });
 
 gulp.task('pdf', function() {
-  return gulp.src(watches.md)
+  return gulp.src(watches.doc)
     .pipe(cache('pdf'))
     .pipe(markdownpdf())
     .pipe(gulp.dest('doc'))

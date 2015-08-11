@@ -1,8 +1,6 @@
-Use Case Tool Data Model and REST API Design
-============================================
+# Data Model and REST API Design
 
-Data models
------------
+## Data models
 
 The data models below are described in the mongoose notation for MongoDB data models.
 

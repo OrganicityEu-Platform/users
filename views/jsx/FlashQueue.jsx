@@ -70,10 +70,11 @@ var Mixin = {
   },
   flashOnAjaxError: function(url, message) {
     return function(jqXHR, textStatus, errorThrown) {
-      var content = (<div>
+      var content = (
+      <div>
         <b>Error doing AJAX request to {url}:</b> {message}<br/>
         <b>jqXHR</b><br/>
-        <pre>{jqXHR}</pre>
+        <pre>{JSON.stringify(jqXHR, null, '  ')}</pre>
         <b>textStatus</b><br/>
         <pre>{textStatus}</pre>
         <b>errorThrown</b>
