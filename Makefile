@@ -8,3 +8,7 @@ jenkins:
 	npm install
 	gulp build
 
+deploy:
+	git pull
+	gulp build
+	forever restart server.js
