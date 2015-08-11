@@ -102,7 +102,7 @@ var server = {
   }
 };
 
-gulp.task('browserify', ['lint'], function() {
+gulp.task('browserify', ['lint', 'test'], function() {
   return browserifyTask({
     development: process.env.DEVELOPMENT === 'true',
     src: './views/jsx/App.jsx',
@@ -149,7 +149,8 @@ var watches = {
     './routes/**',
     './script/**',
     './utils/**'
-  ]
+  ],
+  'test' : 'test/*.spec.js'
 };
 
 gulp.task('set-env-dev', function() {
@@ -173,7 +174,7 @@ gulp.task('server', function(callback) {
   }
 });
 
-gulp.task('static', ['lint'], function() {
+gulp.task('static', ['lint', 'test'], function() {
   var src = './static/**';
   var dst = './public';
   return gulp.src(src)
@@ -243,7 +244,7 @@ gulp.task('less', ['lint'], function() {
 });
 
 gulp.task('default', function(callback) {
-  sequence('set-env-dev', ['browserify', 'static', 'less', 'lint'], 'server', function(err) {
+  sequence('set-env-dev', 'lint', 'test', ['browserify', 'static', 'less'], 'server', function(err) {
     if (err) {
       return callback(err);
     }
@@ -251,11 +252,12 @@ gulp.task('default', function(callback) {
     gulp.watch(watches.less,   ['less']);
     gulp.watch(watches.static, ['static']);
     gulp.watch(watches.server, ['server']);
+    gulp.watch(watches.test,   ['test']);
   });
 });
 
 gulp.task('build', function(callback) {
-  return sequence(['clean', 'set-env-prod'], 'lint', ['less', 'browserify', 'static'], callback);
+  return sequence(['clean', 'set-env-prod'], ['lint', 'test'], ['less', 'browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {
@@ -283,8 +285,9 @@ gulp.task('api', function() {
   return api.buildAndOpen();
 });
 
-gulp.task('test', function () {
-  gulp.watch('test/*.spec.js', ['test']);
+gulp.task('test', function() {
+  // TODO use jest for (React) unit testing!?
+  // https://facebook.github.io/jest/
   return gulp.src('test/*.spec.js')
     .pipe(jasmine({
       verbose: true,
