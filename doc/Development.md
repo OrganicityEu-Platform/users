@@ -1,5 +1,7 @@
 # Development
 
+To do the development, please follow the [installation instructions](doc/Install.md) first, before you continue here.
+
 ## gulp tasks
 
  * `default`: execute this when developing (see below, uses multiple of the tasks below in
