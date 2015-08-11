@@ -32,6 +32,8 @@ var LessPluginCleanCSS = require('less-plugin-clean-css');
 var sourcemaps         = require('gulp-sourcemaps');
 var minifyCSS          = require('gulp-minify-css');
 var livereload         = require('gulp-livereload');
+var jasmine            = require('gulp-jasmine');
+var jasmineReporters   = require('jasmine-reporters');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -279,4 +281,18 @@ var api = {
 gulp.task('api', function() {
   gulp.watch(watches.api, api.build);
   return api.buildAndOpen();
+});
+
+gulp.task('test', function () {
+  gulp.watch('test/*.spec.js', ['test']);
+  return gulp.src('test/*.spec.js')
+    .pipe(jasmine({
+      verbose: true,
+      includeStackTrace: true,
+      reporter: new jasmineReporters.TerminalReporter({
+        isVerbose : true,
+        includeStackTrace : true,
+        showColors : true
+      })
+    }));
 });
