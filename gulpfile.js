@@ -1,35 +1,38 @@
 // READ this to (better) understand gulp and the plugin ecosystem: https://medium.com/@contrahacks/gulp-3828e8126466
 
-var gulp             = require('gulp');
-var path             = require('path');
-var source           = require('vinyl-source-stream');
-var browserify       = require('browserify');
-var watchify         = require('watchify');
-var sequence         = require('run-sequence');
-var reactify         = require('reactify');
-var gulpif           = require('gulp-if');
-var babelify         = require('babelify');
-var uglify           = require('gulp-uglify');
-var streamify        = require('gulp-streamify');
-var notify           = require('gulp-notify');
-var concat           = require('gulp-concat');
-var gutil            = require('gulp-util');
-var shell            = require('gulp-shell');
-var glob             = require('glob');
-var express          = require('gulp-express'); // run express.js from gulp tasks
-var newer            = require('gulp-newer');   // determines which files are newer in one dir compared to another dir
-var debug            = require('gulp-debug');   // debug log messages in gulp pipelines
-var clean            = require('gulp-clean');   // clean tasks
-var env              = require('gulp-env');     // allows to set environment variables from gulp tasks
-var marked           = require('gulp-marked');  // used for generating API documentation from markdown files
-var open             = require('gulp-open');    // can open applications and URLs in the host OS default application
-var jscs             = require('gulp-jscs');    // JavaScript code style with jscs
-var eslint           = require('gulp-eslint');  // Plugin for processing files with eslint
-
+var gulp               = require('gulp');
+var path               = require('path');
+var source             = require('vinyl-source-stream');
+var browserify         = require('browserify');
+var watchify           = require('watchify');
+var sequence           = require('run-sequence');
+var reactify           = require('reactify');
+var gulpif             = require('gulp-if');
+var babelify           = require('babelify');
+var uglify             = require('gulp-uglify');
+var streamify          = require('gulp-streamify');
+var notify             = require('gulp-notify');
+var concat             = require('gulp-concat');
+var gutil              = require('gulp-util');
+var shell              = require('gulp-shell');
+var glob               = require('glob');
+var express            = require('gulp-express'); // run express.js from gulp tasks
+var newer              = require('gulp-newer');   // determines which files are newer in one dir compared to another dir
+var debug              = require('gulp-debug');   // debug log messages in gulp pipelines
+var clean              = require('gulp-clean');   // clean tasks
+var env                = require('gulp-env');     // allows to set environment variables from gulp tasks
+var marked             = require('gulp-marked');  // used for generating API documentation from markdown files
+var open               = require('gulp-open');    // can open applications and URLs in the host OS default application
+var jscs               = require('gulp-jscs');    // JavaScript code style with jscs
+var eslint             = require('gulp-eslint');  // Plugin for processing files with eslint
+var cache              = require('gulp-cached');
 var less               = require('gulp-less');
 var LessPluginCleanCSS = require('less-plugin-clean-css');
 var sourcemaps         = require('gulp-sourcemaps');
 var minifyCSS          = require('gulp-minify-css');
+var livereload         = require('gulp-livereload');
+var jasmine            = require('gulp-jasmine');
+var jasmineReporters   = require('jasmine-reporters');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -57,7 +60,7 @@ var browserifyTask = function(options) {
   var rebundle = function() {
     var start = Date.now();
     gutil.log('Rebundling front end');
-    appBundler
+    return appBundler
       .bundle()
       .on('error', function(err) {
         gutil.log(gutil.colors.red(err.toString()));
@@ -65,6 +68,7 @@ var browserifyTask = function(options) {
       .pipe(source('App.js'))
       .pipe(gulpif(!options.development, streamify(uglify())))
       .pipe(gulp.dest(options.dest))
+      .pipe(livereload())
       .pipe(notify(function() {
         gutil.log('Front end rebundled in ' + (Date.now() - start) + 'ms');
       }));
@@ -76,32 +80,29 @@ var browserifyTask = function(options) {
     appBundler.on('update', rebundle);
   }
 
-  rebundle();
+  return rebundle();
 };
 
 var server = {
   instance : null,
-  start : function() {
+  start : function(callback) {
     gutil.log('Starting server');
     server.instance = express.run(['server.js'], {}, false);
+    callback();
   },
-  stop : function() {
-    if (server.instance) {
-      gutil.log('Stopping server');
-      server.instance.stop();
-    }
-  },
-  restart : function() {
+  restart : function(callback) {
     gutil.log('Restarting server');
     if (server.instance) {
       server.instance.stop();
     }
     server.instance = express.run(['server.js'], {}, false);
+    livereload.reload();
+    callback();
   }
 };
 
-gulp.task('browserify', function() {
-  browserifyTask({
+gulp.task('browserify', ['lint', 'test'], function() {
+  return browserifyTask({
     development: process.env.DEVELOPMENT === 'true',
     src: './views/jsx/App.jsx',
     dest: './public/js'
@@ -120,7 +121,26 @@ var watches = {
     './api_routes.js',
     './ui_routes.js',
     './routes.js',
-  ]
+  ],
+  'jscs' : [
+    '*.js',
+    './config/**',
+    './models/**',
+    './routes/**',
+    './script/**',
+    './utils/**',
+    './views/**'
+  ],
+  'eslint' : [
+    '*.js',
+    './config/**',
+    './models/**',
+    './routes/**',
+    './script/**',
+    './utils/**',
+    './views/**'
+  ],
+  'test' : 'test/*.spec.js'
 };
 
 gulp.task('set-env-dev', function() {
@@ -136,38 +156,39 @@ gulp.task('set-env-prod', function() {
   console.log('set-env-prod');
 });
 
-gulp.task('server', function() {
-  server.start();
+gulp.task('server', function(callback) {
+  if (server.instance) {
+    server.restart(callback);
+  } else {
+    server.start(callback);
+  }
 });
 
-gulp.task('static', function() {
+gulp.task('static', ['lint', 'test'], function() {
   var src = './static/**';
   var dst = './public';
   return gulp.src(src)
         .pipe(newer(dst))
+        .pipe(cache('static'))
         .pipe(gulp.dest(dst))
+        .pipe(livereload())
         .pipe(notify(function(file) {
           gutil.log('Copied', file.relative);
         }));
 });
 
-var srcFiles = [
-  '*.js',
-  './config/**',
-  './models/**',
-  './routes/**',
-  './script/**',
-  './utils/**',
-  './views/**'
-];
-
 gulp.task('jscs', function() {
-  return gulp.src(srcFiles)
-      .pipe(jscs());
+  return gulp.src(watches.jscs)
+    .pipe(cache('jscs'))
+    .pipe(jscs())
+    .on('error', function(err) {
+      gutil.log(err);
+    });
 });
 
-gulp.task('eslint', function() {
-  return gulp.src(srcFiles)
+gulp.task('eslint', ['jscs'], function() {
+  return gulp.src(watches.eslint)
+    .pipe(cache('eslint'))
     .pipe(eslint({
       baseConfig: {
         parser: 'babel-eslint'
@@ -177,53 +198,49 @@ gulp.task('eslint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('lint', function(callback) {
-  sequence(['jscs', 'eslint'], callback);
-});
+gulp.task('lint', ['jscs', 'eslint']);
 
-var lessTask = {
-  build : function() {
-    gutil.log('Building .less files');
-    var cleancss = new LessPluginCleanCSS({ advanced: true });
-    if (process.env.DEVELOPMENT) {
-      return gulp.src('./assets/less/**/*.less')
-      .pipe(sourcemaps.init())
-				.pipe(less({
-  paths: [path.join(__dirname, 'node_modules/bootstrap/less')],
-  plugins: [cleancss]
-				}))
-        .on('error', function(err) {
-          gutil.log(gutil.colors.red(err.toString()));
-        })
-				.pipe(sourcemaps.write())
-        .pipe(gulp.dest('./public/css'))
-				.pipe(notify(function(file) {
-          gutil.log('Generated', file.relative);
-        }));
-    }
+gulp.task('less', ['lint'], function() {
+  var cleancss = new LessPluginCleanCSS({ advanced: true });
+  if (process.env.DEVELOPMENT) {
     return gulp.src('./assets/less/**/*.less')
-    .pipe(less({ plugins: [cleancss] }))
+      .pipe(cache('less'))
+      .pipe(sourcemaps.init())
+      .pipe(less({
+        paths: [path.join(__dirname, 'node_modules/bootstrap/less')],
+        plugins: [cleancss]
+      }))
       .on('error', function(err) {
-        gutil.log(gutil.colors.red(err));
+        gutil.log(gutil.colors.red(err.toString()));
       })
-			.pipe(minifyCSS())
-			.pipe(gulp.dest('./public/css'));
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('./public/css'))
+      .pipe(livereload());
   }
-};
-
-gulp.task('less', function() {
-  lessTask.build();
+  return gulp.src('./assets/less/**/*.less')
+    .pipe(less({ plugins: [cleancss] }))
+    .on('error', function(err) {
+      gutil.log(gutil.colors.red(err));
+    })
+    .pipe(minifyCSS())
+    .pipe(gulp.dest('./public/css'));
 });
 
 gulp.task('default', function(callback) {
-  sequence('set-env-dev', ['browserify', 'static', 'less', 'lint'], 'server', callback);
-  gulp.watch(watches.less, lessTask.build);
-  gulp.watch(watches.static, ['static']);
-  gulp.watch(watches.server, server.restart);
+  sequence('set-env-dev', 'lint', 'test', ['browserify', 'static', 'less'], 'server', function(err) {
+    if (err) {
+      return callback(err);
+    }
+    livereload.listen();
+    gulp.watch(watches.less,   ['less']);
+    gulp.watch(watches.static, ['static']);
+    gulp.watch(watches.server, ['server']);
+    gulp.watch(watches.test,   ['test']);
+  });
 });
 
 gulp.task('build', function(callback) {
-  sequence(['clean', 'set-env-prod'], ['browserify', 'static'], callback);
+  return sequence(['clean', 'set-env-prod'], ['lint', 'test'], ['less', 'browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {
@@ -233,20 +250,35 @@ gulp.task('clean', function() {
 var api = {
   build : function() {
     gutil.log('Rebuild API.md');
-    gulp.src('./API.md')
-    .pipe(marked())
-    .pipe(gulp.dest('./tmp/'));
+    return gulp.src('./API.md')
+      .pipe(marked())
+      .pipe(gulp.dest('./tmp/'));
   },
   buildAndOpen : function() {
     gutil.log('Building API.md');
-    gulp.src('./API.md')
-    .pipe(marked())
-    .pipe(gulp.dest('./tmp/'))
-    .pipe(open());
+    return gulp.src('./API.md')
+      .pipe(marked())
+      .pipe(gulp.dest('./tmp/'))
+      .pipe(open());
   }
 };
 
 gulp.task('api', function() {
-  api.buildAndOpen();
   gulp.watch(watches.api, api.build);
+  return api.buildAndOpen();
+});
+
+gulp.task('test', function() {
+  // TODO use jest for (React) unit testing!?
+  // https://facebook.github.io/jest/
+  return gulp.src('test/*.spec.js')
+    .pipe(jasmine({
+      verbose: true,
+      includeStackTrace: true,
+      reporter: new jasmineReporters.TerminalReporter({
+        isVerbose : true,
+        includeStackTrace : true,
+        showColors : true
+      })
+    }));
 });

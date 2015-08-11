@@ -10,7 +10,7 @@ var Link = Router.Link;
 var ScenarioListItem = React.createClass({
   render: function() {
     return (
-      <tr>
+      <tr className="scenarioListItem">
         <td className="scenarioListItemTitle">
           <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>{this.props.scenario.title}</Link>
         </td>
