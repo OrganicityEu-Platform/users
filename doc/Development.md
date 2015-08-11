@@ -1,6 +1,10 @@
 # Development
 
-To do the development, please follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/doc/Install.md) first, before you continue here.
+follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/doc/Install.md) first, before you continue here.
+
+## Directory structure
+
+* See [README](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/README.md)
 
 ## gulp tasks
 
@@ -34,8 +38,7 @@ Gulp will then:
  * Compile assets (e.g. less files) from `assets` to `public`
  * Copy static files from `static` to `public`
  * Compile ES6 and JSX view sources to `public`
- * Watch sources for changes, recompile on changes and automatically reload (the changed files) in
-   the browser (see below)
+ * Watch sources for changes, recompile on changes and automatically reload (the changed files) in the browser (see below)
  * Run express web server at http://localhost:8080 (depending on values in `config/config.js`)
 
 For building the project for deployment in a production environment run `gulp deploy` instead.
@@ -107,7 +110,9 @@ var ScenarioList = React.createClass({
 });
 ```
 
-The call to ```api.reverse(...)``` will then result in ```'/api/v1/scenarios/weiQuio5boo?orderBy=timestamp&orderDir=asc'```. The rationale behind all this is that we have a central place for route definitions that makes it easy to lookup (!), define and modify routes without search / replace throughout the whole code base when we want to change something.
+The call to `api.reverse(...)` will then result in `'/api/v1/scenarios/weiQuio5boo?orderBy=timestamp&orderDir=asc'`.
+The rationale behind all this is that we have a central place for route definitions that makes it easy to lookup (!),
+define and modify routes without search / replace throughout the whole code base when we want to change something.
 
 ## less-based styling
 
@@ -173,10 +178,12 @@ react-router (see above) takes over and uses the Browser history API to realize 
 that feels like server-rendered but fast and responsive.
 
 ## TODOs
+
  * Take a look at how search engines see our single page app. The blogosphere says React is great
    for search engine optimization as you can always render it on server side as well (this would
    have to be set up first, not done yet).
 
 ## Nice-to-Haves
+
  * Build unit test with [Jest](https://facebook.github.io/jest/)
  * Allow executing unit tests with [Karma](http://karma-runner.github.io/)
