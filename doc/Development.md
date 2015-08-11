@@ -1,6 +1,6 @@
 # Development
 
-To do the development, please follow the [installation instructions](doc/Install.md) first, before you continue here.
+To do the development, please follow the [installation instructions](Install.md) first, before you continue here.
 
 ## gulp tasks
 
