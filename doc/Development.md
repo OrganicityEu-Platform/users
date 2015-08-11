@@ -1,6 +1,6 @@
 # Development
 
-To do the development, please follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/tree/master/doc/) first, before you continue here.
+To do the development, please follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/doc/Install.md) first, before you continue here.
 
 ## gulp tasks
 
