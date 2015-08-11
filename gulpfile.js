@@ -101,7 +101,7 @@ var server = {
   }
 };
 
-gulp.task('browserify', ['lint', 'test'], function() {
+gulp.task('browserify', function() {
   return browserifyTask({
     development: process.env.DEVELOPMENT === 'true',
     src: './views/jsx/App.jsx',
@@ -128,6 +128,7 @@ var watches = {
     './models/**',
     './routes/**',
     './script/**',
+    './test/**',
     './utils/**',
     './views/**'
   ],
@@ -137,6 +138,7 @@ var watches = {
     './models/**',
     './routes/**',
     './script/**',
+    './test/**',
     './utils/**',
     './views/**'
   ],
@@ -164,7 +166,7 @@ gulp.task('server', function(callback) {
   }
 });
 
-gulp.task('static', ['lint', 'test'], function() {
+gulp.task('static', function() {
   var src = './static/**';
   var dst = './public';
   return gulp.src(src)
@@ -180,10 +182,7 @@ gulp.task('static', ['lint', 'test'], function() {
 gulp.task('jscs', function() {
   return gulp.src(watches.jscs)
     .pipe(cache('jscs'))
-    .pipe(jscs())
-    .on('error', function(err) {
-      gutil.log(err);
-    });
+    .pipe(jscs());
 });
 
 gulp.task('eslint', ['jscs'], function() {
@@ -200,7 +199,7 @@ gulp.task('eslint', ['jscs'], function() {
 
 gulp.task('lint', ['jscs', 'eslint']);
 
-gulp.task('less', ['lint'], function() {
+gulp.task('less', function() {
   var cleancss = new LessPluginCleanCSS({ advanced: true });
   if (process.env.DEVELOPMENT) {
     return gulp.src('./assets/less/**/*.less')
@@ -229,12 +228,14 @@ gulp.task('less', ['lint'], function() {
 gulp.task('default', function(callback) {
   sequence('set-env-dev', 'lint', 'test', ['browserify', 'static', 'less'], 'server', function(err) {
     if (err) {
-      return callback(err);
+      gutil.log(err.toString());
     }
     livereload.listen();
     gulp.watch(watches.less,   ['less']);
     gulp.watch(watches.static, ['static']);
     gulp.watch(watches.server, ['server']);
+    gulp.watch(watches.jscs,   ['jscs']);
+    gulp.watch(watches.eslint, ['eslint']);
     gulp.watch(watches.test,   ['test']);
   });
 });
