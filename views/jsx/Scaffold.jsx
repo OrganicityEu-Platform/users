@@ -65,6 +65,7 @@ var Scaffold = React.createClass({
           </Nav>
           <Nav navbar>
             {userLinks}
+            <NavItemLink to="sysinfo">About</NavItemLink>
           </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>

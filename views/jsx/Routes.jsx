@@ -9,6 +9,7 @@ import Logout           from './auth/Logout.jsx';
 import LocalLogin       from './auth/LocalLogin.jsx';
 import Signup           from './auth/Signup.jsx';
 import Profile          from './auth/Profile.jsx';
+import SysInfo          from './SysInfo.jsx';
 import ui               from '../../ui_routes.js';
 
 var Router = require('react-router');
@@ -26,6 +27,7 @@ var routes = (
     <Route name="signup"            path={ui.route('signup')}         handler={Signup}           />
     <Route name="profile"           path={ui.route('profile')}        handler={Profile}          />
     <Route name="logout"            path={ui.route('logout')}         handler={Logout}           />
+    <Route name="sysinfo"           path={ui.route('sysinfo')}        handler={SysInfo}          />
   </Route>
 );
 

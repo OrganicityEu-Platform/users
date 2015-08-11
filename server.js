@@ -41,6 +41,7 @@ var routes_scenarios = require('./routes/api/v1/api.js')(router, passport);
 var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
 var routes_users     = require('./routes/api/v1/users.js')(router, passport);
 var routes_error     = require('./routes/api/v1/error.js')(router, passport);
+var routes_sysinfo   = require('./routes/api/v1/sysinfo.js')(router, passport);
 
 app.use(routes_scenarios);
 app.use(routes_auth);

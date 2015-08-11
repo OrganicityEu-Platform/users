@@ -22,6 +22,8 @@ var ui_routes = {
   'callback_twitter'  : '/auth/twitter/callback/?',
   'callback_google'   : '/auth/google/callback/?',
   'callback_github'   : '/auth/github/callback/?',
+
+  'sysinfo'           : '/sysinfo/?'
 };
 
 module.exports = {

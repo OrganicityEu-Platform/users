@@ -8,7 +8,8 @@ var prefixes = {
   'actors'    : '/api/v1/actors',
   'sectors'   : '/api/v1/sectors',
   'devices'   : '/api/v1/devices',
-  'error'     : '/api/v1/error'
+  'error'     : '/api/v1/error',
+  'sysinfo'   : '/api/v1/sysinfo'
 };
 
 var api_routes = {
@@ -47,7 +48,10 @@ var api_routes = {
   'devices_list'         : prefixes.devices + '/?',
 
   // erroring resource (for testing)
-  'error'                : prefixes.error + '/?'
+  'error'                : prefixes.error + '/?',
+
+  // sysinfo routes
+  'sysinfo'              : prefixes.sysinfo + '/?'
 };
 
 module.exports = {
