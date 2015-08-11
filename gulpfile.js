@@ -168,13 +168,13 @@ gulp.task('static', ['lint', 'test'], function() {
   var src = './static/**';
   var dst = './public';
   return gulp.src(src)
-        .pipe(newer(dst))
-        .pipe(cache('static'))
-        .pipe(gulp.dest(dst))
-        .pipe(livereload())
-        .pipe(notify(function(file) {
-          gutil.log('Copied', file.relative);
-        }));
+    .pipe(newer(dst))
+    .pipe(cache('static'))
+    .pipe(gulp.dest(dst))
+    .pipe(livereload())
+    .pipe(notify(function(file) {
+      gutil.log('Copied', file.relative);
+    }));
 });
 
 gulp.task('jscs', function() {
