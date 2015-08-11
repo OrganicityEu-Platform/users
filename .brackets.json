@@ -6,7 +6,5 @@
     "ESLint",
     "JSCS"
   ],
-  "linting.usePreferredOnly": true,
-  "tabSize": 2,
-  "spaceUnits": 2
+  "linting.usePreferredOnly": true
 }
