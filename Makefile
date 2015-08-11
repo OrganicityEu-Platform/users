@@ -10,5 +10,6 @@ jenkins:
 
 deploy:
 	git pull
+	npm install
 	gulp build
 	forever restart server.js
