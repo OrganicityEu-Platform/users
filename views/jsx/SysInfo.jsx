@@ -37,7 +37,7 @@ var SysInfo = React.createClass({
                 if (this.state == null) {
                   return (
                     <tr>
-                      <td colspan="4">Loading...</td>
+                      <td colSpan="4">Loading...</td>
                     </tr>
                   );
                 } else {
