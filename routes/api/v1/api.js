@@ -152,32 +152,6 @@ module.exports = function(router, passport) {
           res.json(filterLatestVersions(allScenariosAndVersions));
         }
       });
-
-      // @see: http://docs.mongodb.org/manual/core/aggregation-introduction/
-      // @see: http://docs.mongodb.org/manual/reference/method/db.collection.aggregate/
-      // @see: http://docs.mongodb.org/manual/reference/operator/aggregation/group/
-      // @see: http://docs.mongodb.org/manual/reference/operator/aggregation/first/
-      /*Scenario.aggregate([
-          { "$sort": { "version": -1 } },
-          { "$group": {
-              "_id"           : "$uuid",
-              "uuid"          : { "$first": "$_id" },
-              "version"       : { "$first": "$version" },
-              "title"         : { "$first": "$title"},
-              "sectors"       : { "$first": "$sectors"},
-              "actors"        : { "$first": "$actors"},
-              "dataSources"   : { "$first": "$dataSources"},
-              "summary"       : { "$first": "$summary"},
-              "narrative"     : { "$first": "$narrative"},
-              "timestamp"     : { "$first": "$timestamp"}
-          }}
-      ], function(err, scenarios){
-          if(err){
-              res.send('ERROR: ' + err);
-          } else{
-              res.status(200).json(scenarios);
-          }
-      });*/
     }
   });
 
