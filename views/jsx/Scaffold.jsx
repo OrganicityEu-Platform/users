@@ -4,6 +4,7 @@ import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
+import UserHasRoleMixin from './UserHasRoleMixin.jsx';
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
 
@@ -12,7 +13,7 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Scaffold = React.createClass({
-  mixins : [UserIsLoggedInMixin, FlashQueue.Mixin],
+  mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
       currentUser : null
@@ -66,6 +67,12 @@ var Scaffold = React.createClass({
           <Nav navbar>
             {userLinks}
             <NavItemLink to="sysinfo">About</NavItemLink>
+            {(() => {
+              if (this.userHasRole('admin')) {
+                return <NavItemLink to="admin_userList">Users</NavItemLink>;
+              }
+              return null;
+            })()}
           </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>

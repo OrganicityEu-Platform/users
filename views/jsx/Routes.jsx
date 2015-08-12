@@ -10,6 +10,8 @@ import LocalLogin       from './auth/LocalLogin.jsx';
 import Signup           from './auth/Signup.jsx';
 import Profile          from './auth/Profile.jsx';
 import SysInfo          from './SysInfo.jsx';
+import UserListView     from './auth/UserListView.jsx';
+import UserEditView     from './auth/UserEditView.jsx';
 import ui               from '../../ui_routes.js';
 
 var Router = require('react-router');
@@ -28,6 +30,8 @@ var routes = (
     <Route name="profile"           path={ui.route('profile')}        handler={Profile}          />
     <Route name="logout"            path={ui.route('logout')}         handler={Logout}           />
     <Route name="sysinfo"           path={ui.route('sysinfo')}        handler={SysInfo}          />
+    <Route name="admin_userList"    path={ui.route('admin_userList')} handler={UserListView}     />
+    <Route name="admin_userEdit"    path={ui.route('admin_userEdit')} handler={UserEditView}     />
   </Route>
 );
 
