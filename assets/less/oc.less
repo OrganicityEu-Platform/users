@@ -63,19 +63,21 @@
 }
 
 .flashfade-enter {
-  opacity: 0.01;
-  transition: opacity .3s ease-in;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .1s ease-in;
 }
 
 .flashfade-enter.flashfade-enter-active {
-  opacity: 1;
+  max-height: 500px;
 }
 
 .flashfade-leave {
-  opacity: 1;
-  transition: opacity .3s ease-in;
+  max-height: 500px;
+  transition: max-height .1s ease-out;
 }
 
 .flashfade-leave.flashfade-leave-active {
-  opacity: 0.01;
+  max-height: 0;
+  overflow: hidden;
 }
