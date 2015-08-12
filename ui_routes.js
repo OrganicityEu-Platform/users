@@ -18,12 +18,10 @@ var ui_routes = {
   'logout'            : '/auth/logout/?',
   'local-login'       : '/auth/local-login/?',
   'signup'            : '/auth/signup/?',
-  'callback_facebook' : '/auth/facebook/callback/?',
-  'callback_twitter'  : '/auth/twitter/callback/?',
-  'callback_google'   : '/auth/google/callback/?',
-  'callback_github'   : '/auth/github/callback/?',
 
-  'sysinfo'           : '/sysinfo/?'
+  'sysinfo'           : '/sysinfo/?',
+  'admin_userList'    : '/admin/users/?',
+  'admin_userEdit'    : '/admin/users/:uuid/?'
 };
 
 module.exports = {

@@ -29,6 +29,10 @@ var api_routes = {
   'connect_local-signup' : prefixes.auth + '/local',
   'login'                : prefixes.auth + '/login',
   'logout'               : prefixes.auth + '/logout',
+  'callback_facebook'    : prefixes.auth + '/facebook/callback',
+  'callback_twitter'     : prefixes.auth + '/twitter/callback',
+  'callback_google'      : prefixes.auth + '/google/callback',
+  'callback_github'      : prefixes.auth + '/github/callback',
 
   // users routes
   'users'                : prefixes.users + '/?',
