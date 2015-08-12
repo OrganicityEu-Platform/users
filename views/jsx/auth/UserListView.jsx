@@ -35,7 +35,8 @@ var UserListView = React.createClass({
     console.log(evt);
   },
   handleUserDeleted: function(deletedUser) {
-    this.flash('success', 'User account of ' + deletedUser.name + ' (UUID: "' + deletedUser.uuid + '") was successfully deleted.');
+    this.flash('success', 'User account of ' + deletedUser.name +
+      ' (UUID: "' + deletedUser.uuid + '") was successfully deleted.');
     this.state.users = this.state.users.filter((user) => user.uuid !== deletedUser.uuid);
     this.setState(this.state);
   },
