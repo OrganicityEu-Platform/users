@@ -286,14 +286,19 @@ gulp.task('pdf', function() {
 gulp.task('test', function() {
   // TODO use jest for (React) unit testing!?
   // https://facebook.github.io/jest/
+  var reporter = new jasmineReporters.TerminalReporter({
+    isVerbose : true,
+    includeStackTrace : true,
+    showColors : true
+  });
   return gulp.src('test/*.spec.js')
     .pipe(jasmine({
       verbose: true,
       includeStackTrace: true,
-      reporter: new jasmineReporters.TerminalReporter({
-        isVerbose : true,
-        includeStackTrace : true,
-        showColors : true
-      })
+      reporter: reporter
     }));
+});
+
+gulp.task('test-watch', ['test'], function() {
+  gulp.watch(watches.test, ['test']);
 });
