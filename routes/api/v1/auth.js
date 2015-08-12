@@ -94,13 +94,13 @@ module.exports = function(router, passport) {
   // login / signup using auth providers
   authProviders.forEach(function(provider) {
     router.get(api.route('auth_' + provider), passport.authenticate(provider, authScopes[provider]));
-    router.get(ui.route('callback_' + provider), passport.authenticate(provider), authSuccess);
+    router.get(api.route('callback_' + provider), passport.authenticate(provider), authSuccess);
   });
 
   // authorize / connect accounts for already existing users
   authProviders.forEach(function(provider) {
     router.post(api.route('connect_' + provider), passport.authenticate(provider, authScopes));
-    router.get(ui.route('callback_' + provider), passport.authorize(provider, authCallbacks));
+    router.get(api.route('callback_' + provider), passport.authorize(provider, authCallbacks));
   });
 
   // special case: connecting local-login
