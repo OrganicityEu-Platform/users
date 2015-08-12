@@ -24,3 +24,4 @@ config/database.js
 
 # Ignore public folder, because it will be created
 public
+doc/*.pdf
