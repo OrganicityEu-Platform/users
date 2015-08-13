@@ -8,6 +8,7 @@ var cookieParser      = require('cookie-parser');
 var bodyParser        = require('body-parser');
 var session           = require('express-session');
 var expressListRoutes = require('express-list-routes');
+var timers            = require('timers');
 
 // configuration ==============================================================
 var app               = express();
@@ -36,6 +37,15 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes =====================================================================
+
+// simulates network latency in development mode
+if (app.get('env') === 'development') {
+  app.use(function(req, res, next) {
+    timers.setTimeout(function() {
+      next();
+    }, 500);
+  });
+}
 
 var routes_scenarios = require('./routes/api/v1/api.js')(router, passport);
 var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
