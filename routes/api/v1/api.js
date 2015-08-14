@@ -236,14 +236,14 @@ module.exports = function(router, passport) {
     // if delete by uuid:
 
     if (isEmptyObject(req.query)) {
-      db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario) {
+      db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenarios) {
         if (err) {
           return res.status(400).send('');
-        } else if (!scenario) {
+        } else if (!scenarios || scenarios.length === 0) {
           return res.status(404).send('NOT FOUND');
         } else {
           db.scenarios.remove({
-            uuid: scenario[0].uuid, version: scenario[0].version
+            uuid: scenarios[0].uuid, version: scenarios[0].version
           }, function(err, data) {
             if (err) {
               return res.send('ERROR: ' + err);
