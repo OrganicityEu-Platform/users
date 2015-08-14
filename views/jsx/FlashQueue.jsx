@@ -62,9 +62,11 @@ var Message = React.createClass({
 });
 
 var Mixin = {
+  allowedTypes : ['success', 'info', 'warning', 'danger', ''],
   flash: function(type, text, opts) {
-    if (type !== '' && type !== 'success' && type !== 'info' && type !== 'warning' && type !== 'danger') {
-      console.log('Wrong flash type "' + type + '". Use one of ["", "info", "success", "warning", "danger"].)');
+    if (!this.allowedTypes.some((t) => t === type)) {
+      console.log(`Wrong flash type "${type}". Use one of ${JSON.stringify(this.allowedTypes)}`);
+      return;
     }
     mountedInstance.flash(type, text, opts);
   },
