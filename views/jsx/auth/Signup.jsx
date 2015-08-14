@@ -1,15 +1,16 @@
-import $          from 'jquery';
-import React      from 'react';
-import FlashQueue from '../FlashQueue.jsx';
-import api        from '../../../api_routes.js';
-import ui         from '../../../ui_routes.js';
+import $            from 'jquery';
+import React        from 'react';
+import FlashQueue   from '../FlashQueue.jsx';
+import LoadingMixin from '../LoadingMixin.jsx';
+import api          from '../../../api_routes.js';
+import ui           from '../../../ui_routes.js';
 
 var Router = require('react-router');
 var Link = Router.Link;
 var Navigation = Router.Navigation;
 
 var Signup = React.createClass({
-  mixins: [Navigation, FlashQueue.Mixin],
+  mixins: [Navigation, FlashQueue.Mixin, LoadingMixin],
   getInitialState : function() {
     return {
       email : '',
@@ -42,17 +43,21 @@ var Signup = React.createClass({
   },
   handleSubmit : function(evt) {
     evt.preventDefault();
+    this.loading();
     var self = this;
-    $.ajax(api.reverse('signup'), {
+    var url = api.reverse('signup');
+    $.ajax(url, {
       error: (jqXHR, textStatus, errorThrown) => {
+        this.loaded();
         if (jqXHR.status === 500) {
-          self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
+          self.flashOnAjaxError(url, 'Error signing up')(jqXHR, textStatus, errorThrown);
         } else {
           self.state.error = 'Error signing up: ' + textStatus;
           self.setState(this.state);
         }
       },
       success: (currentUser) => {
+        this.loaded();
         self.props.onLogin(currentUser);
         self.transitionTo(ui.route('profile'));
       },
@@ -75,23 +80,35 @@ var Signup = React.createClass({
         <form action={api.reverse('signup')} method="post">
             <div className="form-group">
                 <label htmlFor="email">Email</label>
-                <input type="text" className="form-control" name="email" value={this.state.email}
+                <input type="text"
+                  className="form-control"
+                  name="email"
+                  value={this.state.email}
+                  disabled={this.isLoading() ? 'disabled' : ''}
                   onChange={this.handleChangedEmail} />
             </div>
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" className="form-control" name="password" value={this.state.password}
+                <input type="password"
+                  className="form-control"
+                  name="password"
+                  value={this.state.password}
+                  disabled={this.isLoading() ? 'disabled' : ''}
                   onChange={this.handleChangedPassword} />
             </div>
             <div className="form-group">
                 <label htmlFor="password_repeat">Repeat Password</label>
-                <input type="password" className="form-control" name="password_repeat"
-                  value={this.state.password_repeat} onChange={this.handleChangedPasswordRepeat} />
+                <input type="password"
+                  className="form-control"
+                  name="password_repeat"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  value={this.state.password_repeat}
+                  onChange={this.handleChangedPasswordRepeat} />
             </div>
             <button type="submit"
-                    className="btn btn-warning btn-lg"
-                    disabled={this.isValid() ? '' : 'disabled'}
-                    onClick={this.handleSubmit}>Signup</button>
+              className="btn btn-warning btn-lg"
+              disabled={(this.isValid() && !this.isLoading()) ? '' : 'disabled'}
+              onClick={this.handleSubmit}>Signup</button>
         </form>
         <hr/>
         <p>Already have an account? <Link to="local-login">Login</Link></p>

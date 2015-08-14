@@ -1,21 +1,20 @@
-import $ from 'jquery';
-import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
-import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
-import FlashQueue from './FlashQueue.jsx';
-import api from '../../api_routes.js';
+import $            from 'jquery';
+import React        from 'react';
+import LoadingMixin from './LoadingMixin.jsx';
+import api          from '../../api_routes.js';
 
 var SysInfo = React.createClass({
-  mixins : [FlashQueue.Mixin],
+  mixins : [LoadingMixin],
   getInitialState : function() {
-    return null;
+    return { sysinfo : null };
   },
   componentDidMount: function() {
+    this.loading();
     $.ajax(api.route('sysinfo'), {
       dataType : 'json',
-      error : this.flashOnAjaxError(api.route('sysinfo'), 'Error fetching sysinfo'),
+      error : this.loadingError(api.route('sysinfo'), 'Error fetching sysinfo'),
       success : (sysinfo) => {
-        this.setState(sysinfo);
+        this.loaded({ sysinfo : sysinfo });
       }
     });
   },
@@ -34,29 +33,24 @@ var SysInfo = React.createClass({
                 <th>Tag</th>
               </tr>
               {(() => {
-                if (this.state == null) {
+                if (this.isLoading() || this.state.sysinfo == null) {
                   return (
                     <tr>
                       <td colSpan="4">Loading...</td>
                     </tr>
                   );
-                } else {
-                  return (
-                    <tr>
-                      <td>{this.state.branch}</td>
-                      <td>{this.state.short}</td>
-                      <td>{this.state.long}</td>
-                      <td>{this.state.tag}</td>
-                    </tr>
-                  );
                 }
+                return (
+                  <tr>
+                    <td>{this.state.sysinfo.branch}</td>
+                    <td>{this.state.sysinfo.short}</td>
+                    <td>{this.state.sysinfo.long}</td>
+                    <td>{this.state.sysinfo.tag}</td>
+                  </tr>
+                );
               })()}
-
             </thead>
           </table>
-          <p>
-
-          </p>
         </div>
       </div>
     );

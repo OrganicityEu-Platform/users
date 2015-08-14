@@ -1,6 +1,7 @@
 import $                from 'jquery';
 import React            from 'react';
 import FlashQueue       from '../FlashQueue.jsx';
+import LoadingMixin     from '../LoadingMixin.jsx';
 import ScenarioListItem from './ScenarioListItem.jsx';
 import Router           from 'react-router';
 import api              from '../../../api_routes.js';
@@ -9,9 +10,10 @@ import ui               from '../../../ui_routes.js';
 var Link = Router.Link;
 
 var ScenarioList = React.createClass({
-  mixins: [FlashQueue.Mixin, Router.Navigation],
+  mixins: [FlashQueue.Mixin, Router.Navigation, LoadingMixin],
   getInitialState: function() {
     return {
+      refresh : false,
       scenarios: [],
       searchTerm: null,
       sortBy : null
@@ -30,15 +32,18 @@ var ScenarioList = React.createClass({
     }
     return api.reverse('scenario_list', {}, query);
   },
-  reload: function() {
+  reload: function(refresh) {
+    if (refresh) {
+      this.setState({ refresh : true });
+    }
+    this.loading();
     var url = this.buildQueryUrl();
     $.ajax(url, {
       dataType: 'json',
-      error: this.flashOnAjaxError(url, 'Error querying scenario list'),
+      error : this.loadingError(url, 'Error querying scenario list'),
       success: (scenarios) => {
         if (this.isMounted()) {
-          this.state.scenarios = scenarios;
-          this.setState(this.state);
+          this.loaded({ scenarios : scenarios, refresh : false });
         }
       }
     });
@@ -49,6 +54,7 @@ var ScenarioList = React.createClass({
   },
   handleSearch : function(evt) {
     evt.preventDefault();
+    this.setState({ scenarios : [] });
     this.reload();
   },
   componentWillReceiveProps: function(nextProps) {
@@ -62,10 +68,18 @@ var ScenarioList = React.createClass({
         <div className="row col-sm-4 pull-right">
           <form name="scenario_search_form" onSubmit={this.handleSearch}>
           <div className="input-group">
-            <input type="text" name="q" className="form-control" placeholder="Search for..."
-              value={this.state.searchTerm} onChange={this.handleUpdatedSearchTerm} />
+            <input type="text"
+              name="q"
+              className="form-control"
+              placeholder="Search for..."
+              disabled={this.isLoading() ? 'disabled' : ''}
+              value={this.state.searchTerm}
+              onChange={this.handleUpdatedSearchTerm} />
             <span className="input-group-btn">
-              <input type="submit" value="Search" className="btn btn-default">Go!</input>
+              <input type="submit"
+                value="Search"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                className="btn btn-default">Go!</input>
             </span>
           </div>
           </form>
@@ -74,11 +88,16 @@ var ScenarioList = React.createClass({
           <table className="scenarioListTable">
             <thead>
               <tr>
-                <th><Link to={ui.route('scenarioList')} params={this.props.params}
-                  query={$.extend({}, this.props.query, { sortBy : 'title' })}>Title</Link></th>
+                <th>
+                  <Link to={ui.route('scenarioList')}
+                    params={this.props.params}
+                    query={$.extend({}, this.props.query, { sortBy : 'title' })}>Title</Link></th>
                 <th>Summary</th>
-                <th><Link to={ui.route('scenarioList')} params={this.props.params}
-                  query={$.extend({}, this.props.query, { sortBy : 'timestamp' })}>Last Updated</Link></th>
+                <th>
+                  <Link to={ui.route('scenarioList')}
+                    params={this.props.params}
+                    query={$.extend({}, this.props.query, { sortBy : 'timestamp' })}>Last Updated</Link>
+                  </th>
                 <th>Creator</th>
                 <th></th>
                 <th></th>
@@ -86,10 +105,17 @@ var ScenarioList = React.createClass({
             </thead>
             <tbody>
               {(() => {
+                if (this.isLoading() && !this.state.refresh) {
+                  return (
+                    <tr>
+                      <td colSpan="6">Loading...</td>
+                    </tr>
+                  );
+                }
                 if (this.state.scenarios.length === 0) {
                   return (
                     <tr>
-                      <td colSpan="5">No scenarios found....</td>
+                      <td colSpan="6">No scenarios found...</td>
                     </tr>
                   );
                 }

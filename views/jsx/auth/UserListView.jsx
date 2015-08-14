@@ -16,18 +16,23 @@ var UserListView = React.createClass({
   mixins: [FlashQueue.Mixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
+      loading: true,
       users : null
     };
   },
   componentDidMount: function() {
     $.ajax(api.reverse('users'), {
       dataType: 'json',
-      error: this.flashOnAjaxError(api.reverse('users'), 'Error retrieving users'),
+      error : (jqXHR, textStatus, errorThrown) => {
+        this.state.loading = false;
+        this.setState(this.state);
+        var f = this.flashOnAjaxError(api.reverse('users'), 'Error retrieving users');
+        f(jqXHR, textStatus, errorThrown);
+      },
       success: (users) => {
-        console.log(users);
-        this.setState({
-          users: users
-        });
+        this.state.loading = false;
+        this.state.users = users;
+        this.setState(this.state);
       },
     });
   },
@@ -35,14 +40,17 @@ var UserListView = React.createClass({
     console.log(evt);
   },
   handleUserDeleted: function(deletedUser) {
-    this.flash('success', 'User account of ' + deletedUser.name +
-      ' (UUID: "' + deletedUser.uuid + '") was successfully deleted.');
+    this.flash(
+      'success',
+      `User account of "${deletedUser.name}" (UUID: "${deletedUser.uuid}") was successful`
+    );
     this.state.users = this.state.users.filter((user) => user.uuid !== deletedUser.uuid);
     this.setState(this.state);
   },
   render: function() {
     return (
       <div className="row">
+        <h1>Users</h1>
         <table className="adminUsersTable">
           <thead>
             <tr>
@@ -55,8 +63,12 @@ var UserListView = React.createClass({
           </thead>
           <tbody>
             {(() => {
-              if (this.state.users == null) {
-                return null;
+              if (this.state.users === null) {
+                return (
+                  <tr>
+                    <td colSpan="5">Loading...</td>
+                  </tr>
+                );
               }
               return this.state.users.map((user) => {
                 return (

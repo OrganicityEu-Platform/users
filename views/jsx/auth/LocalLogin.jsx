@@ -2,6 +2,7 @@ import $                   from 'jquery';
 import React               from 'react';
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx'
 import FlashQueue          from '../FlashQueue.jsx';
+import LoadingMixin        from '../LoadingMixin.jsx';
 import api                 from '../../../api_routes.js';
 import ui                  from '../../../ui_routes.js';
 
@@ -10,7 +11,7 @@ var Link = Router.Link;
 var Navigation = Router.Navigation;
 
 var LocalLogin = React.createClass({
-  mixins: [Navigation, UserIsLoggedInMixin, FlashQueue.Mixin],
+  mixins: [Navigation, UserIsLoggedInMixin, FlashQueue.Mixin, LoadingMixin],
   getInitialState : function() {
     return {
       email : '',
@@ -38,8 +39,10 @@ var LocalLogin = React.createClass({
   handleSubmit : function(evt) {
     evt.preventDefault();
     var self = this;
+    this.loading();
     $.ajax(api.reverse('local-login'), {
       error: (jqXHR, textStatus, errorThrown) => {
+        this.loaded();
         if (jqXHR.status === 422) {
           self.state.error = 'Error logging in: username and/or password unknown';
           self.setState(this.state);
@@ -48,6 +51,7 @@ var LocalLogin = React.createClass({
         }
       },
       success: (currentUser) => {
+        this.loaded();
         self.props.onLogin(currentUser);
         self.transitionTo(ui.reverse('profile'));
       },
@@ -70,17 +74,27 @@ var LocalLogin = React.createClass({
           <form action={api.reverse('local-login')} method="post">
             <div className="form-group">
                 <label>Email</label>
-                <input type="text" className="form-control" name="email" id="email"
-                  value={this.state.email} onChange={this.handleChangedEmail} />
+                <input type="text"
+                  className="form-control"
+                  name="email"
+                  id="email"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  value={this.state.email}
+                  onChange={this.handleChangedEmail} />
             </div>
             <div className="form-group">
                 <label>Password</label>
-                <input type="password" className="form-control" name="password" id="password"
-                  value={this.state.password} onChange={this.handleChangedPassword} />
+                <input type="password"
+                  className="form-control"
+                  name="password"
+                  id="password"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  value={this.state.password}
+                  onChange={this.handleChangedPassword} />
             </div>
             <button type="submit"
                     className="btn btn-warning btn-lg"
-                    disabled={this.isValid() ? '' : 'disabled'}
+                    disabled={(this.isValid() && !this.isLoading()) ? '' : 'disabled'}
                     onClick={this.handleSubmit}>Login</button>
           </form>
           <hr/>

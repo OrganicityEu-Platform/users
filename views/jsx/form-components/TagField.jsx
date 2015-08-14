@@ -8,16 +8,19 @@ var TagField = React.createClass({
     };
   },
   handleChange : function(evt) {
-    this.state.tagsString = evt.target.value;
-    this.state.tags = this.state.tagsString.split(',').map((s) => s.trim()).filter((s) => s.length > 0);
-    this.setState(this.state);
-    this.props.onChange(this.state.tags);
+    if (this.isMounted()) {
+      this.state.tagsString = evt.target.value;
+      this.state.tags = this.state.tagsString.split(',').map((s) => s.trim()).filter((s) => s.length > 0);
+      this.setState(this.state);
+      this.props.onChange(this.state.tags);
+    }
   },
   render : function() {
     return (
       <input type="text"
         className="tagField"
         value={this.state.tagsString}
+        disabled={this.props.loading ? 'disabled' : ''}
         onChange={this.handleChange} />
     );
   }

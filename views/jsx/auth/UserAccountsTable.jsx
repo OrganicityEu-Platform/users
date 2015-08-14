@@ -3,24 +3,25 @@ import React             from 'react';
 import ReactMixin        from 'react-mixin';
 import UserHasRoleMixin  from '../UserHasRoleMixin.jsx';
 import api               from '../../../api_routes.js';
-import FlashQueue        from '../FlashQueue.jsx';
+import LoadingMixin      from '../LoadingMixin.jsx';
 import TagField          from '../form-components/TagField.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var UserAccountsTable = React.createClass({
-  mixins: [FlashQueue.Mixin, UserHasRoleMixin],
+  mixins: [UserHasRoleMixin, LoadingMixin],
   getInitialState: function() {
     return null;
   },
   componentDidMount: function() {
+    this.loading();
     var url = api.reverse('user_by_uuid', { uuid : this.props.user.uuid });
     $.ajax(url, {
       dataType: 'json',
-      error: this.flashOnAjaxError(url, 'Error retrieving user'),
+      error: this.loadingError(url, 'Error retrieving user'),
       success: (user) => {
-        this.setState(user);
+        this.loaded(user);
       },
     });
   },
@@ -37,7 +38,7 @@ var UserAccountsTable = React.createClass({
         <h4>{account}</h4>
         {this.accountFields[account].map((field) => {
           return (
-            <div key={account}>
+            <div key={this.state.uuid + '_' + account + '_' + field}>
               <b>{ field }:</b> {this.state[account][field]}<br/>
             </div>
           );
@@ -46,8 +47,8 @@ var UserAccountsTable = React.createClass({
     );
   },
   render: function() {
-    if (this.state == null) {
-      return null;
+    if (this.isLoading() || this.state == null) {
+      return <div>Loading...</div>;
     }
     var accounts = [];
     for (var account in this.accountFields) {

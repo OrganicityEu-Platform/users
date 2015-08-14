@@ -4,62 +4,68 @@ import ReactMixin       from 'react-mixin';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
 import api              from '../../../api_routes.js';
 import FlashQueue       from '../FlashQueue.jsx';
+import LoadingMixin     from '../LoadingMixin.jsx';
+import TagField         from '../form-components/TagField.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var Profile = React.createClass({
-  mixins: [FlashQueue.Mixin, UserHasRoleMixin],
+  mixins: [FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin],
   getInitialState: function() {
     var state = {
-      dirty  : false,
-      name   : '',
-      gender : 'f',
-      roles  : []
+      dirty   : false,
+      profile : {
+        name    : '',
+        gender  : 'f',
+        roles   : []
+      }
     };
     return state;
   },
   componentDidMount: function() {
-    $.ajax(api.reverse('currentUser'), {
+    this.loading();
+    var url = api.reverse('currentUser');
+    $.ajax(url, {
       dataType: 'json',
-      error: this.flashOnAjaxError(api.reverse('currentUser'), 'Error retrieving current user'),
-      success: (data) => {
-        this.state.dirty = false;
-        this.setState(data);
-      },
+      error: this.loadingError(url, 'Error retrieving current user'),
+      success : (profile) => {
+        this.loaded({ dirty : false, profile : profile});
+      }
     });
   },
   handleChangedName: function(evt) {
     this.state.dirty = true;
-    this.state.name = evt.target.value;
+    this.state.profile.name = evt.target.value;
     this.setState(this.state);
   },
   handleChangedGender: function(evt) {
     this.state.dirty = true;
-    this.state.gender = evt.target.value;
+    this.state.profile.gender = evt.target.value;
     this.setState(this.state);
   },
-  handleChangedRoles: function(evt) {
+  handleChangedRoles: function(roles) {
     this.state.dirty = true;
-    this.state.roles = evt.target.value.trim().split(',');
+    this.state.profile.roles = roles;
     this.setState(this.state);
   },
   handleSubmit: function(evt) {
     evt.preventDefault();
-    var data = this.state;
+    var profile = this.state.profile;
     // patch would be forbidden if we try to change roles and we're not admin...
     if (!this.userHasRole('admin')) {
-      data.roles = undefined;
+      profile.roles = undefined;
     }
-    var url = api.reverse('user_by_uuid', { uuid : this.state.uuid});
+    this.loading();
+    var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
     $.ajax(url, {
       type : 'PATCH',
-      data : JSON.stringify(data),
+      data : JSON.stringify(profile),
       contentType : 'application/json',
-      error : this.flashOnAjaxError(url, 'Error updating user profile'),
+      error : this.loadingError(url, 'Error updating user profile'),
       success : () => {
-        this.state.dirty = false;
-        this.setState(this.state);
+        this.loaded({ dirty : false });
+        this.flash('success', 'Succesfully updated your profile');
       }
     });
   },
@@ -73,16 +79,28 @@ var Profile = React.createClass({
               <input  type="text"
                       className="form-control"
                       id="profile-name"
-                      value={this.state.name}
+                      disabled={this.isLoading() ? 'disabled' : ''}
+                      placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
+                      value={this.state.profile.name}
                       onChange={this.handleChangedName} />
             </div>
           </div>
           <div className="form-group">
             <label className="control-label col-sm-2" htmlFor="profile-gender">Gender</label>
             <div className="col-sm-10">
-              <input type="radio" name="gender" id="profile-gender-f" value="f" checked={this.state.gender === 'f'}
+              <input type="radio"
+                name="gender"
+                id="profile-gender-f"
+                value="f"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                checked={this.state.profile.gender === 'f'}
                 onChange={this.handleChangedGender} /> Female<br/>
-              <input type="radio" name="gender" id="profile-gender-m" value="m" checked={this.state.gender === 'm'}
+              <input type="radio"
+                name="gender"
+                id="profile-gender-m"
+                value="m"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                checked={this.state.profile.gender === 'm'}
                 onChange={this.handleChangedGender} /> Male
             </div>
           </div>
@@ -92,17 +110,14 @@ var Profile = React.createClass({
                 <div className="form-group">
                   <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
                   <div className="col-sm-10">
-                    <input  type="text"
-                            className="form-control"
-                            id="profile-roles"
-                            placeholder="Roles..."
-                            value={this.state.roles ? this.state.roles.join(',') : ''}
-                            onChange={this.handleChangedRoles} />
+                    <TagField
+                      key={this.state.profile.uuid + '_roles'}
+                      tags={this.state.profile.roles}
+                      loading={this.isLoading()}
+                      onChange={this.handleChangedRoles} />
                   </div>
                 </div>
               );
-            } else {
-              return null;
             }
           })()}
           <div className="form-group">

@@ -1,38 +1,41 @@
-import $          from 'jquery';
-import React      from 'react';
-import FlashQueue from '../FlashQueue.jsx';
-import api        from '../../../api_routes.js';
+import $            from 'jquery';
+import React        from 'react';
+import FlashQueue   from '../FlashQueue.jsx';
+import LoadingMixin from '../LoadingMixin.jsx';
+import api          from '../../../api_routes.js';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var UserAvatar = React.createClass({
-  mixins: [FlashQueue.Mixin],
+  mixins: [FlashQueue.Mixin, LoadingMixin],
   getInitialState: function() {
-    return null;
+    return {
+      loading: true,
+      user: null
+    };
   },
   componentDidMount: function() {
+    this.loading();
     var url = api.reverse('user_info', { uuid : this.props.uuid });
     $.ajax(url, {
       dataType : 'json',
-      error : this.flashOnAjaxError(url, 'Error loading user info'),
+      error : (jqXHR, textStatus, errorThrown) => {
+        this.loaded();
+        this.flashOnAjaxError(url, 'Error loading user info')(jqXHR, textStatus, errorThrown);
+      },
       success : (user) => {
-        this.setState(user);
+        this.state.loading = false;
+        this.state.user = user;
+        this.setState(this.state);
       }
     });
   },
   render: function() {
-    var text;
-    if (!this.state) {
-      text = 'Loading...';
-    } else if (this.state.error) {
-      text = 'Error :(';
-    } else {
-      text = this.state.name;
+    if (this.state.loading) {
+      return <div>Loading...</div>;
     }
-    return (
-      <div>{text}</div>
-    );
+    return <div>{this.state.user.name}</div>;
   }
 });
 

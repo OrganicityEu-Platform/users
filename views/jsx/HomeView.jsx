@@ -3,6 +3,7 @@ import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import FlashQueue from './FlashQueue.jsx';
+import LoadingMixin from './LoadingMixin.jsx';
 import api from '../../api_routes.js';
 
 var Router = require('react-router');
@@ -10,14 +11,16 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var HomeView = React.createClass({
-  mixins : [FlashQueue.Mixin],
+  mixins : [FlashQueue.Mixin, LoadingMixin],
   onClickNotification : function() {
     this.flash('info', 'A friendly notice');
   },
   onClickAjaxError : function() {
+    this.loading();
     $.ajax(api.reverse('error'), {
-      error: this.flashOnAjaxError(api.reverse('error'), 'Error while demonstrating error handling'),
+      error : this.loadingError(api.reverse('error'), 'Error while demonstrating error handling'),
       success: (data) => {
+        this.loaded();
         alert('Non-existing resource exists... WTF?');
       }
     });
@@ -58,7 +61,9 @@ var HomeView = React.createClass({
           </p>
           <p>
             <button className="btn btn-primary" onClick={this.onClickNotification}>Notification</button>
-            <button className="btn btn-error" onClick={this.onClickAjaxError}>Create AJAX error</button>
+            <button className="btn btn-error"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              onClick={this.onClickAjaxError}>Create AJAX error</button>
           </p>
         </div>
       </div>

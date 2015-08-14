@@ -39,7 +39,6 @@ var UserEditView = React.createClass({
       method: 'PATCH',
       error: this.flashOnAjaxError(url, 'Error updating user'),
       success: (user) => {
-        console.log('saved');
         this.state.roles = user.roles;
         this.state.dirty = false;
         this.setState(this.state);
