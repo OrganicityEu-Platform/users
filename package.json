@@ -20,7 +20,7 @@
     "gulp-express": "^0.3.5",
     "gulp-if": "^1.2.5",
     "gulp-jasmine": "^2.0.1",
-    "gulp-jscs": "~1.6.0",
+    "gulp-jscs": "~2.0.0",
     "gulp-less": "^3.0.3",
     "gulp-livereload": "^3.8.0",
     "gulp-marked": "^1.0.0",

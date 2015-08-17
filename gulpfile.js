@@ -125,23 +125,23 @@ var watches = {
   ],
   'jscs' : [
     '*.js',
-    './config/**',
-    './models/**',
-    './routes/**',
-    './script/**',
-    './test/**',
-    './utils/**',
-    './views/**'
+    './config/**/*.js',
+    './models/**/*.js',
+    './routes/**/*.js',
+    './scripts/**/*.js',
+    './test/**/*.js',
+    './utils/**/*.js',
+    './views/**/*.js'
   ],
   'eslint' : [
     '*.js',
-    './config/**',
-    './models/**',
-    './routes/**',
-    './script/**',
-    './test/**',
-    './utils/**',
-    './views/**'
+    './config/**/*.js',
+    './models/**/*.js',
+    './routes/**/*.js',
+    './scripts/**/*.js',
+    './test/**/*.js',
+    './utils/**/*.js',
+    './views/**/*.js'
   ],
   'doc' : [
     'doc/*.md'

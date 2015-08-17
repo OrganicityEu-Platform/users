@@ -1,5 +1,5 @@
 conn = new Mongo();
-db = conn.getDB("scenarios");
+db = conn.getDB('scenarios');
 
 cursor = db.scenarios.find();
 var scenarios = [];
