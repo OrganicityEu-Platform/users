@@ -1,6 +1,5 @@
 var ui = require('./ui_routes.js');
 
-
 module.exports = '' +
 '<!DOCTYPE html>' +
 '<html lang="en">' +
