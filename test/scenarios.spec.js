@@ -26,11 +26,7 @@ describe('first test suite', function() {
 
   afterEach(function(done) {
     ss.teardown();
-<<<<<<< Updated upstream
-    delete db;
-=======
     db = null;
->>>>>>> Stashed changes
   });
 
   it('2 should equal 2', function() {
