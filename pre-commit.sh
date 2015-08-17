@@ -1,2 +1,2 @@
 #!/bin/sh
-gulp lint test
+gulp lint
