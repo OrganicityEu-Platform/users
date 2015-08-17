@@ -101,11 +101,7 @@ var setup = function(dbUrl) {
           });
         });
       });
-<<<<<<< Updated upstream
-    //});
-=======
     });
->>>>>>> Stashed changes
   };
 
   return new Promise(doIt);
