@@ -1,6 +1,7 @@
 /*
  * Checks, if a user is logged in
  */
+var config = require('../config/config.js');
 
 module.exports = function(passport) {
   return function(req, res, next) {
@@ -22,7 +23,7 @@ module.exports = function(passport) {
         console.log('isLoggedIn(): unauthorized');
         res.format({
           'text/html': function() {
-            return res.redirect('/login');
+            return res.redirect(config.contextPath + '/login');
           },
           'application/json': function() {
             return res.status(401).send('401 Unauthorized');

@@ -34,6 +34,8 @@ module.exports = function(router, passport) {
    */
 
   var Scenario = require('../../../models/scenario.js');
+  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
+  var isUserOrAdmin = require('../../../models/isUserOrAdmin.js');
 
   /*
    * ########################################################################################
@@ -198,7 +200,7 @@ module.exports = function(router, passport) {
    *
    * POST
    */
-  router.post(api.route('scenario_list'), function(req, res) {
+  router.post(api.route('scenario_list'), [isLoggedIn], function(req, res) {
 
     var scenario = new Scenario(req.body);
 
@@ -207,7 +209,6 @@ module.exports = function(router, passport) {
       if (err) {
         res.status(400).send('Invalid keys given.');
       } else {
-        // all new scenarios start with version 29
         scenario.version = 1;
         // generate unique grouping id
         scenario.uuid = crypto.randomBytes(10).toString('hex');
@@ -234,7 +235,7 @@ module.exports = function(router, passport) {
    *  /scenarios/_id?v=
    *      # delete by uuid and version
    */
-  router.delete(api.route('scenario_by_uuid'), function(req, res) {
+  router.delete(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
 
     // if delete by uuid:
 
@@ -288,7 +289,7 @@ module.exports = function(router, passport) {
    *  /scenarios/uuid
    *      # creates a new scenario under uuid and increments version
    */
-  router.put(api.route('scenario_by_uuid'), function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
 
     db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion) {
       if (err) {
