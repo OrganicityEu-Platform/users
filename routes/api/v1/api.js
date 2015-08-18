@@ -440,7 +440,9 @@ module.exports = function(router, passport) {
               var scenariosList = filterLatestVersions(allScenariosAndVersions);
               console.info(scenario[0]);
               for (var doc in scenariosList) {
-                if (scenariosList[doc].uuid == scenario[0].uuid ) continue;
+                if (scenariosList[doc].uuid === scenario[0].uuid) {
+                  continue;
+                }
                 simMatrix[scenariosList[doc].uuid] = sim(scenario[0], scenariosList[doc]);
                 console.info(scenariosList[doc]);
                 console.info(simMatrix[scenariosList[doc].uuid]);
@@ -569,22 +571,19 @@ function getRelatedScenarios(simMatrix, scenarioHash) {
  * @returns Similarity between d1, d2 --naive to extend
  */
 function sim(d1, d2) {
-  if (d1.uuid == d2.uuid) {
-    return 1;
-  }
   var score = KeywordSimilarity(d1.title,d2.title) + KeywordSimilarity(d1.sectors.join(),d2.sectors.join()) ;
-  score += KeywordSimilarity(d1.actors.join(),d2.actors.join()) + KeywordSimilarity(d1.devices.join(),d2.devices.join());
+  score += KeywordSimilarity(d1.actors.join(),d2.actors.join());
+  score += KeywordSimilarity(d1.devices.join(),d2.devices.join());
   return score / 4;
 }
 
 function TextToVector(text, bagofwords) {
   return bagofwords.map(function(word) {
     return text.split(' ').filter(function(x) {
-      return x == word;
+      return x === word;
     }).length;
   });
 };
-
 
 function KeywordSimilarity(text1, text2) {
   text1 += ' ';
@@ -592,7 +591,7 @@ function KeywordSimilarity(text1, text2) {
   text2 = text2.replace('.',' ').replace(',',' ').toLowerCase();
   var total = text1.concat(text2).split(' ');
   var allwords = total.filter(function(word, pos) {
-    return total.indexOf(word) == pos;
+    return total.indexOf(word) === pos;
   });
   var arr1 = TextToVector(text1, allwords);
   var arr2 = TextToVector(text2, allwords);
