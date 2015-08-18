@@ -31,9 +31,9 @@ module.exports = function(router, passport) {
    * ########################################################################################
    */
 
-  var Scenario      = require('../../../models/scenario.js');
-  var isLoggedIn    = require('../../../models/isLoggedIn.js')(passport);
-  var hasRole       = require('../../../models/hasRole.js');
+  var Scenario = require('../../../models/scenario.js');
+  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
+  var isUserOrAdmin = require('../../../models/isUserOrAdmin.js');
 
   /*
    * ########################################################################################
@@ -232,7 +232,7 @@ module.exports = function(router, passport) {
    *  /scenarios/_id?v=
    *      # delete by uuid and version
    */
-  router.delete(api.route('scenario_by_uuid'), [isLoggedIn, hasRole(['admin', 'moderator'])], function(req, res) {
+  router.delete(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
 
     // if delete by uuid:
 
@@ -286,7 +286,7 @@ module.exports = function(router, passport) {
    *  /scenarios/uuid
    *      # creates a new scenario under uuid and increments version
    */
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn, hasRole(['admin', 'moderator'])], function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
 
     db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion) {
       if (err) {
@@ -435,6 +435,7 @@ module.exports = function(router, passport) {
   function isInArray(value, array) {
     return array.indexOf(value) > -1;
   }
+
   /**
    *
    * @param data array of json documents with a version key and uuid
