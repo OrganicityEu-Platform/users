@@ -60,6 +60,7 @@ module.exports = function(router, passport) {
 
     if (req.query.q && Object.keys(req.query).length === 1) {
 
+      db.scenarios.createIndex({ title: "text", summary : "text", narrative : "text" },{ name: "fieldIndex" }); //creates the index if not exists
       db.scenarios.find(
         // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
         // @see: http://docs.mongodb.org/manual/core/index-text/#create-text-index
