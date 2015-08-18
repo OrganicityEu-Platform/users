@@ -1,0 +1,9 @@
+{
+  "uuid"   : "leinad",
+  "name"   : "Leinad Sahcsmib",
+  "gender" : "m",
+  "local" : {
+    "email"    : "leinad@sahcsmib.com",
+    "password" : "daniel"
+  }
+}

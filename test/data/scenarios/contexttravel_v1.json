@@ -1,0 +1,11 @@
+{
+  "uuid"        : "contexttravel",
+  "version"     : 1,
+  "title"       : "Context-Aware Multimodal Real Time Travel Planner",
+  "summary"     : "Get me there!",
+  "narrative"   : "Tony needs to travel from home to work. Different means of transportation are generally available to him and include walking, biking, moped/scooter (own, shared, electric/petrol), car (own, pooling, ride sharing, taxi), public transportation (bus, metro, train, ferry/boat). Transportation can be optimized to Tonys preferred travel time, convenience (comfort, seating, crowdedness, safety, environmental quality), total cost, environmental impacts, scenic route, and personal health. Factors that impact this optimization include conditions of the different transportation modes (road, weather, maintenance works, traffic intensity, people density, parking availability, charging pole availability, pollution, air quality, irregularities in traffic schedules, road tolls, seating availability, accidents, availability of city bikes, ...). Tony will be presented with his ideal route and will be able to select each leg of the journey based on concurrent and projected aggregated conditions. Recalculation of his chosen route(s) can happen if conditions or preferences change, and will adapt to any detour of own choice.",
+  "actors"      : ["public, citizen"],
+  "sectors"     : ["transport"],
+  "devices"     : ["transport", "mobile"],
+  "creator"     : "leinad"
+}

@@ -1,36 +1,54 @@
-var mongojs = require('mongojs');
-var Promise = require('promise');
+var fs       = require('fs');
+var Scenario = require('../models/scenario.js');
+var User     = require('../models/userSchema.js');
 
-var saveModels = function(db, models, done) {
+var errorHandlerWrapper = function(success) {
+  return function(err) {
+    if (err) {
+      done(err);
+      console.log(err.stack);
+      return;
+    }
+    success();
+  };
+};
+
+var saveModels = function(models, done) {
   if (models.length === 0) {
     done();
     return;
   }
-  var result = db.scenarios.insert(models);
-  if (result.nInserted !== models.length) {
-    done('Saving model affected %s rows. Expected: %s.', result.nInserted, models.length);
-    return;
-  }
-  done();
-};
-
-var fillUsersCollection = function(db, done) {
-  // TODO actually fill with users
-  done();
-};
-
-var fillScenariosCollection = function(db, done) {
-  var scenarioDir = __dirname + '/data/scenarios/';
-  var files = fs.readdirSync(scenarioDir);
-  var scenarios = [];
-  files.forEach(function(file) {
-    var scenarioJson = JSON.parse(fs.readFileSync(scenarioDir + file));
-    scenarios.push(new Scenario(scenarioJson));
+  models[0].save(function(err, saved) {
+    if (err) {
+      done(err);
+      return;
+    }
+    saveModels(models.slice(1), done);
   });
+};
+
+var fillUsersCollection = function(done) {
+  var userDir = __dirname + '/data/users/';
+  var users = readJsonFiles(userDir).map(function(json) { return new User(json); });
+  saveModels(users, done);
+};
+
+var fillScenariosCollection = function(done) {
+  var scenarioDir = __dirname + '/data/scenarios/';
+  var scenarios = readJsonFiles(scenarioDir).map(function(json) { return new Scenario(json); });
   saveModels(scenarios, done);
 };
 
-var fillCollections = function(db, done) {
+var readJsonFiles = function(dir) {
+  var files = fs.readdirSync(dir);
+  var docs = [];
+  files.forEach(function(file) {
+    docs.push(JSON.parse(fs.readFileSync(dir + file)));
+  });
+  return docs;
+};
+
+var fillCollections = function(done) {
   fillUsersCollection(function(err) {
     if (err) {
       done(err);
@@ -40,81 +58,25 @@ var fillCollections = function(db, done) {
   });
 };
 
-var createCollections = function(db, done) {
-  db.createCollection('users', function(err) {
-    if (err) {
-      done(err);
-      return;
-    }
-    db.createCollection('scenarios', function(err) {
-      if (err) {
-        done(err);
-        return;
-      }
-      done();
-    });
-  });
-};
+var setup = function(done) {
 
-var dropCollections = function(db, done) {
-  db.dropCollection('scenarios', function(err) {
-    if (err) {
-      done(err);
-      return;
-    }
-    db.dropCollection('users', function(err) {
-      if (err) {
-        done(err);
-        return;
-      }
-      done();
-    });
-  });
-};
+  Scenario.remove({}, errorHandlerWrapper(function() {
+    //console.log('Removed all scenarios');
 
-var setup = function(dbUrl) {
+    User.remove({}, errorHandlerWrapper(function() {
+      //console.log('Removed all users');
 
-  var doIt = function(resolve, reject) {
+      fillCollections(function() {
+        //console.log('Filled test collections with test data');
 
-    var db = mongojs(dbUrl);
-
-    db.on('error', function(err) {
-      console.log('Error opening DB connection', err);
-      reject(err);
-    });
-
-    db.on('ready', function() {
-      console.log('Connected to MongoDB', db);
-      resolve(db);
-      return;
-
-      dropCollections(db, function() {
-        console.log('Dropped test collections');
-
-        createCollections(db, function() {
-          console.log('Created test collections');
-
-          fillCollections(db, function() {
-            console.log('Filled test collections with test data');
-
-            resolve(db);
-          });
-        });
+        done();
       });
-    });
-  };
-
-  return new Promise(doIt);
+    }));
+  }));
 };
 
-var teardown = function(db, done) {
-  var promise = new Promise(function(resolve, reject) {
-    db.disconnect(function() {
-      console.log('Disconnected from MongoDB');
-      done();
-      resolve();
-    });
-  });
+var teardown = function(done) {
+  done();
 };
 
 module.exports = {

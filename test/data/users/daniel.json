@@ -1,0 +1,9 @@
+{
+  "uuid"   : "daniel",
+  "name"   : "Daniel Bimschas",
+  "gender" : "m",
+  "local" : {
+    "email"    : "daniel@bimschas.com",
+    "password" : "leinad"
+  }
+}

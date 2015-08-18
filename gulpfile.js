@@ -291,7 +291,7 @@ gulp.task('test', function() {
     includeStackTrace : true,
     showColors : true
   });
-  return gulp.src('test/*.spec.js')
+  return gulp.src(watches.test)
     .pipe(jasmine({
       verbose: true,
       includeStackTrace: true,
@@ -300,5 +300,5 @@ gulp.task('test', function() {
 });
 
 gulp.task('test-watch', ['test'], function() {
-  gulp.watch(watches.test, ['test']);
+  gulp.watch('test/**/*.js', ['test']);
 });
