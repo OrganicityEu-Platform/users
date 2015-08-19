@@ -12,4 +12,5 @@ deploy:
 	git pull
 	npm install
 	gulp build
-	forever restart server.js
+	mkdir -p logs
+	forever start -o logs/out.log -e logs/err.log server.js

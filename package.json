@@ -59,6 +59,7 @@
     "is-empty-object": "^1.1.0",
     "isvalid": "~1.0.6",
     "jquery": "^2.1.4",
+    "mathjs": "^2.1.1",
     "method-override": "~1.0.2",
     "mongodb": "^2.0.39",
     "mongojs": "^1.0.2",
