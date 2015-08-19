@@ -60,24 +60,28 @@ module.exports = function(router, passport) {
 
     if (req.query.q && Object.keys(req.query).length === 1) {
 
-     db.scenarios.ensureIndex({ title: "text", summary : "text", narrative : "text" },{ name: "title_text_summary_text_narrative_text" },function(err, data) {
-        if (err) {
-          return res.send('ERRROR: ' + err);
-        } else {
-          db.scenarios.find(
-            // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
-            // @see: http://docs.mongodb.org/manual/core/index-text/#create-text-index
-            {$text: {$search: req.query.q}},
-            {score: {$meta: 'textScore'}}
-          ).sort({score: {$meta: 'textScore'}}, function(err, data) {
+      db.scenarios.ensureIndex(
+        { title: 'text', summary : 'text', narrative : 'text' },
+        { name: 'title_text_summary_text_narrative_text' },
+        function(err, data) {
+          if (err) {
+            return res.send('ERRROR: ' + err);
+          } else {
+            db.scenarios.find(
+              // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
+              // @see: http://docs.mongodb.org/manual/core/index-text/#create-text-index
+              {$text: {$search: req.query.q}},
+              {score: {$meta: 'textScore'}}
+            ).sort({score: {$meta: 'textScore'}}, function(err, data) {
               if (err) {
                 return res.send('ERRROR: ' + err);
               } else {
                 res.json(getLatestVersions(data));
               }
             });
+          }
         }
-      }); //creates the index if not exists
+      ); //creates the index if not exists
 
       // filtered search:
     } else if (req.query.creator && Object.keys(req.query).length === 1) {
