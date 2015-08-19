@@ -13,4 +13,5 @@ deploy:
 	npm install
 	gulp build
 	mkdir -p logs
+	forever stop server.js
 	forever start -o logs/out.log -e logs/err.log server.js
