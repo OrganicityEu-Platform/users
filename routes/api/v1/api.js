@@ -244,7 +244,7 @@ module.exports = function(router, passport) {
    *  /scenarios/_id?v=
    *      # delete by uuid and version
    */
-  router.delete(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.delete(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
 
     // if delete by uuid:
 
@@ -255,7 +255,8 @@ module.exports = function(router, passport) {
         } else if (!scenarios || scenarios.length === 0) {
           return res.status(404).send('NOT FOUND');
         } else {
-          db.scenarios.remove({
+          if (req.user && scenarios[0].creator === req.user.uuid && isUserOrAdmin) {
+            db.scenarios.remove({
             uuid: scenarios[0].uuid, version: scenarios[0].version
           }, function(err, data) {
             if (err) {
@@ -265,6 +266,9 @@ module.exports = function(router, passport) {
               res.send(data);
             }
           });
+          } else {
+            res.status(403).send('NOT ALLOWED');
+          }
         }
       });
 
@@ -277,7 +281,8 @@ module.exports = function(router, passport) {
         } else if (!scenario) {
           return res.status(404).send('NOT FOUND');
         } else {
-          db.scenarios.remove({
+          if (req.user && scenario[0].creator === req.user.uuid && isUserOrAdmin) {
+            db.scenarios.remove({
             'uuid': req.params.uuid, 'version': parseInt(req.query.v)
           }, function(err, data) {
             if (err) {
@@ -287,6 +292,9 @@ module.exports = function(router, passport) {
               res.send(data);
             }
           });
+          } else {
+            res.status(403).send('NOT ALLOWED');
+          }
         }
       });
     }
@@ -298,7 +306,7 @@ module.exports = function(router, passport) {
    *  /scenarios/uuid
    *      # creates a new scenario under uuid and increments version
    */
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
 
     db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion) {
       if (err) {
@@ -316,14 +324,17 @@ module.exports = function(router, passport) {
         newVersion.uuid = oldVersion[0].uuid;
         newVersion.version = oldVersion[0].version + 1;
         newVersion.creator = req.user.uuid;
-
-        newVersion.save(function(err, scenario) {
+        if (req.user && oldVersion[0].creator === req.user.uuid && isUserOrAdmin) {
+          newVersion.save(function(err, scenario) {
           if (err) {
             return res.send(err);
           }
           res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
           res.status(201).json(scenario);
         });
+        } else {
+          res.status(403).send('NOT ALLOWED');
+        }
       }
     });
   });
@@ -606,3 +617,14 @@ function KeywordSimilarity(text1, text2) {
   var arr2 = TextToVector(text2, allwords);
   return math.dot(arr1, arr2) / (math.norm(arr1) * math.norm(arr2));
 };
+
+function checkNested(obj) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  for (var i = 0; i < args.length; i++) {
+    if (!obj || !obj.hasOwnProperty(args[i])) {
+      return false;
+    }
+    obj = obj[args[i]];
+  }
+  return true;
+}
