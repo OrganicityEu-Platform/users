@@ -74,6 +74,15 @@ User input on signup form
 }
 ```
 
+### UserInfo
+
+```
+{
+  uuid : {type: String, required: true},
+  name : String
+}
+```
+
 Client REST API
 ---------------
 
@@ -253,7 +262,75 @@ Accounts created / added can be removed from the scenario tool by sending reques
 
 ### Retrieve user data / users list
 
-TODO
-GET /api/v1/users
-GET /api/v1/info/:uuid
-GET /api/v1/:uuid
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      Retrieve info about a specific user, used e.g. to display user avatars.
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>GET /api/v1/info/:uuid</td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>UserInfo</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      200 OK
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      Lists all user accounts
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>GET /api/v1/users</td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>[User]</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      401 Unauthorized - if not logged in<br/>
+      403 Forbidden - if user is logged in but has no administrator rights<br/>
+      200 OK
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      Retrieve detailed account information about one specific user with UUID :uuid
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>GET /api/v1/:uuid</td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>User</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      401 Unauthorized - if not logged in<br/>
+      403 Forbidden - if user is logged in but has no administrator rights<br/>
+      200 OK
+    </td>
+  </tr>
+</table>
