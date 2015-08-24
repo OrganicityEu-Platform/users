@@ -83,6 +83,33 @@ User input on signup form
 }
 ```
 
+### UserSchemaPatch
+
+```
+var UserSchemaPatch = {
+  type : Object,
+  unknownKeys: 'remove',
+  schema : {
+    'roles': {
+      type: Array,
+      required: false,
+      schema: {
+        type: String
+      }
+    },
+    'name': { type: String, required: false },
+    'gender': { type: String, required: false },
+    'local' : {
+      type : Object,
+      schema : {
+        'email' : { type: String, required: false },
+        'password' : { type: String, required: false }
+      }
+    }
+  }
+};
+```
+
 Client REST API
 ---------------
 
@@ -330,6 +357,60 @@ Accounts created / added can be removed from the scenario tool by sending reques
     <td>
       401 Unauthorized - if not logged in<br/>
       403 Forbidden - if user is logged in but has no administrator rights<br/>
+      200 OK
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      Patch individual fields of a user (allowed if you're administrator or logged in as the user to be patched)
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>PATCH /api/v1/:uuid</td>
+  </tr>
+  <tr>
+    <td>Request Body</td>
+    <td>UserSchemaPatch</td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>User</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      401 Unauthorized - if not logged in<br/>
+      403 Forbidden - if user is logged in but is not the user to be patched or has no administrator rights<br/>
+      200 OK
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      Remove user model
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>DELETE /api/v1/:uuid</td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>User (the model of the user that was removed)</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      401 Unauthorized - if not logged in<br/>
+      403 Forbidden - if user is logged in but is not the user to be patched or has no administrator rights<br/>
       200 OK
     </td>
   </tr>

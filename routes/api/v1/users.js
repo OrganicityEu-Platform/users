@@ -12,22 +12,6 @@ module.exports = function(router, passport) {
 
   var validate = require('isvalid').validate;
 
-  var UserSchemaPost = {
-    type : Object,
-    unknownKeys: 'remove',
-    schema : {
-      'roles': {
-        type: Array,
-        required: true,
-        schema: {
-          type: String
-        }
-      },
-      'name': { type: String, required: true },
-      'gender': { type: String, required: true },
-    }
-  };
-
   var UserSchemaPatch = {
     type : Object,
     unknownKeys: 'remove',
