@@ -1,48 +1,8 @@
-# Data Model and REST API Design
+# Scenarios Data Model and REST API
 
 ## Data models
 
 The data models below are described in the mongoose notation for MongoDB data models.
-
-### User
-
-```
-{
-  uuid    : {type: String, required: true},
-  name    : String,
-  gender  : String,
-  local            : {
-    email        : Email,
-    password     : String
-  },
-  facebook         : {
-    id           : String,
-    token        : String,
-    email        : Email,
-    name         : String,
-    displayName  : String
-  },
-  twitter          : {
-    id           : String,
-    token        : String,
-    displayName  : String,
-    username     : String
-  },
-  google           : {
-    id           : String,
-    token        : String,
-    email        : Email,
-    name         : String
-  },
-  github           : {
-    id           : String,
-    token        : String,
-    username     : String,
-    displayName  : String
-  },
-  roles : [String]
-}
-```
 
 ### Scenario
 
