@@ -74,28 +74,6 @@ The scenario schema follows the immutable data type approach. Whenever something
 }
 ```
 
-### File
-
-```
-{
-  uuid        : { type: String, required: true}, // internal identifier
-  href        : { type: Url,    required: true}, // link to the original file (not stored in DB)
-  filename    : { type: String, required: true}, //
-  description : { type: String                }, // markdown
-  mimeType    : { type: String                }  // mime-type
-}
-```
-
-### Project
-
-```
-{
-  uuid        : { type: String, required: true}, // internal identifier
-  title       : { type: String, required: true}, // plain text
-  description : { type: String                }  // markdown
-}
-```
-
 ### Comments
 
 TODO: integrate some "done" solution, e.g., disqus via https://www.npmjs.com/package/disqus-node
