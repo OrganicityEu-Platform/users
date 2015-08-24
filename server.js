@@ -47,7 +47,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-var routes_scenarios = require('./routes/api/v1/api.js')(router, passport);
+var routes_scenarios = require('./routes/api/v1/scenarios.js')(router, passport);
 var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
 var routes_users     = require('./routes/api/v1/users.js')(router, passport);
 var routes_error     = require('./routes/api/v1/error.js')(router, passport);

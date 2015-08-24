@@ -80,7 +80,7 @@ var api_routes = [
 Then in the express app we reference a route by using its name (`scenario_by_uuid`):
 
 ```
-// routes/api/v1/api.js
+// routes/api/v1/scenarios.js
 var api = require('../../../api_routes.js');
 
 router.get(api.route('scenario_by_uuid'), function(req, res)) {
