@@ -84,30 +84,33 @@ var teardown = function(done) {
   done();
 };
 
+var loadScenarios = function(toLoad) {
+  return toLoad
+    .map(function(tl) { return __dirname + '/data/scenarios/' + tl.uuid + '_' + tl.v + '.json'; })
+    .map(function(fn) { return JSON.parse(fs.readFileSync(fn)); });
+};
+
 /**
- * Inserts a set of scenarios from the folder ./data/scenarios with the given UUID into the
- * scenarios collection. File naming schema must follow UUID_VERSION.json. Each argument is a hash
- * @param {object[]} toBeInserted - array of {uuid:'...', v:'...'} objects to be inserted
+ * Inserts a set of scenario objects into the scenarios collection.
+ * @param {object[]} scenarios - array of scenario objects to be inserted
  * @param {function} callback - called when done
  */
-var insertScenarios = function(toBeInserted, done) {
-  if (toBeInserted.length === 0) {
+var insertScenarios = function(scenarios, done) {
+  if (scenarios.length === 0) {
     done();
   }
-  var scenarioDir = __dirname + '/data/scenarios/';
-  var filename = scenarioDir + toBeInserted[0].uuid + '_' + toBeInserted[0].v + '.json';
-  var scenario = JSON.parse(fs.readFileSync(filename));
-  new Scenario(scenario).save(function(err) {
+  new Scenario(scenarios[0]).save(function(err) {
     if (err) {
       done(err);
       return;
     }
-    insertScenarios(toBeInserted.slice(1), done);
+    insertScenarios(scenarios.slice(1), done);
   });
 };
 
 module.exports = {
   setup : setup,
   teardown : teardown,
-  insertScenarios : insertScenarios
+  insertScenarios : insertScenarios,
+  loadScenarios : loadScenarios
 };

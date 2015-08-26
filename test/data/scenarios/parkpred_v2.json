@@ -4,6 +4,7 @@
   "title"       : "Public Parking Space Availability Prediction",
   "summary"     : "Get me the nearest lot",
   "narrative"   : "Frank is having a hard time finding a public parking space. The city is increasingly reducing the amount of parking spaces per unit (e.g. apartments), and the difficulty of finding a parking space means Frank has to circulate his car looking for available parking spots. This is both annoying for him and results in negative environmental impacts (pollution, noise). By using multiple input sources of information a certain degree of probability of finding a parking spot in different locations can be provided, also including timed no parking zones, thus reducing circulation times. By knowing the current situation of other circulating cars, Frank can avoid congested hot spots by being rerouted towards different paths to even out the distribution. When Frank ends up leaving his spot he can also actively provide parking availability data via his smartphone.",
+  "dataSources" : [],
   "actors"      : ["public", "private", "citizen"],
   "sectors"     : ["transport"],
   "devices"     : ["transport, mobile"],

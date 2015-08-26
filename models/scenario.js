@@ -14,4 +14,15 @@ var scenarioSchema = mongoose.Schema({
   dataSources : { type: [String]                }, // uuids of data source type
 });
 
+// make sure options exist
+if (!scenarioSchema.options.toObject) {
+  scenarioSchema.options.toObject = {};
+}
+
+// apply transform option
+scenarioSchema.options.toObject.transform = function(original, transformed) {
+  delete transformed._id;
+  delete transformed.__v;
+};
+
 module.exports = mongoose.model('Scenario', scenarioSchema);

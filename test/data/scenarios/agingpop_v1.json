@@ -4,6 +4,7 @@
   "title"       : "Aging Population - Home Monitoring",
   "summary"     : "You no worry at home",
   "narrative"   : "Grandma had opened the bedroom windows to get fresh air, but forgot to close them. The Home monitoring service detects a significant decrease of the home temperature and recognizes that the window is open (and a low temperature outside). To save energy, the system uses the ubiquitous home interface to locate and inform grandma and to advice her to close the window.",
+  "dataSources" : [],
   "actors"      : ["citizen"],
   "sectors"     : ["environment"],
   "devices"     : ["sensors"],

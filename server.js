@@ -123,6 +123,8 @@ var startServer = function(done) {
       done();
     }
   });
+
+  return server;
 };
 
 var stopServer = function(done) {

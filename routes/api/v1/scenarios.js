@@ -163,7 +163,9 @@ module.exports = function(router, passport) {
         if (err) {
           return res.send('ERROR: ' + err);
         } else {
-          res.json(filterLatestVersions(allScenariosAndVersions));
+          res.json(filterLatestVersions(allScenariosAndVersions).map(function(scenario) {
+            return scenario.toObject();
+          }));
         }
       });
     }
