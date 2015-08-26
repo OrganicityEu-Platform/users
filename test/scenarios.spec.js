@@ -3,23 +3,39 @@ var configDB = require('../config/database.js');
 var Scenario = require('../models/scenario.js');
 var User     = require('../models/userSchema.js');
 var ss       = require('./scenarios_setup.js');
+var server   = require('../server.js');
 
 describe('When querying a scenario, the API', function() {
 
   beforeEach(function(done) {
     mongoose.connect(configDB.test_url);
-    ss.setup(function() {
-      done();
+    ss.setup(function(err) {
+      if (err) {
+        done(err);
+        return;
+      }
+      server.start(done);
     });
   });
 
   afterEach(function(done) {
-    ss.teardown(done);
+    server.stop(function(err) {
+      if (err) {
+        done(err);
+        return;
+      }
+      ss.teardown(done);
+    });
     mongoose.connection.close();
   });
 
-  xit('should return only latest versions when asking for all latest versions', function() {
-    //ss.insert({uuid:'uuid1', version:'v1'}, ...)
+  it('should return only latest versions when asking for all latest versions', function() {
+    ss.insertScenarios([{uuid: 'agingpop', v: 'v1'}, {uuid: 'agingpop', v: 'v2'}], function(err) {
+      if (err) {
+        throw err;
+      }
+      // TODO test calling HTTP API functions
+    });
   });
 
   xit('should return scenarios in correct ascending order if sorted by title', function() {
