@@ -7,6 +7,6 @@
   "dataSources" : [],
   "actors"      : ["public", "private", "citizen"],
   "sectors"     : ["transport"],
-  "devices"     : ["transport, mobile"],
+  "devices"     : ["transport", "mobile"],
   "creator"     : "leinad"
 }

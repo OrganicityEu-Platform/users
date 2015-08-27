@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 var mongoose  = require('mongoose');
 var request   = require('supertest');
 var expect    = require('expect.js');
@@ -21,37 +23,21 @@ var scenarioFieldsThatShouldEqual = [
 describe('When querying a scenario, the API', function() {
 
   beforeEach(function(done) {
-    if (!mongoose.connection.db) {
-      mongoose.connect(configDB.test_url);
-    }
+    mongoose.connect(configDB.test_url);
     ss.setup(function(err) {
       if (err) {
         done(err);
         return;
       }
-      server = serverApp.start(function(err) {
-        if (err) {
-          done(err);
-          return;
-        }
-        console.log('server started');
-        done();
-      });
+      server = serverApp.start(done);
     });
   });
 
   afterEach(function(done) {
     if (server) {
-      serverApp.stop(function(err) {
-        if (err) {
-          done(err);
-          return;
-        }
-        console.log('server stopped');
-        mongoose.connection.close();
-        done();
-      });
+      serverApp.stop(done);
     }
+    mongoose.connection.close();
   });
 
   it('should return only latest versions when asking for all latest versions', function(done) {
@@ -64,18 +50,20 @@ describe('When querying a scenario, the API', function() {
       {uuid: 'parkpred', v: 'v3'}
     ]);
 
-    var execTest = request(server)
-      .get(api.route('scenario_list'))
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .expect(function(res) {
-        expect(res.body.length).to.be(2);
-        scenarioFieldsThatShouldEqual.forEach(function(field) {
-          expect(res.body[0][field]).to.eql(scenarios[1][field]);
-          expect(res.body[1][field]).to.eql(scenarios[4][field]);
-        });
-      })
-      .end(done);
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list'))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(2); // only 2 latest versions
+          scenarioFieldsThatShouldEqual.forEach(function(field) {
+            expect(res.body[0][field]).to.eql(scenarios[1][field]); // agingpop
+            expect(res.body[1][field]).to.eql(scenarios[4][field]); // parkpred
+          });
+        })
+        .end(done);
+    };
 
     ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
@@ -100,44 +88,212 @@ describe('When querying a scenario, the API', function() {
 
   });
 
-  it.skip('should return only scenarios with the given actor tag', function() {
+  it('should return only scenarios with the given actor tag', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { actors : 'public' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(2); // should not contain agingpop
+          expect(res.body[0].uuid).to.be('contexttravel');
+          expect(res.body[1].uuid).to.be('parkpred');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios that have all the given actor tags', function() {
+  it('should return only scenarios that have ALL the given actor tags', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { actors : 'public,citizen' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(2); // should not contain agingpop
+          expect(res.body[0].uuid).to.be('contexttravel');
+          expect(res.body[1].uuid).to.be('parkpred');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios with the given sector tag', function() {
+  it('should return only scenarios with the given sector tag', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sectors : 'environment' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(1);
+          expect(res.body[0].uuid).to.be('agingpop');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios that have all the given sector tags', function() {
+  it('should return only scenarios that have ALL the given sector tags', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sectors : 'environment,logistics' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(1);
+          expect(res.body[0].uuid).to.be('contexttravel');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios with the given device tag', function() {
+  it('should return only scenarios with the given device tag', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { devices : 'sensors' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(1);
+          expect(res.body[0].uuid).to.be('agingpop');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios that have all the given device tags', function() {
+  it('should return only scenarios that have ALL the given device tags', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { devices : 'transport,mobile' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(2);
+          expect(res.body[0].uuid).to.be('contexttravel');
+          expect(res.body[1].uuid).to.be('parkpred');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenario by a given user', function() {
+  it('should return only scenarios by a given user', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { creator : 'daniel' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(1);
+          expect(res.body[0].uuid).to.be('agingpop');
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only the latest version of a scenario when retrieving by UUID', function() {
+  it('should return the latest version of a scenario when retrieving by UUID', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'agingpop', v: 'v2'},
+      {uuid: 'parkpred', v: 'v1'},
+      {uuid: 'parkpred', v: 'v2'},
+      {uuid: 'parkpred', v: 'v3'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(function(res) {
+          expect(res.body.length).to.be(1);
+          expect(res.body[0].uuid).to.be('agingpop');
+          expect(res.body[0].version).to.be(2);
+        })
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return 404 not found if scenario with the given UUID does not exist', function() {
+  it('should return 404 not found if scenario with the given UUID does not exist', function(done) {
 
-  });
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
 
-  it.skip('should return the scenario with UUID if it exists', function() {
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_by_uuid', { uuid : 'notexistinguuid' }))
+        .expect(404)
+        .expect('Content-Type', /json/)
+        .end(done);
+    };
 
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
 });

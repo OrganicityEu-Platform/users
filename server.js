@@ -117,8 +117,10 @@ var startServer = function(done) {
   // launch =====================================================================
   server = app.listen(port, function() {
 
-    expressListRoutes({ prefix: '' }, 'Server REST API:', router);
-    console.log('Server started on ' + config.host + ':' + port + config.contextPath);
+    if (app.get('env') !== 'test') {
+      expressListRoutes({ prefix: '' }, 'Server REST API:', router);
+      console.log('Server started on ' + config.host + ':' + port + config.contextPath);
+    }
 
     if (done) {
       done();
@@ -129,9 +131,12 @@ var startServer = function(done) {
 };
 
 var stopServer = function(done) {
-  console.log('Stopping server');
   if (server) {
+    if (app.get('env') !== 'test') {
+      console.log('Stopping server');
+    }
     server.close();
+    server = null;
   }
   done();
 };
