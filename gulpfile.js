@@ -88,7 +88,7 @@ var server = {
   instance : null,
   start : function(callback) {
     gutil.log('Starting server');
-    server.instance = express.run(['server.js'], {}, false);
+    server.instance = express.run(['app.js'], {}, false);
     callback();
   },
   restart : function(callback) {
@@ -96,7 +96,7 @@ var server = {
     if (server.instance) {
       server.instance.stop();
     }
-    server.instance = express.run(['server.js'], {}, false);
+    server.instance = express.run(['app.js'], {}, false);
     livereload.reload();
     callback();
   }
@@ -230,7 +230,7 @@ gulp.task('less', function() {
 });
 
 gulp.task('default', function(callback) {
-  sequence('set-env-dev', 'lint', 'test', ['browserify', 'static', 'less'], 'server', function(err) {
+  sequence('set-env-dev', 'lint', /*'test',*/ ['browserify', 'static', 'less'], 'server', function(err) {
     if (err) {
       gutil.log(err.toString());
     }
@@ -240,7 +240,7 @@ gulp.task('default', function(callback) {
     gulp.watch(watches.server, ['server']);
     gulp.watch(watches.jscs,   ['jscs']);
     gulp.watch(watches.eslint, ['eslint']);
-    gulp.watch(watches.test,   ['test']);
+    //gulp.watch(watches.test,   ['test']);
   });
 });
 
@@ -285,7 +285,10 @@ gulp.task('pdf', function() {
 
 gulp.task('test', function() {
   return gulp.src(watches.test, {read: false})
-    .pipe(mocha());
+    .pipe(mocha())
+    .on('error', function(err) {
+      console.log(err);
+    });
 });
 
 gulp.task('test-watch', ['test'], function() {
