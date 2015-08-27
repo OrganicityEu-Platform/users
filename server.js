@@ -45,6 +45,7 @@ var startServer = function(done) {
     });
   }
 
+  // routes =====================================================================
   var routes_scenarios = require('./routes/api/v1/scenarios.js')(router, passport);
   var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
   var routes_users     = require('./routes/api/v1/users.js')(router, passport);
