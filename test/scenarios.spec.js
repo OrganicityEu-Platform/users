@@ -13,7 +13,10 @@ var ss        = require('./scenarios_setup.js');
 
 var server;
 
-var notToBeCalled = function() {};
+var scenarioFieldsThatShouldEqual = [
+  'uuid', 'version', 'title', 'summary', 'narrative', 'dataSources', 'actors', 'sectors',
+  'devices', 'creator'
+];
 
 describe('When querying a scenario, the API', function() {
 
@@ -67,8 +70,10 @@ describe('When querying a scenario, the API', function() {
       .expect('Content-Type', /json/)
       .expect(function(res) {
         expect(res.body.length).to.be(2);
-        expect(res.body[0]).to.eql(scenarios[1]);
-        expect(res.body[1]).to.eql(scenarios[2]);
+        scenarioFieldsThatShouldEqual.forEach(function(field) {
+          expect(res.body[0][field]).to.eql(scenarios[1][field]);
+          expect(res.body[1][field]).to.eql(scenarios[4][field]);
+        });
       })
       .end(done);
 
