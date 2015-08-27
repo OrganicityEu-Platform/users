@@ -52,21 +52,25 @@ describe('When querying a scenario, the API', function() {
   });
 
   it('should return only latest versions when asking for all latest versions', function(done) {
-    var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}, {uuid: 'agingpop', v: 'v2'}]);
-    ss.insertScenarios(scenarios, function(err) {
 
-      console.log('requesting');
-      request(server)
-        .get(api.route('scenario_list'))
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(1);
-          expect(res.body[0]).to.eql(scenarios[1]);
-        })
-        .end(done);
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'agingpop', v: 'v2'}
+    ]);
 
-    });
+    var execTestAfterSetup = request(server)
+      .get(api.route('scenario_list'))
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(function(res) {
+        expect(res.body.length).to.be(1);
+        expect(res.body[0]).to.eql(scenarios[1]);
+      })
+      .end(done);
+
+    ss.insertScenarios(scenarios)
+      .catch(done)
+      .then(execTestAfterSetup);
   });
 
   it.skip('should return scenarios in correct ascending order if sorted by title', function() {

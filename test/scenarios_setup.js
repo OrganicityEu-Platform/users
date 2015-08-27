@@ -1,6 +1,7 @@
 var fs       = require('fs');
 var Scenario = require('../models/scenario.js');
 var User     = require('../models/userSchema.js');
+var Promise  = require('promise');
 
 var errorHandlerWrapper = function(success) {
   return function(err) {
@@ -27,18 +28,6 @@ var saveModels = function(models, done) {
   });
 };
 
-var fillUsersCollection = function(done) {
-  var userDir = __dirname + '/data/users/';
-  var users = readJsonFilesFromDir(userDir).map(function(json) { return new User(json); });
-  saveModels(users, done);
-};
-
-var fillScenariosCollection = function(done) {
-  var scenarioDir = __dirname + '/data/scenarios/';
-  var scenarios = readJsonFilesFromDir(scenarioDir).map(function(json) { return new Scenario(json); });
-  saveModels(scenarios, done);
-};
-
 var readJsonFilesFromDir = function(dir) {
   var files = fs.readdirSync(dir);
   var docs = [];
@@ -56,16 +45,6 @@ var readJsonFilesFromDir = function(dir) {
 var readJsonFiles = function(fileArr) {
   return fileArr.map(function(file) {
     return JSON.parse(fs.readFileSync(file));
-  });
-};
-
-var fillCollections = function(done) {
-  fillUsersCollection(function(err) {
-    if (err) {
-      done(err);
-      return;
-    }
-    fillScenariosCollection(done);
   });
 };
 
@@ -93,19 +72,19 @@ var loadScenarios = function(toLoad) {
 /**
  * Inserts a set of scenario objects into the scenarios collection.
  * @param {object[]} scenarios - array of scenario objects to be inserted
- * @param {function} callback - called when done
+ * @return {Promise} promise that get's resolved (empty content) when or rejected (on error)
  */
-var insertScenarios = function(scenarios, done) {
-  if (scenarios.length === 0) {
-    done();
-  }
-  new Scenario(scenarios[0]).save(function(err) {
-    if (err) {
-      done(err);
-      return;
-    }
-    insertScenarios(scenarios.slice(1), done);
+var insertScenarios = function(scenarios) {
+  var promise = new Promise(function(resolve, reject) {
+    saveModels(scenarios.map(function(scenario) { return new Scenario(scenario); }), function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
   });
+  return promise;
 };
 
 module.exports = {
