@@ -10,6 +10,7 @@ var User      = require('../models/userSchema.js');
 var api       = require('../api_routes.js');
 var config    = require('../config/config.js');
 var serverApp = require('../server.js');
+var http      = require('http-status');
 
 var ss        = require('./scenarios_setup.js');
 
@@ -53,7 +54,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list'))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(function(res) {
           expect(res.body.length).to.be(2); // only 2 latest versions
@@ -93,7 +94,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sortBy : 'title', sortDir : 'asc' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['agingpop','contexttravel', 'parkpred']))
         .end(done);
@@ -113,7 +114,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sortBy : 'title', sortDir : 'desc' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['parkpred', 'contexttravel', 'agingpop']))
         .end(done);
@@ -133,7 +134,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sortBy : 'timestamp', sortDir : 'asc' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['agingpop','contexttravel', 'parkpred']))
         .end(done);
@@ -153,7 +154,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sortBy : 'timestamp', sortDir : 'asc' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['parkpred','contexttravel', 'agingpop']))
         .end(done);
@@ -173,7 +174,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { q : 'city' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['contexttravel', 'parkpred']))
         .end(done);
@@ -193,7 +194,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { actors : 'public' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
@@ -213,7 +214,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { actors : 'public,citizen' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
@@ -233,7 +234,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sectors : 'environment' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
@@ -253,7 +254,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { sectors : 'environment,logistics' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['contexttravel']))
         .end(done);
@@ -273,7 +274,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { devices : 'sensors' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
@@ -293,7 +294,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { devices : 'transport,mobile' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
@@ -313,7 +314,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_list', null, { creator : 'daniel' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
@@ -335,7 +336,7 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
-        .expect(200)
+        .expect(http.OK)
         .expect('Content-Type', /json/)
         .expect(function(res) {
           expect(res.body.length).to.be(1);
@@ -358,45 +359,48 @@ describe('When querying a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .get(api.reverse('scenario_by_uuid', { uuid : 'notexistinguuid' }))
-        .expect(404)
+        .expect(http.NOT_FOUND)
         .expect('Content-Type', /json/)
         .end(done);
     };
 
     ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
-
 });
 
 describe('When creating a scenario, the API', function() {
 
   beforeEach(function(done) {
-    ss.setup(function() {
-      done();
+    mongoose.connect(configDB.test_url);
+    ss.setup(function(err) {
+      if (err) {
+        done(err);
+        return;
+      }
+      server = serverApp.start(done);
     });
   });
 
   afterEach(function(done) {
-    ss.teardown(done);
+    if (server) {
+      serverApp.stop(done);
+    }
+    mongoose.connection.close();
   });
 
-  it.skip('should check if a scenario with same version and UUID already exists', function() {
-
-  });
-
-  it.skip('should only allow setting fields that are defined in the ScenarioUpdate type', function() {
-
-  });
-
-  it.skip('should not allow if the user is not logged in', function() {
+  it.skip('should only allow setting fields that are defined in the ScenarioUpdate type', function(done) {
 
   });
 
-  it.skip('should have the logged in users UUID as creator in the returned document', function() {
+  it.skip('should not allow if the user is not logged in', function(done) {
 
   });
 
-  it.skip('should return 400 bad request if a non-existing data source was linked in the scenario', function() {
+  it.skip('should have the logged in users UUID as creator in the returned document', function(done) {
+
+  });
+
+  it.skip('should return 400 BAD_REQUEST if a non-existing data source was linked in the scenario', function(done) {
 
   });
 
@@ -405,52 +409,132 @@ describe('When creating a scenario, the API', function() {
 describe('When updating a scenario, the API', function() {
 
   beforeEach(function(done) {
-    ss.setup(function() {
-      done();
+    mongoose.connect(configDB.test_url);
+    ss.setup(function(err) {
+      if (err) {
+        done(err);
+        return;
+      }
+      server = serverApp.start(done);
     });
   });
 
   afterEach(function(done) {
-    ss.teardown(done);
+    if (server) {
+      serverApp.stop(done);
+    }
+    mongoose.connection.close();
   });
 
-  it.skip('should only allow setting fields that are defined in the ScenarioUpdate type', function() {
+  it('should only not allow setting uuid field', function(done) {
+
+    var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}]);
+
+    var execTest = function() {
+
+      var req = JSON.parse(JSON.stringify(scenarios[0]));
+      req.uuid = 'notalloweduuid';
+
+      request(server)
+        .put(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .send(req)
+        .expect(http.BAD_REQUEST)
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
+  });
+
+  it('should only not allow setting creator field', function(done) {
+
+    var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}]);
+
+    var execTest = function() {
+
+      var req = JSON.parse(JSON.stringify(scenarios[0]));
+      req.creator = 'unknownme';
+
+      request(server)
+        .put(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .send(req)
+        .expect(http.BAD_REQUEST)
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
+  });
+
+  it('should only not allow setting version field', function(done) {
+
+    var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}]);
+
+    var execTest = function() {
+
+      var req = JSON.parse(JSON.stringify(scenarios[0]));
+      req.version = 3;
+
+      request(server)
+        .put(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .send(req)
+        .expect(http.BAD_REQUEST)
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
+  });
+
+  it('should only not allow setting timestamp field', function(done) {
+
+    var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}]);
+
+    var execTest = function() {
+
+      var req = JSON.parse(JSON.stringify(scenarios[0]));
+      req.timestamp = new Date().toISOString();
+
+      request(server)
+        .put(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .send(req)
+        .expect(http.BAD_REQUEST)
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
+  });
+
+  it.skip('should return the newly created scenario document with a version incremented by one', function(done) {
 
   });
 
-  it.skip('should return the newly created scenario document with a version incremented by one', function() {
+  it.skip('should check if the UUID in the document equals the UUID in the URL', function(done) {
 
   });
 
-  it.skip('should check if the UUID in the document equals the UUID in the URL', function() {
+  it.skip('should return 401 if the user is not logged in', function(done) {
 
   });
 
-  it.skip('should return 401 if the user is not logged in', function() {
+  it.skip('should return 404 not found if scenario with URL param UUID does not exist', function(done) {
 
   });
 
-  it.skip('should return 404 not found if scenario with URL param UUID does not exist', function() {
+  it.skip('should return 403 forbidden if non-administrator, non-moderator user is not creator', function(done) {
 
   });
 
-  it.skip('should return 403 forbidden if non-administrator, non-moderator user is not creator', function() {
+  it.skip('should allow if user is creator', function(done) {
 
   });
 
-  it.skip('should allow if user is creator', function() {
+  it.skip('should allow if user is administrator', function(done) {
 
   });
 
-  it.skip('should allow if user is administrator', function() {
+  it.skip('should allow if user is moderator', function(done) {
 
   });
 
-  it.skip('should allow if user is moderator', function() {
-
-  });
-
-  it.skip('should return 400 bad request if a non-existing data source was linked in the scenario', function() {
+  it.skip('should return 400 BAD_REQUEST if a non-existing data source was linked in the scenario', function(done) {
 
   });
 
@@ -459,32 +543,40 @@ describe('When updating a scenario, the API', function() {
 describe('When deleting a scenario (version), the API', function() {
 
   beforeEach(function(done) {
-    ss.setup(function() {
-      done();
+    mongoose.connect(configDB.test_url);
+    ss.setup(function(err) {
+      if (err) {
+        done(err);
+        return;
+      }
+      server = serverApp.start(done);
     });
   });
 
   afterEach(function(done) {
-    ss.teardown(done);
+    if (server) {
+      serverApp.stop(done);
+    }
+    mongoose.connection.close();
   });
 
-  it.skip('should return 404 not found if scenario with UUID does not exist', function() {
-
-  });
-
-  it.skip('should return 404 not found if scenario with UUID does exist but not the given version', function() {
-
-  });
-
-  it.skip('should return 403 forbidden if non-administrator, non-moderator user is not creator', function() {
+  it.skip('should return 404 not found if scenario with UUID does not exist', function(done) {
 
   });
 
-  it.skip('should return 401 if the user is not logged in', function() {
+  it.skip('should return 404 not found if scenario with UUID does exist but not the given version', function(done) {
 
   });
 
-  it.skip('should return 204 if the scenario version was succesfully deleted', function() {
+  it.skip('should return 403 forbidden if non-administrator, non-moderator user is not creator', function(done) {
+
+  });
+
+  it.skip('should return 401 if the user is not logged in', function(done) {
+
+  });
+
+  it.skip('should return 204 if the scenario version was succesfully deleted', function(done) {
 
   });
 });

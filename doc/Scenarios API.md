@@ -55,6 +55,7 @@ Used by clients when creating or updating a scenario resource. Included fields a
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
+  dataSources : { type: [String]                }  // uuids of data source type
 }
 ```
 
@@ -74,6 +75,36 @@ Client REST API
 
 ### Scenarios
 
+All methods that (potentially) return more than one scenario support 'sortBy', 'sortDir', 'offset'
+and 'amount' parameters:
+
+<table>
+  <tr>
+    <td>```sortBy```</td>
+    <td>
+      Field of the scenario object to sort by, e.g., ```'title'``` or ```'timestamp'```.
+    </td>
+  </tr>
+  <tr>
+    <td>```sortDir```</td>
+    <td>
+      Direction to sort by: ```'asc'``` (ascending) or ```'desc'``` (descending)
+    </td>
+  </tr>
+  <tr>
+    <td>```offset```</td>
+    <td>
+      Paging: offset from which to return results
+    </td>
+  </tr>
+  <tr>
+    <td>```amount```</td>
+    <td>
+      Paging: number of results to return (min: 1, max: 100)
+    </td>
+  </tr>
+</table>
+
 #### List all scenarios
 
 <table>
@@ -84,13 +115,6 @@ Client REST API
   <tr>
     <td>Request</td>
     <td>GET /api/v1/scenarios</td>
-  </tr>
-  <tr>
-    <td>Query Options</td>
-    <td>
-      sortBy -- column name to sort by, corresponds to the field name in Scenario type, e.g., one of ['title', 'timestamp']
-      sortDir -- direction to sort, either ascending ('asc') or descending ('desc'), case insensitive
-    </td>
   </tr>
   <tr>
     <td>Response Body</td>
@@ -202,8 +226,8 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
-      201 CREATED      - if successful with Location header<br/>
-      400 BAD REQUEST  - if request is malformed<br/>
+      201 CREATED      - if successful, includes Location header of newly created resource<br/>
+      400 BAD REQUEST  - if request is malformed (includes fields not allowed to be set by client, e.g. version, timestamp)<br/>
       401 UNAUTHORIZED - need to be authenticated to create scenarios
     </td>
   </tr>
