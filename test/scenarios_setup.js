@@ -28,6 +28,15 @@ var saveModels = function(models, done) {
   });
 };
 
+var readJsonFiles = function(dir) {
+  var files = fs.readdirSync(dir);
+  var docs = [];
+  files.forEach(function(file) {
+    docs.push(JSON.parse(fs.readFileSync(dir + file)));
+  });
+  return docs;
+};
+
 var readJsonFilesFromDir = function(dir) {
   var files = fs.readdirSync(dir);
   var docs = [];

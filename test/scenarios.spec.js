@@ -1,18 +1,18 @@
-var $        = require('jquery');
-var mongoose = require('mongoose');
-var configDB = require('../config/database.js');
-var Scenario = require('../models/scenario.js');
-var User     = require('../models/userSchema.js');
-var ss       = require('./scenarios_setup.js');
-var api      = require('../api_routes.js');
-var config   = require('../config/config.js');
-//var spawn    = require('child_process').spawn;
-var request = require('supertest');
-var expect = require('expect.js');
+var mongoose  = require('mongoose');
+var request   = require('supertest');
+var expect    = require('expect.js');
 
-var serverPort = process.env.PORT || config.port;
-var serverApp   = require('../server.js');
+var configDB  = require('../config/database.js');
+var Scenario  = require('../models/scenario.js');
+var User      = require('../models/userSchema.js');
+var api       = require('../api_routes.js');
+var config    = require('../config/config.js');
+var serverApp = require('../server.js');
+
+var ss        = require('./scenarios_setup.js');
+
 var server;
+
 var notToBeCalled = function() {};
 
 describe('When querying a scenario, the API', function() {
