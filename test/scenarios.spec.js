@@ -55,7 +55,10 @@ describe('When querying a scenario, the API', function() {
 
     var scenarios = ss.loadScenarios([
       {uuid: 'agingpop', v: 'v1'},
-      {uuid: 'agingpop', v: 'v2'}
+      {uuid: 'agingpop', v: 'v2'},
+      {uuid: 'parkpred', v: 'v1'},
+      {uuid: 'parkpred', v: 'v2'},
+      {uuid: 'parkpred', v: 'v3'}
     ]);
 
     var execTest = request(server)
@@ -63,8 +66,9 @@ describe('When querying a scenario, the API', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .expect(function(res) {
-        expect(res.body.length).to.be(1);
+        expect(res.body.length).to.be(2);
         expect(res.body[0]).to.eql(scenarios[1]);
+        expect(res.body[1]).to.eql(scenarios[2]);
       })
       .end(done);
 
