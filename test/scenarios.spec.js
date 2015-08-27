@@ -58,7 +58,7 @@ describe('When querying a scenario, the API', function() {
       {uuid: 'agingpop', v: 'v2'}
     ]);
 
-    var execTestAfterSetup = request(server)
+    var execTest = request(server)
       .get(api.route('scenario_list'))
       .expect(200)
       .expect('Content-Type', /json/)
@@ -68,9 +68,7 @@ describe('When querying a scenario, the API', function() {
       })
       .end(done);
 
-    ss.insertScenarios(scenarios)
-      .catch(done)
-      .then(execTestAfterSetup);
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
   it.skip('should return scenarios in correct ascending order if sorted by title', function() {

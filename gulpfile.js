@@ -1,4 +1,5 @@
-// READ this to (better) understand gulp and the plugin ecosystem: https://medium.com/@contrahacks/gulp-3828e8126466
+// READ this to (better) understand gulp and the plugin ecosystem:
+// https://medium.com/@contrahacks/gulp-3828e8126466
 
 var gulp               = require('gulp');
 var path               = require('path');
@@ -32,8 +33,7 @@ var LessPluginCleanCSS = require('less-plugin-clean-css');
 var sourcemaps         = require('gulp-sourcemaps');
 var minifyCSS          = require('gulp-minify-css');
 var livereload         = require('gulp-livereload');
-var jasmine            = require('gulp-jasmine');
-var jasmineReporters   = require('jasmine-reporters');
+var mocha              = require('gulp-mocha');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -284,19 +284,8 @@ gulp.task('pdf', function() {
 });
 
 gulp.task('test', function() {
-  // TODO use jest for (React) unit testing!?
-  // https://facebook.github.io/jest/
-  var reporter = new jasmineReporters.TerminalReporter({
-    isVerbose : true,
-    includeStackTrace : true,
-    showColors : true
-  });
-  return gulp.src(watches.test)
-    .pipe(jasmine({
-      verbose: true,
-      includeStackTrace: true,
-      reporter: reporter
-    }));
+  return gulp.src(watches.test, {read: false})
+    .pipe(mocha());
 });
 
 gulp.task('test-watch', ['test'], function() {
