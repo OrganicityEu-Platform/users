@@ -87,7 +87,10 @@ Client REST API
   </tr>
   <tr>
     <td>Query Options</td>
-    <td>sortBy -- column name to sort by, corresponds to the field name in Scenario type, e.g., one of ['title', 'timestamp']</td>
+    <td>
+      sortBy -- column name to sort by, corresponds to the field name in Scenario type, e.g., one of ['title', 'timestamp']
+      sortDir -- direction to sort, either ascending ('asc') or descending ('desc'), case insensitive
+    </td>
   </tr>
   <tr>
     <td>Response Body</td>

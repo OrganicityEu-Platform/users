@@ -58,8 +58,8 @@ describe('When querying a scenario, the API', function() {
         .expect(function(res) {
           expect(res.body.length).to.be(2); // only 2 latest versions
           scenarioFieldsThatShouldEqual.forEach(function(field) {
-            expect(res.body[0][field]).to.eql(scenarios[1][field]); // agingpop
-            expect(res.body[1][field]).to.eql(scenarios[4][field]); // parkpred
+            expect(res.body[0][field]).to.eql(scenarios[1][field]); // agingpop_v2
+            expect(res.body[1][field]).to.eql(scenarios[4][field]); // parkpred_v3
           });
         })
         .end(done);
@@ -68,24 +68,118 @@ describe('When querying a scenario, the API', function() {
     ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return scenarios in correct ascending order if sorted by title', function() {
+  /**
+   * Returns a function that verifies the result res contains an equal number of elements and the
+   * scenarios in the request body correspond to the same order of UUIDs as given in the array
+   * expected.
+   */
+  var verifyLengthAndUuidOrder = function(expected, res) {
+    return function(res) {
+      expect(res.body.length).to.be(expected.length);
+      for (var i = 0; i < expected.length; i++) {
+        expect(res.body[i].uuid).to.be(expected[i]);
+      }
+    };
+  };
 
+  it('should return scenarios in correct ascending order if sorted by title', function(done) {
+
+    var scenarios = ss.loadScenarios([
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sortBy : 'title', sortDir : 'asc' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(verifyLengthAndUuidOrder(['agingpop','contexttravel', 'parkpred']))
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return scenarios in correct descending order if sorted by title descending', function() {
+  it('should return scenarios in correct descending order if sorted by title descending', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sortBy : 'title', sortDir : 'desc' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(verifyLengthAndUuidOrder(['parkpred', 'contexttravel', 'agingpop']))
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return scenarios in correct ascending order if sorted by timestamp', function() {
+  it('should return scenarios in correct ascending order if sorted by timestamp', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sortBy : 'timestamp', sortDir : 'asc' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(verifyLengthAndUuidOrder(['agingpop','contexttravel', 'parkpred']))
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return scenarios in correct descending order if sorted by timestamp descending', function() {
+  it('should return scenarios in correct descending order if sorted by timestamp descending', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { sortBy : 'timestamp', sortDir : 'asc' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(verifyLengthAndUuidOrder(['parkpred','contexttravel', 'agingpop']))
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
-  it.skip('should return only scenarios that include a given term when doing a term search', function() {
+  it('should return only scenarios that include a given term when doing a term search', function(done) {
 
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'contexttravel', v: 'v1'},
+      {uuid: 'parkpred', v: 'v1'}
+    ]);
+
+    var execTest = function() {
+      request(server)
+        .get(api.reverse('scenario_list', null, { q : 'city' }))
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(verifyLengthAndUuidOrder(['contexttravel', 'parkpred']))
+        .end(done);
+    };
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest);
   });
 
   it('should return only scenarios with the given actor tag', function(done) {
@@ -101,11 +195,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { actors : 'public' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(2); // should not contain agingpop
-          expect(res.body[0].uuid).to.be('contexttravel');
-          expect(res.body[1].uuid).to.be('parkpred');
-        })
+        .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
     };
 
@@ -125,11 +215,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { actors : 'public,citizen' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(2); // should not contain agingpop
-          expect(res.body[0].uuid).to.be('contexttravel');
-          expect(res.body[1].uuid).to.be('parkpred');
-        })
+        .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
     };
 
@@ -149,10 +235,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { sectors : 'environment' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(1);
-          expect(res.body[0].uuid).to.be('agingpop');
-        })
+        .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
     };
 
@@ -172,10 +255,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { sectors : 'environment,logistics' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(1);
-          expect(res.body[0].uuid).to.be('contexttravel');
-        })
+        .expect(verifyLengthAndUuidOrder(['contexttravel']))
         .end(done);
     };
 
@@ -195,10 +275,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { devices : 'sensors' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(1);
-          expect(res.body[0].uuid).to.be('agingpop');
-        })
+        .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
     };
 
@@ -218,11 +295,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { devices : 'transport,mobile' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(2);
-          expect(res.body[0].uuid).to.be('contexttravel');
-          expect(res.body[1].uuid).to.be('parkpred');
-        })
+        .expect(verifyLengthAndUuidOrder(['contexttravel','parkpred']))
         .end(done);
     };
 
@@ -242,10 +315,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { creator : 'daniel' }))
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(function(res) {
-          expect(res.body.length).to.be(1);
-          expect(res.body[0].uuid).to.be('agingpop');
-        })
+        .expect(verifyLengthAndUuidOrder(['agingpop']))
         .end(done);
     };
 

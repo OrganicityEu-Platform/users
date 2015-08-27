@@ -202,6 +202,10 @@ gulp.task('eslint', ['jscs'], function() {
 });
 
 gulp.task('lint', ['jscs', 'eslint']);
+gulp.task('lint-watch', function() {
+  gulp.watch(watches.jscs,   ['jscs']);
+  gulp.watch(watches.eslint, ['eslint']);
+});
 
 gulp.task('less', function() {
   var cleancss = new LessPluginCleanCSS({ advanced: true });
@@ -291,6 +295,6 @@ gulp.task('test', function() {
     });
 });
 
-gulp.task('test-watch', ['test'], function() {
+gulp.task('test-watch', function() {
   gulp.watch('test/**/*.js', ['test']);
 });
