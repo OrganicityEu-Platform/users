@@ -75,8 +75,8 @@ Client REST API
 
 ### Scenarios
 
-All methods that (potentially) return more than one scenario support 'sortBy', 'sortDir', 'offset'
-and 'amount' parameters:
+All methods that (potentially) return more than one scenario support 'sortBy', 'sortDir', 'skip'
+and 'limit' parameters:
 
 <table>
   <tr>
@@ -92,13 +92,13 @@ and 'amount' parameters:
     </td>
   </tr>
   <tr>
-    <td>```offset```</td>
+    <td>```skip```</td>
     <td>
-      Paging: offset from which to return results
+      Paging: number of results to skip
     </td>
   </tr>
   <tr>
-    <td>```amount```</td>
+    <td>```limit```</td>
     <td>
       Paging: number of results to return (min: 1, max: 100)
     </td>
@@ -185,13 +185,14 @@ and 'amount' parameters:
   <tr>
     <td>Request</td>
     <td>
-      GET /api/v1/scenarios/:id<br/>
-      GET /api/v1/scenarios/:id?v=version
+      GET /api/v1/scenarios/:id - returns the latest version<br/>
+      GET /api/v1/scenarios/:id?version=$VERSION - returns the version $VERSION
+      GET /api/v1/scenarios/:id?version=all - returns all versions
     </td>
   </tr>
   <tr>
     <td>Response Body</td>
-    <td>Scenario</td>
+    <td>Scenario | [Scenario]</td>
   </tr>
   <tr>
     <td>Response Codes</td>

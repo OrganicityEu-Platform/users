@@ -102,7 +102,7 @@ var ScenarioList = React.createClass({
     var url = api.reverse(
       'scenario_by_uuid',
       { uuid : 'weiQuio5boo' },
-      { orderBy : 'timestamp', orderDir : 'asc' }
+      { sortBy : 'timestamp', sortDir : 'asc' }
     );
     $.ajax(url, { ... })
   }
@@ -110,7 +110,7 @@ var ScenarioList = React.createClass({
 });
 ```
 
-The call to `api.reverse(...)` will then result in `'/api/v1/scenarios/weiQuio5boo?orderBy=timestamp&orderDir=asc'`.
+The call to `api.reverse(...)` will then result in `'/api/v1/scenarios/weiQuio5boo?sortBy=timestamp&sortDir=asc'`.
 The rationale behind all this is that we have a central place for route definitions that makes it easy to lookup (!),
 define and modify routes without search / replace throughout the whole code base when we want to change something.
 

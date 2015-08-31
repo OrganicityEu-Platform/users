@@ -99,6 +99,7 @@ var ScenarioList = React.createClass({
                     query={$.extend({}, this.props.query, { sortBy : 'timestamp' })}>Last Updated</Link>
                   </th>
                 <th>Creator</th>
+                <th>Version</th>
                 <th></th>
                 <th></th>
               </tr>

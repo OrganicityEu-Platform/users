@@ -1,47 +1,233 @@
-var api = require('../../../api_routes.js');
-var ui = require('../../../ui_routes.js');
-var HashMap = require('hashmap');
-var math = require('mathjs');
+var api        = require('../../../api_routes.js');
+var ui         = require('../../../ui_routes.js');
+var HashMap    = require('hashmap');
+var math       = require('mathjs');
+var crypto     = require('crypto'); // used to generate uuid
+var mongodb    = require('mongodb');
+var mongojs    = require('mongojs');
+var isvalid    = require('isvalid');
+var HttpStatus = require('http-status');
+
+var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
+
+db.scenarios.ensureIndex(
+  { title: 'text', summary : 'text', narrative : 'text' },
+  { name: 'title_text_summary_text_narrative_text' },
+  function(err, data) {
+    if (err) {
+      throw err;
+    }
+  }
+);
+
+var validScenario = {
+  type: Object,
+  unknownKeys: 'remove',
+  schema: {
+    'title'     : {type: String, required: true},
+    'narrative' : {type: String, required: true},
+    'summary'   : {type: String, required: true}
+  }
+};
+
+/**
+ * Used to project all fields in the scenario collection documents to the fields that the user is
+ * allowed to see.
+ */
+var scenarioProjection = {
+  _id         : 0,
+  uuid        : 1,
+  version     : 1,
+  title       : 1,
+  summary     : 1,
+  narrative   : 1,
+  creator     : 1,
+  timestamp   : 1,
+  actors      : 1,
+  sectors     : 1,
+  devices     : 1,
+  dataSources : 1
+};
+
+/**
+ * Array of all fields contained in the scenario schema. Used e.g., to validate request query
+ * parameter 'sortBy'.
+ */
+var scenarioFields = Object
+  .keys(scenarioProjection)
+  .filter(function(key) { return scenarioProjection[key] === 1; });
 
 module.exports = function(router, passport) {
 
-  /*
-   * ########################################################################################
-   * DEPENDENCIES
-   * ########################################################################################
-   */
-  var crypto = require('crypto'); // used to generate uuid
-  var mongodb = require('mongodb');
-  var mongojs = require('mongojs');
-  var isvalid = require('isvalid');
-
-  var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
-
-  var validScenario = {
-    type: Object,
-    unknownKeys: 'remove',
-    schema: {
-      'title': {type: String, required: true},
-      'narrative': {type: String, required: true},
-      'summary': {type: String, required: true}
-    }
-  };
-
-  /*
-   * ########################################################################################
-   * MODELS
-   * ########################################################################################
-   */
-
-  var Scenario = require('../../../models/scenario.js');
-  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
+  var Scenario      = require('../../../models/scenario.js');
+  var isLoggedIn    = require('../../../models/isLoggedIn.js')(passport);
   var isUserOrAdmin = require('../../../models/isUserOrAdmin.js');
 
-  /*
-   * ########################################################################################
-   * ROUTES
-   * ########################################################################################
+  var scenarioListQueryCallback = function(res, multipleResults) {
+    return function(err, scenarios) {
+
+      if (err) {
+        console.log(err);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        return;
+      }
+
+      if (multipleResults) {
+        res.status(HttpStatus.OK).send(scenarios);
+        return;
+      }
+
+      if (scenarios.length === 0) {
+        res.status(HttpStatus.NOT_FOUND).send();
+        return;
+      }
+
+      res.status(HttpStatus.OK).send(scenarios[0]);
+    };
+  };
+
+  var executeScenarioLatestVersionQuery = function(params, res, multipleResults) {
+
+    // console.log('executeScenarioLatestVersionQuery');
+
+    var sortByVersionDescending = {
+      '$sort' : { 'uuid' : 1, 'version' : -1 }
+    };
+
+    var groupByVersionReturnFirst = {
+      '$group' : {
+        '_id'         : '$uuid',
+        'uuid'        : { '$first' : '$uuid'        },
+        'version'     : { '$first' : '$version'     },
+        'title'       : { '$first' : '$title'       },
+        'summary'     : { '$first' : '$summary'     },
+        'narrative'   : { '$first' : '$narrative'   },
+        'creator'     : { '$first' : '$creator'     },
+        'timestamp'   : { '$first' : '$timestamp'   },
+        'actors'      : { '$first' : '$actors'      },
+        'sectors'     : { '$first' : '$sectors'     },
+        'devices'     : { '$first' : '$devices'     },
+        'dataSources' : { '$first' : '$dataSources' }
+      }
+    };
+
+    var projectScenarioFields = {
+      '$project' : scenarioProjection
+    };
+
+    var pipeline = [];
+
+    if (params.filter && !isEmptyObject(params.filter)) {
+      pipeline.push({ '$match' : params.filter});
+    }
+
+    pipeline.push(sortByVersionDescending);
+    pipeline.push(groupByVersionReturnFirst);
+    pipeline.push(projectScenarioFields);
+
+    if (params.sort && !isEmptyObject(params.sort)) {
+      pipeline.push({ '$sort' : params.sort });
+    }
+
+    if (params.skip) {
+      pipeline.push({ '$skip'  : params.skip });
+    }
+
+    if (params.limit) {
+      pipeline.push({ '$limit' : params.limit  });
+    }
+
+    // console.log('query aggregation pipeline', pipeline);
+
+    return Scenario.aggregate(pipeline, scenarioListQueryCallback(res, multipleResults));
+  };
+
+  /**
+   * Executes a query against the scenarios collection
    */
+  var executeScenarioListQuery = function(params, res, multipleResults) {
+    return Scenario
+      .find(params.filter, params.options)
+      .sort(params.sort)
+      .limit(params.limit)
+      .exec(scenarioListQueryCallback(res, multipleResults));
+  };
+
+  var validateAndGetBaseParams = function(req, res) {
+
+    if (req.query.version && 'all' !== req.query.version && isNaN(req.query.version)) {
+      throw 'request parameter "version" is not a valid number: "' + req.query.version + '"';
+    }
+
+    if (req.query.skip && isNaN(req.query.skip)) {
+      throw 'request parameter "skip" is not a valid number: "' + req.query.skip + '"';
+    }
+
+    if (req.query.limit && isNaN(req.query.limit)) {
+      throw 'request parameter "limit" is not a valid number: "' + req.query.limit + '"';
+    }
+
+    if (req.query.sortBy && scenarioFields.indexOf(req.query.sortBy.trim()) === -1) {
+      throw 'sortBy parameter "' + req.query.sortBy + '" is invalid. Use one of [' +
+        scenarioFields.join(',') + '].';
+    }
+
+    var validSortOrders = ['asc','ASC','desc','DESC'];
+    if (req.query.sortDir && validSortOrders.indexOf(req.query.sortDir.trim()) === -1) {
+      throw 'sortDir parameter "' + req.query.sortDir + '" is invalid. Use one of [' +
+        validSortOrders.join(',') + '].';
+    }
+
+    var params = {
+      filter     : {},
+      sort       : {},
+      skip       : req.query.skip  ? parseInt(req.query.skip)  : undefined,
+      limit      : req.query.limit ? parseInt(req.query.limit) : undefined
+    };
+
+    if (req.query.sortBy) {
+      if (!req.query.sortDir) {
+        req.query.sortDir = 'ASC';
+      }
+      params.sort[req.query.sortBy.trim()] = req.query.sortDir === 'ASC' || req.query.sortDir === 'asc' ? 1 : -1;
+    }
+
+    return params;
+  };
+
+  var processQueryByScenarioUUID = function(uuid, req, res) {
+
+    var params;
+    try {
+      params = validateAndGetBaseParams(req, res);
+    } catch (msg) {
+      return res.status(HttpStatus.BAD_REQUEST).send(msg);
+    }
+
+    if (!req.query.version) {
+
+      params.filter.uuid    = uuid;
+      params.filter.version = req.query.version;
+      params.sort.version   = -1; // overrides sorting query parameters
+
+      return executeScenarioListQuery(params, res, false);
+
+    } else {
+
+      if ('all' === req.query.version) {
+
+        params.filter.uuid    = uuid;
+        params.sort.version   = -1; // overrides sorting query parameters
+
+        return executeScenarioListQuery(params, res, true);
+      }
+
+      params.filter.uuid    = uuid;
+      params.filter.version = req.query.version;
+
+      return executeScenarioListQuery(params, res, false);
+    }
+  };
 
   /*
    * SCENARIOS
@@ -56,119 +242,69 @@ module.exports = function(router, passport) {
    */
   router.get(api.route('scenario_list'), function(req, res) {
 
-    // full text search on narrative:
-
-    if (req.query.q && Object.keys(req.query).length === 1) {
-
-      db.scenarios.ensureIndex(
-        { title: 'text', summary : 'text', narrative : 'text' },
-        { name: 'title_text_summary_text_narrative_text' },
-        function(err, data) {
-          if (err) {
-            return res.send('ERRROR: ' + err);
-          } else {
-            db.scenarios.find(
-              // @see: http://docs.mongodb.org/manual/reference/operator/query/text/
-              // @see: http://docs.mongodb.org/manual/core/index-text/#create-text-index
-              {$text: {$search: req.query.q}},
-              {score: {$meta: 'textScore'}}
-            ).sort({score: {$meta: 'textScore'}}, function(err, data) {
-              if (err) {
-                return res.send('ERRROR: ' + err);
-              } else {
-                res.json(getLatestVersions(data));
-              }
-            });
-          }
-        }
-      ); //creates the index if not exists
-
-      // filtered search:
-    } else if (req.query.creator && Object.keys(req.query).length === 1) {
-      db.scenarios.find({creator: req.query.creator}, function(err, scenarios) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.status(200).json(getLatestVersions(scenarios));
-        }
-      });
-    } else if (!isEmptyObject(req.query) && !req.query.q && !req.query.creator) {
-
-      // make filter
-      var filtered_search = {};
-
-      // filter sectors
-      if (req.query.sectors) {
-        // @see: http://docs.mongodb.org/manual/reference/operator/query/in/
-        var sectors = {$in: req.query.sectors.split(',')};
-        filtered_search.sectors = sectors;
-      }
-      // filter actors
-      if (req.query.actors) {
-        var actors = {$in: req.query.actors.split(',')};
-        filtered_search.actors = actors;
-      }
-      // filter devices
-      if (req.query.devices) {
-        var devices = {$in: req.query.devices.split(',')};
-        filtered_search.devices = devices;
-      }
-      // filter data sources
-      if (req.query.dataSources) {
-        var dataSources = {$in: req.query.dataSources.split(',')};
-        filtered_search.dataSources = dataSources;
-      }
-
-      // do filtered search:
-
-      Scenario.find(filtered_search, function(err, scenario) {
-        if (err) {
-          res.send('ERROR: ' + err);
-        } else {
-          res.json(scenario);
-        }
-      });
-
-      // get all new scenarios listing
-
-    } else {
-
-      var filterLatestVersions = function(allScenariosAndVersions) {
-        var scenariosByUUID = {};
-        allScenariosAndVersions.forEach(function(scenario) {
-          if (!Array.isArray(scenariosByUUID[scenario.uuid])) {
-            scenariosByUUID[scenario.uuid] = [];
-          }
-          scenariosByUUID[scenario.uuid].push(scenario);
-        });
-        var result = [];
-        for (var uuid in scenariosByUUID) {
-          var newestVersion = 0;
-          var newest = function(prev, curr) {
-            return prev.version > curr.version ? prev : curr;
-          };
-          result.push(scenariosByUUID[uuid].reduce(newest, scenariosByUUID[uuid][0]));
-        }
-        return result;
-      };
-
-      var query = Scenario.find();
-
-      var validSortFields = ['title', 'timestamp'];
-      if (req.query.sortBy && validSortFields.indexOf(req.query.sortBy) > -1) {
-        query = query.sort(req.query.sortBy);
-      }
-
-      query.exec(function(err, allScenariosAndVersions) {
-        if (err) {
-          return res.send('ERROR: ' + err);
-        } else {
-          res.json(filterLatestVersions(allScenariosAndVersions).map(function(scenario) {
-            return scenario.toObject();
-          }));
-        }
-      });
+    var params;
+    try {
+      params = validateAndGetBaseParams(req, res);
+    } catch (msg) {
+      return res.status(HttpStatus.BAD_REQUEST).send(msg);
     }
+
+    // console.log('querying scenario list with base params', params);
+
+    var trimString = function(t) {
+      return t.trim();
+    };
+
+    // query without filters, by UUID or by UUID with version (no other filters allowed if UUID set)
+    if (isEmptyObject(req.query)) {
+      return executeScenarioLatestVersionQuery(params, res, true);
+    } else if (req.query.uuid) {
+      return processQueryByScenarioUUID(req.query.uuid, req, res);
+    }
+
+    // other filters can be combined:
+    // - full text search ?q
+    // - tag matches sector, actors, devices, data sources
+    // - creator search
+
+    if (req.query.q) {
+      params.filter.$text = {
+        $search : req.query.q.trim()
+      };
+      params.options.score = {
+        $meta: 'textScore'
+      };
+    }
+
+    if (req.query.creator) {
+      params.filter.creator = req.query.creator;
+    }
+
+    if (req.query.sectors) {
+      params.filter.sectors = {
+        $all : req.query.sectors.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.actors) {
+      params.filter.actors = {
+        $all : req.query.actors.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.devices) {
+      params.filter.devices = {
+        $all: req.query.devices.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.dataSources) {
+      params.filter.dataSources = {
+        $all: req.query.dataSources.split(',').map(trimString)
+      };
+    }
+
+    return executeScenarioLatestVersionQuery(params, res, true);
   });
 
   /** SCENARIOS
@@ -180,31 +316,7 @@ module.exports = function(router, passport) {
    *      # returns the specific version the scenario
    */
   router.get(api.route('scenario_by_uuid'), function(req, res) {
-
-    // find by uuid:
-
-    if (isEmptyObject(req.query)) {
-
-      db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario) {
-        if (err) {
-          return res.status(400).send('');
-        } else {
-          res.status(200).json(scenario[0]);
-        }
-      });
-
-      // find by uuid and version:
-
-    } else {
-
-      Scenario.find({uuid: req.params.uuid, version: req.query.v}, function(err, scenario) {
-        if (err) {
-          res.status(400).send('');
-        } else {
-          res.json(scenario[0]);
-        }
-      });
-    }
+    return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
   /** SCENARIOS
@@ -277,7 +389,7 @@ module.exports = function(router, passport) {
       // delete by uuid and version:
 
     } else {
-      db.scenarios.find({'uuid': req.params.uuid, 'version': parseInt(req.query.v)}, function(err, scenario) {
+      db.scenarios.find({'uuid': req.params.uuid, 'version': parseInt(req.query.version)}, function(err, scenario) {
         if (err) {
           res.send('ERROR: ' + err);
         } else if (!scenario) {
@@ -285,7 +397,7 @@ module.exports = function(router, passport) {
         } else {
           if (req.user && scenario[0].creator === req.user.uuid && isUserOrAdmin) {
             db.scenarios.remove({
-            'uuid': req.params.uuid, 'version': parseInt(req.query.v)
+            'uuid': req.params.uuid, 'version': parseInt(req.query.version)
           }, function(err, data) {
             if (err) {
               return res.send('ERROR: ' + err);

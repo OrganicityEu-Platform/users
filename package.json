@@ -65,6 +65,7 @@
     "jquery": "^2.1.4",
     "mathjs": "^2.1.1",
     "method-override": "~1.0.2",
+    "moment": "^2.10.6",
     "mongodb": "^2.0.39",
     "mongojs": "^1.0.2",
     "mongoose": "~4.1.3",

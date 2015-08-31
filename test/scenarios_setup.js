@@ -2,6 +2,7 @@ var fs       = require('fs');
 var Scenario = require('../models/scenario.js');
 var User     = require('../models/userSchema.js');
 var Promise  = require('promise');
+var moment   = require('moment');
 
 var errorHandlerWrapper = function(success) {
   return function(err) {
@@ -85,7 +86,18 @@ var loadScenarios = function(toLoad) {
  */
 var insertScenarios = function(scenarios) {
   var promise = new Promise(function(resolve, reject) {
-    saveModels(scenarios.map(function(scenario) { return new Scenario(scenario); }), function(err) {
+    var lastTimestamp = moment();
+    var timestampedScenarios = scenarios
+      .map(function(scenario) {
+        // make sure scenario timestamp are one minute apart so they differ (important for e.g., timestamp sorting)
+        lastTimestamp = moment(lastTimestamp).add(1, 'seconds');
+        scenario.timestamp = lastTimestamp.toDate();
+        return scenario;
+      })
+      .map(function(scenario) {
+        return new Scenario(scenario);
+      });
+    saveModels(timestampedScenarios, function(err) {
       if (err) {
         reject(err);
       } else {

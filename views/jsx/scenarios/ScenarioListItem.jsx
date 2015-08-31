@@ -24,6 +24,7 @@ var ScenarioListItem = React.createClass({
           }
         </td>
         <td><UserAvatar uuid={this.props.scenario.creator} /></td>
+        <td>{this.props.scenario.version}</td>
         <td><ScenarioEditButton scenario={this.props.scenario} onChange={this.props.onChange} /></td>
         <td><ScenarioDeleteButton scenario={this.props.scenario} onChange={this.props.onChange} /></td>
       </tr>
