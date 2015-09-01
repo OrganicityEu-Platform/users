@@ -7,6 +7,7 @@ var mongodb    = require('mongodb');
 var mongojs    = require('mongojs');
 var isvalid    = require('isvalid');
 var HttpStatus = require('http-status');
+var Scenario   = require('../../../models/scenario.js');
 
 var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
 
@@ -59,7 +60,6 @@ var scenarioFields = Object
 
 module.exports = function(router, passport) {
 
-  var Scenario               = require('../../../models/scenario.js');
   var isLoggedIn             = require('../../../models/isLoggedIn.js')(passport);
 
   var scenarioListQueryCallback = function(res, multipleResults) {
@@ -178,10 +178,10 @@ module.exports = function(router, passport) {
     }
 
     var params = {
-      filter     : {},
-      sort       : {},
-      skip       : req.query.skip  ? parseInt(req.query.skip)  : undefined,
-      limit      : req.query.limit ? parseInt(req.query.limit) : undefined
+      filter         : {},
+      sort           : {},
+      skip           : req.query.skip  ? parseInt(req.query.skip)  : undefined,
+      limit          : req.query.limit ? parseInt(req.query.limit) : undefined
     };
 
     if (req.query.sortBy) {
@@ -259,8 +259,8 @@ module.exports = function(router, passport) {
       params.filter.$text = {
         $search : req.query.q.trim()
       };
-      params.options.score = {
-        $meta: 'textScore'
+      params.sort.score = {
+        $meta : 'textScore'
       };
     }
 
