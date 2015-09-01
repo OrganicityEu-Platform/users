@@ -59,9 +59,8 @@ var scenarioFields = Object
 
 module.exports = function(router, passport) {
 
-  var Scenario      = require('../../../models/scenario.js');
-  var isLoggedIn    = require('../../../models/isLoggedIn.js')(passport);
-  var isUserOrAdmin = require('../../../models/isUserOrAdmin.js');
+  var Scenario               = require('../../../models/scenario.js');
+  var isLoggedIn             = require('../../../models/isLoggedIn.js')(passport);
 
   var scenarioListQueryCallback = function(res, multipleResults) {
     return function(err, scenarios) {
@@ -229,17 +228,6 @@ module.exports = function(router, passport) {
     }
   };
 
-  /*
-   * SCENARIOS
-   *
-   * GET
-   *  /scenarios
-   *      # lists all scenarios, newest versions only
-   *  /scenarios?q=real+slim+shady
-   *      # full text search on narrative, newest versions only
-   *  /scenarios?actors=rapper,scientist&sector=fishing
-   *      # filtered search, newest versions only
-   */
   router.get(api.route('scenario_list'), function(req, res) {
 
     var params;
@@ -307,22 +295,10 @@ module.exports = function(router, passport) {
     return executeScenarioLatestVersionQuery(params, res, true);
   });
 
-  /** SCENARIOS
-   *
-   * GET
-   *  /scenarios/uuid
-   *      # returns newest version of the scenario
-   *  /scenarios/uuid?v=
-   *      # returns the specific version the scenario
-   */
   router.get(api.route('scenario_by_uuid'), function(req, res) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  /** SCENARIOS
-   *
-   * POST
-   */
   router.post(api.route('scenario_list'), [isLoggedIn], function(req, res) {
 
     var scenario = new Scenario(req.body);
@@ -350,113 +326,103 @@ module.exports = function(router, passport) {
     });
   });
 
-  /** SCENARIOS
-   *
-   * DELETE
-   *  /scenarios/uuid
-   *      # delete latest version
-   *  /scenarios/_id?v=
-   *      # delete by uuid and version
-   */
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
+    Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
+
+      if (err) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+
+      if (oldVersion === undefined || oldVersion.length === 0) {
+        return res.status(HttpStatus.NOT_FOUND).send();
+      }
+
+      if (!req.user.hasRole(['admin']) && req.user.uuid !== oldVersion[0].creator) {
+        return res
+          .status(HttpStatus.FORBIDDEN)
+          .send('You must be either the creator of the scenario or an adminstrator to update it');
+      }
+
+      var fieldsInUpdate = ['title', 'summary', 'narrative', 'sectors', 'actors', 'devices'];
+      var update = req.body;
+      var newVersion = new Scenario();
+      fieldsInUpdate.forEach(function(field) {
+        newVersion[field] = update[field];
+      });
+      newVersion.uuid = oldVersion[0].uuid;
+      newVersion.version = oldVersion[0].version + 1;
+      newVersion.creator = req.user.uuid;
+
+      newVersion.save(function(err, scenario) {
+        if (err) {
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
+        res.status(HttpStatus.CREATED).json(scenario);
+      });
+    });
+  });
+
   router.delete(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
 
-    // if delete by uuid:
-
+    // delete latest version
     if (isEmptyObject(req.query)) {
-      db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenarios) {
+
+      Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
+
         if (err) {
-          return res.status(400).send('');
-        } else if (!scenarios || scenarios.length === 0) {
-          return res.status(404).send('NOT FOUND');
-        } else {
-          if (req.user && scenarios[0].creator === req.user.uuid && isUserOrAdmin) {
-            db.scenarios.remove({
-            uuid: scenarios[0].uuid, version: scenarios[0].version
-          }, function(err, data) {
-            if (err) {
-              return res.send('ERROR: ' + err);
-            } else {
-              res.status(204);
-              res.send(data);
-            }
-          });
-          } else {
-            res.status(403).send('NOT ALLOWED');
-          }
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
+
+        if (!scenarios || scenarios.length === 0) {
+          return res.status(HttpStatus.NOT_FOUND).send();
+        }
+
+        if (!req.user.hasRole(['admin']) && req.user.uuid !== scenarios[0].creator) {
+          return res
+            .status(HttpStatus.FORBIDDEN)
+            .send('You must be either the creator of the scenario or an adminstrator to update it');
+        }
+
+        Scenario.findOneAndRemove({ uuid: scenarios[0].uuid, version : scenarios[0].version }, function(err, data) {
+          if (err) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+          } else {
+            return res.status(HttpStatus.NO_CONTENT).send();
+          }
+        });
       });
 
       // delete by uuid and version:
 
     } else {
-      db.scenarios.find({'uuid': req.params.uuid, 'version': parseInt(req.query.version)}, function(err, scenario) {
+
+      Scenario.find({ uuid : req.params.uuid, version : parseInt(req.query.version) }).exec(function(err, scenario) {
+
         if (err) {
-          res.send('ERROR: ' + err);
-        } else if (!scenario) {
-          return res.status(404).send('NOT FOUND');
-        } else {
-          if (req.user && scenario[0].creator === req.user.uuid && isUserOrAdmin) {
-            db.scenarios.remove({
-            'uuid': req.params.uuid, 'version': parseInt(req.query.version)
-          }, function(err, data) {
-            if (err) {
-              return res.send('ERROR: ' + err);
-            } else {
-              res.status(204);
-              res.send(data);
-            }
-          });
-          } else {
-            res.status(403).send('NOT ALLOWED');
-          }
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
+
+        if (!scenarios || scenarios.length === 0) {
+          return res.status(HttpStatus.NOT_FOUND).send();
+        }
+
+        if (!req.user.hasRole(['admin']) && req.user.uuid !== oldVersion[0].creator) {
+          return res
+            .status(HttpStatus.FORBIDDEN)
+            .send('You must be either the creator of the scenario or an adminstrator to update it');
+        }
+
+        Scenario.remove({ uuid : req.params.uuid, version : parseInt(req.query.version)}).exec(function(err, data) {
+          if (err) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+          }
+          return res.status(HttpStatus.NO_CONTENT).send();
+        });
       });
     }
   });
 
-  /** SCENARIOS
-   *
-   * PUT
-   *  /scenarios/uuid
-   *      # creates a new scenario under uuid and increments version
-   */
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
-
-    db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, oldVersion) {
-      if (err) {
-        res.send(err);
-      } else if (oldVersion === undefined || oldVersion.length === 0) {
-        res.status(404).send('SCENARIO NOT FOUND');
-      } else {
-
-        var fieldsInUpdate = ['title', 'summary', 'narrative', 'sectors', 'actors', 'devices'];
-        var update = req.body;
-        var newVersion = new Scenario();
-        fieldsInUpdate.forEach(function(field) {
-          newVersion[field] = update[field];
-        });
-        newVersion.uuid = oldVersion[0].uuid;
-        newVersion.version = oldVersion[0].version + 1;
-        newVersion.creator = req.user.uuid;
-        if (req.user && oldVersion[0].creator === req.user.uuid && isUserOrAdmin) {
-          newVersion.save(function(err, scenario) {
-          if (err) {
-            return res.send(err);
-          }
-          res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-          res.status(201).json(scenario);
-        });
-        } else {
-          res.status(403).send('NOT ALLOWED');
-        }
-      }
-    });
-  });
-
-  /** ACTORS
-   *
-   * GET
-   */
   router.get(api.route('actors_list'), function(req, res) {
     db.scenarios.aggregate([
 
@@ -478,10 +444,6 @@ module.exports = function(router, passport) {
     });
   });
 
-  /** SECTORS
-   *
-   * GET
-   */
   router.get(api.route('sectors_list'), function(req, res) {
     db.scenarios.aggregate([
 
@@ -503,10 +465,6 @@ module.exports = function(router, passport) {
     });
   });
 
-  /** DEVICES
-   *
-   * GET
-   */
   router.get(api.route('devices_list'), function(req, res) {
     db.scenarios.aggregate([
 
@@ -529,12 +487,6 @@ module.exports = function(router, passport) {
 
   });
 
-  /** SCENARIOS
-   *
-   * GET
-   *  /scenarios/related/uuid
-   *      # returns newest version of the scenario
-   */
   router.get(api.route('related_by_uuid'), function(req, res) {
     // find by uuid:
     if (isEmptyObject(req.query)) {
