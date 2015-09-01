@@ -146,7 +146,7 @@ module.exports = function(router, passport) {
    */
   var executeScenarioListQuery = function(params, res, multipleResults) {
     return Scenario
-      .find(params.filter, params.options)
+      .find(params.filter, scenarioProjection)
       .sort(params.sort)
       .limit(params.limit)
       .exec(scenarioListQueryCallback(res, multipleResults));
@@ -320,7 +320,6 @@ module.exports = function(router, passport) {
             res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
             res.status(201).json(scenario);
           }
-
         });
       }
     });
