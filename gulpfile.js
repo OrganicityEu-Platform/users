@@ -249,7 +249,7 @@ gulp.task('default', function(callback) {
 });
 
 gulp.task('build', function(callback) {
-  return sequence(['clean', 'set-env-prod'], ['lint', 'test'], ['less', 'browserify', 'static'], callback);
+  return sequence(['clean', 'set-env-prod'], ['lint'], ['less', 'browserify', 'static'], callback);
 });
 
 gulp.task('clean', function() {
