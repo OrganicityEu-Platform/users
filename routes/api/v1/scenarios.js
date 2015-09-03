@@ -11,16 +11,6 @@ var Scenario   = require('../../../models/scenario.js');
 
 var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
 
-db.scenarios.ensureIndex(
-  { title: 'text', summary : 'text', narrative : 'text' },
-  { name: 'title_text_summary_text_narrative_text' },
-  function(err, data) {
-    if (err) {
-      throw err;
-    }
-  }
-);
-
 var validScenario = {
   type: Object,
   unknownKeys: 'remove',

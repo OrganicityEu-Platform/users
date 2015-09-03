@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var scenarioSchema = mongoose.Schema({
-  uuid        : { type: String, required: false, index: true }, // same for all versions
-  version     : { type: Number, required: true, index: true  }, // server-incremented
+  uuid        : { type: String, required: false }, // same for all versions
+  version     : { type: Number, required: true  }, // server-incremented
   title       : { type: String, required: true  }, // plain text
   summary     : { type: String, required: true  }, // plain text
   narrative   : { type: String, required: true  }, // markdown
@@ -14,15 +14,22 @@ var scenarioSchema = mongoose.Schema({
   dataSources : { type: [String]                }, // uuids of data source type
 });
 
-// make sure options exist
-if (!scenarioSchema.options.toObject) {
-  scenarioSchema.options.toObject = {};
-}
+scenarioSchema.index(
+  {
+    title : 'text',
+    summary : 'text',
+    narrative : 'text'
+  },
+  {
+    name : 'ScenariosTextIndex'
+  }
+);
 
-// apply transform option
-scenarioSchema.options.toObject.transform = function(original, transformed) {
-  delete transformed._id;
-  delete transformed.__v;
-};
+var Scenario = mongoose.model('Scenario', scenarioSchema);
+Scenario.ensureIndexes(function(err) {
+  if (err) {
+    throw err;
+  }
+});
 
-module.exports = mongoose.model('Scenario', scenarioSchema);
+module.exports = Scenario;

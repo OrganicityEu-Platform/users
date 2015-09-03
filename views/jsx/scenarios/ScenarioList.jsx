@@ -16,7 +16,8 @@ var ScenarioList = React.createClass({
       refresh : false,
       scenarios: [],
       searchTerm: null,
-      sortBy : null
+      sortBy : null,
+      sortDir : null
     };
   },
   componentDidMount: function() {
@@ -28,7 +29,7 @@ var ScenarioList = React.createClass({
       query = $.extend(query, { q : this.state.searchTerm });
     }
     if (this.state.sortBy) {
-      query = $.extend(query, { sortBy : this.state.sortBy });
+      query = $.extend(query, { sortBy : this.state.sortBy, sortDir : this.state.sortDir });
     }
     return api.reverse('scenario_list', {}, query);
   },
@@ -59,8 +60,9 @@ var ScenarioList = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     this.state.sortBy = nextProps.query.sortBy;
+    this.state.sortDir = nextProps.query.sortDir;
     this.setState(this.state);
-    this.reload();
+    this.reload(true);
   },
   render: function() {
     return (
@@ -91,12 +93,22 @@ var ScenarioList = React.createClass({
                 <th>
                   <Link to={ui.route('scenarioList')}
                     params={this.props.params}
-                    query={$.extend({}, this.props.query, { sortBy : 'title' })}>Title</Link></th>
+                    query={$.extend(
+                      {},
+                      this.props.query,
+                      { sortBy : 'title' },
+                      { sortDir : (this.state.sortDir == 'asc' ? 'desc' : 'asc') }
+                    )}>Title</Link></th>
                 <th>Summary</th>
                 <th>
                   <Link to={ui.route('scenarioList')}
                     params={this.props.params}
-                    query={$.extend({}, this.props.query, { sortBy : 'timestamp' })}>Last Updated</Link>
+                    query={$.extend(
+                      {},
+                      this.props.query,
+                      { sortBy : 'timestamp' },
+                      { sortDir : (this.state.sortDir == 'asc' ? 'desc' : 'asc') }
+                    )}>Last Updated</Link>
                   </th>
                 <th>Creator</th>
                 <th>Version</th>
