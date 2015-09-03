@@ -65,7 +65,7 @@ Used for creating tag clouds or tag suggestions in the UI, e.g., for sectors, ac
 
 ```
 {
-  name  : { type: String, required: true }, // tag string, might contain multiple words with spaces, but is trimmed
+  tag   : { type: String, required: true }, // tag string, might contain multiple words with spaces, but is trimmed
   count : { type: Number, required: true }  // count of occurrences
 }
 ```

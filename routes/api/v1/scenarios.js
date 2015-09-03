@@ -412,75 +412,51 @@ module.exports = function(router, passport) {
     }
   });
 
-  router.get(api.route('actors_list'), function(req, res) {
-    db.scenarios.aggregate([
+  var aggregateTags = function(fieldName) {
+    return function(req, res) {
 
-      {$project: {actors: 1}},
-      {$unwind: '$actors'},
-      {
-        $group: {
-          _id: {actor: '$actors'},
-          count: {$sum: 1}
-        }
-      },
-      {$sort: {count: -1}}
-    ], function(err, counts) {
+      var fieldProjection;
+
+      fieldProjection = {};
+      fieldProjection.$project = {};
+      fieldProjection.$project[fieldName] = 1;
+
+      Scenario.aggregate([
+        fieldProjection,
+        { $unwind : '$' + fieldName },
+        {
+          $group: {
+            _id   : { actor : '$' + fieldName },
+            tag   : { '$first' : '$' + fieldName },
+            count : { $sum : 1 }
+          }
+        },
+        {$project: { _id : 0, tag : 1, count : 1 }},
+        {$sort: {count: -1}}
+      ], standardJsonCallback(req, res));
+    };
+  };
+
+  var standardJsonCallback = function(req, res) {
+    return function(err, json) {
       if (err) {
-        res.send('ERROR: ' + err);
-      } else {
-        res.status(200).json(counts);
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
-    });
-  });
+      return res.status(HttpStatus.OK).json(json);
+    };
+  };
 
-  router.get(api.route('sectors_list'), function(req, res) {
-    db.scenarios.aggregate([
-
-      {$project: {sectors: 1}},
-      {$unwind: '$sectors'},
-      {
-        $group: {
-          _id: {sector: '$sectors'},
-          count: {$sum: 1}
-        }
-      },
-      {$sort: {count: -1}}
-    ], function(err, counts) {
-      if (err) {
-        res.send('ERROR: ' + err);
-      } else {
-        res.status(200).json(counts);
-      }
-    });
-  });
-
-  router.get(api.route('devices_list'), function(req, res) {
-    db.scenarios.aggregate([
-
-      {$project: {devices: 1}},
-      {$unwind: '$devices'},
-      {
-        $group: {
-          _id: {device: '$devices'},
-          count: {$sum: 1}
-        }
-      },
-      {$sort: {count: -1}}
-    ], function(err, counts) {
-      if (err) {
-        res.send('ERROR: ' + err);
-      } else {
-        res.status(200).json(counts);
-      }
-    });
-
-  });
+  // TAG AGGREGATION
+  router.get(api.route('actors_list'),  aggregateTags('actors'));
+  router.get(api.route('sectors_list'), aggregateTags('sectors'));
+  router.get(api.route('devices_list'), aggregateTags('devices'));
 
   router.get(api.route('related_by_uuid'), function(req, res) {
     // find by uuid:
     if (isEmptyObject(req.query)) {
 
-      db.scenarios.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario) {
+      Scenario.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario) {
         if (err) {
           return res.status(400).send('');
         } else {
@@ -539,25 +515,6 @@ module.exports = function(router, passport) {
    * HELPER FUNCTIONS
    * ########################################################################################
    */
-  function getCount(name, res) {
-    db.scenarios.aggregate([
-      {$project: {name: 1}},
-      {$unwind: '$' + name},
-      {
-        $group: {
-          _id: {toCount: '$' + name},
-          count: {$sum: 1}
-        }
-      },
-      {$sort: {count: -1}}
-    ], function(err, counts) {
-      if (err) {
-        res.send('ERROR: ' + err);
-      } else {
-        return counts;
-      }
-    });
-  }
 
   /**
    * checks if json is empty
