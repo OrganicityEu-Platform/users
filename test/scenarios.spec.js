@@ -190,16 +190,51 @@ describe('When querying a scenario, the API', function() {
       {uuid: 'parkpred', v: 'v1'}
     ]);
 
-    var execTest = function() {
-      request(server)
-        .get(api.reverse('scenario_list', null, { q : 'city' }))
-        .expect(http.OK)
-        .expect('Content-Type', /json/)
-        .expect(verifyLengthAndUuidsContained(['contexttravel', 'parkpred']))
-        .end(done);
+    var execTest = function(done, termsAndExpectedUuids) {
+
+      var callDoneWhenDone = function() {
+        for (var i = 0; i < termsAndExpectedUuids.length; i++) {
+          if (!termsAndExpectedUuids[i].checked) {
+            return;
+          }
+        }
+        done();
+      };
+
+      var setChecked = function(obj) {
+        return function() {
+          obj.checked = true;
+          callDoneWhenDone();
+        };
+      };
+
+      return function() {
+        for (var i = 0; i < termsAndExpectedUuids.length; i++) {
+          request(server)
+            .get(api.reverse('scenario_list', null, { q : termsAndExpectedUuids[i].term }))
+            .expect(http.OK)
+            .expect('Content-Type', /json/)
+            .expect(verifyLengthAndUuidsContained(termsAndExpectedUuids[i].expectedUuids))
+            .end(setChecked(termsAndExpectedUuids[i]));
+        }
+      };
     };
 
-    ss.insertScenarios(scenarios).catch(done).then(execTest);
+    var termsAndExpectedUuids = [
+      { term : 'aging',     expectedUuids : ['agingpop']     ,            checked : false }, // title
+      { term : 'AGING',     expectedUuids : ['agingpop']     ,            checked : false }, // title
+      { term : 'aging',     expectedUuids : ['agingpop']     ,            checked : false }, // title
+      { term : 'real',      expectedUuids : ['contexttravel'],            checked : false }, // title
+      { term : 'REAl',      expectedUuids : ['contexttravel'],            checked : false }, // title
+      { term : 'Real',      expectedUuids : ['contexttravel'],            checked : false }, // title
+      { term : 'space',     expectedUuids : ['parkpred'],                 checked : false }, // title
+      { term : 'SPACE',     expectedUuids : ['parkpred'],                 checked : false }, // title
+      { term : 'Space',     expectedUuids : ['parkpred'],                 checked : false }, // title
+      { term : 'different', expectedUuids : ['contexttravel','parkpred'], checked : false }, // narrative
+      { term : 'there',     expectedUuids : ['contexttravel'],            checked : false }  // description
+    ];
+
+    ss.insertScenarios(scenarios).catch(done).then(execTest(done, termsAndExpectedUuids));
   });
 
   it('should return only scenarios with the given actor tag', function(done) {
