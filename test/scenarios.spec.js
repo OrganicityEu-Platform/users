@@ -195,7 +195,7 @@ describe('When querying a scenario, the API', function() {
         .get(api.reverse('scenario_list', null, { q : 'city' }))
         .expect(http.OK)
         .expect('Content-Type', /json/)
-        .expect(verifyLengthAndUuidOrder(['contexttravel', 'parkpred']))
+        .expect(verifyLengthAndUuidsContained(['contexttravel', 'parkpred']))
         .end(done);
     };
 
