@@ -4,12 +4,9 @@ var HashMap    = require('hashmap');
 var math       = require('mathjs');
 var crypto     = require('crypto'); // used to generate uuid
 var mongodb    = require('mongodb');
-var mongojs    = require('mongojs');
 var isvalid    = require('isvalid');
 var HttpStatus = require('http-status');
 var Scenario   = require('../../../models/scenario.js');
-
-var db = mongojs('mongodb://localhost/scenarios', ['scenarios']);
 
 var validScenario = {
   type: Object,
