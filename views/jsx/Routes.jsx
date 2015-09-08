@@ -1,7 +1,7 @@
 import React            from 'react';
 import Scaffold         from './Scaffold.jsx';
 import HomeView         from './HomeView.jsx';
-import ScenarioListView from './scenarios/ScenarioList.jsx';
+import ScenarioList     from './scenarios/ScenarioList.jsx';
 import ScenarioEditView from './scenarios/ScenarioEditView.jsx';
 import ScenarioView     from './scenarios/ScenarioView.jsx';
 import Login            from './auth/Login.jsx';
@@ -20,7 +20,7 @@ var Route = Router.Route;
 var routes = (
   <Route handler={Scaffold}>
     <Route name="home"              path={ui.route('home')}           handler={HomeView}         />
-    <Route name="scenarioList"      path={ui.route('scenarioList')}   handler={ScenarioListView} />
+    <Route name="scenarioList"      path={ui.route('scenarioList')}   handler={ScenarioList}     />
     <Route name="scenarioCreate"    path={ui.route('scenarioCreate')} handler={ScenarioEditView} />
     <Route name="scenarioEdit"      path={ui.route('scenarioEdit')}   handler={ScenarioEditView} />
     <Route name="scenarioView"      path={ui.route('scenarioView')}   handler={ScenarioView}     />

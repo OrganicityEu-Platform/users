@@ -43,7 +43,7 @@ var startServer = function(done) {
     app.use(function(req, res, next) {
       timers.setTimeout(function() {
         next();
-      }, 500);
+      }, 100);
     });
   }
 

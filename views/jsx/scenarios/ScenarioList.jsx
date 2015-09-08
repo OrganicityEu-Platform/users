@@ -4,6 +4,7 @@ import FlashQueue       from '../FlashQueue.jsx';
 import LoadingMixin     from '../LoadingMixin.jsx';
 import ScenarioListItem from './ScenarioListItem.jsx';
 import Router           from 'react-router';
+import TagField         from '../form-components/TagField.jsx';
 import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
 
@@ -15,9 +16,14 @@ var ScenarioList = React.createClass({
     return {
       refresh : false,
       scenarios: [],
-      searchTerm: null,
-      sortBy : null,
-      sortDir : null
+      search: {
+        q       : this.props.query.q,
+        actors  : this.props.query.actors ? this.props.query.actors.split(',') : null,
+        sectors : this.props.query.sectors ? this.props.query.sectors.split(',') : null,
+        devices : this.props.query.devices ? this.props.query.devices.split(',') : null
+      },
+      sortBy : this.props.query.sortBy,
+      sortDir : this.props.query.sortDir
     };
   },
   componentDidMount: function() {
@@ -25,8 +31,17 @@ var ScenarioList = React.createClass({
   },
   buildQueryUrl: function() {
     var query = {};
-    if (this.state.searchTerm) {
-      query = $.extend(query, { q : this.state.searchTerm });
+    if (this.state.search.q) {
+      query = $.extend(query, { q : this.state.search.q });
+    }
+    if (this.state.search.actors) {
+      query = $.extend(query, { actors : this.state.search.actors.join(',') });
+    }
+    if (this.state.search.sectors) {
+      query = $.extend(query, { sectors : this.state.search.sectors.join(',') });
+    }
+    if (this.state.search.devices) {
+      query = $.extend(query, { devices : this.state.search.devices.join(',') });
     }
     if (this.state.sortBy) {
       query = $.extend(query, { sortBy : this.state.sortBy, sortDir : this.state.sortDir });
@@ -49,14 +64,32 @@ var ScenarioList = React.createClass({
       }
     });
   },
+  handleUpdatedActors: function(actors) {
+    this.state.search.actors = actors;
+    this.setState(this.state);
+  },
+  handleUpdatedSectors: function(sectors) {
+    this.state.search.sectors = sectors;
+    this.setState(this.state);
+  },
+  handleUpdatedDevices: function(devices) {
+    this.state.search.devices = devices;
+    this.setState(this.state);
+  },
   handleUpdatedSearchTerm: function(evt) {
-    this.state.searchTerm = evt.target.value;
+    this.state.search.q = evt.target.value;
     this.setState(this.state);
   },
   handleSearch : function(evt) {
+    console.log('handleSearch');
     evt.preventDefault();
-    this.setState({ scenarios : [] });
-    this.reload();
+    console.log(this.state.search);
+    this.transitionTo('scenarioList', {}, {
+      q : this.state.search.q,
+      actors : this.state.search.actors   ? this.state.search.actors.join(',')  : null,
+      sectors : this.state.search.sectors ? this.state.search.sectors.join(',') : null,
+      devices : this.state.search.devices ? this.state.search.devices.join(',') : null
+    });
   },
   componentWillReceiveProps: function(nextProps) {
     this.state.sortBy = nextProps.query.sortBy;
@@ -67,24 +100,54 @@ var ScenarioList = React.createClass({
   render: function() {
     return (
       <div className="scenarioList">
-        <div className="row col-sm-4 pull-right">
-          <form name="scenario_search_form" onSubmit={this.handleSearch}>
-          <div className="input-group">
-            <input type="text"
-              name="q"
-              className="form-control"
-              placeholder="Search for..."
-              disabled={this.isLoading() ? 'disabled' : ''}
-              value={this.state.searchTerm}
-              onChange={this.handleUpdatedSearchTerm} />
-            <span className="input-group-btn">
-              <input type="submit"
+        <div className="row">
+          <div className="col-md-12 well">
+            <h3>Search and Filter</h3>
+            <form className="scenarioListSearchForm" onSubmit={this.handleSearch}>
+            <div className="form-group">
+              <label htmlFor="scenarioListSearchFormActors">Actors</label>&nbsp;
+              <TagField
+                id="scenarioListSearchFormActors"
+                tags={this.state.search.actors}
+                placeholder="actor tags"
+                onChange={this.handleUpdatedActors} />
+            </div>
+            &nbsp;
+            <div className="form-group">
+              <label htmlFor="scenarioListSearchFormSectors">Sectors</label>&nbsp;
+              <TagField
+                id="scenarioListSearchFormSectors"
+                tags={this.state.search.sectors}
+                placeholder="sectors tags"
+                onChange={this.handleUpdatedSectors} />
+            </div>
+            &nbsp;
+            <div className="form-group">
+              <label htmlFor="scenarioListSearchFormDevices">Devices</label>&nbsp;
+              <TagField
+                id="scenarioListSearchFormDevices"
+                tags={this.state.search.devices}
+                placeholder="device tags"
+                onChange={this.handleUpdatedDevices} />
+            </div>
+            &nbsp;
+            <div className="form-group">
+              <label htmlFor="scenarioListSearchFormQ">Search Terms</label>&nbsp;
+              <input type="text"
+                id="scenarioListSearchFormQ"
+                name="q"
+                className="form-control"
+                placeholder="Search for..."
+                disabled={this.isLoading() ? 'disabled' : ''}
+                value={this.state.search.q}
+                onChange={this.handleUpdatedSearchTerm} />
+              </div>
+              <button type="submit"
                 value="Search"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                className="btn btn-default">Go!</input>
-            </span>
+                className="btn btn-primary">Go!</button>
+            </form>
           </div>
-          </form>
         </div>
         <div className="row">
           <table className="scenarioListTable">
