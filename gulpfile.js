@@ -288,7 +288,8 @@ gulp.task('pdf', function() {
 });
 
 gulp.task('test', function() {
-  return gulp.src(watches.test, {read: false})
+  return gulp
+    .src(watches.test, {read: false})
     .pipe(mocha())
     .on('error', function(err) {
       console.log(err);
@@ -296,5 +297,14 @@ gulp.task('test', function() {
 });
 
 gulp.task('test-watch', function() {
-  gulp.watch('test/**/*.js', ['test']);
+  var testFile = function(file) {
+    return gulp.src(file.path, {read: false})
+      .pipe(mocha())
+      .on('error', function(err) {
+        console.log(err);
+      });
+  };
+  return gulp.watch(watches.test)
+    .on('change', testFile)
+    .on('add', testFile);
 });

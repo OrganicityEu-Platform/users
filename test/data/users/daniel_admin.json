@@ -1,9 +1,10 @@
 {
-  "uuid"   : "daniel",
-  "name"   : "Daniel Bimschas",
+  "uuid"   : "daniel_admin",
+  "name"   : "Daniel Admin Bimschas",
   "gender" : "m",
+  "roles" : ["admin"],
   "local" : {
-    "email"    : "daniel@bimschas.com",
+    "email"    : "daniel_admin@bimschas.com",
     "password" : "$2a$08$6pcdnrxiQIdY92GeVJ/kXelN1UNVGLAsR35HkXl6zvyzZc8vV2HL.",
     "__comment": "password is 'leinad'",
     "__passwordplain" : "leinad"

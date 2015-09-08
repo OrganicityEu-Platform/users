@@ -25,7 +25,9 @@ var startServer = function(done) {
   app.use(ui.asset('/static'), express.static('public'));
 
   // set up our express application
-  app.use(morgan('dev')); // log every request to the console
+  if (app.get('env') !== 'test') {
+    app.use(morgan('dev')); // log every request to the console
+  }
   app.use(cookieParser()); // read cookies (needed for auth)
   app.use(bodyParser.json()); // get information from html forms
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -78,7 +80,7 @@ var startServer = function(done) {
   // error handlers
   if (app.get('env') === 'development') {
 
-    console.log('Starting server in development mode');
+    console.log('Starting server in development (or test) mode');
 
     // development error handler
     // will print stacktrace

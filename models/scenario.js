@@ -25,6 +25,17 @@ scenarioSchema.index(
   }
 );
 
+// make sure options exist
+if (!scenarioSchema.options.toObject) {
+  scenarioSchema.options.toObject = {};
+}
+
+// apply transform option
+scenarioSchema.options.toObject.transform = function(original, transformed) {
+  delete transformed._id;
+  delete transformed.__v;
+};
+
 var Scenario = mongoose.model('Scenario', scenarioSchema);
 Scenario.ensureIndexes(function(err) {
   if (err) {

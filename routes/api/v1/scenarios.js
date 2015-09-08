@@ -45,9 +45,11 @@ var scenarioFields = Object
   .keys(scenarioProjection)
   .filter(function(key) { return scenarioProjection[key] === 1; });
 
+var scenarioUpdateFields = ['title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'];
+
 module.exports = function(router, passport) {
 
-  var isLoggedIn             = require('../../../models/isLoggedIn.js')(passport);
+  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
   var scenarioListQueryCallback = function(res, multipleResults) {
     return function(err, scenarios) {
@@ -286,7 +288,22 @@ module.exports = function(router, passport) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  router.post(api.route('scenario_list'), [isLoggedIn], function(req, res) {
+  var assertOnlyValidFieldsInRequestBody = function(req, res, next) {
+    var illegalFields = [];
+    for (var field in req.body) {
+      if (req.body.hasOwnProperty(field) && scenarioUpdateFields.indexOf(field) === -1) {
+        illegalFields.push(field);
+      }
+    }
+    if (illegalFields.length > 0) {
+      var msg = 'Request body contains non-allowed fields [' + illegalFields.join(', ') + ']. Allowed fields are [' +
+        scenarioUpdateFields.join(', ') + '].';
+      return res.status(HttpStatus.BAD_REQUEST).send(msg);
+    }
+    return next();
+  };
+
+  router.post(api.route('scenario_list'), [isLoggedIn, assertOnlyValidFieldsInRequestBody], function(req, res) {
 
     var scenario = new Scenario(req.body);
 
@@ -305,25 +322,25 @@ module.exports = function(router, passport) {
             return res.send(err);
           } else {
             res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-            res.status(201).json(scenario);
+            res.status(201).json(scenario.toObject());
           }
         });
       }
     });
   });
 
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn, assertOnlyValidFieldsInRequestBody], function(req, res) {
     Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
 
       if (err) {
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
 
-      if (oldVersion === undefined || oldVersion.length === 0) {
+      if (oldVersion === undefined || oldVersion == null || oldVersion.length === 0) {
         return res.status(HttpStatus.NOT_FOUND).send();
       }
 
-      if (!req.user.hasRole(['admin']) && req.user.uuid !== oldVersion[0].creator) {
+      if (!req.user.hasRole(['admin']) && !req.user.hasRole(['moderator']) && req.user.uuid !== oldVersion[0].creator) {
         return res
           .status(HttpStatus.FORBIDDEN)
           .send('You must be either the creator of the scenario or an adminstrator to update it');
@@ -344,7 +361,7 @@ module.exports = function(router, passport) {
           return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
         res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-        res.status(HttpStatus.CREATED).json(scenario);
+        res.status(HttpStatus.CREATED).json(scenario.toObject());
       });
     });
   });
