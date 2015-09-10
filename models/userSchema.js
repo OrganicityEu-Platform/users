@@ -34,6 +34,12 @@ var userSchema = mongoose.Schema({
     username     : String,
     displayName  : String
   },
+  disqus           : {
+    id           : String,
+    token        : String,
+    email        : String,
+    name         : String
+  },
   roles : [String]
 });
 

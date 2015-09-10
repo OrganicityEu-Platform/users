@@ -21,11 +21,13 @@ var api_routes = {
   'auth_facebook'        : prefixes.auth + '/facebook',
   'auth_twitter'         : prefixes.auth + '/twitter',
   'auth_google'          : prefixes.auth + '/google',
+  'auth_disqus'          : prefixes.auth + '/disqus',
   'auth_github'          : prefixes.auth + '/github',
   'connect_facebook'     : prefixes.auth + '/facebook',
   'connect_twitter'      : prefixes.auth + '/twitter',
   'connect_google'       : prefixes.auth + '/google',
   'connect_github'       : prefixes.auth + '/github',
+  'connect_disqus'       : prefixes.auth + '/disqus',
   'connect_local-signup' : prefixes.auth + '/local',
   'login'                : prefixes.auth + '/login',
   'logout'               : prefixes.auth + '/logout',
@@ -33,6 +35,7 @@ var api_routes = {
   'callback_twitter'     : prefixes.auth + '/twitter/callback',
   'callback_google'      : prefixes.auth + '/google/callback',
   'callback_github'      : prefixes.auth + '/github/callback',
+  'callback_disqus'      : prefixes.auth + '/disqus/callback',
 
   // users routes
   'users'                : prefixes.users + '/?',
@@ -43,6 +46,7 @@ var api_routes = {
   'disconnect_twitter'   : prefixes.users + '/:uuid/unlink/twitter?',
   'disconnect_google'    : prefixes.users + '/:uuid/unlink/google?',
   'disconnect_github'    : prefixes.users + '/:uuid/unlink/github?',
+  'disconnect_disqus'    : prefixes.users + '/:uuid/unlink/disqus?',
 
   // scenario routes
   'scenario_list'        : prefixes.scenarios + '/?',
