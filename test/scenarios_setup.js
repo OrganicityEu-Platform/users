@@ -144,6 +144,11 @@ var insertScenarios = function(scenarios) {
   return promise;
 };
 
+var scenarioFields       = [
+  'uuid', 'version', 'creator',
+  'title', 'summary', 'narrative', 'dataSources', 'actors', 'sectors', 'devices'
+];
+
 var scenarioUpdateFields = ['title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'];
 
 var cloneConstrained = function(scenario) {
@@ -155,12 +160,13 @@ var cloneConstrained = function(scenario) {
 };
 
 module.exports = {
-  setup : setup,
-  teardown : teardown,
-  insertScenarios : insertScenarios,
-  loadScenarios : loadScenarios,
-  loadUsers : loadUsers,
-  insertUsers : insertUsers,
+  setup                : setup,
+  teardown             : teardown,
+  insertScenarios      : insertScenarios,
+  loadScenarios        : loadScenarios,
+  loadUsers            : loadUsers,
+  insertUsers          : insertUsers,
+  scenarioFields       : scenarioFields,
   scenarioUpdateFields : scenarioUpdateFields,
-  cloneConstrained : cloneConstrained
+  cloneConstrained     : cloneConstrained
 };

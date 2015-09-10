@@ -56,6 +56,31 @@ describe('When deleting a scenario (version), the API', function() {
     ss.insertUsers(users).then(ss.insertScenarios(scenarios)).catch(done).then(execTest);
   });
 
+  it('should return 200 OK and the earlier existing version if there is still one left', function(done) {
+    var users = ss.loadUsers(['daniel','leinad']);
+    var scenarios = ss.loadScenarios([
+      {uuid: 'agingpop', v: 'v1'},
+      {uuid: 'agingpop', v: 'v2'}
+    ]);
+    var execTest = function() {
+      request(server)
+        .delete(api.reverse('scenario_by_uuid', { uuid : 'agingpop' }))
+        .auth(users[0].local.email, users[0].local.__passwordplain)
+        .expect(http.OK)
+        .expect(function(res) {
+          ss.scenarioFields.forEach(function(field) {
+            expect(res.body[field]).to.eql(scenarios[0][field]);
+          });
+        })
+        .end(done);
+    };
+    ss.insertUsers(users).then(ss.insertScenarios(scenarios)).catch(done).then(execTest);
+  });
+
+  it.skip('should return 204 NO CONTENT if deleting the last remaining version', function(done) {
+
+  });
+
   it('should return 404 not found if scenario with UUID does not exist', function(done) {
     var users = ss.loadUsers(['daniel','leinad']);
     var scenarios = ss.loadScenarios([{uuid: 'agingpop', v: 'v1'}]);

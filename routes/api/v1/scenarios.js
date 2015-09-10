@@ -391,7 +391,13 @@ module.exports = function(router, passport) {
           if (err) {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
           } else {
-            return res.status(HttpStatus.NO_CONTENT).send();
+            // check if there's still a version left and if so return it. otherwise return NO_CONTENT
+            Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
+              if (!scenarios || scenarios.length === 0) {
+                return res.status(HttpStatus.NO_CONTENT).send();
+              }
+              return res.status(HttpStatus.OK).send(scenarios[0]);
+            });
           }
         });
       });
