@@ -25,5 +25,10 @@ module.exports = {
     'clientID'         : '646b3c1643b20170b3bb',
     'clientSecret'     : '4117fc5d93c7e3e5065a01508f943758ba2f4365',
     'callbackURL'      : config.host + ':' + config.port + api.route('callback_github')
+  },
+  'disqusAuth' : {
+    'clientID'         : 'CTbb7OOYpeXfyi9TKHdlfr13W2hTbxrGkQvVSvQrur241tB6Mz1y8G3dfJMMtnWt',
+    'clientSecret'     : '0N4wQA4Jq6gjVuebTcNTBldmlAtXz7mxYoF2SE56qHHGCfAFa36LxpfsjugnovbG',
+    'callbackURL'      : config.host + ':' + config.port + api.route('callback_disqus')
   }
 };

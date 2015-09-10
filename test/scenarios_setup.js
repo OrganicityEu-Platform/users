@@ -3,60 +3,7 @@ var Scenario = require('../models/scenario.js');
 var User     = require('../models/userSchema.js');
 var Promise  = require('promise');
 var moment   = require('moment');
-
-var errorHandlerWrapper = function(success) {
-  return function(err) {
-    if (err) {
-      done(err);
-      console.log(err.stack);
-      return;
-    }
-    success();
-  };
-};
-
-var saveModels = function(models, done) {
-  if (models.length === 0) {
-    done();
-    return;
-  }
-  models[0].save(function(err, saved) {
-    if (err) {
-      done(err);
-      return;
-    }
-    saveModels(models.slice(1), done);
-  });
-};
-
-var readJsonFiles = function(dir) {
-  var files = fs.readdirSync(dir);
-  var docs = [];
-  files.forEach(function(file) {
-    docs.push(JSON.parse(fs.readFileSync(dir + file)));
-  });
-  return docs;
-};
-
-var readJsonFilesFromDir = function(dir) {
-  var files = fs.readdirSync(dir);
-  var docs = [];
-  files.forEach(function(file) {
-    docs.push(JSON.parse(fs.readFileSync(dir + file)));
-  });
-  return docs;
-};
-
-/**
- * Reads a set of Json documents
- * @param {string[]} fileArr - an array of file names
- * @return {object[]} - the JavaScript objects containing the Json read from the disk
- */
-var readJsonFiles = function(fileArr) {
-  return fileArr.map(function(file) {
-    return JSON.parse(fs.readFileSync(file));
-  });
-};
+var cs       = require('./common_setup.js');
 
 /**
  * Sets up the Scenario and User collections by removing all entries that might be left over from
@@ -64,8 +11,8 @@ var readJsonFiles = function(fileArr) {
  * @param {function} done - callback
  */
 var setup = function(done) {
-  Scenario.remove({}, errorHandlerWrapper(function() {
-    User.remove({}, errorHandlerWrapper(done));
+  Scenario.remove({}, cs.errorHandlerWrapper(function() {
+    User.remove({}, cs.errorHandlerWrapper(done));
   }));
 };
 
@@ -105,7 +52,7 @@ var insertUsers = function(users) {
     var userModels = users.map(function(user) {
       return new User(user);
     });
-    saveModels(userModels, function(err) {
+    cs.saveModels(userModels, function(err) {
       if (err) {
         reject(err);
       } else {
@@ -133,7 +80,7 @@ var insertScenarios = function(scenarios) {
       .map(function(scenario) {
         return new Scenario(scenario);
       });
-    saveModels(timestampedScenarios, function(err) {
+    cs.saveModels(timestampedScenarios, function(err) {
       if (err) {
         reject(err);
       } else {
@@ -143,6 +90,11 @@ var insertScenarios = function(scenarios) {
   });
   return promise;
 };
+
+var scenarioFields       = [
+  'uuid', 'version', 'creator',
+  'title', 'summary', 'narrative', 'dataSources', 'actors', 'sectors', 'devices'
+];
 
 var scenarioUpdateFields = ['title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'];
 
@@ -155,12 +107,13 @@ var cloneConstrained = function(scenario) {
 };
 
 module.exports = {
-  setup : setup,
-  teardown : teardown,
-  insertScenarios : insertScenarios,
-  loadScenarios : loadScenarios,
-  loadUsers : loadUsers,
-  insertUsers : insertUsers,
+  setup                : setup,
+  teardown             : teardown,
+  insertScenarios      : insertScenarios,
+  loadScenarios        : loadScenarios,
+  loadUsers            : loadUsers,
+  insertUsers          : insertUsers,
+  scenarioFields       : scenarioFields,
   scenarioUpdateFields : scenarioUpdateFields,
-  cloneConstrained : cloneConstrained
+  cloneConstrained     : cloneConstrained
 };
