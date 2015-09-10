@@ -242,8 +242,7 @@ When filling out a questionnaire the back end will already persist partially fil
     <td>
       ```200 OK``` - if successful<br/>
       ```400 BAD_REQUEST``` - if the request body is malformed<br/>
-      ```401 UNAUTHORIZED``` - if user is not authenticated<br/>
-      ```403 FORBIDDEN``` - if user is authenticated but doesn't have an administrator or moderator role
+      ```401 UNAUTHORIZED``` - if user is not authenticated
     </td>
   </tr>
 </table>
@@ -258,7 +257,7 @@ When filling out a questionnaire the back end will already persist partially fil
   </tr>
   <tr>
     <td>Request</td>
-    <td>```PATCH /api/v1/evaluations```</td>
+    <td>```PATCH /api/v1/evaluations/:uuid```</td>
   </tr>
   <tr>
     <td>Request Body</td>
@@ -278,7 +277,7 @@ When filling out a questionnaire the back end will already persist partially fil
       ```200 OK``` - if successful<br/>
       ```400 BAD_REQUEST``` - if the request body is malformed<br/>
       ```401 UNAUTHORIZED``` - if user is not authenticated<br/>
-      ```403 FORBIDDEN``` - if user is authenticated but doesn't have an administrator or moderator role
+      ```403 FORBIDDEN``` - if user is authenticated but is not the user that created this evaluation before
     </td>
   </tr>
 </table>

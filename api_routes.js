@@ -2,14 +2,16 @@ var config   = require('./config/config.js');
 var routes   = require('./routes.js');
 
 var prefixes = {
-  'auth'      : '/api/v1/auth',
-  'users'     : '/api/v1/users',
-  'scenarios' : '/api/v1/scenarios',
-  'actors'    : '/api/v1/actors',
-  'sectors'   : '/api/v1/sectors',
-  'devices'   : '/api/v1/devices',
-  'error'     : '/api/v1/error',
-  'sysinfo'   : '/api/v1/sysinfo'
+  'auth'           : '/api/v1/auth',
+  'users'          : '/api/v1/users',
+  'scenarios'      : '/api/v1/scenarios',
+  'actors'         : '/api/v1/actors',
+  'sectors'        : '/api/v1/sectors',
+  'devices'        : '/api/v1/devices',
+  'error'          : '/api/v1/error',
+  'sysinfo'        : '/api/v1/sysinfo',
+  'questionnaire'  : '/api/v1/questionnaire',
+  'evaluations'    : '/api/v1/evaluations'
 };
 
 var api_routes = {
@@ -60,7 +62,14 @@ var api_routes = {
   'error'                : prefixes.error + '/?',
 
   // sysinfo routes
-  'sysinfo'              : prefixes.sysinfo + '/?'
+  'sysinfo'              : prefixes.sysinfo + '/?',
+
+  // questionnaire routes
+  'questionnaire'        : prefixes.questionnaire + '/?',
+
+  // evaluations routes
+  'evaluations_list'     : prefixes.evaluations + '/?',
+  'evaluation_by_uuid'   : prefixes.evaluations + '/:uuid/?'
 };
 
 module.exports = {
