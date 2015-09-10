@@ -4,6 +4,7 @@ import ScenarioTableView from './ScenarioTableView.jsx';
 import ScenarioEditButton from './ScenarioEditButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api from '../../../api_routes.js';
+var ReactDisqusThread  = require('react-disqus-thread');
 
 var ScenarioView = React.createClass({
   getInitialState: function() {
@@ -29,6 +30,9 @@ var ScenarioView = React.createClass({
         <div className="row">
           <ScenarioEditButton scenario={this.state}/>
           <ScenarioDeleteButton scenario={this.state}/>
+        </div>
+        <div>
+          <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
         </div>
       </div>
     );
