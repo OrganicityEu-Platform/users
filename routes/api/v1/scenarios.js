@@ -6,7 +6,7 @@ var crypto     = require('crypto'); // used to generate uuid
 var mongodb    = require('mongodb');
 var isvalid    = require('isvalid');
 var HttpStatus = require('http-status');
-var Scenario   = require('../../../models/scenario.js');
+var Scenario   = require('../../../models/schema/scenario.js');
 
 var validScenario = {
   type: Object,

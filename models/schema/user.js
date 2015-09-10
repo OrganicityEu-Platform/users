@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
-var userSchema = mongoose.Schema({
+var user = mongoose.Schema({
   uuid    : String,
   name    : String,
   gender  : String,
@@ -38,16 +38,16 @@ var userSchema = mongoose.Schema({
 });
 
 // generate a hash
-userSchema.methods.generateHash = function(password) {
+user.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checks if password is valid
-userSchema.methods.validPassword = function(password) {
+user.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
 
-userSchema.methods.hasRole = function(roles) {
+user.methods.hasRole = function(roles) {
   for (var i = 0; i <= roles.length; i++) {
     var role = roles[i];
     if (this.roles.indexOf(role) >= 0) {
@@ -57,4 +57,6 @@ userSchema.methods.hasRole = function(roles) {
   return false;
 };
 
-module.exports = mongoose.model('User', userSchema);
+var User = mongoose.model('User', user);
+
+module.exports = User;

@@ -10,7 +10,7 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var uuid = require('node-uuid');
 
 // load up the user model
-var User = require('../models/userSchema');
+var User = require('../models/schema/user');
 
 // load the auth variables
 var configAuth = require('./auth');

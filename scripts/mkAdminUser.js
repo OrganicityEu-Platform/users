@@ -5,7 +5,7 @@ var configDB = require('../config/database.js');
 var uuid = require('node-uuid');
 var crypto = require('crypto');
 
-var User = require('../models/userSchema.js');
+var User = require('../models/schema/user.js');
 
 if (!process.argv[2]) {
   console.error('No Username given!');
