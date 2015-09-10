@@ -234,5 +234,19 @@ module.exports = function(router, passport) {
     });
   });
 
+  // disqus ---------------------------------
+  router.get(api.route('disconnect_disqus'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
+    User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
+      if (err) {
+        return next(err);
+      } else {
+        user.disqus.token = undefined;
+        user.save(function(err) {
+          res.redirect(req.header('Referer'));
+        });
+      }
+    });
+  });
+
   return router;
 };

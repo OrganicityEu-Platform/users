@@ -23,6 +23,9 @@ var Login = React.createClass({
         <a href={api.reverse('auth_github')} className="btn btn-info">
           <span className="fa fa-github"></span> Github
         </a>
+        <a href={api.reverse('auth_disqus')} className="btn btn-info">
+          <span className="fa fa-github"></span> Disqus
+        </a>
       </div>
     );
   }
