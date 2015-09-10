@@ -8,8 +8,8 @@ var isvalid    = require('isvalid');
 var HttpStatus = require('http-status');
 var Scenario   = require('../../../models/schema/scenario.js');
 
-var validate = require('express-validation');
-var ScenarioJoi   = require('../../../models/joi/scenario.js');
+var validate     = require('express-validation');
+var ScenarioJoi  = require('../../../models/joi/scenario.js');
 
 /**
  * Used to project all fields in the scenario collection documents to the fields that the user is

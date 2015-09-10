@@ -6,6 +6,11 @@ import api               from '../../../api_routes.js';
 import Router            from 'react-router';
 import ScenarioTableView from './ScenarioTableView.jsx';
 
+// Input validation
+import validation        from 'react-validation-mixin';
+import strategy          from 'joi-validation-strategy';
+import ScenarioJoi       from '../../../models/joi/scenario.js';
+
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, FlashQueue.Mixin],
   firstStep : 1,
@@ -95,38 +100,62 @@ var ScenarioEditView = React.createClass({
     this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() - 1 });
   },
   clickedNext : function() {
+
+    var that = this;
     if (this.currentStep() + 1 > this.lastStep) {
       console.log('User tried to go beyond last step. This is not possible!');
       return;
     }
+
     this.saveState();
-    this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
+    this.validateCurrentStep(function() {
+      that.transitionTo(that.routeName(), { uuid : that.props.params.uuid }, { step : that.currentStep() + 1 });
+    });
+
   },
   clickedSubmit : function() {
-    var method = this.editMode() ? 'PUT' : 'POST';
-    var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
-      : api.reverse('scenario_list');
 
-    $.ajax(url, {
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify({
-        title     : this.state.title,
-        summary   : this.state.summary,
-        narrative : this.state.narrative,
-        sectors   : this.state.sectors,
-        actors    : this.state.actors,
-        devices   : this.state.devices
-      }),
-      method: method,
-      error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
-      success: (scenario) => {
-        this.clearState();
-        this.transitionTo('scenarioView', { uuid : scenario.uuid });
-      }
-    });
+    var that = this;
+    this.validateCurrentStep(function() {
+      var method = that.editMode() ? 'PUT' : 'POST';
+      var url    = that.editMode() ? api.reverse('scenario_by_uuid', { uuid : that.props.params.uuid })
+        : api.reverse('scenario_list');
+
+      $.ajax(url, {
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(that.getValidatorData()),
+        method: method,
+        error: that.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
+        success: (scenario) => {
+          that.clearState();
+          that.transitionTo('scenarioView', { uuid : scenario.uuid });
+        }
+      });
+    })
+
+  },
+  validateCurrentStep : function(callback) {
+
+    var that = this;
+    if(this.validatorTypes) {
+
+      this.props.validate(function(error) {
+        if (error) {
+          console.log('Input validation error!', error);
+          that.setState(that.state); // Rerender to show errors
+        } else {
+          console.log('Input validation successful!');
+          callback();
+        }
+      });
+
+    } else {
+      callback();
+    }
   },
   step1 : function() {
+    this.validatorTypes = ScenarioJoi.step1;
     return (
       <div>
         <div className="row" key="scenarioEditStep1">
@@ -145,6 +174,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
+                {this.props.getValidationMessages('title').map(this.renderHelpText)}
               </div>
             </div>
             <div className="form-group">
@@ -152,6 +182,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
+                {this.props.getValidationMessages('summary').map(this.renderHelpText)}
               </div>
             </div>
             <div className="form-group">
@@ -159,6 +190,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
+                {this.props.getValidationMessages('narrative').map(this.renderHelpText)}
               </div>
             </div>
             <div className="form-group">
@@ -199,6 +231,7 @@ var ScenarioEditView = React.createClass({
             </div>
           </form>
         </div>
+        {this.props.getValidationMessages().map(this.renderHelpText)}
       </div>
     );
   },
@@ -232,6 +265,7 @@ var ScenarioEditView = React.createClass({
             </form>
           </div>
         </div>
+        {this.props.getValidationMessages().map(this.renderHelpText)}
       </div>
     );
   },
@@ -267,6 +301,8 @@ var ScenarioEditView = React.createClass({
     );
   },
   step5 : function() {
+    this.validatorTypes = ScenarioJoi.step5;
+
     return (
       <div className="row" key="scenarioEditStep5">
         <h2>Create your scenario <small>step five</small></h2>
@@ -276,6 +312,7 @@ var ScenarioEditView = React.createClass({
           fringilla.
         </p>
         <ScenarioTableView scenario={this.state} />
+        {this.props.getValidationMessages().map(this.renderHelpText)}
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
           <button type="button" className="btn btn-default" onClick={this.clickedSubmit}>Submit</button>
@@ -284,9 +321,27 @@ var ScenarioEditView = React.createClass({
     );
   },
   render: function() {
+    this.validatorTypes = null;
     var steps = [this.step1, this.step2, this.step3, this.step4, this.step5];
     return steps[this.currentStep() - 1]();
-  }
+  },
+  getValidatorData: function () {
+    var data = {
+      title     : this.state.title,
+      summary   : this.state.summary,
+      narrative : this.state.narrative,
+      sectors   : this.state.sectors,
+      actors    : this.state.actors,
+      devices   : this.state.devices
+    };
+    return data;
+  },
+  validatorTypes: undefined,
+  renderHelpText: function(message) {
+    return (
+      <div className="alert alert-danger">{message}</div>
+    );
+  },
 });
 
-export default ScenarioEditView;
+export default validation(strategy)(ScenarioEditView);

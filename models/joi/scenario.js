@@ -2,19 +2,27 @@ var Joi = require('joi');
 
 var scenario = {};
 
+scenario.step1 = {
+  title       : Joi.string().label('Title').required(),
+  summary     : Joi.string().label('Summary').required(),
+  narrative   : Joi.string().label('Narrative').required()
+};
+
+scenario.step5 = {
+  title       : Joi.string().label('Title').required(),
+  summary     : Joi.string().label('Summary').required(),
+  narrative   : Joi.string().label('Narrative').required(),
+  actors      : Joi.array().label('Actors').items(Joi.string()),
+  sectors     : Joi.array().label('Sectors').items(Joi.string()),
+  devices     : Joi.array().label('Devices').items(Joi.string()),
+  dataSources : Joi.array().label('Data Sources').items(Joi.string())
+};
+
 scenario.createOrUpdate = {
   options : {
     allowUnknownBody: false
   },
-  body: {
-    title       : Joi.string().required(),          // plain text
-    summary     : Joi.string().required(),          // plain text
-    narrative   : Joi.string().required(),          // markdown
-    actors      : Joi.array().items(Joi.string()),  // tags (comma-separated)
-    sectors     : Joi.array().items(Joi.string()),  // tags (comma-separated)
-    devices     : Joi.array().items(Joi.string()),  // tags (comma-separated)
-    dataSources : Joi.array().items(Joi.string())   // uuids of data source type
-  }
+  body: scenario.step5
 };
 
 module.exports = scenario;
