@@ -195,7 +195,6 @@ module.exports = function(router, passport) {
     if (!req.query.version) {
 
       params.filter.uuid    = uuid;
-      params.filter.version = req.query.version;
       params.sort.version   = -1; // overrides sorting query parameters
 
       return executeScenarioListQuery(params, res, false);
