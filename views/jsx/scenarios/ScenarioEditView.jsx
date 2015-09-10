@@ -110,7 +110,14 @@ var ScenarioEditView = React.createClass({
     $.ajax(url, {
       dataType: 'json',
       contentType: 'application/json',
-      data: JSON.stringify(this.state),
+      data: JSON.stringify({
+        title     : this.state.title,
+        summary   : this.state.summary,
+        narrative : this.state.narrative,
+        sectors   : this.state.sectors,
+        actors    : this.state.actors,
+        devices   : this.state.devices
+      }),
       method: method,
       error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
       success: (scenario) => {
