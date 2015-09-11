@@ -42,7 +42,7 @@ var Signup = React.createClass({
   },
   handleSubmit : function(evt) {
     evt.preventDefault();
-    if(this.props.isValid()) {
+    if (this.props.isValid()) {
       var self = this;
       var url = api.reverse('signup');
       $.ajax(url, {
@@ -110,7 +110,7 @@ var Signup = React.createClass({
             </div>
             <button type="submit"
               className="btn btn-warning btn-lg"
-              disabled={(!this.isLoading() && this.props.isValid()) ? '' : 'disabled'}
+              disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
               onClick={this.handleSubmit}>Signup</button>
         </form>
         <hr/>
@@ -118,7 +118,7 @@ var Signup = React.createClass({
       </div>
     );
   },
-  getValidatorData: function () {
+  getValidatorData: function() {
     var data = {
       email           : this.state.email,
       password        : this.state.password,
@@ -126,7 +126,7 @@ var Signup = React.createClass({
     };
     return data;
   },
-  validatorTypes: UserJoi.signup
+  validatorTypes: UserJoi.signupClient
 });
 
 export default validation(strategy)(Signup);

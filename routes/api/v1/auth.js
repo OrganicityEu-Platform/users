@@ -24,7 +24,7 @@ module.exports = function(router, passport) {
   };
   var authCallbacks = {
     successRedirect : authSuccess, // redirect to the secure profile section
-    failureRedirect : ui.route('local-login'), // redirect back to the signup page if there is an error
+    failureRedirect : ui.route('local-lougin'), // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   };
 
@@ -35,8 +35,7 @@ module.exports = function(router, passport) {
   });
 
   // process the login form
-  router.post(api.route('local-login'),
-    function(req, res, next) {
+  router.post(api.route('local-login'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-login', function(err, user, info) {
         if (err) {
           return next(err);
@@ -58,7 +57,7 @@ module.exports = function(router, passport) {
       })(req, res, next);
     });
   // process the signup form
-  router.post(api.route('signup'), [validate(UserJoi.signupServer)], function(req, res, next) {
+  router.post(api.route('signup'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-signup', function(err, user, info) {
         if (err) {
           return next(err);
