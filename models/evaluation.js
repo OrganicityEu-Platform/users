@@ -9,10 +9,15 @@ var schema = mongoose.Schema({
   },
   timestamp : { type: Date,   default: Date.now }, // set when created, reset when updated
   submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
-  answers   : {
-    question : { type: mongoose.Schema.Types.ObjectId, ref: 'Question', required: true }, // the question that was answered
+  answers   : [{
+    question : {
+      uuid   : { type: String,   required: true },
+      tech   : { type: Boolean,  required: true },
+      text   : { type: String,   required: true },
+      values : { type: [String], required: true }
+    }, // the question that was answered (copy of question data type)
     answer   : { type: String                   }  // the value that was picked as answer by the user, might be unanswered
-  },
+  }],
   comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary
 });
 

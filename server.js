@@ -49,16 +49,20 @@ var startServer = function(done) {
   }
 
   // routes =====================================================================
-  var routes_scenarios = require('./routes/api/v1/scenarios.js')(router, passport);
-  var routes_auth      = require('./routes/api/v1/auth.js')(router, passport);
-  var routes_users     = require('./routes/api/v1/users.js')(router, passport);
-  var routes_error     = require('./routes/api/v1/error.js')(router, passport);
-  var routes_sysinfo   = require('./routes/api/v1/sysinfo.js')(router, passport);
+  var routes_scenarios     = require('./routes/api/v1/scenarios.js')(router, passport);
+  var routes_auth          = require('./routes/api/v1/auth.js')(router, passport);
+  var routes_users         = require('./routes/api/v1/users.js')(router, passport);
+  var routes_error         = require('./routes/api/v1/error.js')(router, passport);
+  var routes_sysinfo       = require('./routes/api/v1/sysinfo.js')(router, passport);
+  var routes_questionnaire = require('./routes/api/v1/questionnaire.js')(router, passport);
+  var routes_evaluations   = require('./routes/api/v1/evaluations.js')(router, passport);
 
   app.use(routes_scenarios);
   app.use(routes_auth);
   app.use(routes_users);
   app.use(routes_error);
+  app.use(routes_questionnaire);
+  app.use(routes_evaluations);
 
   // serve all (other) requests to single-page-app contained in index.html
   var index = require('./index.js');

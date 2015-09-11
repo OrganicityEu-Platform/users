@@ -49,9 +49,42 @@ var readJsonFiles = function(fileArr) {
   });
 };
 
+/**
+ * Loads users from the data/users/ subdirectory.
+ * @param {string[]} usersToLoad - array of user UUID, corresponding to filenames in data/users subdirectory
+ * @return {object[]} - an array containing user objects
+ */
+var loadUsers = function(usersToLoad) {
+  return usersToLoad
+    .map(function(user) { return __dirname + '/data/users/' + user + '.json'; })
+    .map(function(fn) { return JSON.parse(fs.readFileSync(fn)); });
+};
+
+/**
+ * Inserts user documents into the users collection.
+ * @param {object[]} users - array of user objects
+ * @return {Promise} promise that get's resolved (empty content) when inserted successfully or rejected (on error)
+ */
+var insertUsers = function(users) {
+  return new Promise(function(resolve, reject) {
+    var userModels = users.map(function(user) {
+      return new User(user);
+    });
+    saveModels(userModels, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
 module.exports = {
-  errorHandlerWrapper : errorHandlerWrapper,
-  saveModels : saveModels,
+  errorHandlerWrapper  : errorHandlerWrapper,
+  saveModels           : saveModels,
   readJsonFilesFromDir : readJsonFilesFromDir,
-  readJsonFiles : readJsonFiles
+  readJsonFiles        : readJsonFiles,
+  loadUsers            : loadUsers,
+  insertUsers          : insertUsers
 };
