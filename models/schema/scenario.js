@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var scenarioSchema = mongoose.Schema({
+var scenario = mongoose.Schema({
   uuid        : { type: String, required: false }, // same for all versions
   version     : { type: Number, required: true  }, // server-incremented
   title       : { type: String, required: true  }, // plain text
@@ -14,7 +14,7 @@ var scenarioSchema = mongoose.Schema({
   dataSources : { type: [String]                }, // uuids of data source type
 });
 
-scenarioSchema.index(
+scenario.index(
   {
     title : 'text',
     summary : 'text',
@@ -26,17 +26,17 @@ scenarioSchema.index(
 );
 
 // make sure options exist
-if (!scenarioSchema.options.toObject) {
-  scenarioSchema.options.toObject = {};
+if (!scenario.options.toObject) {
+  scenario.options.toObject = {};
 }
 
 // apply transform option
-scenarioSchema.options.toObject.transform = function(original, transformed) {
+scenario.options.toObject.transform = function(original, transformed) {
   delete transformed._id;
   delete transformed.__v;
 };
 
-var Scenario = mongoose.model('Scenario', scenarioSchema);
+var Scenario = mongoose.model('Scenario', scenario);
 Scenario.ensureIndexes(function(err) {
   if (err) {
     throw err;

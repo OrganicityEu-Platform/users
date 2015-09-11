@@ -1,6 +1,6 @@
 var fs       = require('fs');
-var Scenario = require('../models/scenario.js');
-var User     = require('../models/userSchema.js');
+var Scenario = require('../models/schema/scenario.js');
+var User     = require('../models/schema/user.js');
 var Promise  = require('promise');
 var moment   = require('moment');
 

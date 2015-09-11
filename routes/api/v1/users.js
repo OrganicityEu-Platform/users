@@ -3,7 +3,7 @@ module.exports = function(router, passport) {
   var isLoggedIn    = require('../../../models/isLoggedIn.js')(passport);
   var isUserOrAdmin = require('../../../models/isUserOrAdmin.js')(passport);
   var hasRole       = require('../../../models/hasRole.js');
-  var User          = require('../../../models/userSchema.js');
+  var User          = require('../../../models/schema/user.js');
   var api           = require('../../../api_routes.js');
 
   // ###############################################################

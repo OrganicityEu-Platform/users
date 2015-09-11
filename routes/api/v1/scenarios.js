@@ -6,17 +6,10 @@ var crypto     = require('crypto'); // used to generate uuid
 var mongodb    = require('mongodb');
 var isvalid    = require('isvalid');
 var HttpStatus = require('http-status');
-var Scenario   = require('../../../models/scenario.js');
+var Scenario   = require('../../../models/schema/scenario.js');
 
-var validScenario = {
-  type: Object,
-  unknownKeys: 'remove',
-  schema: {
-    'title'     : {type: String, required: true},
-    'narrative' : {type: String, required: true},
-    'summary'   : {type: String, required: true}
-  }
-};
+var validate     = require('express-validation');
+var ScenarioJoi  = require('../../../models/joi/scenario.js');
 
 /**
  * Used to project all fields in the scenario collection documents to the fields that the user is
@@ -44,8 +37,6 @@ var scenarioProjection = {
 var scenarioFields = Object
   .keys(scenarioProjection)
   .filter(function(key) { return scenarioProjection[key] === 1; });
-
-var scenarioUpdateFields = ['title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'];
 
 module.exports = function(router, passport) {
 
@@ -160,7 +151,7 @@ module.exports = function(router, passport) {
         scenarioFields.join(',') + '].';
     }
 
-    var validSortOrders = ['asc','ASC','desc','DESC'];
+    var validSortOrders = ['asc', 'ASC', 'desc', 'DESC'];
     if (req.query.sortDir && validSortOrders.indexOf(req.query.sortDir.trim()) === -1) {
       throw 'sortDir parameter "' + req.query.sortDir + '" is invalid. Use one of [' +
         validSortOrders.join(',') + '].';
@@ -195,7 +186,6 @@ module.exports = function(router, passport) {
     if (!req.query.version) {
 
       params.filter.uuid    = uuid;
-      params.filter.version = req.query.version;
       params.sort.version   = -1; // overrides sorting query parameters
 
       return executeScenarioListQuery(params, res, false);
@@ -288,48 +278,27 @@ module.exports = function(router, passport) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  var assertOnlyValidFieldsInRequestBody = function(req, res, next) {
-    var illegalFields = [];
-    for (var field in req.body) {
-      if (req.body.hasOwnProperty(field) && scenarioUpdateFields.indexOf(field) === -1) {
-        illegalFields.push(field);
-      }
-    }
-    if (illegalFields.length > 0) {
-      var msg = 'Request body contains non-allowed fields [' + illegalFields.join(', ') + ']. Allowed fields are [' +
-        scenarioUpdateFields.join(', ') + '].';
-      return res.status(HttpStatus.BAD_REQUEST).send(msg);
-    }
-    return next();
-  };
-
-  router.post(api.route('scenario_list'), [isLoggedIn, assertOnlyValidFieldsInRequestBody], function(req, res) {
+  router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
 
     var scenario = new Scenario(req.body);
 
-    // validate req body
-    isvalid(scenario, validScenario, function(err) {
+    scenario.version = 1;
+    // generate unique grouping id
+    scenario.uuid = crypto.randomBytes(10).toString('hex');
+    scenario.creator = req.user.uuid;
+    // save the scenario
+    scenario.save(function(err) {
       if (err) {
-        res.status(400).send('Invalid keys given.');
+        return res.send(err);
       } else {
-        scenario.version = 1;
-        // generate unique grouping id
-        scenario.uuid = crypto.randomBytes(10).toString('hex');
-        scenario.creator = req.user.uuid;
-        // save the scenario
-        scenario.save(function(err) {
-          if (err) {
-            return res.send(err);
-          } else {
-            res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-            res.status(201).json(scenario.toObject());
-          }
-        });
+        res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
+        res.status(201).json(scenario.toObject());
       }
     });
+
   });
 
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn, assertOnlyValidFieldsInRequestBody], function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
     Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
 
       if (err) {
@@ -500,7 +469,8 @@ module.exports = function(router, passport) {
             return result;
           };
 
-          //evaluate similarity metric against all other scenarios (naive approach) must change to a map-reduce query at mongodb
+          //evaluate similarity metric against all other scenarios (naive approach)
+          // must change to a map-reduce query at mongodb
           var query = Scenario.find();
           query.exec(function(err, allScenariosAndVersions) {
             if (err) {
@@ -623,9 +593,9 @@ function getRelatedScenarios(simMatrix, scenarioHash) {
  * @returns Similarity between d1, d2 --naive to extend
  */
 function sim(d1, d2) {
-  var score = KeywordSimilarity(d1.title,d2.title) + KeywordSimilarity(d1.sectors.join(),d2.sectors.join()) ;
-  score += KeywordSimilarity(d1.actors.join(),d2.actors.join());
-  score += KeywordSimilarity(d1.devices.join(),d2.devices.join());
+  var score = KeywordSimilarity(d1.title, d2.title) + KeywordSimilarity(d1.sectors.join(), d2.sectors.join()) ;
+  score += KeywordSimilarity(d1.actors.join(), d2.actors.join());
+  score += KeywordSimilarity(d1.devices.join(), d2.devices.join());
   return score / 4;
 }
 
@@ -639,8 +609,8 @@ function TextToVector(text, bagofwords) {
 
 function KeywordSimilarity(text1, text2) {
   text1 += ' ';
-  text1 = text1.replace('.',' ').replace(',',' ').toLowerCase();
-  text2 = text2.replace('.',' ').replace(',',' ').toLowerCase();
+  text1 = text1.replace('.', ' ').replace(',', ' ').toLowerCase();
+  text2 = text2.replace('.', ' ').replace(',', ' ').toLowerCase();
   var total = text1.concat(text2).split(' ');
   var allwords = total.filter(function(word, pos) {
     return total.indexOf(word) === pos;
