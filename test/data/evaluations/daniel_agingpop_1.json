@@ -6,7 +6,7 @@
     "version" : 1
   },
   "timestamp" : "2015-08-06T19:30:27.136Z",
-  "submitted" : true,
+  "submitted" : false,
   "answers"   : [{
     "question" : {
       "uuid"   : "q1",

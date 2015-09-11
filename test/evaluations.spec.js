@@ -6,7 +6,7 @@ var expect     = require('expect.js');
 var moment     = require('moment');
 
 var configDB   = require('../config/database.js');
-var Evaluation = require('../models/evaluation.js');
+var Evaluation = require('../models/schema/evaluation.js');
 var api        = require('../api_routes.js');
 var config     = require('../config/config.js');
 var serverApp  = require('../server.js');
@@ -378,21 +378,85 @@ describe('The evaluations API', function() {
 
   ///////////////// PATCH
 
-  it.skip('should return 401 UNAUTHORIZED when trying to patch and not being authenticated', function(done) {
-
+  it('should return 401 UNAUTHORIZED when trying to patch and not being authenticated', function(done) {
+    var evaluation = ss.loadEvaluations(['daniel_agingpop_1'])[0];
+    request(server)
+      .patch(api.reverse('evaluation_by_uuid', { uuid : 'anyuuid' }))
+      .send(evaluation)
+      .expect(http.UNAUTHORIZED)
+      .end(done);
   });
 
-  it.skip('should return 403 FORBIDDEN when trying to patch, being authenticated, but not being the user that ' +
+  it('should return 403 FORBIDDEN when trying to patch, being authenticated, but not being the user that ' +
     'originally created this evaluation', function(done) {
-
+      var user = ss.loadUsers(['leinad'])[0];
+      var evaluation = ss.loadEvaluations(['daniel_agingpop_1'])[0];
+      var requestBody = cloneConstrained(evaluation);
+      var execTest = function() {
+        request(server)
+          .patch(api.reverse('evaluation_by_uuid', { uuid : evaluation.uuid }))
+          .auth(user.local.email, user.local.__passwordplain)
+          .send(requestBody)
+          .expect(http.FORBIDDEN)
+          .end(done);
+      };
+      ss.insertUsers([user]).then(ss.insertEvaluations([evaluation])).catch(done).then(execTest);
     });
 
-  it.skip('should return 400 BAD_REQUEST when patching if request body is malformed', function(done) {
+  it('should return 403 FORBIDDEN when trying to patch but evaluation was already flagged as submitted',
+    function(done) {
+      var user = ss.loadUsers(['daniel'])[0];
+      var evaluation = ss.loadEvaluations(['daniel_agingpop_2'])[0];
+      var requestBody = cloneConstrained(evaluation);
+      var execTest = function() {
+        request(server)
+          .patch(api.reverse('evaluation_by_uuid', { uuid : evaluation.uuid }))
+          .auth(user.local.email, user.local.__passwordplain)
+          .send(requestBody)
+          .expect(http.FORBIDDEN)
+          .end(done);
+      };
+      ss.insertUsers([user]).then(ss.insertEvaluations([evaluation])).catch(done).then(execTest);
+    }
+  );
 
+  it('should return 400 BAD_REQUEST when patching if request body is malformed', function(done) {
+    var user = ss.loadUsers(['daniel'])[0];
+    var evaluation = ss.loadEvaluations(['daniel_agingpop_1'])[0];
+    var requestBody = cloneConstrained(evaluation);
+    evaluation.scenario.uuid = null;
+    var execTest = function() {
+      request(server)
+        .patch(api.reverse('evaluation_by_uuid', { uuid : evaluation.uuid }))
+        .auth(user.local.email, user.local.__passwordplain)
+        .send(requestBody)
+        .expect(http.BAD_REQUEST)
+        .end(done);
+    };
+    ss.insertUsers([user]).then(ss.insertEvaluations([evaluation])).catch(done).then(execTest);
   });
 
-  it.skip('should return 200 OK and the updated evaluation when patching successfully', function(done) {
-
+  it('should return 200 OK and the updated evaluation when patching successfully', function(done) {
+    var user = ss.loadUsers(['daniel'])[0];
+    var evaluation = ss.loadEvaluations(['daniel_agingpop_1'])[0];
+    var requestBody = cloneConstrained(evaluation);
+    var execTest = function() {
+      request(server)
+        .patch(api.reverse('evaluation_by_uuid', { uuid : evaluation.uuid }))
+        .auth(user.local.email, user.local.__passwordplain)
+        .send(requestBody)
+        .expect(http.OK)
+        .expect(function(res) {
+          evaluationUpdateFields.forEach(function(field) {
+            expect(res.body[field]).to.eql(evaluation[field]);
+          });
+          expect(res.body.uuid).to.be.ok();
+          expect(res.body.user).to.eql(user.uuid);
+          expect(res.body.timestamp).to.be.ok();
+        })
+        .end(done);
+    };
+    ss.insertUsers([user]).then(ss.insertEvaluations([evaluation])).catch(done).then(execTest);
   });
 
 });
