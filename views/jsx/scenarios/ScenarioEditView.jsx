@@ -10,6 +10,7 @@ import ScenarioTableView from './ScenarioTableView.jsx';
 import validation        from 'react-validation-mixin';
 import strategy          from 'joi-validation-strategy';
 import ScenarioJoi       from '../../../models/joi/scenario.js';
+import ErrorMessage      from '../ErrorMessage.jsx';
 
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, FlashQueue.Mixin],
@@ -142,7 +143,7 @@ var ScenarioEditView = React.createClass({
 
       this.props.validate(function(error) {
         if (error) {
-          console.log('Input validation error!', error);
+          //console.log('Input validation error!', error);
           that.setState(that.state); // Rerender to show errors
         } else {
           console.log('Input validation successful!');
@@ -174,7 +175,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
-                {this.props.getValidationMessages('title').map(this.renderHelpText)}
+                <ErrorMessage messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
             <div className="form-group">
@@ -182,7 +183,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
-                {this.props.getValidationMessages('summary').map(this.renderHelpText)}
+                <ErrorMessage messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
             <div className="form-group">
@@ -190,7 +191,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
-                {this.props.getValidationMessages('narrative').map(this.renderHelpText)}
+                <ErrorMessage messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>
             <div className="form-group">
@@ -231,7 +232,6 @@ var ScenarioEditView = React.createClass({
             </div>
           </form>
         </div>
-        {this.props.getValidationMessages().map(this.renderHelpText)}
       </div>
     );
   },
@@ -265,7 +265,6 @@ var ScenarioEditView = React.createClass({
             </form>
           </div>
         </div>
-        {this.props.getValidationMessages().map(this.renderHelpText)}
       </div>
     );
   },
@@ -312,7 +311,7 @@ var ScenarioEditView = React.createClass({
           fringilla.
         </p>
         <ScenarioTableView scenario={this.state} />
-        {this.props.getValidationMessages().map(this.renderHelpText)}
+        <ErrorMessage messages={this.props.getValidationMessages()} />
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
           <button type="button" className="btn btn-default" onClick={this.clickedSubmit}>Submit</button>
@@ -336,12 +335,7 @@ var ScenarioEditView = React.createClass({
     };
     return data;
   },
-  validatorTypes: undefined,
-  renderHelpText: function(message) {
-    return (
-      <div className="alert alert-danger">{message}</div>
-    );
-  },
+  validatorTypes: undefined
 });
 
 export default validation(strategy)(ScenarioEditView);
