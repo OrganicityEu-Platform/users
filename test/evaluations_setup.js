@@ -1,5 +1,5 @@
-var Evaluation = require('../models/evaluation.js');
-var User       = require('../models/userSchema.js');
+var Evaluation = require('../models/schema/evaluation.js');
+var User       = require('../models/schema/user.js');
 var Promise    = require('promise');
 var moment     = require('moment');
 var fs         = require('fs');

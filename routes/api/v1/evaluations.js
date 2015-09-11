@@ -1,7 +1,9 @@
-var api        = require('../../../api_routes.js');
-var Evaluation = require('../../../models/evaluation.js');
-var HttpStatus = require('http-status');
-var uuid       = require('node-uuid');
+var api           = require('../../../api_routes.js');
+var Evaluation    = require('../../../models/schema/evaluation.js');
+var HttpStatus    = require('http-status');
+var uuid          = require('node-uuid');
+var validate      = require('express-validation');
+var EvaluationJoi = require('../../../models/joi/evaluation.js');
 
 module.exports = function(router, passport) {
 
@@ -49,7 +51,7 @@ module.exports = function(router, passport) {
     if (!req.user.hasRole(['admin']) && !req.user.hasRole(['moderator'])) {
       return res.status(HttpStatus.FORBIDDEN).send();
     }
-    Evaluation.findOne({ uuid : req.query.uuid }, function(err, evaluation) {
+    Evaluation.findOne({ uuid : req.params.uuid }, function(err, evaluation) {
       if (err) {
         console.log(err);
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
@@ -95,8 +97,39 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.patch(api.route('evaluation_by_uuid'), function(req, res) {
-    return res.status(HttpStatus.NOT_IMPLEMENTED).send();
+  router.patch(api.route('evaluation_by_uuid'), [isLoggedIn, validate(EvaluationJoi)], function(req, res) {
+    Evaluation.findOne({ uuid : req.params.uuid }).exec(function(err, evaluation) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+      if (!evaluation) {
+        return res.status(HttpStatus.NOT_FOUND).send();
+      }
+      if (evaluation.user !== req.user.uuid) {
+        return res
+          .status(HttpStatus.FORBIDDEN)
+          .send('You are not the creator of the evaluation with UUID ' + req.params.uuid);
+      }
+      if (evaluation.submitted) {
+        return res
+          .status(HttpStatus.FORBIDDEN)
+          .send('Evaluation was already flagged as submitted, can\'t be changed afterwards.');
+      }
+
+      evaluationUpdateFields.forEach(function(field) {
+        evaluation[field] = req.body[field];
+      });
+      evaluation.timestamp = new Date().toISOString();
+
+      evaluation.save(function(err) {
+        if (err) {
+          console.log(err);
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        return res.status(HttpStatus.OK).send(evaluation.toObject());
+      });
+    });
   });
 
   return router;
