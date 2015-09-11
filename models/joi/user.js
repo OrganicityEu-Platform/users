@@ -2,15 +2,23 @@ var Joi = require('joi');
 
 var user = {};
 
-user.a = {
-  limit: Joi.types.Number().integer().min(1).max(25),
-  offset: Joi.types.Number().integer().min(0).max(25),
-  name: Joi.types.String().alphanum().min(2).max(25)
+// @see http://stackoverflow.com/a/29829152/605890
+user.signupClient = {
+  email           : Joi.string().email().label('E-Mail').required(),
+  password        : Joi.string().min(6).label('Password').required(),
+  password_repeat : Joi.any().label('Repeat Password').valid(Joi.ref('password')).required().options(
+                      { language: { any: { allowOnly: 'must match Password' } } }
+                    )
 };
 
-user.b = {
-  userId: Joi.types.String().alphanum().min(10).max(20),
-  name: Joi.types.String().min(3).max(50)
+user.signupServer = {
+  options : {
+    allowUnknownBody: false
+  },
+  body: {
+    email    : Joi.string().email().label('E-Mail').required(),
+    password : Joi.string().min(6).label('Password').required(),
+  }
 };
 
 module.exports = user;
