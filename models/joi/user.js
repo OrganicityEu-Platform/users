@@ -2,15 +2,12 @@ var Joi = require('joi');
 
 var user = {};
 
-user.a = {
-  limit: Joi.types.Number().integer().min(1).max(25),
-  offset: Joi.types.Number().integer().min(0).max(25),
-  name: Joi.types.String().alphanum().min(2).max(25)
-};
-
-user.b = {
-  userId: Joi.types.String().alphanum().min(10).max(20),
-  name: Joi.types.String().min(3).max(50)
+user.signup = {
+  email           : Joi.string().email().label('E-Mail').required(),
+  password        : Joi.string().min(6).label('Password').required(),
+  password_repeat : Joi.any().label('Repeat Password').valid(Joi.ref('password')).required().options(
+                      { language: { any: { allowOnly: 'must match Password' } } }
+                    )
 };
 
 module.exports = user;
