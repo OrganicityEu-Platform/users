@@ -37,10 +37,34 @@ The data models below are described in the mongoose notation for MongoDB data mo
   },
   timestamp : { type: Date,   default: Date.now }, // set when created, reset when updated
   submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
-  answers   : {
+  answers   : [{
     question : { type: Question, required: true }, // the question that was answered
     answer   : { type: String                   }  // the value that was picked as answer by the user, might be unanswered
+  }],
+  comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary
+}
+```
+
+Data Transfer Objects (DTOs)
+----------------------------
+
+In this context a DTOs sole purpose is to define the schema of data transferred in various API methods between client and server. They are not used as database schemas and are not persisted 1:1.
+
+### EvaluationUpdate
+
+This type is a subset of fields that the user is allowed to use when POSTing or PATCHing his evaluation. The "missing" fields ```uuid```, ```user```, ```timestamp``` are set by the server.
+
+```
+{
+  scenario  : {
+    uuid    : { type: String, required: true    }, // UUID of the scenario that is being evaluated
+    version : { type: Number, required: true    }, // version of the scenario that is being evaluated
   },
+  submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
+  answers   : [{
+    question : { type: Question, required: true }, // the question that was answered
+    answer   : { type: String                   }  // the value that was picked as answer by the user, might be unanswered
+  }],
   comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary
 }
 ```
@@ -177,6 +201,7 @@ When filling out a questionnaire the back end will already persist partially fil
     <td>Response Codes</td>
     <td>
       ```200 OK``` - if successful<br/>
+      ```400 BAD_REQUEST``` - if scenario_version is set but not scenario_uuid<br/>
       ```401 UNAUTHORIZED``` - if user is not authenticated<br/>
       ```403 FORBIDDEN``` - if user is authenticated but doesn't have an administrator or moderator role
     </td>

@@ -1,4 +1,5 @@
 var Evaluation = require('../models/evaluation.js');
+var User       = require('../models/userSchema.js');
 var Promise    = require('promise');
 var moment     = require('moment');
 var fs         = require('fs');
@@ -10,7 +11,9 @@ var cs         = require('./common_setup.js');
  * @param {function} done - callback
  */
 var setup = function(done) {
-  Evaluation.remove({}, done);
+  Evaluation.remove({}, cs.errorHandlerWrapper(function() {
+    User.remove({}, cs.errorHandlerWrapper(done));
+  }));
 };
 
 var teardown = function(done) {
@@ -23,7 +26,7 @@ var teardown = function(done) {
  * @return {object[]} - an array containing objects
  */
 var loadEvaluations = function(evaluationsToLoad) {
-  return versionsToLoad
+  return evaluationsToLoad
     .map(function(n)  { return __dirname + '/data/evaluations/' + n + '.json'; })
     .map(function(fn) { return JSON.parse(fs.readFileSync(fn)); });
 };
@@ -51,6 +54,8 @@ var insertEvaluations = function(evaluations) {
 module.exports = {
   setup             : setup,
   teardown          : teardown,
+  loadUsers         : cs.loadUsers,
+  insertUsers       : cs.insertUsers,
   loadEvaluations   : loadEvaluations,
   insertEvaluations : insertEvaluations
 };

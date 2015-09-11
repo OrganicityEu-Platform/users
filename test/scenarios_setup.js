@@ -32,37 +32,6 @@ var loadScenarios = function(toLoad) {
 };
 
 /**
- * Loads users from the data/users/ subdirectory.
- * @param {string[]} usersToLoad - array of user UUID, corresponding to filenames in data/users subdirectory
- * @return {object[]} - an array containing user objects
- */
-var loadUsers = function(usersToLoad) {
-  return usersToLoad
-    .map(function(user) { return __dirname + '/data/users/' + user + '.json'; })
-    .map(function(fn) { return JSON.parse(fs.readFileSync(fn)); });
-};
-
-/**
- * Inserts user documents into the users collection.
- * @param {object[]} users - array of user objects
- * @return {Promise} promise that get's resolved (empty content) when inserted successfully or rejected (on error)
- */
-var insertUsers = function(users) {
-  return new Promise(function(resolve, reject) {
-    var userModels = users.map(function(user) {
-      return new User(user);
-    });
-    cs.saveModels(userModels, function(err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
-
-/**
  * Inserts a set of scenario objects into the scenarios collection.
  * @param {object[]} scenarios - array of scenario objects to be inserted
  * @return {Promise} promise that get's resolved (empty content) when inserted successfully or rejected (on error)
@@ -111,8 +80,8 @@ module.exports = {
   teardown             : teardown,
   insertScenarios      : insertScenarios,
   loadScenarios        : loadScenarios,
-  loadUsers            : loadUsers,
-  insertUsers          : insertUsers,
+  loadUsers            : cs.loadUsers,
+  insertUsers          : cs.insertUsers,
   scenarioFields       : scenarioFields,
   scenarioUpdateFields : scenarioUpdateFields,
   cloneConstrained     : cloneConstrained
