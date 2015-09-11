@@ -5,8 +5,8 @@ var request   = require('supertest');
 var expect    = require('expect.js');
 
 var configDB  = require('../config/database.js');
-var Scenario  = require('../models/scenario.js');
-var User      = require('../models/userSchema.js');
+var Scenario  = require('../models/schema/scenario.js');
+var User      = require('../models/schema/user.js');
 var api       = require('../api_routes.js');
 var config    = require('../config/config.js');
 var serverApp = require('../server.js');

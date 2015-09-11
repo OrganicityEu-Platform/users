@@ -15,6 +15,7 @@ var router            = express.Router();
 var config            = require('./config/config.js');
 var port              = process.env.PORT || config.port;
 var ui                = require('./ui_routes.js');
+var ev                = require('express-validation');
 
 var server; // the server instance
 
@@ -85,6 +86,14 @@ var startServer = function(done) {
     // development error handler
     // will print stacktrace
     app.use(function(err, req, res, next) {
+
+      console.log('Error', err);
+      // specific for validation errors
+      if (err instanceof ev.ValidationError) {
+        console.log('ValidationError');
+        return res.status(err.status).json(err);
+      }
+
       if (!err.status || err.status === 500) {
         console.log(err.stack);
       }
