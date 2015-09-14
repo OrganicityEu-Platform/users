@@ -1,10 +1,10 @@
 {
   "uuid"   : "leinad_moderator",
-  "name"   : "Leinad Sahcsmib",
+  "name"   : "Leinad Moderator Sahcsmib",
   "gender" : "m",
   "roles" : ["moderator"],
   "local" : {
-    "email"    : "leinad@sahcsmib.com",
+    "email"    : "leinad_moderator@sahcsmib.com",
     "password" : "$2a$08$cmI0WxMC2oCApZx3ugmlhus2MskEC8DQKF0N2pKq.36yiE42CiF7m",
     "__comment": "password is 'daniel'",
     "__passwordplain" : "daniel"
