@@ -6,8 +6,8 @@ var expect        = require('expect.js');
 var moment        = require('moment');
 
 var configDB      = require('../config/database.js');
-var Questionnaire = require('../models/questionnaire.js');
-var Question      = require('../models/question.js');
+var Questionnaire = require('../models/schema/questionnaire.js');
+var Question      = require('../models/schema/question.js');
 var api           = require('../api_routes.js');
 var config        = require('../config/config.js');
 var serverApp     = require('../server.js');
