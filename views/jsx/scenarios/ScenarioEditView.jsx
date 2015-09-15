@@ -133,13 +133,13 @@ var ScenarioEditView = React.createClass({
           that.transitionTo('scenarioView', { uuid : scenario.uuid });
         }
       });
-    })
+    });
 
   },
   validateCurrentStep : function(callback) {
 
     var that = this;
-    if(this.validatorTypes) {
+    if (this.validatorTypes) {
 
       this.props.validate(function(error) {
         if (error) {
@@ -324,7 +324,7 @@ var ScenarioEditView = React.createClass({
     var steps = [this.step1, this.step2, this.step3, this.step4, this.step5];
     return steps[this.currentStep() - 1]();
   },
-  getValidatorData: function () {
+  getValidatorData: function() {
     var data = {
       title     : this.state.title,
       summary   : this.state.summary,

@@ -16,7 +16,7 @@ var ss         = require('./evaluations_setup.js');
 
 var server;
 
-describe('The evaluations API', function() {
+xdescribe('The evaluations API', function() {
 
   beforeEach(function(done) {
     mongoose.connect(configDB.test_url);
