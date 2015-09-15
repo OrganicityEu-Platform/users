@@ -75,6 +75,15 @@ This type is a subset of fields that the user is allowed to use when POSTing or 
 }
 ```
 
+### QuestionnaireUpdate
+```
+{
+  description : { type: String                     }, // for "internal" use, not displayed to users
+  explanation : { type: String,     required: true }, // explanatory text displayed to users on top of the questionnaire
+  questions   : { type: [Question], required: true }  // array of questions to be filled out by users
+}
+```
+
 Client REST API
 ---------------
 

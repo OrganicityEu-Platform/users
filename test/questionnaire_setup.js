@@ -52,6 +52,8 @@ var insertQuestionnaires = function(questionnaires) {
 module.exports = {
   setup                : setup,
   teardown             : teardown,
+  loadUsers            : cs.loadUsers,
+  insertUsers          : cs.insertUsers,
   loadQuestionnaires   : loadQuestionnaires,
   insertQuestionnaires : insertQuestionnaires
 };

@@ -1,0 +1,31 @@
+{
+  "version"     : 1,
+  "author"      : "daniel_admin",
+  "description" : "my first questionnaire :)",
+  "explanation" : "pick the value that describes your feeling most",
+  "questions" : [{
+    "uuid"   : "q1",
+    "tech"   : true,
+    "text"   : "Green is my favorite color.",
+    "values" : [
+      { "value" : "Oh no!",             "weight" : -2 },
+      { "value" : "Rather not",         "weight" : -1 },
+      { "value" : "So so",              "weight" : 0 },
+      { "value" : "Alright",            "weight" : 1 },
+      { "value" : "Hell, yeah!",        "weight" : 2 },
+      { "value" : "How should I know?", "weight" : 0 }
+    ]
+  },{
+    "uuid"   : "q2",
+    "tech"   : true,
+    "text"   : "Yellow is my favorite color.",
+    "values" : [
+      { "value" : "Oh no!",             "weight" : -2 },
+      { "value" : "Rather not",         "weight" : -1 },
+      { "value" : "So so",              "weight" : 0 },
+      { "value" : "Alright",            "weight" : 1 },
+      { "value" : "Hell, yeah!",        "weight" : 2 },
+      { "value" : "How should I know?", "weight" : 0 }
+    ]
+  }]
+}

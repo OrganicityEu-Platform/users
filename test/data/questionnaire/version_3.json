@@ -1,0 +1,31 @@
+{
+  "version"     : 3,
+  "author"      : "daniel_admin",
+  "description" : "my third questionnaire!",
+  "explanation" : "pick the value that describes your feeling most",
+  "questions" : [{
+    "uuid"   : "q1",
+    "tech"   : true,
+    "text"   : "Tangerine is my favorite color.",
+    "values" : [
+      { "value" : "Oh no!",             "weight" : 1 },
+      { "value" : "Rather not",         "weight" : 2 },
+      { "value" : "So so",              "weight" : 3 },
+      { "value" : "Alright",            "weight" : 4 },
+      { "value" : "Hell, yeah!",        "weight" : 5 },
+      { "value" : "How should I know?", "weight" : 0 }
+    ]
+  },{
+    "uuid"   : "q2",
+    "tech"   : true,
+    "text"   : "Pitch black is my favorite color.",
+    "values" : [
+      { "value" : "Oh no!",             "weight" : 1 },
+      { "value" : "Rather not",         "weight" : 2 },
+      { "value" : "So so",              "weight" : 3 },
+      { "value" : "Alright",            "weight" : 4 },
+      { "value" : "Hell, yeah!",        "weight" : 5 },
+      { "value" : "How should I know?", "weight" : 0 }
+    ]
+  }]
+}
