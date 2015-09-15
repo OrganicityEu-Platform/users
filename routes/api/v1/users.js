@@ -6,11 +6,12 @@ module.exports = function(router, passport) {
   var User          = require('../../../models/schema/user.js');
   var api           = require('../../../api_routes.js');
 
+  var validate      = require('express-validation');
+  var UserJoi       = require('../../../models/joi/user.js');
+
   // ###############################################################
   // Schema-based validation
   // ###############################################################
-
-  var validate = require('isvalid').validate;
 
   var UserSchemaPatch = {
     type : Object,
@@ -98,7 +99,7 @@ module.exports = function(router, passport) {
 
   router.patch(
     api.route('user_by_uuid'),
-    [isLoggedIn, isUserOrAdmin, validate.body(UserSchemaPatch)],
+    [isLoggedIn, isUserOrAdmin, validate(UserJoi.profileServer)],
     function(req, res, next) {
 
       // Non admin user cannot edit the roles
@@ -109,18 +110,24 @@ module.exports = function(router, passport) {
       }
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-        if (req.body.local && (req.body.local.password !== '')) {
+        if (req.body.local && req.body.local.password.length > 0) {
           user.local.password = user.generateHash(req.body.local.password);
         }
-        if (req.body.name && (req.body.name !== '')) {
+
+        if (req.body.hasOwnProperty('name')) {
           user.name = req.body.name;
         }
-        if (req.body.gender && (req.body.gender !== '')) {
+
+        // If set, gender will never be emty due to validation
+        if (req.body.gender) {
           user.gender = req.body.gender;
         }
-        if (req.body.roles && (req.body.roles !== '')) {
+
+        // If set, roles will never be emty due to validation
+        if (req.body.roles) {
           user.roles = req.body.roles;
         }
+
         user.save(function(err) {
           if (err) {
             return next(err);

@@ -10,16 +10,22 @@ import TagField         from '../form-components/TagField.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
+// Input validation
+import validation   from 'react-validation-mixin';
+import strategy     from 'joi-validation-strategy';
+import UserJoi      from '../../../models/joi/user.js';
+import ErrorMessage from '../ErrorMessage.jsx';
+
 var Profile = React.createClass({
   mixins: [FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin],
   getInitialState: function() {
     var state = {
       dirty   : false,
-      profile : {
-        name    : '',
-        gender  : 'f',
-        roles   : []
-      }
+      name    : '?',
+      gender  : '?',
+      roles   : [],
+      password : '',
+      password_repeat : ''
     };
     return state;
   },
@@ -30,34 +36,72 @@ var Profile = React.createClass({
       dataType: 'json',
       error: this.loadingError(url, 'Error retrieving current user'),
       success : (profile) => {
-        this.loaded({ dirty : false, profile : profile});
+        var e = {};
+        e.name = (profile.name) ? profile.name : '';
+        e.gender = (profile.gender) ? profile.gender : '';
+        e.roles = (profile.roles) ? profile.roles : [];
+        e.password = '';
+        e.password_repeat = '';
+        e.uuid = profile.uuid;
+        e.dirty = false;
+        this.loaded(e);
+        this.props.validate();
       }
     });
   },
   handleChangedName: function(evt) {
     this.state.dirty = true;
-    this.state.profile.name = evt.target.value;
+    this.state.name = evt.target.value;
     this.setState(this.state);
+    this.props.validate();
   },
   handleChangedGender: function(evt) {
     this.state.dirty = true;
-    this.state.profile.gender = evt.target.value;
+    this.state.gender = evt.target.value;
     this.setState(this.state);
+    this.props.validate();
   },
   handleChangedRoles: function(roles) {
     this.state.dirty = true;
-    this.state.profile.roles = roles;
+    this.state.roles = roles;
     this.setState(this.state);
+    this.props.validate();
+  },
+  handleChangedPassword : function(evt) {
+    this.state.dirty = true;
+    this.state.password = evt.target.value;
+    this.setState(this.state);
+    this.props.validate();
+  },
+  handleChangedPasswordRepeat : function(evt) {
+    this.state.dirty = true;
+    this.state.password_repeat = evt.target.value;
+    this.setState(this.state);
+    this.props.validate();
   },
   handleSubmit: function(evt) {
     evt.preventDefault();
-    var profile = this.state.profile;
-    // patch would be forbidden if we try to change roles and we're not admin...
-    if (!this.userHasRole('admin')) {
-      profile.roles = undefined;
+    var profile = {
+      name: this.state.name,
+      gender: this.state.gender
+    };
+
+    if (this.state.password.length > 0) {
+      profile.local = {
+        password: this.state.password
+      };
     }
+
+    // patch would be forbidden if we try to change roles and we're not admin
+    if (this.userHasRole('admin')) {
+      profile.roles = this.state.roles;
+    }
+
+    console.log('Profile:', profile);
+
     this.loading();
-    var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
+    var url = api.reverse('user_by_uuid', { uuid : this.state.uuid});
+
     $.ajax(url, {
       type : 'PATCH',
       data : JSON.stringify(profile),
@@ -68,11 +112,22 @@ var Profile = React.createClass({
         this.flash('success', 'Succesfully updated your profile');
       }
     });
+
   },
   render: function() {
+
+    /*
+    console.log('##############################################################');
+    console.log('Errors:', this.props.errors);
+    console.log('Valid:',  this.props.isValid());
+    console.log('Dirty:',  this.state.dirty);
+    */
+
     return (
       <div className="row well">
         <form className="form-horizontal">
+          {/* Remove this, as soon ORG-182 is fixed (see below) */}
+          <ErrorMessage messages={this.props.getValidationMessages()} />
           <div className="form-group">
             <label className="control-label col-sm-2" htmlFor="profile-name">Name</label>
             <div className="col-sm-10">
@@ -81,8 +136,9 @@ var Profile = React.createClass({
                       id="profile-name"
                       disabled={this.isLoading() ? 'disabled' : ''}
                       placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
-                      value={this.state.profile.name}
+                      value={this.state.name}
                       onChange={this.handleChangedName} />
+              <ErrorMessage messages={this.props.getValidationMessages('name')} />
             </div>
           </div>
           <div className="form-group">
@@ -93,39 +149,64 @@ var Profile = React.createClass({
                 id="profile-gender-f"
                 value="f"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.profile.gender === 'f'}
+                checked={this.state.gender === 'f'}
                 onChange={this.handleChangedGender} /> Female<br/>
               <input type="radio"
                 name="gender"
                 id="profile-gender-m"
                 value="m"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.profile.gender === 'm'}
+                checked={this.state.gender === 'm'}
                 onChange={this.handleChangedGender} /> Male
+              <ErrorMessage messages={this.props.getValidationMessages('gender')} />
             </div>
           </div>
-          {(() => {
-            if (this.userHasRole('admin')) {
-              return (
-                <div className="form-group">
-                  <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
-                  <div className="col-sm-10">
-                    <TagField
-                      key={this.state.profile.uuid + '_roles'}
-                      tags={this.state.profile.roles}
-                      loading={this.isLoading()}
-                      onChange={this.handleChangedRoles} />
-                  </div>
-                </div>
-              );
-            }
-          })()}
+
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password">Password</label>
+            <div className="col-sm-10">
+               <input type="password"
+                className="form-control"
+                name="password"
+                value={this.state.password}
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPassword} />
+              <ErrorMessage messages={this.props.getValidationMessages('password')} />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
+            <div className="col-sm-10">
+              <input type="password"
+                className="form-control"
+                name="password_repeat"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                value={this.state.password_repeat}
+                onChange={this.handleChangedPasswordRepeat} />
+              <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
+            <div className="col-sm-10">
+              <TagField
+                disabled={this.userHasRole('admin') ? false : true}
+                key={this.state.uuid + '_roles'}
+                tags={this.state.roles}
+                loading={this.isLoading()}
+                onChange={this.handleChangedRoles} />
+              {/* This should work, as soon ORG-182 is fixed (see above) */}
+              <ErrorMessage messages={this.props.getValidationMessages('roles')} />
+            </div>
+          </div>
           <div className="form-group">
             <div className="col-sm-2"></div>
             <div className="col-sm-10">
               <button id="profile-submit"
                       type="submit"
-                      disabled={this.state.dirty ? '' : 'disabled'}
+                      disabled={(this.props.isValid() && this.state.dirty) ? '' : 'disabled'}
                       className="btn btn-default"
                       onClick={this.handleSubmit}>Save Profile</button>
             </div>
@@ -133,7 +214,24 @@ var Profile = React.createClass({
         </form>
       </div>
     );
-  }
+  },
+  getValidatorData: function() {
+
+    // Issue
+    // (a) Array validation fails  -> no roles!
+    // (b) Nested validation fails -> password not nested to `local`
+    // @see: https://github.com/jurassix/react-validation-mixin/issues/38
+
+    var e = {
+      name : this.state.name,
+      gender : this.state.gender,
+      //roles : this.state.roles,
+      password : this.state.password,
+      password_repeat : this.state.password_repeat
+    };
+    return e;
+  },
+  validatorTypes: UserJoi.profileClient
 });
 
-export default Profile;
+export default validation(strategy)(Profile);

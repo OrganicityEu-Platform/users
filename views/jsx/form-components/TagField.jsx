@@ -17,13 +17,15 @@ var TagField = React.createClass({
   },
   render : function() {
     return (
-      <input type="text"
-        id={this.props.id ? this.props.id : ''}
-        className="form-control"
-        value={this.state.tagsString}
-        placeholder={this.props.placeholder ? this.props.placeholder : ''}
-        disabled={this.props.loading ? 'disabled' : ''}
-        onChange={this.handleChange} />
+      <div>
+        <input type="text"
+          id={this.props.id ? this.props.id : ''}
+          className="form-control"
+          value={this.state.tagsString}
+          placeholder={this.props.placeholder ? this.props.placeholder : ''}
+          disabled={this.props.loading || this.props.disabled ? 'disabled' : ''}
+          onChange={this.handleChange} />
+      </div>
     );
   }
 });
