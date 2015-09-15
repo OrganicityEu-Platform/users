@@ -2,5 +2,12 @@
   "uuid"   : "q1",
   "tech"   : true,
   "text"   : "Blue is my favorite color.",
-  "values" : ["1","2","3","4","5","Don't know"]
+  "values" : [
+    { "value"  : "Oh no!",             "weight" : 1 },
+    { "value"  : "Rather not",         "weight" : 2 },
+    { "value"  : "So so",              "weight" : 3 },
+    { "value"  : "Alright",            "weight" : 4 },
+    { "value"  : "Hell, yeah!",        "weight" : 5 },
+    { "value"  : "How should I know?", "weight" : 0 }
+  ]
 }

@@ -11,9 +11,15 @@ var EvaluationUpdate = {
       uuid   : Joi.string().required(),
       tech   : Joi.boolean().required(),
       text   : Joi.string().required(),
-      values : Joi.array().items(Joi.string()).required()
+      values : Joi.array().items(Joi.object().keys({
+        value  : Joi.string().required(),
+        weight : Joi.number().required()
+      }))
     }),
-    answer : Joi.string()
+    answer : Joi.object().keys({
+      value  : Joi.string().required(),
+      weight : Joi.number().required()
+    })
   })),
   comment : Joi.string()
 };

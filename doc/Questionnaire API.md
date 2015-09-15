@@ -22,7 +22,10 @@ The data models below are described in the mongoose notation for MongoDB data mo
   uuid   : { type: String,   required: true }, // UUID of this question, created on creation / update
   tech   : { type: Boolean,  required: true }, // true if question falls under technological category
   text   : { type: String,   required: true }, // question description displayed to the user
-  values : { type: [String], required: true }  // possible values the user can choose from
+  values : [{  // possible values the user can choose from
+    value:  { type: String, required: true }, // text value displayed to the user
+    weight: { type: Number, required: true }  // number value that is used to calculate scenario ratings (higher = better)
+  }]
 }
 ```
 
@@ -39,7 +42,10 @@ The data models below are described in the mongoose notation for MongoDB data mo
   submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
   answers   : [{
     question : { type: Question, required: true }, // the question that was answered
-    answer   : { type: String                   }  // the value that was picked as answer by the user, might be unanswered
+    answer   : {
+      value  : { type: String, required: true }, // the value that was picked as answer by the user, might be unanswered
+      weight : { type: Number, required: true }  // the weight of the value picked
+    }
   }],
   comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary
 }
