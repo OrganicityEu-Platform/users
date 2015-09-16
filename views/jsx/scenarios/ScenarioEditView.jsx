@@ -102,35 +102,33 @@ var ScenarioEditView = React.createClass({
   },
   clickedNext : function() {
 
-    var that = this;
     if (this.currentStep() + 1 > this.lastStep) {
       console.log('User tried to go beyond last step. This is not possible!');
       return;
     }
 
     this.saveState();
-    this.validateCurrentStep(function() {
-      that.transitionTo(that.routeName(), { uuid : that.props.params.uuid }, { step : that.currentStep() + 1 });
+    this.validateCurrentStep(() => {
+      this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
     });
 
   },
   clickedSubmit : function() {
 
-    var that = this;
-    this.validateCurrentStep(function() {
-      var method = that.editMode() ? 'PUT' : 'POST';
-      var url    = that.editMode() ? api.reverse('scenario_by_uuid', { uuid : that.props.params.uuid })
+    this.validateCurrentStep(() => {
+      var method = this.editMode() ? 'PUT' : 'POST';
+      var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
         : api.reverse('scenario_list');
 
       $.ajax(url, {
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify(that.getValidatorData()),
+        data: JSON.stringify(this.getValidatorData()),
         method: method,
-        error: that.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
+        error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
         success: (scenario) => {
-          that.clearState();
-          that.transitionTo('scenarioView', { uuid : scenario.uuid });
+          this.clearState();
+          this.transitionTo('scenarioView', { uuid : scenario.uuid });
         }
       });
     });
@@ -138,15 +136,14 @@ var ScenarioEditView = React.createClass({
   },
   validateCurrentStep : function(callback) {
 
-    var that = this;
     if (this.validatorTypes) {
 
-      this.props.validate(function(error) {
+      this.props.validate((error) => {
         if (error) {
           //console.log('Input validation error!', error);
-          that.setState(that.state); // Rerender to show errors
+          this.setState(this.state); // Rerender to show errors
         } else {
-          console.log('Input validation successful!');
+          //console.log('Input validation successful!');
           callback();
         }
       });
