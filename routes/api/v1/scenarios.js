@@ -170,7 +170,6 @@ module.exports = function(router, passport) {
       }
       params.sort[req.query.sortBy.trim()] = req.query.sortDir === 'ASC' || req.query.sortDir === 'asc' ? 1 : -1;
     }
-
     return params;
   };
 
@@ -444,59 +443,59 @@ module.exports = function(router, passport) {
   router.get(api.route('related_by_uuid'), function(req, res) {
     // find by uuid:
     if (isEmptyObject(req.query)) {
-
-      Scenario.find({'uuid': req.params.uuid}).sort({version: -1}).limit(1, function(err, scenario) {
-        if (err) {
-          return res.status(400).send('');
-        } else {
-          // this is used also somewhere else, make a common function
-          var filterLatestVersions = function(allScenariosAndVersions) {
-            var scenariosByUUID = {};
-            allScenariosAndVersions.forEach(function(scenario) {
-              if (!Array.isArray(scenariosByUUID[scenario.uuid])) {
-                scenariosByUUID[scenario.uuid] = [];
-              }
-              scenariosByUUID[scenario.uuid].push(scenario);
-            });
-            var result = [];
-            for (var uuid in scenariosByUUID) {
-              var newestVersion = 0;
-              var newest = function(prev, curr) {
-                return prev.version > curr.version ? prev : curr;
-              };
-              result.push(scenariosByUUID[uuid].reduce(newest, scenariosByUUID[uuid][0]));
-            }
-            return result;
-          };
-
-          //evaluate similarity metric against all other scenarios (naive approach)
-          // must change to a map-reduce query at mongodb
-          var query = Scenario.find();
-          query.exec(function(err, allScenariosAndVersions) {
+      var params = {
+        filter: {},
+        sort: {},
+        skip: req.query.skip ? parseInt(req.query.skip) : undefined,
+        limit: req.query.limit ? parseInt(req.query.limit) : undefined
+      };
+      var params2 = JSON.parse(JSON.stringify(params));
+      params2.filter.uuid = req.params.uuid;
+      params2.sort.version = -1; // overrides sorting query parameters
+      try {
+        console.log(params2);
+        Scenario.find(params2.filter, scenarioProjection).sort(params2.sort).limit(1).exec(
+          function(err, s) {
             if (err) {
-              return res.send('ERROR: ' + err);
-            } else {
-              var simMatrix = new Array();
-              var scenarioHash = new HashMap();
-              var scenariosList = filterLatestVersions(allScenariosAndVersions);
-              console.info(scenario[0]);
-              for (var doc in scenariosList) {
-                if (scenariosList[doc].uuid === scenario[0].uuid) {
-                  continue;
-                }
-                simMatrix[scenariosList[doc].uuid] = sim(scenario[0], scenariosList[doc]);
-                console.info(scenariosList[doc]);
-                console.info(simMatrix[scenariosList[doc].uuid]);
-                scenarioHash.set(scenariosList[doc].uuid, scenariosList[doc]);
-              }
-              var answer = getRelatedScenarios(simMatrix, scenarioHash);
-              res.status(200).json(answer);
+              res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
             }
-          });
-        }
-      });
-    } else {
-      res.status(400).send('');
+            if (s.length === 0) {
+              res.status(HttpStatus.NOT_FOUND).send('The input scenario not found.');
+            }
+            var params3 = JSON.parse(JSON.stringify(params));
+            params3.sort.version = -1; // overrides sorting query parameters
+            console.log(params3);
+            Scenario.find(params3.filter, scenarioProjection).sort(params3.sort).limit(params3.limit).exec(
+              function(err, scenariosList) {
+                if (err) {
+                  res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+                  return;
+                }
+                try {
+                  var simMatrix = new Array();
+                  var scenarioHash = new HashMap();
+                  for (var doc in scenariosList) {
+                    if (scenariosList[doc].uuid === s[0].uuid) {
+                      continue;
+                    }
+                    simMatrix[scenariosList[doc].uuid] = sim(s[0], scenariosList[doc]);
+                    console.info(scenariosList[doc]);
+                    console.info(simMatrix[scenariosList[doc].uuid]);
+                    scenarioHash.set(scenariosList[doc].uuid, scenariosList[doc]);
+                  }
+                  var answer = getRelatedScenarios(simMatrix, scenarioHash);
+                  res.status(200).json(answer);
+                  return;
+                } catch (err) {
+                  res.status(HttpStatus.INTERNAL_SERVER_ERROR).json('Error' + err);
+                }
+              }
+            );
+          }
+        );
+      } catch (err) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json('Error' + err);
+      }
     }
   });
 

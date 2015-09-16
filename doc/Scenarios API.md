@@ -326,3 +326,31 @@ and 'limit' parameters:
     </td>
   </tr>
 </table>
+
+#### Retrieval similar/related scenarios from a scenario
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      returns the most similar/relevant scenarios for a input scenario. Similarity is calculated based on title, actors, devices.
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>
+      GET /api/v1/scenarios/related/:id - returns the latest version<br/>
+    </td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>[Scenario]</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      200 OK - if successful<br/>
+      404 NOT FOUND - if not found
+    </td>
+  </tr>
+</table>

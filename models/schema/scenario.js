@@ -37,6 +37,7 @@ scenario.options.toObject.transform = function(original, transformed) {
 };
 
 var Scenario = mongoose.model('Scenario', scenario);
+//mongoose.set('debug', true);
 Scenario.ensureIndexes(function(err) {
   if (err) {
     throw err;
