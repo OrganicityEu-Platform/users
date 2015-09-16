@@ -453,7 +453,7 @@ module.exports = function(router, passport) {
       params2.filter.uuid = req.params.uuid;
       params2.sort.version = -1; // overrides sorting query parameters
       try {
-        console.log(params2);
+        //console.log(params2);
         Scenario.find(params2.filter, scenarioProjection).sort(params2.sort).limit(1).exec(
           function(err, s) {
             if (err) {
