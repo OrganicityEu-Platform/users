@@ -17,7 +17,7 @@ var ss            = require('./questionnaire_setup.js');
 
 var server;
 
-describe('The questionnaire API', function() {
+xdescribe('The questionnaire API', function() {
 
   beforeEach(function(done) {
     mongoose.connect(configDB.test_url);

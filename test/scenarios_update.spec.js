@@ -52,7 +52,7 @@ describe('When updating a scenario, the API', function() {
   /*
    * Helper method to simplyfy the tests
    */
-  var inputValidationTestHelper = function(scenario, code, done, expect) {
+  var inputValidationTestHelper = function(data, code, done, expect) {
 
     var testUrl = url || api.reverse('scenario_by_uuid', { uuid : 'agingpop' });
     var testUser = user || users[0];
@@ -60,7 +60,7 @@ describe('When updating a scenario, the API', function() {
     var execTest = function() {
       request(server)
         .put(testUrl)
-        .send(scenario)
+        .send(data)
         .set('Content-type', 'application/json')
         .auth(testUser.local.email, testUser.local.__passwordplain) // log in with user 'daniel'
         .expect(code)

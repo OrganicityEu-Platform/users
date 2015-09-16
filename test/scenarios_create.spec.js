@@ -46,11 +46,11 @@ describe('When creating a scenario, the API', function() {
   /*
    * Helper method to simplyfy the tests
    */
-  var inputValidationTestHelper = function(scenario, code, done, expect) {
+  var inputValidationTestHelper = function(data, code, done, expect) {
     var execTest = function() {
       request(server)
         .post(api.reverse('scenario_list'))
-        .send(scenario)
+        .send(data)
         .set('Content-type', 'application/json')
         .auth(users[0].local.email, users[0].local.__passwordplain) // log in with user 'daniel'
         .expect(code)

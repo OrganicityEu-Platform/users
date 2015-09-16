@@ -51,7 +51,7 @@ describe('When updating a user, the API', function() {
   /*
    * Helper method to simplyfy the tests
    */
-  var inputValidationTestHelper = function(scenario, code, done, expect) {
+  var inputValidationTestHelper = function(data, code, done, expect) {
 
     var testUrl = url || api.reverse('user_by_uuid', { uuid : 'daniel' });
     var testUser = user || users[0]; // Default "daniel"
@@ -59,7 +59,7 @@ describe('When updating a user, the API', function() {
     var execTest = function() {
       request(server)
         .patch(testUrl)
-        .send(scenario)
+        .send(data)
         .set('Content-type', 'application/json')
         .auth(testUser.local.email, testUser.local.__passwordplain) // log in with user 'daniel'
         .expect(code)
