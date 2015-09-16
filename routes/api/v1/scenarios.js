@@ -461,10 +461,11 @@ module.exports = function(router, passport) {
             }
             if (s.length === 0) {
               res.status(HttpStatus.NOT_FOUND).send('The input scenario not found.');
+              return;
             }
             var params3 = JSON.parse(JSON.stringify(params));
             params3.sort.version = -1; // overrides sorting query parameters
-            console.log(params3);
+            //console.log(params3);
             Scenario.find(params3.filter, scenarioProjection).sort(params3.sort).limit(params3.limit).exec(
               function(err, scenariosList) {
                 if (err) {
@@ -479,8 +480,8 @@ module.exports = function(router, passport) {
                       continue;
                     }
                     simMatrix[scenariosList[doc].uuid] = sim(s[0], scenariosList[doc]);
-                    console.info(scenariosList[doc]);
-                    console.info(simMatrix[scenariosList[doc].uuid]);
+                    //console.info(scenariosList[doc]);
+                    //console.info(simMatrix[scenariosList[doc].uuid]);
                     scenarioHash.set(scenariosList[doc].uuid, scenariosList[doc]);
                   }
                   var answer = getRelatedScenarios(simMatrix, scenarioHash);
