@@ -1,5 +1,9 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+body {
+  background-color: rgb(240,242,245);
+}
+
 .ocTable {
   .table;
   .table-striped;
@@ -98,4 +102,118 @@ input[type="submit"] {
 .flashfade-leave.flashfade-leave-active {
   max-height: 0;
   overflow: hidden;
+}
+
+.scenario-thumbnails {
+ -moz-column-width: 20em;
+ -webkit-column-width: 20em;
+ -moz-column-gap: 1em;
+ -webkit-column-gap:1em;
+
+}
+
+.scenario-thumbnails > .col-md-4 {
+ display: inline-block;
+ padding:  .33rem;
+ width:  100%;
+ float:none;
+   color: #444;
+}
+
+.scenario-thumbnail {
+  position:relative;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.scenario-thumbnail:hover {
+  cursor: pointer; cursor: hand;
+}
+
+.scenario-thumbnail-location {
+  margin-left: 30px;
+}
+
+.scenario-thumbnail-title {
+
+}
+
+.navbar {
+  background-color: rgb(238, 62, 110);
+
+}
+
+.navbar-create-btn {
+
+}
+
+.navbar-explore-btn {
+
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
+    color: rgb(240,242,245);
+}
+
+.navbar-default .navbar-brand {
+    color: rgb(240,242,245);
+}
+
+.navbar-nav {
+
+}
+
+.nav-logout-btn, .nav-login-btn, .nav-signup-btn {
+  margin-right: 44px;
+}
+
+.scenario-article, #disqus_thread {
+  background-color: rgb(254, 254, 250);
+}
+
+
+
+.oc-footer {
+  text-align: center;
+}
+
+.oc-footer-follow {
+  font-size: 30px;
+}
+
+.scenario-article-header, .scenario-article-narrative, #disqus_thread {
+  padding: 5px 38px 0px 38px;
+}
+
+.scenario-article-narrative {
+  padding-bottom: 15px;
+  font-size: 17px;
+  color: #444;
+}
+
+.scenario-article-summary, .scenario-article-header-meta {
+  margin-top: 25px;
+}
+
+.scenario-article-header-meta {
+  font-size: 17px;
+  color: #7f929c;
+}
+
+.scenario-article-publisher, .scenario-article-badge {
+  margin-right: 86px;
+}
+
+.oc-page-wrapper {
+  width: 980px
+}
+
+.scenario-article-summary {
+  font-size: 25px;
+  color: #444;
+}
+
+.scenario-article-title {
+  font-size: 35px;
+  color: #444;
 }

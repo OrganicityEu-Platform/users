@@ -4,6 +4,7 @@ import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
+import OcFooter from './OcFooter.jsx';
 import UserHasRoleMixin from './UserHasRoleMixin.jsx';
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
@@ -50,23 +51,22 @@ var Scaffold = React.createClass({
     var loggedInLinks = [];
     var userLinks = [];
     if (this.userIsLoggedIn()) {
-      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate">Create Scenario</NavItemLink>);
+      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
       userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
-      userLinks.push(<NavItemLink key="logout" to="logout">Logout</NavItemLink>);
+      userLinks.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
     } else {
-      userLinks.push(<NavItemLink key="login" to="login">Login</NavItemLink>);
-      userLinks.push(<NavItemLink key="signup" to="signup">Signup</NavItemLink>);
+      userLinks.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
+      userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
     return (
-      <div className="container">
+      <div className="container oc-page-wrapper">
         <Navbar brand={<Link to="home">Home</Link>}>
-          <Nav navbar>
-            <NavItemLink to="scenarioList">Scenarios</NavItemLink>
+          <Nav>
+            <NavItemLink to="scenarioList" className="navbar-explore-btn">EXPLORE</NavItemLink>
             {loggedInLinks}
           </Nav>
-          <Nav navbar>
+          <Nav>
             {userLinks}
-            <NavItemLink to="sysinfo">About</NavItemLink>
             {(() => {
               if (this.userHasRole('admin')) {
                 return <NavItemLink to="admin_userList">Users</NavItemLink>;
@@ -78,6 +78,7 @@ var Scaffold = React.createClass({
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
       </div>
+
     );
   }
 });

@@ -85,7 +85,7 @@ describe('When login local, the API', function() {
     function(done) {
       var login = {
         email: users[0].local.email,
-        password: "waste"
+        password: 'waste'
       };
       inputValidationTestHelper(login, http.BAD_REQUEST, done);
     }
@@ -95,7 +95,7 @@ describe('When login local, the API', function() {
     function(done) {
       var login = {
         email: users[0].local.email,
-        password: "wastewaste"
+        password: 'wastewaste'
       };
       inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
     }
@@ -105,7 +105,7 @@ describe('When login local, the API', function() {
     function(done) {
       var testUser = users[0];
       var login = {
-        email: "test@test.de",
+        email: 'test@test.de',
         password: testUser.local.__passwordplain
       };
       inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
@@ -116,7 +116,7 @@ describe('When login local, the API', function() {
     function(done) {
       var testUser = users[0];
       var login = {
-        email: "test",
+        email: 'test',
         password: testUser.local.__passwordplain
       };
       inputValidationTestHelper(login, http.BAD_REQUEST, done);

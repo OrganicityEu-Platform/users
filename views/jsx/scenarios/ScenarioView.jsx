@@ -24,7 +24,7 @@ var ScenarioView = React.createClass({
     }
     return (
       <div>
-        <div className="row">
+        <div>
           <ScenarioTableView scenario={this.state} />
         </div>
         <div className="row">
