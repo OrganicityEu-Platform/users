@@ -108,7 +108,6 @@ describe('When signup, the API', function() {
   );
 
   /*
-
     it('should return 200 OK when trying to login with incorrect username',
       function(done) {
         var testUser = users[0];
@@ -119,7 +118,6 @@ describe('When signup, the API', function() {
         inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
       }
     );
-
-    */
+  */
 
 });

@@ -197,8 +197,8 @@ gulp.task('eslint', ['jscs'], function() {
         parser: 'babel-eslint'
       }
     }))
-    .pipe(eslint.format())
-    .pipe(eslint.failOnError());
+    .pipe(eslint.format());
+  //.pipe(eslint.failOnError());
 });
 
 gulp.task('lint', ['jscs', 'eslint']);
