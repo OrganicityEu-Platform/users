@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
@@ -60,25 +60,16 @@ var Scaffold = React.createClass({
     }
     return (
       <div className="container oc-page-wrapper">
-        <Navbar brand={<Link to="home">Home</Link>}>
-          <Nav>
-            <NavItemLink to="scenarioList" className="navbar-explore-btn">EXPLORE</NavItemLink>
-            {loggedInLinks}
-          </Nav>
-          <Nav>
-            {userLinks}
-            {(() => {
-              if (this.userHasRole('admin')) {
-                return <NavItemLink to="admin_userList">Users</NavItemLink>;
-              }
-              return null;
-            })()}
-          </Nav>
+        <Navbar toggleNavKey={0} >
+            <Nav right eventKey={0} onSelect={this.onSelect}>
+              <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
+              {loggedInLinks}
+              {userLinks}
+            </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
       </div>
-
     );
   }
 });

@@ -7,7 +7,7 @@ The first version of this application is based on:
 ## Prepare Ubuntu 14.04
 
 ```
-sudo apt-get install curl
+sudo apt-get install curl libcurl4-openssl-dev
 sudo apt-get install build-essential
 ```
 
