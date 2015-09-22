@@ -63,7 +63,7 @@ var Scaffold = React.createClass({
     }
     return (
       <div className="container oc-page-wrapper">
-        <Navbar toggleNavKey={0} >
+        <Navbar toggleNavKey={0} brand={<a href="#"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></a>}>
             <Nav right eventKey={0} onSelect={this.onSelect}>
                 {(() => {
                   if (this.userHasRole('admin')) {
