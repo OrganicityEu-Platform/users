@@ -65,6 +65,14 @@ var Scaffold = React.createClass({
       <div className="container oc-page-wrapper">
         <Navbar toggleNavKey={0} >
             <Nav right eventKey={0} onSelect={this.onSelect}>
+                {(() => {
+                  if (this.userHasRole('admin')) {
+                    return [
+                      <NavItemLink to="admin_userList">Users</NavItemLink>,
+                      <NavItemLink to="sysinfo" data-about>About</NavItemLink>,
+                    ]
+                  }
+               })()}
               <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
               {loggedInLinks}
               {userLinks}
