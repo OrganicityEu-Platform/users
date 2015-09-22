@@ -15,7 +15,7 @@ module.exports = function(router, passport) {
         gender : req.user.gender
       });
     } else {
-      res.status(204).send();
+      res.status(403).send();
     }
   });
 

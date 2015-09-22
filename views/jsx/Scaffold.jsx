@@ -17,7 +17,7 @@ var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
-      currentUser : null
+      currentUser : undefined
     };
   },
   componentDidMount: function() {
@@ -26,10 +26,10 @@ var Scaffold = React.createClass({
       accepts : 'application/json',
       success : self.onLogin,
       error : function(jqXHR, textStatus, errorThrown) {
-        if (jqXHR.status === 422) {
+        if (jqXHR.status === 422 || jqXHR.status === 403) {
           self.onLogout();
         } else {
-          this.flashOnAjaxError(
+          self.flashOnAjaxError(
             api.reverse('currentUser'),
             'Error retrieving current user'
           )(jqXHR, textStatus, errorThrown);
@@ -50,6 +50,9 @@ var Scaffold = React.createClass({
   render : function() {
     var loggedInLinks = [];
     var userLinks = [];
+
+    //console.log('Render Scaffold with currentUser', this.state.currentUser);
+
     if (this.userIsLoggedIn()) {
       loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
       userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
