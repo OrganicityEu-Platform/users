@@ -26,8 +26,12 @@ var Profile = React.createClass({
   },
   componentDidMount: function() {
 
-    this.loading();
     var url = api.reverse('currentUser');
+    if(this.props.uuid) {
+      url = api.reverse('user_by_uuid', { uuid : this.props.uuid });
+    }
+
+    this.loading();
     $.ajax(url, {
       dataType: 'json',
       error: (xhr) => {
@@ -42,8 +46,9 @@ var Profile = React.createClass({
         e.name = (profile.name) ? profile.name : '';
         e.gender = (profile.gender) ? profile.gender : '';
         e.roles = (profile.roles) ? profile.roles : [];
-        e.password = '';
-        e.password_repeat = '';
+        if(profile.local) {
+          e.local = profile.local;
+        }
         e.uuid = profile.uuid;
         e.dirty = false;
 
@@ -89,18 +94,16 @@ var Profile = React.createClass({
       gender: this.state.profile.gender
     };
 
-    if (this.state.profile.password.length > 0) {
+    if (this.state.profile.password) {
       profile.local = {
         password: this.state.profile.password
       };
     }
 
     // patch would be forbidden if we try to change roles and we're not admin
-    if (this.userHasRole('admin')) {
+    if (this.userHasRole('admin') && this.state.profile.roles) {
       profile.roles = this.state.profile.roles;
     }
-
-    console.log('Profile:', profile);
 
     this.loading();
     var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
@@ -112,14 +115,14 @@ var Profile = React.createClass({
       error : this.loadingError(url, 'Error updating user profile'),
       success : () => {
         this.loaded({ dirty : false });
-        this.flash('success', 'Succesfully updated your profile');
+        this.flash('success', 'Profile succesfully updated!');
       }
     });
 
   },
   render: function() {
 
-    console.log("Render Profile with state ", this.state);
+    //console.log("Render Profile with state ", this.state);
 
     if (!this.userIsLoggedIn()) {
       return (
@@ -137,6 +140,46 @@ var Profile = React.createClass({
       );
     }
 
+    var localAccount = '';
+    if(this.state.profile.local) {
+      localAccount = (
+        <div>
+          <h4>Local account</h4>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="email">Email</label>
+            <div className="col-sm-10">
+               <input type="text"
+                className="form-control"
+                name="email"
+                disabled="disabled"
+                value={this.state.profile.local.email} />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password">Password</label>
+            <div className="col-sm-10">
+               <input type="password"
+                className="form-control"
+                name="password"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPassword} />
+              <ErrorMessage messages={this.props.getValidationMessages('password')} />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
+            <div className="col-sm-10">
+              <input type="password"
+                className="form-control"
+                name="password_repeat"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPasswordRepeat} />
+              <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
+            </div>
+          </div>
+        </div>
+      );
+    }
     /*
     console.log('##############################################################');
     console.log('Errors:', this.props.errors);
@@ -184,32 +227,6 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password">Password</label>
-            <div className="col-sm-10">
-               <input type="password"
-                className="form-control"
-                name="password"
-                value={this.state.profile.password}
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPassword} />
-              <ErrorMessage messages={this.props.getValidationMessages('password')} />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
-            <div className="col-sm-10">
-              <input type="password"
-                className="form-control"
-                name="password_repeat"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                value={this.state.profile.password_repeat}
-                onChange={this.handleChangedPasswordRepeat} />
-              <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
-            </div>
-          </div>
-
-          <div className="form-group">
             <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
             <div className="col-sm-10">
               <TagField
@@ -222,6 +239,9 @@ var Profile = React.createClass({
               <ErrorMessage messages={this.props.getValidationMessages('roles')} />
             </div>
           </div>
+
+          {localAccount}
+
           <div className="form-group">
             <div className="col-sm-2"></div>
             <div className="col-sm-10">
@@ -242,14 +262,16 @@ var Profile = React.createClass({
     // (a) Array validation fails  -> no roles!
     // (b) Nested validation fails -> password not nested to `local`
     // @see: https://github.com/jurassix/react-validation-mixin/issues/38
+    //roles : this.state.roles,
 
-    var e = {
-      name : this.state.profile.name,
-      gender : this.state.profile.gender,
-      //roles : this.state.roles,
-      password : this.state.profile.password,
-      password_repeat : this.state.profile.password_repeat
-    };
+    var e = {};
+    e.name            = this.state.profile.name;
+    e.gender          = this.state.profile.gender;
+    if(this.state.profile.local) {
+      e.password        = this.state.profile.password;
+      e.password_repeat = this.state.profile.password_repeat;
+    }
+
     return e;
   },
   validatorTypes: UserJoi.profileClient
