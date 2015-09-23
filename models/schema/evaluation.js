@@ -11,7 +11,6 @@ var schema = mongoose.Schema({
   submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
   answers   : [{
     question : {
-      uuid   : { type: String,   required: true },
       tech   : { type: Boolean,  required: true },
       text   : { type: String,   required: true },
       values : [{  // possible values the user can choose from

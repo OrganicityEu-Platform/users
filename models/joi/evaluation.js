@@ -8,7 +8,6 @@ var EvaluationUpdate = {
   submitted : Joi.boolean().required(),
   answers   : Joi.array().items(Joi.object().keys({
     question : Joi.object().keys({
-      uuid   : Joi.string().required(),
       tech   : Joi.boolean().required(),
       text   : Joi.string().required(),
       values : Joi.array().items(Joi.object().keys({

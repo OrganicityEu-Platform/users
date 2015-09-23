@@ -19,7 +19,6 @@ The data models below are described in the mongoose notation for MongoDB data mo
 ### Question
 ```
 {
-  uuid   : { type: String,   required: true }, // UUID of this question, created on creation / update
   tech   : { type: Boolean,  required: true }, // true if question falls under technological category
   text   : { type: String,   required: true }, // question description displayed to the user
   values : [{  // possible values the user can choose from

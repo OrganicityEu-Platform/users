@@ -6,8 +6,6 @@ import Router           from 'react-router';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
 import LoadingMixin     from '../LoadingMixin.jsx';
 import api              from '../../../api_routes.js';
-import FlashQueue       from '../FlashQueue.jsx';
-import TagField         from '../form-components/TagField.jsx';
 
 import QuestionnaireQuestionsEditView from './QuestionnaireQuestionsEditView.jsx';
 

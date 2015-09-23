@@ -4,6 +4,7 @@ import HomeView              from './HomeView.jsx';
 import ScenarioList          from './scenarios/ScenarioList.jsx';
 import ScenarioEditView      from './scenarios/ScenarioEditView.jsx';
 import ScenarioView          from './scenarios/ScenarioView.jsx';
+import ScenarioEvalView      from './scenarios/ScenarioEvalView.jsx';
 import Login                 from './auth/Login.jsx';
 import Logout                from './auth/Logout.jsx';
 import LocalLogin            from './auth/LocalLogin.jsx';
@@ -25,6 +26,7 @@ var routes = (
     <Route name="scenarioCreate"      path={ui.route('scenarioCreate')}      handler={ScenarioEditView}      />
     <Route name="scenarioEdit"        path={ui.route('scenarioEdit')}        handler={ScenarioEditView}      />
     <Route name="scenarioView"        path={ui.route('scenarioView')}        handler={ScenarioView}          />
+    <Route name="scenarioEvalView"    path={ui.route('scenarioEvalView')}    handler={ScenarioEvalView}      />
     <Route name="login"               path={ui.route('login')}               handler={Login}                 />
     <Route name="local-login"         path={ui.route('local-login')}         handler={LocalLogin}            />
     <Route name="signup"              path={ui.route('signup')}              handler={Signup}                />
