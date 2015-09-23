@@ -100,7 +100,8 @@ var ScenarioList = React.createClass({
   },
   render: function() {
     return (
-      <div className="scenarioList">
+
+      <div className="container scenarioList">
         <div className="row">
           <div className="col-md-12 well">
             <h3>Search and Filter</h3>

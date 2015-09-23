@@ -4,7 +4,8 @@ import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
-import OcFooter from './OcFooter.jsx';
+import GlobalFooter from './GlobalFooter.jsx';
+import FrontPageFooter from './FrontPageFooter.jsx';
 import UserHasRoleMixin from './UserHasRoleMixin.jsx';
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
@@ -62,24 +63,30 @@ var Scaffold = React.createClass({
       userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
     return (
-      <div className="container oc-page-wrapper">
-        <Navbar toggleNavKey={0} brand={<a href="#"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></a>}>
-            <Nav right eventKey={0} onSelect={this.onSelect}>
-                {(() => {
-                  if (this.userHasRole('admin')) {
-                    return [
-                      <NavItemLink to="admin_userList">Users</NavItemLink>,
-                      <NavItemLink to="sysinfo" data-about>About</NavItemLink>,
-                    ]
-                  }
-               })()}
-              <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
-              {loggedInLinks}
-              {userLinks}
-            </Nav>
-        </Navbar>
+      <div className="container-fluid oc-page-wrapper">
+        <div className="row">
+          <Navbar toggleNavKey={0} brand={<a href="#"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></a>}>
+              <Nav right eventKey={0} onSelect={this.onSelect}>
+                  {(() => {
+                    if (this.userHasRole('admin')) {
+                      return [
+                        <NavItemLink to="admin_userList">Users</NavItemLink>,
+                        <NavItemLink to="sysinfo" data-about>About</NavItemLink>,
+                      ]
+                    }
+                 })()}
+                <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
+                {loggedInLinks}
+                {userLinks}
+              </Nav>
+          </Navbar>
+        </div>
+
+
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
+        <GlobalFooter/>
+        <FrontPageFooter/>
       </div>
     );
   }
