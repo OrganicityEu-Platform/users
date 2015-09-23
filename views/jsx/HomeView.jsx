@@ -27,8 +27,8 @@ var HomeView = React.createClass({
   },
   render : function() {
     return (
-      <div className="row">
-        <div className="col-md-12">
+      <div className="container">
+        <div className="row">
           <h1>Lorem!</h1>
           <p>
             Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac
