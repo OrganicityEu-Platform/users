@@ -58,7 +58,6 @@ var Scaffold = React.createClass({
       linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
       if (this.userHasRole('admin')) {
         linksRight.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
-        linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
       }
       linksRight.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
       linksRight.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
@@ -66,6 +65,7 @@ var Scaffold = React.createClass({
       linksRight.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
       linksRight.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
+    linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
 
     return (
       <div className="container oc-page-wrapper">
