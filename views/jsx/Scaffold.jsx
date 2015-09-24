@@ -50,35 +50,31 @@ var Scaffold = React.createClass({
     this.setState(this.state);
   },
   render : function() {
-    var loggedInLinks = [];
-    var userLinks = [];
-    var adminLinks = [];
+    var linksLeft = [];
+    var linksRight = [];
 
-    if (this.userHasRole('admin')) {
-      adminLinks.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
-      adminLinks.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
-    }
-
+    linksLeft.push(<NavItemLink to="scenarioList">EXPLORE</NavItemLink>);
     if (this.userIsLoggedIn()) {
-      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
-      userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
-      userLinks.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
+      linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
+      if (this.userHasRole('admin')) {
+        linksRight.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
+        linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
+      }
+      linksRight.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
+      linksRight.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
     } else {
-      userLinks.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
-      userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
+      linksRight.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
+      linksRight.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
 
     return (
       <div className="container oc-page-wrapper">
         <Navbar brand={<Link to="home"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></Link>}>
           <Nav navbar>
-            <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
-            {loggedInLinks}
+            {linksLeft}
           </Nav>
-          <Nav navbar>
-            {adminLinks}
-            {userLinks}
-            <NavItemLink to="sysinfo">About</NavItemLink>
+          <Nav navbar right>
+            {linksRight}
           </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>
