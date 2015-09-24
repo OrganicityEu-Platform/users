@@ -10,33 +10,6 @@ module.exports = function(router, passport) {
   var UserJoi       = require('../../../models/joi/user.js');
 
   // ###############################################################
-  // Schema-based validation
-  // ###############################################################
-
-  var UserSchemaPatch = {
-    type : Object,
-    unknownKeys: 'remove',
-    schema : {
-      'roles': {
-        type: Array,
-        required: false,
-        schema: {
-          type: String
-        }
-      },
-      'name': { type: String, required: false },
-      'gender': { type: String, required: false },
-      'local' : {
-        type : Object,
-        schema : {
-          'email' : { type: String, required: false },
-          'password' : { type: String, required: false }
-        }
-      }
-    }
-  };
-
-  // ###############################################################
   // Routes
   // ###############################################################
 
