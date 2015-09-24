@@ -22,7 +22,7 @@ var ScenarioView = React.createClass({
     });
   },
   clickedEvaluate: function() {
-    this.transitionTo('scenarioEvalView', { uuid : this.props.params.uuid });
+    this.transitionTo('scenarioEvalView', { uuid : this.props.params.uuid }, { version : this.state.version });
   },
   render: function() {
     if (this.state === null) {
