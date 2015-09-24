@@ -85,8 +85,7 @@ var Scaffold = React.createClass({
 
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
-        <GlobalFooter/>
-        <FrontPageFooter/>
+
       </div>
     );
   }
