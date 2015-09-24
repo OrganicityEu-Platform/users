@@ -4,8 +4,8 @@ import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
-import GlobalFooter from './GlobalFooter.jsx';
-import FrontPageFooter from './FrontPageFooter.jsx';
+import FooterLarge from './FooterLarge.jsx';
+import FooterSmall from './FooterSmall.jsx';
 import UserHasRoleMixin from './UserHasRoleMixin.jsx';
 import FlashQueue from './FlashQueue.jsx';
 import api from '../../api_routes.js';
@@ -85,7 +85,10 @@ var Scaffold = React.createClass({
 
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
-
+        <div className="oc-footers">
+          <FooterLarge/>
+          <FooterSmall/>
+        </div>
       </div>
     );
   }

@@ -2,6 +2,13 @@
 
 body {
   background-color: rgb(240,242,245);
+  height: 100%;
+  overflow: scroll;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
 }
 
 .ocTable {
@@ -180,7 +187,7 @@ input[type="submit"] {
 
 
 
-.oc-global-footer {
+.oc-footer-large {
   text-align: center;
   background-color: rgb(254, 254, 250);
 }
@@ -209,7 +216,10 @@ input[type="submit"] {
 }
 
 .oc-page-wrapper {
-
+  display: table;
+  height: 100%;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .scenario-article-summary {
@@ -226,31 +236,28 @@ input[type="submit"] {
   border-right: 1px solid #CCC;
 }
 
-.oc-global-footer-eu-logo {
+.oc-footer-large-eu-logo {
   margin: 75px 0px 38px 0px;
   width: 172px;
   height: 119px;
 }
 
-.oc-global-footer-follow-link {
+.oc-footer-large-follow-link {
   display: inline-block;
   margin: 30px 0px 10px 0px;
   font-size: 30px;
   color: rgb(238, 62, 110);
 }
 
-.oc-front-page-footer {
-  height: 64px;
+.oc-footer-small {
   text-align: center;
   background-color: rgb(238, 62, 110);
-}
-
-.oc-front-page-footer > div {
-  margin-top: 24px;
+  height: 64px;
+  line-height: 64px;
   color: rgb(240,242,245);
 }
 
-.oc-global-footer-social-links {
+.oc-footer-large-social-links {
   margin-top: 25px;
 }
 
@@ -258,4 +265,10 @@ input[type="submit"] {
     border-top:none;
     box-shadow:none;
     text-align: center;
+}
+
+.oc-footers {
+  margin-top: 20px;
+  display: table-row;
+  height: 1px;
 }
