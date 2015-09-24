@@ -22,6 +22,7 @@ var Scaffold = React.createClass({
     };
   },
   componentDidMount: function() {
+
     var self = this;
     $.ajax(api.reverse('currentUser'), {
       accepts : 'application/json',
@@ -49,41 +50,31 @@ var Scaffold = React.createClass({
     this.setState(this.state);
   },
   render : function() {
-    var loggedInLinks = [];
-    var userLinks = [];
+    var linksLeft = [];
+    var linksRight = [];
 
-    //console.log('Render Scaffold with currentUser', this.state.currentUser);
-
+    linksLeft.push(<NavItemLink to="scenarioList">EXPLORE</NavItemLink>);
     if (this.userIsLoggedIn()) {
-      loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
-      userLinks.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
-      userLinks.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
+      linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
+      if (this.userHasRole('admin')) {
+        linksRight.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
+      }
+      linksRight.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
+      linksRight.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
     } else {
-      userLinks.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
-      userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
+      linksRight.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
+      linksRight.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
+    linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
+
     return (
       <div className="container oc-page-wrapper">
         <Navbar brand={<Link to="home"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></Link>}>
           <Nav navbar>
-            <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
-            {loggedInLinks}
+            {linksLeft}
           </Nav>
-          <Nav navbar>
-            {userLinks}
-            <NavItemLink to="sysinfo">About</NavItemLink>
-            {(() => {
-              if (this.userHasRole('admin')) {
-                return <NavItemLink to="admin_userList">Users</NavItemLink>;
-              }
-              return null;
-            })()}
-            {(() => {
-              if (this.userHasRole('admin')) {
-                return <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>;
-              }
-              return null;
-            })()}
+          <Nav navbar right>
+            {linksRight}
           </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>
