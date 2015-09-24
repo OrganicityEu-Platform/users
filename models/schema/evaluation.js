@@ -19,8 +19,8 @@ var schema = mongoose.Schema({
       }]
     }, // the question that was answered (copy of question data type)
     answer   : {
-      value  : { type: String, required: true }, // the value that was picked as answer by the user, might be unanswered
-      weight : { type: Number, required: true }  // the weight of the value picked
+      value  : { type: String/*, required: true*/ }, // the value that was picked as answer by the user, might be unanswered
+      weight : { type: Number/*, required: true*/ }  // the weight of the value picked
     }
   }],
   comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary

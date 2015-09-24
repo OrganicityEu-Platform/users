@@ -5,23 +5,25 @@ import Router           from 'react-router';
 
 import LoadingMixin     from '../LoadingMixin.jsx';
 import api              from '../../../api_routes.js';
+import ui               from '../../../ui_routes.js';
+
+var Navigation = Router.Navigation;
 
 var ScenarioEvalView = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, Navigation],
   // scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
   getInitialState: function() {
     return {
       questionnaire: null,
-      tech: null,
-      techSelected: false,
       evaluation: {
         scenario: {
-          uuid : null,
-          version : null
+          uuid : this.props.params.uuid,
+          version : this.props.query.version
         },
         submitted: false,
         answers: []
-      }
+      },
+      submitted: false
     };
   },
   componentWillMount: function() {
@@ -32,14 +34,42 @@ var ScenarioEvalView = React.createClass({
     $.ajax(url, {
       error: this.loadingError(url, 'Error while loading evaluation questionnaire'),
       success: (questionnaire) => {
-        this.loaded({ questionnaire : questionnaire });
+        // copy questions from questionnaire to evaluation answers
+        questionnaire.questions.forEach((question) => {
+          this.state.evaluation.answers.push({
+            question : question
+          });
+        });
+        this.loaded({ questionnaire : questionnaire,  evaluation : this.state.evaluation });
       }
     });
   },
   clickedTech: function(tech) {
     return () => {
-      this.setState({tech: tech, techSelected: true});
+      var params = { uuid : this.props.params.uuid };
+      var query  = { version : this.props.query.version, tech : tech };
+      this.transitionTo(ui.reverse('scenarioEvalView', params, query));
     };
+  },
+  selectedAnswer: function(questionIndex, answerIndex) {
+    return () => {
+      this.state.evaluation.answers[questionIndex].answer =
+        this.state.questionnaire.questions[questionIndex].values[answerIndex];
+    };
+  },
+  sendEvaluation: function() {
+    this.state.evaluation.submitted = true;
+    this.loading();
+    var url = api.reverse('evaluations_list');
+    $.ajax(url, {
+      method: 'POST',
+      dataType: 'json',
+      data: this.state.evaluation,
+      error: this.loadingError(url, 'Error while submitting questionnaire'),
+      success: () => {
+        this.loaded({ submitted : true });
+      }
+    });
   },
   render: function() {
 
@@ -49,7 +79,15 @@ var ScenarioEvalView = React.createClass({
       );
     }
 
-    if (!this.state.techSelected) {
+    if (this.state.submitted) {
+      return (
+        <div className="row col-sm-12">
+          Thank you!
+        </div>
+      );
+    }
+
+    if (!this.props.query.tech) {
       return (
         <div className="row col-sm-12">
           Are you a...<br/>
@@ -60,47 +98,51 @@ var ScenarioEvalView = React.createClass({
           </button>
           <button type="button"
             className="btn btn-default"
-            onClick={this.clickedTech(true)}>
+            onClick={this.clickedTech(false)}>
             Non-Technical Person
           </button>
         </div>
       );
     }
 
-    // version, description, [questions{tech,text,[values{value,weight}]}]
-    // scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
+    //Questionnaire > version, description, [questions{tech,text,[values{value,weight}]}]
+    //Evaluation    > scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
+
     return (
-      <form className="form-horizontal">
-        <div className="form-group col-sm-12">Description: {this.state.questionnaire.description}</div>
-        {(() => {
-          return this.state.questionnaire.questions.filter((q) => q.tech === this.state.tech).map((q, qIdx) => {
-            return (
-              <div key={"question_"+qIdx}>
-                <div className="form-group">
-                  <div className="col-sm-2"></div>
-                  <div className="col-sm-10">{q.text}</div>
-                </div>
-                <div className="form-group">
-                  {(() => {
-                    return q.values.map((a, aIdx) => {
-                      return (
-                        <div key={"question_"+qIdx+"_answer_"+aIdx}>
-                          <label className="control-label col-sm-2" htmlFor={"question_"+qIdx+"_answer_"+aIdx}>
-                            {a.value}
-                          </label>
-                          <input type="radio" className="form-control"
-                            name={"question_"+qIdx}
-                            id={"question_"+qIdx+"_answer_"+aIdx} />
-                        </div>
-                      );
-                    });
-                  })()}
-                </div>
-              </div>
-            );
-          });
-        })()}
-      </form>
+      <div className="oc-evaluation-div">
+        <form>
+          <div className="oc-evaluation-description-div">
+            {this.state.questionnaire.description}
+          </div>
+          <div className="oc-evaluation-table-div">
+            <table>
+              {this.state.questionnaire.questions.map((q, qIdx) =>
+                q.tech !== (this.props.query.tech === 'true') ? [] : [
+                  <tr key={"question_"+qIdx+"_headers"}>
+                    <td>&nbsp;</td>
+                    {q.values.map((a) => <td className="oc-evaluation-answer-text">{a.value}</td>)}
+                  </tr>,
+                  <tr key={"question_"+qIdx+"_radios"}>
+                    <td className="oc-evaluation-question">{q.text}</td>
+                    {q.values.map((a,aIdx) => (
+                      <td className="oc-evaluation-answer-radio">
+                        <input type="radio"
+                          className="form-control"
+                          name={"question_"+qIdx}
+                          id={"question_"+qIdx+"_answer_"+aIdx}
+                          onClick={this.selectedAnswer(qIdx, aIdx)} />
+                      </td>
+                    ))}
+                  </tr>
+                ]
+              )}
+            </table>
+          </div>
+          <div className="oc-evaluation-sendbutton-div">
+            <button type="button" className="btn btn-primary" onClick={this.sendEvaluation}>Send Evaluation</button>
+          </div>
+        </form>
+      </div>
     );
   }
 });
