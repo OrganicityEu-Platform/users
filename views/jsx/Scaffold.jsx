@@ -22,6 +22,7 @@ var Scaffold = React.createClass({
     };
   },
   componentDidMount: function() {
+
     var self = this;
     $.ajax(api.reverse('currentUser'), {
       accepts : 'application/json',
@@ -51,8 +52,12 @@ var Scaffold = React.createClass({
   render : function() {
     var loggedInLinks = [];
     var userLinks = [];
+    var adminLinks = [];
 
-    //console.log('Render Scaffold with currentUser', this.state.currentUser);
+    if (this.userHasRole('admin')) {
+      adminLinks.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
+      adminLinks.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
+    }
 
     if (this.userIsLoggedIn()) {
       loggedInLinks.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
@@ -62,6 +67,7 @@ var Scaffold = React.createClass({
       userLinks.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
       userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
+
     return (
       <div className="container oc-page-wrapper">
         <Navbar brand={<Link to="home"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></Link>}>
@@ -70,20 +76,9 @@ var Scaffold = React.createClass({
             {loggedInLinks}
           </Nav>
           <Nav navbar>
+            {adminLinks}
             {userLinks}
             <NavItemLink to="sysinfo">About</NavItemLink>
-            {(() => {
-              if (this.userHasRole('admin')) {
-                return <NavItemLink to="admin_userList">Users</NavItemLink>;
-              }
-              return null;
-            })()}
-            {(() => {
-              if (this.userHasRole('admin')) {
-                return <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>;
-              }
-              return null;
-            })()}
           </Nav>
         </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>
