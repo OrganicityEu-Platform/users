@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Question = require('./question.js');
 
 var schema = mongoose.Schema({
   version     : { type: Number,     required: true }, // assigned by server, incremented on each post
@@ -7,7 +6,6 @@ var schema = mongoose.Schema({
   description : { type: String                     }, // for "internal" use, not displayed to users
   explanation : { type: String,     required: true }, // explanatory text displayed to users on top of the questionnaire
   questions   : [{
-    uuid   : { type: String,   required: true },
     tech   : { type: Boolean,  required: true },
     text   : { type: String,   required: true },
     values : [{  // possible values the user can choose from

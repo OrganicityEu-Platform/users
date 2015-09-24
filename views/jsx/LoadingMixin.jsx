@@ -35,9 +35,10 @@ var LoadingMixin = {
   },
   loaded : function(extendState) {
     if (this.isMounted()) {
-      this.setState({ loading : false });
       if (extendState) {
-        this.setState(extendState);
+        this.setState($.extend({}, extendState, { loading : false }));
+      } else {
+        this.setState({ loading : false });
       }
     } else {
       window.setTimeout(() => this.loaded(extendState), 10);

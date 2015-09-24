@@ -63,26 +63,29 @@ var Scaffold = React.createClass({
       userLinks.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
     }
     return (
-      <div className="container-fluid oc-page-wrapper">
-        <div className="row">
-          <Navbar toggleNavKey={0} brand={<a href="#"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></a>}>
-              <Nav right eventKey={0} onSelect={this.onSelect}>
-                  {(() => {
-                    if (this.userHasRole('admin')) {
-                      return [
-                        <NavItemLink to="admin_userList">Users</NavItemLink>,
-                        <NavItemLink to="sysinfo" data-about>About</NavItemLink>,
-                      ]
-                    }
-                 })()}
-                <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
-                {loggedInLinks}
-                {userLinks}
-              </Nav>
-          </Navbar>
-        </div>
-
-
+      <div className="container oc-page-wrapper">
+        <Navbar brand={<Link to="home"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></Link>}>
+          <Nav navbar>
+            <NavItemLink to="scenarioList">EXPLORE</NavItemLink>
+            {loggedInLinks}
+          </Nav>
+          <Nav navbar>
+            {userLinks}
+            <NavItemLink to="sysinfo">About</NavItemLink>
+            {(() => {
+              if (this.userHasRole('admin')) {
+                return <NavItemLink to="admin_userList">Users</NavItemLink>;
+              }
+              return null;
+            })()}
+            {(() => {
+              if (this.userHasRole('admin')) {
+                return <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>;
+              }
+              return null;
+            })()}
+          </Nav>
+        </Navbar>
         <FlashQueue.Queue messages={this.props.messages}/>
         <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
         <div className="oc-footers">
