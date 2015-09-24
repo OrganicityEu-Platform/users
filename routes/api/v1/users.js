@@ -110,7 +110,7 @@ module.exports = function(router, passport) {
       }
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-        if (req.body.local && req.body.local.password.length > 0) {
+        if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
           user.local.password = user.generateHash(req.body.local.password);
         }
 

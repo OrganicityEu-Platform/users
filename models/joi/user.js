@@ -34,7 +34,12 @@ user.profile = {
   gender : Joi.string().valid('m', 'f').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
-  roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')) // .label('Roles')
+  roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
+    { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
+  ),
+  local : {
+    password: joiPassword.optional().allow('')
+  }
 };
 
 user.profileServer = {
@@ -43,30 +48,9 @@ user.profileServer = {
   },
   body: user.profile
 };
-user.profileServer.body.local = {
-  password: joiPassword.optional().allow('')
-};
 
-/*
+// React side needs to check the repeated password as well!
 user.profileClient = user.profile;
-user.profileClient.local = Joi.object().keys({
-  password        : joiPassword.optional().allow(''),
-  password_repeat : joiPasswordRepeat.optional()
-});
-*/
-
-// Issue
-// (a) Array validation fails  -> no roles!
-// (b) Nested validation fails -> password not nested to `local`
-// @see: https://github.com/jurassix/react-validation-mixin/issues/38
-user.profileClient = {
-  name   : Joi.string().label('Name'),
-  gender : Joi.string().valid('m', 'f').label('Gender').options(
-    { language: { any: { allowOnly: 'must be Male or Female' } } }
-  ),
-  //roles : Joi.array().items(Joi.string().valid('admin', 'moderator')), // .label('Roles')
-  password        : joiPassword.optional().allow(''),
-  password_repeat : joiPasswordRepeat.optional()
-};
+user.profileClient.local.password_repeat = joiPasswordRepeat.optional();
 
 module.exports = user;
