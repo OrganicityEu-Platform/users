@@ -69,14 +69,16 @@ var Signup = React.createClass({
     }
   },
   render : function() {
+
+    var errorDiv;
+    if (this.state.error) {
+      errorDiv = (<div className="alert alert-warning">{this.state.error}</div>);
+    }
+
     return (
       <div className="col-sm-6 col-sm-offset-3">
         <h1><span className="fa fa-sign-in"></span> Signup</h1>
-        {(() => {
-          if (this.state.error) {
-            return (<div className="alert alert-warning">{this.state.error}</div>);
-          }
-        })()}
+        {errorDiv}
         <form action={api.reverse('signup')} method="post">
             <div className="form-group">
                 <label htmlFor="email">E-Mail</label>
