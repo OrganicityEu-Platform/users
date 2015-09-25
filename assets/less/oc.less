@@ -48,7 +48,6 @@ input[type="submit"] {
   font-size: 12px;
 }
 
-
 @media only screen and (max-width: 420px) {
   .flash-queue {
     width: 96%;
@@ -280,6 +279,12 @@ input[type="submit"] {
   background-color: @oc-magenta;
   line-height: 64px;
   color: @oc-grey;
+}
+
+@media (max-width: @screen-sm-min) {
+  .oc-footer-small {
+    line-height: 40px;
+  }
 }
 
 .oc-footer-large-social-links {
