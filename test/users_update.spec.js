@@ -69,7 +69,7 @@ describe('When updating a user, the API', function() {
     ss.insertUsers(users).catch(done).then(execTest);
   };
 
-  it('should return 403 FIRBIDDEN when trying to update an other user',
+  it('should return 403 FORBIDDEN when trying to update an other user',
     function(done) {
       url = api.reverse('user_by_uuid', { uuid : 'leinad' });
       var user = {};
@@ -77,7 +77,7 @@ describe('When updating a user, the API', function() {
     }
   );
 
-  it('should return 403 FIRBIDDEN when trying to update an other user',
+  it('should return 403 FORBIDDEN when trying to update an other user',
     function(done) {
       url = api.reverse('user_by_uuid', { uuid : 'daniel_admin' });
       var user = {};
