@@ -43,7 +43,6 @@ var Signup = React.createClass({
   handleSubmit : function(evt) {
     evt.preventDefault();
     if (this.props.isValid()) {
-      var self = this;
       var url = api.reverse('signup');
       $.ajax(url, {
         error: (xhr, textStatus, errorThrown) => {
@@ -63,8 +62,8 @@ var Signup = React.createClass({
         },
         method: 'POST',
         data: {
-          email: self.state.email,
-          password: self.state.password
+          email: this.state.email,
+          password: this.state.password
         }
       });
     }

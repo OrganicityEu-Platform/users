@@ -37,27 +37,26 @@ var LocalLogin = React.createClass({
   },
   handleSubmit : function(evt) {
     evt.preventDefault();
-    var self = this;
     this.loading();
     $.ajax(api.reverse('local-login'), {
       error: (xhr, textStatus, errorThrown) => {
         this.loaded();
         if (xhr.status === 422) {
-          self.state.error = 'Error logging in: username and/or password unknown';
-          self.setState(this.state);
+          this.state.error = 'Error logging in: username and/or password unknown';
+          this.setState(this.state);
         } else {
-          self.flashOnAjaxError(xhr, textStatus, errorThrown);
+          this.flashOnAjaxError(xhr, textStatus, errorThrown);
         }
       },
       success: (currentUser) => {
         this.loaded();
-        self.props.onLogin(currentUser);
-        self.transitionTo(ui.reverse('profile'));
+        this.props.onLogin(currentUser);
+        this.transitionTo(ui.reverse('profile'));
       },
       method: 'POST',
       data: {
-        email: self.state.email,
-        password: self.state.password
+        email: this.state.email,
+        password: this.state.password
       }
     });
   },
