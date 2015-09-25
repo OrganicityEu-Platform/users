@@ -23,11 +23,8 @@ var ErrorMessage = React.createClass({
     );
   },
   renderHelpText: function(message) {
-    var divStyle = {
-      marginBottom : 0
-    };
     return (
-      <div className="alert alert-danger" style={divStyle}>{message}</div>
+      <div className="alert alert-danger">{message}</div>
     );
   }
 });

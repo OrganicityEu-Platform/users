@@ -61,14 +61,17 @@ var LocalLogin = React.createClass({
     });
   },
   render : function() {
+
+    var errorMessage;
+    if (this.state.error) {
+      //errorDiv = (<div className="alert alert-warning">{this.state.error}</div>);
+      errorMessage = (<ErrorMessage messages={this.state.error} />);
+    }
+
     return (
       <div className="col-sm-6 col-sm-offset-3">
           <h1><span className="fa fa-sign-in"></span> Login</h1>
-          {(() => {
-            if (this.state.error) {
-              return (<div className="alert alert-warning">{this.state.error}</div>);
-            }
-          })()}
+          {errorMessage}
           <form action={api.reverse('local-login')} method="post">
             <div className="form-group">
                 <label>Email</label>
