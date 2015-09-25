@@ -2,13 +2,14 @@ import $ from 'jquery';
 import React from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
-import ReactMixin from 'react-mixin';
+import ReactMixin          from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
-import FooterLarge from './FooterLarge.jsx';
-import FooterSmall from './FooterSmall.jsx';
-import UserHasRoleMixin from './UserHasRoleMixin.jsx';
-import FlashQueue from './FlashQueue.jsx';
-import api from '../../api_routes.js';
+import FooterLarge         from './FooterLarge.jsx';
+import FooterSmall         from './FooterSmall.jsx';
+import UserHasRoleMixin    from './UserHasRoleMixin.jsx';
+import FlashQueue          from './FlashQueue.jsx';
+import api                 from '../../api_routes.js';
+import ui                  from '../../ui_routes.js';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -69,7 +70,7 @@ var Scaffold = React.createClass({
 
     return (
       <div className="container oc-page-wrapper">
-        <Navbar brand={<Link to="home"><img src="http://organicity.eu/wp-content/themes/organicity/images/organicity_logo.png"/></Link>}>
+        <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>}>
           <Nav navbar>
             {linksLeft}
           </Nav>

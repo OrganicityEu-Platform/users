@@ -1,4 +1,5 @@
-import React                from 'react';
+import React  from 'react';
+import ui     from '../../ui_routes.js';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -14,7 +15,7 @@ var FooterLarge = React.createClass({
             <span>linkedIn</span>
             <span>youtube</span>
           </div>
-          <img className="oc-footer-large-eu-logo" src={"/organicity-scenario-tool/static/img/logo_eu.png"} />
+          <img className="oc-footer-large-eu-logo" src={ui.asset('static/img/logo_eu.png')} />
         </div>
     );
   }
