@@ -72,7 +72,6 @@ var Signup = React.createClass({
 
     var errorMessage;
     if (this.state.error) {
-      //errorDiv = (<div className="alert alert-warning">{this.state.error}</div>);
       errorMessage = (<ErrorMessage messages={this.state.error} />);
     }
 
