@@ -97,13 +97,13 @@ describe('When signup, the API', function() {
     }
   );
 
-  it('should return 500 INTERNAL_SERVER_ERROR when trying to signup with an email already used',
+  it('should return 422 UNPROCESSABLE when trying to signup with an email already used',
     function(done) {
       var login = {
         email: users[0].local.email,
         password: 'superSecurePassword'
       };
-      inputValidationTestHelper(login, http.INTERNAL_SERVER_ERROR, done);
+      inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
     }
   );
 

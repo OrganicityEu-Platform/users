@@ -46,19 +46,20 @@ var Signup = React.createClass({
       var self = this;
       var url = api.reverse('signup');
       $.ajax(url, {
-        error: (jqXHR, textStatus, errorThrown) => {
+        error: (xhr, textStatus, errorThrown) => {
           this.loaded();
-          if (jqXHR.status === 500) {
-            self.flashOnAjaxError(url, 'Error signing up')(jqXHR, textStatus, errorThrown);
+          var error = JSON.parse(xhr.responseText);
+          if (xhr.status === 422) {
+            this.state.error = error.message;
+            this.setState(this.state);
           } else {
-            self.state.error = 'Error signing up: ' + textStatus;
-            self.setState(this.state);
+            this.flashOnAjaxError(xhr, textStatus, errorThrown);
           }
         },
         success: (currentUser) => {
           this.loaded();
-          self.props.onLogin(currentUser);
-          self.transitionTo(ui.route('profile'));
+          this.props.onLogin(currentUser);
+          this.transitionTo(ui.route('profile'));
         },
         method: 'POST',
         data: {

@@ -55,22 +55,22 @@ Information about the current logged in user, used for rendering the UI.
 
 ```
 {
-  uuid   : {type: String, required: true},
-  name   : String,
-  roles  : [String],
-  gender : String
+  uuid   : {type: String, required: true},  // Optional
+  name   : String,                          // Optional
+  roles  : [String],                        // Optional
+  gender : String,                          // Optional
+  local : { email : String }                // Optional added, if it is a local account
 }
 ```
 
-### Signup
+### Signup and Login
 
 User input on signup form
 
 ```
 {
   email           : {type: Email, required: true},
-  password        : {type: String, required: true},
-  password_repeat : {type: String, required: true}
+  password        : {type: String, required: true}
 }
 ```
 
@@ -134,7 +134,7 @@ Client REST API
   </tr>
 </table>
 
-### Login-related
+### Logout
 
 <table>
   <tr>
@@ -150,6 +150,8 @@ Client REST API
     <td>204 OK</td>
   </tr>
 </table>
+
+### Local Login
 
 <table>
   <tr>
@@ -167,8 +169,10 @@ Client REST API
   <tr>
     <td>Response Codes</td>
     <td>
+      400 Bad Request - if body is malformed<br/>
       422 Unprocessable Entity - Email address and/or password unknown<br/>
-      200 OK - if successful
+      200 OK - if successful<br/>
+      500 Internat Server error - if unknown error<br/>
     </td>
   </tr>
 </table>
@@ -196,8 +200,9 @@ Client REST API
     <td>Response Codes</td>
     <td>
       400 Bad Request - if body is malformed or e.g., passwords do not match<br/>
-      409 Conflict - if user with given email already exists<br/>
-      200 OK - if successful
+      422 Unprocessable Entity - if user with given email already exists<br/>
+      200 OK - if successful<br/>
+      500 Internat Server error - if unknown error<br/>
     </td>
   </tr>
 </table>

@@ -40,13 +40,13 @@ var LocalLogin = React.createClass({
     var self = this;
     this.loading();
     $.ajax(api.reverse('local-login'), {
-      error: (jqXHR, textStatus, errorThrown) => {
+      error: (xhr, textStatus, errorThrown) => {
         this.loaded();
-        if (jqXHR.status === 422) {
+        if (xhr.status === 422) {
           self.state.error = 'Error logging in: username and/or password unknown';
           self.setState(this.state);
         } else {
-          self.flashOnAjaxError(jqXHR, textStatus, errorThrown);
+          self.flashOnAjaxError(xhr, textStatus, errorThrown);
         }
       },
       success: (currentUser) => {

@@ -30,14 +30,23 @@ module.exports = function(router, passport) {
   });
 
   // process the login form
-  router.post(api.route('local-login'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
+  router.post(
+    api.route('local-login'),[validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-login', function(err, user, info) {
         if (err) {
           return next(err);
         }
+
         if (!user) {
-          return res.status(422).send('Email address and/or password unknown');
+          if (!info || !info.message) {
+            return res.status(500).json({message: 'Local login failed due to an unknown error'});
+          }
+          // Here we log the `real` error
+          console.log('Login failure: ', info);
+          // Here we return a `generic` errior
+          return res.status(422).json({message: 'Email address and/or password unknown'});
         }
+
         req.logIn(user, function(err) {
           if (err) {
             return next(err);
@@ -54,13 +63,20 @@ module.exports = function(router, passport) {
   // process the signup form
   router.post(api.route('signup'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-signup', function(err, user, info) {
+        console.log('foo');
         if (err) {
+          console.log('foo2');
           return next(err);
         }
+
         if (!user) {
-          console.error('Signup failed due to unknown error');
-          return res.status(500).send('Signup failed');
+          if (!info || !info.message) {
+            return res.status(500).json({message: 'Signup failed due to an unknown error'});
+          }
+          return res.status(422).json(info);
+
         }
+
         req.logIn(user, function(err) {
           if (err) {
             return next(err);
