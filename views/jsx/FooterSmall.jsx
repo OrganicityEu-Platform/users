@@ -7,9 +7,9 @@ var FooterSmall = React.createClass({
   render: function() {
     return (
         <div className="row oc-footer-small">
-          <div className="col-md-4">@ OrganiCity 2015</div>
-          <div className="col-md-4">VISIT ORGANICITY.ORG TO FIND OUT MORE</div>
-          <div className="col-md-4">Contact us</div>
+          <div className="col-md-3">&copy; OrganiCity 2015</div>
+          <div className="col-md-6">VISIT ORGANICITY.ORG TO FIND OUT MORE</div>
+          <div className="col-md-3">Contact us</div>
         </div>
     );
   }
