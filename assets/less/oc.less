@@ -31,40 +31,23 @@ input[type="submit"] {
   .btn-primary;
 }
 
-.scenarioListSearchForm {
-  .form-inline;
-}
-
-.scenarioListTable {
-  .ocTable;
-}
-
-.scenarioTableView {
-  .ocTable;
-}
+/*
+ * Sysinfo
+ */
 
 .sysinfo table {
   .ocTable;
 }
+
+/*
+ * Flash message
+ */
 
 .flash-queue {
   font-family: Helvetica Neue, Helvetica, Arial;
   font-size: 12px;
 }
 
-.scenarioTableView {
-  .ocTable;
-}
-
-.scenarioEditButton, .userEditButton {
-  .btn;
-  .btn-default;
-}
-
-.scenarioDeleteButton, .userDeleteButton {
-  .btn;
-  .btn-danger;
-}
 
 @media only screen and (max-width: 420px) {
   .flash-queue {
@@ -115,6 +98,36 @@ input[type="submit"] {
   overflow: hidden;
 }
 
+/*
+ * Scenarios
+ */
+
+.scenarioListSearchForm {
+  .form-inline;
+}
+
+.scenarioListTable {
+  .ocTable;
+}
+
+.scenarioTableView {
+  .ocTable;
+}
+
+.scenarioTableView {
+  .ocTable;
+}
+
+.scenarioEditButton, .userEditButton {
+  .btn;
+  .btn-default;
+}
+
+.scenarioDeleteButton, .userDeleteButton {
+  .btn;
+  .btn-danger;
+}
+
 .scenario-thumbnails {
  -moz-column-width: 20em;
  -webkit-column-width: 20em;
@@ -149,48 +162,7 @@ input[type="submit"] {
 
 }
 
-.navbar {
-  background-color: @oc-magenta;
-  border: 0;
-  border-radius: 0;
-}
-
-.navbar-create-btn {
-
-}
-
-.navbar-explore-btn {
-
-}
-
-.navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
-    color: @oc-grey;
-}
-
-.navbar-default .navbar-brand {
-    color: @oc-grey;
-}
-
-.navbar-nav {
-
-}
-
-.nav-logout-btn, .nav-login-btn, .nav-signup-btn {
-
-}
-
 .scenario-article, #disqus_thread {
-  background-color: @oc-white;
-}
-
-.navbar-brand img {
-  width: 80px;
-  position: relative;
-  top: -10px;
-}
-
-.oc-footer-large {
-  text-align: center;
   background-color: @oc-white;
 }
 
@@ -234,6 +206,62 @@ input[type="submit"] {
   color: #444;
 }
 
+/*
+ * Navigation
+ */
+
+.navbar {
+  background-color: @oc-magenta;
+  border: 0;
+  border-radius: 0;
+}
+
+.navbar-create-btn {
+
+}
+
+.navbar-explore-btn {
+
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
+    color: @oc-grey;
+}
+
+.navbar-default .navbar-brand {
+    color: @oc-grey;
+}
+
+.navbar-nav {
+
+}
+
+.nav-logout-btn, .nav-login-btn, .nav-signup-btn {
+
+}
+
+.navbar-brand img {
+  width: 80px;
+  position: relative;
+  top: -10px;
+}
+
+.navbar-default, .navbar-collapse {
+    border-top: none;
+    box-shadow: none;
+    text-align: center;
+}
+
+/*
+ * Footer
+ */
+
+.oc-footer-large {
+  text-align: center;
+  background-color: @oc-white;
+}
+
+
 .oc-footer-large-eu-logo {
   margin: 75px 0px 38px 0px;
   width: 172px;
@@ -255,20 +283,8 @@ input[type="submit"] {
   color: @oc-grey;
 }
 
-ul.nav.navbar-nav {
-  float: none;
-  display: inline-block;
-  margin-bottom: -6px;
-}
-
 .oc-footer-large-social-links {
   margin-top: 25px;
-}
-
-.navbar-default, .navbar-collapse {
-    border-top: none;
-    box-shadow: none;
-    text-align: center;
 }
 
 .oc-footers {
@@ -276,6 +292,10 @@ ul.nav.navbar-nav {
   display: table-footer-group;
   height: 1px;
 }
+
+/*
+ * Evaluation
+ */
 
 .oc-evaluation-div {
   .make-sm-column(12);
