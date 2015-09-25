@@ -19,11 +19,19 @@ import UserJoi      from '../../../models/joi/user.js';
 import ErrorMessage from '../ErrorMessage.jsx';
 
 var Profile = React.createClass({
-  mixins: [FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {};
   },
   componentDidMount: function() {
+
+    if(sessionStorage.getItem('url')) {
+      var o = JSON.parse(sessionStorage.getItem('url'));
+      console.log(o)
+      sessionStorage.removeItem('url')
+      this.transitionTo(o.to, o.params, o.query);
+      return;
+    }
 
     var url = api.reverse('currentUser');
     if (this.props.uuid) {

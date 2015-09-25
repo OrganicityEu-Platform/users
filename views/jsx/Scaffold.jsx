@@ -54,8 +54,8 @@ var Scaffold = React.createClass({
     var linksRight = [];
 
     linksLeft.push(<NavItemLink to="scenarioList">EXPLORE</NavItemLink>);
+    linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
     if (this.userIsLoggedIn()) {
-      linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
       if (this.userHasRole('admin')) {
         linksRight.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
         linksRight.push(<NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>);

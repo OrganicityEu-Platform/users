@@ -3,6 +3,7 @@ import React             from 'react';
 import FlashQueue        from '../FlashQueue.jsx';
 import TagField          from '../form-components/TagField.jsx';
 import api               from '../../../api_routes.js';
+import ui                from '../../../ui_routes.js';
 import Router            from 'react-router';
 import ScenarioTableView from './ScenarioTableView.jsx';
 
@@ -12,15 +13,19 @@ import strategy          from 'joi-validation-strategy';
 import ScenarioJoi       from '../../../models/joi/scenario.js';
 import ErrorMessage      from '../ErrorMessage.jsx';
 
+import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
+
+
 var ScenarioEditView = React.createClass({
-  mixins : [Router.Navigation, FlashQueue.Mixin],
+  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
   lastStep  : 5,
   editMode: function() {
     return this.props.params.uuid;
   },
   routeName: function() {
-    return this.editMode() ? 'scenarioEdit' : 'scenarioCreate';
+    var routeName = this.getRoutes()[this.getRoutes().length-1].name;
+    return routeName;
   },
   componentWillMount : function() {
     if (!this.props.query.step) {
@@ -47,6 +52,17 @@ var ScenarioEditView = React.createClass({
     };
   },
   componentDidMount() {
+    if (!this.userIsLoggedIn()) {
+        var src = {
+          to : this.routeName(),
+          params : this.getParams(),
+          query : this.props.query
+        };
+        sessionStorage.setItem('url', JSON.stringify(src));
+        this.transitionTo('login');
+        return;
+    }
+
     if (this.editMode()) {
       var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
       $.getJSON(url, (scenario) => {

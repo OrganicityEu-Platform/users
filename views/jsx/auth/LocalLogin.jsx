@@ -14,10 +14,9 @@ import ErrorMessage from '../ErrorMessage.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
-var Navigation = Router.Navigation;
 
 var LocalLogin = React.createClass({
-  mixins: [Navigation, UserIsLoggedInMixin, FlashQueue.Mixin, LoadingMixin],
+  mixins: [Router.Navigation, UserIsLoggedInMixin, FlashQueue.Mixin, LoadingMixin],
   getInitialState : function() {
     return {
       email : '',
