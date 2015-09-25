@@ -339,7 +339,7 @@ and 'limit' parameters:
   <tr>
     <td>Request</td>
     <td>
-      GET /api/v1/scenarios/related/:id - returns the latest version<br/>
+      GET /api/v1/scenarios/related/:id - returns similar scenarios<br/>
     </td>
   </tr>
   <tr>
@@ -351,6 +351,35 @@ and 'limit' parameters:
     <td>
       200 OK - if successful<br/>
       404 NOT FOUND - if not found
+    </td>
+  </tr>
+</table>
+
+#### Get Disqus Statistics of Senario
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>
+      returns a JSON object with scenario's statistics 
+    </td>
+  </tr>
+  <tr>
+    <td>Request</td>
+    <td>
+      GET /api/v1/scenarios/discus_statistics/:id - returns disqus statistics<br/>
+    </td>
+  </tr>
+  <tr>
+    <td>Response Body</td>
+    <td>{"likes": XYZ,"dislikes":XYZ,"comments":XYZ}</td>
+  </tr>
+  <tr>
+    <td>Response Codes</td>
+    <td>
+      200 OK - if successful<br/>
+      404 NOT FOUND - if scenario not found
+      204 NO CONTENT - if disqus failed to deliver the stats
     </td>
   </tr>
 </table>

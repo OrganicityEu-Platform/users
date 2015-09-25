@@ -5,10 +5,12 @@ var math       = require('mathjs');
 var crypto     = require('crypto'); // used to generate uuid
 var mongodb    = require('mongodb');
 var HttpStatus = require('http-status');
+var RestClient = require('node-rest-client').Client;
 var Scenario   = require('../../../models/schema/scenario.js');
-
 var validate     = require('express-validation');
 var ScenarioJoi  = require('../../../models/joi/scenario.js');
+
+var configAuth = require('../../../config/auth.js');
 
 /**
  * Used to project all fields in the scenario collection documents to the fields that the user is
@@ -491,6 +493,60 @@ module.exports = function(router, passport) {
                 }
               }
             );
+          }
+        );
+      } catch (err) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json('Error' + err);
+      }
+    }
+  });
+
+  router.get(api.route('discus_statistics'), function(req, res) {
+    // find by uuid:
+    if (isEmptyObject(req.query)) {
+      var params = {
+        filter: {},
+        sort: {},
+        skip: req.query.skip ? parseInt(req.query.skip) : undefined,
+        limit: req.query.limit ? parseInt(req.query.limit) : undefined
+      };
+      var params2 = JSON.parse(JSON.stringify(params));
+      params2.filter.uuid = req.params.uuid;
+      params2.sort.version = -1; // overrides sorting query parameters
+      try {
+        Scenario.find(params2.filter, scenarioProjection).sort(params2.sort).limit(1).exec(
+          function(err, s) {
+            if (err) {
+              res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+            }
+            if (s.length === 0) {
+              res.status(HttpStatus.NOT_FOUND).send('The input scenario not found.');
+              return;
+            }
+            args = {
+              parameters: {
+                'thread:ident': s[0].uuid,
+                'forum': 'organicity',
+                'api_secret': configAuth.disqusAuth.clientSecret
+              },
+            };
+            console.log(args);
+            client = new RestClient();
+            client.get('http://disqus.com/api/3.0/threads/details.json', args, function(data, response) {
+              var stats = {
+                likes: undefined,
+                dislikes: undefined,
+                comments: undefined
+              };
+              if (response.statusCode === HttpStatus.OK) {
+                stats.likes = data.response.likes;
+                stats.dislikes = data.response.dislikes;
+                stats.comments = data.response.posts;
+                return res.status(HttpStatus.OK).json(stats);
+              } else {
+                return res.status(HttpStatus.NO_CONTENT).json(stats);
+              }
+            });
           }
         );
       } catch (err) {

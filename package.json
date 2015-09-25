@@ -92,6 +92,7 @@
     "passport-disqus": "^0.1.3",
 	"react-disqus-thread": "^0.2.2",
     "react-validation-mixin": "^5.0.10",
-    "url-assembler": "^1.2.4"
+    "url-assembler": "^1.2.4",
+    "node-rest-client": "^1.5.1"
   }
 }

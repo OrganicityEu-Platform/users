@@ -57,6 +57,7 @@ var api_routes = {
   'sectors_list'         : prefixes.sectors + '/?',
   'devices_list'         : prefixes.devices + '/?',
   'related_by_uuid'      : prefixes.scenarios + '/related/:uuid/?',
+  'discus_statistics'      : prefixes.scenarios + '/discus_statistics/:uuid/?',
 
   // erroring resource (for testing)
   'error'                : prefixes.error + '/?',
