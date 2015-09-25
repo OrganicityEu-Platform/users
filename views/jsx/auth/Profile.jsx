@@ -7,6 +7,8 @@ import FlashQueue       from '../FlashQueue.jsx';
 import LoadingMixin     from '../LoadingMixin.jsx';
 import TagField         from '../form-components/TagField.jsx';
 
+import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
+
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -17,117 +19,188 @@ import UserJoi      from '../../../models/joi/user.js';
 import ErrorMessage from '../ErrorMessage.jsx';
 
 var Profile = React.createClass({
-  mixins: [FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin],
+  mixins: [FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
-    var state = {
-      dirty   : false,
-      name    : '?',
-      gender  : '?',
-      roles   : [],
-      password : '',
-      password_repeat : ''
-    };
-    return state;
+    return {};
   },
   componentDidMount: function() {
-    this.loading();
+
     var url = api.reverse('currentUser');
+    if (this.props.uuid) {
+      url = api.reverse('user_by_uuid', { uuid : this.props.uuid });
+    }
+
+    this.loading();
     $.ajax(url, {
       dataType: 'json',
-      error: this.loadingError(url, 'Error retrieving current user'),
+      error: (xhr) => {
+        if (xhr.status = 403) {
+          this.loaded();
+        } else {
+          this.loadingError(url, 'Error retrieving current user');
+        }
+      },
       success : (profile) => {
         var e = {};
         e.name = (profile.name) ? profile.name : '';
         e.gender = (profile.gender) ? profile.gender : '';
         e.roles = (profile.roles) ? profile.roles : [];
-        e.password = '';
-        e.password_repeat = '';
+        if (profile.local) {
+          e.local = profile.local;
+        }
         e.uuid = profile.uuid;
         e.dirty = false;
-        this.loaded(e);
+
+        this.loaded({profile: e});
         this.props.validate();
       }
     });
   },
   handleChangedName: function(evt) {
     this.state.dirty = true;
-    this.state.name = evt.target.value;
+    this.state.profile.name = evt.target.value;
     this.setState(this.state);
     this.props.validate();
   },
   handleChangedGender: function(evt) {
     this.state.dirty = true;
-    this.state.gender = evt.target.value;
+    this.state.profile.gender = evt.target.value;
     this.setState(this.state);
     this.props.validate();
   },
   handleChangedRoles: function(roles) {
     this.state.dirty = true;
-    this.state.roles = roles;
+    this.state.profile.roles = roles;
     this.setState(this.state);
     this.props.validate();
   },
   handleChangedPassword : function(evt) {
     this.state.dirty = true;
-    this.state.password = evt.target.value;
+    this.state.profile.password = evt.target.value;
     this.setState(this.state);
     this.props.validate();
   },
   handleChangedPasswordRepeat : function(evt) {
     this.state.dirty = true;
-    this.state.password_repeat = evt.target.value;
+    this.state.profile.password_repeat = evt.target.value;
     this.setState(this.state);
     this.props.validate();
   },
-  handleSubmit: function(evt) {
-    evt.preventDefault();
+  getProfile : function() {
     var profile = {
-      name: this.state.name,
-      gender: this.state.gender
+      name: this.state.profile.name,
+      gender: this.state.profile.gender
     };
 
-    if (this.state.password.length > 0) {
-      profile.local = {
-        password: this.state.password
-      };
+    if(this.state.profile.local) {
+      profile.local = {};
+    }
+
+    if (this.state.profile.password) {
+      profile.local.password = this.state.profile.password;
     }
 
     // patch would be forbidden if we try to change roles and we're not admin
-    if (this.userHasRole('admin')) {
-      profile.roles = this.state.roles;
+    if (this.userHasRole('admin') && this.state.profile.roles) {
+      profile.roles = this.state.profile.roles;
     }
 
-    console.log('Profile:', profile);
+    return profile;
+  },
+  handleSubmit: function(evt) {
+    evt.preventDefault();
 
     this.loading();
-    var url = api.reverse('user_by_uuid', { uuid : this.state.uuid});
-
+    var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
     $.ajax(url, {
       type : 'PATCH',
-      data : JSON.stringify(profile),
+      data : JSON.stringify(this.getProfile()),
       contentType : 'application/json',
       error : this.loadingError(url, 'Error updating user profile'),
       success : () => {
         this.loaded({ dirty : false });
-        this.flash('success', 'Succesfully updated your profile');
+        this.flash('success', 'Profile succesfully updated!');
       }
     });
 
   },
   render: function() {
 
-    /*
-    console.log('##############################################################');
-    console.log('Errors:', this.props.errors);
-    console.log('Valid:',  this.props.isValid());
-    console.log('Dirty:',  this.state.dirty);
-    */
+    //console.log("Render Profile with state ", this.state);
+
+    if (!this.userIsLoggedIn()) {
+      return (
+        <div>
+          You are not logged in!
+        </div>
+      );
+    }
+
+    if (!this.state.profile) {
+      return (
+        <div>
+          Loading!
+        </div>
+      );
+    }
+
+    var localAccount = '';
+    if (this.state.profile.local) {
+      localAccount = (
+        <div>
+          <h4>Local account</h4>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="email">Email</label>
+            <div className="col-sm-10">
+               <input type="text"
+                className="form-control"
+                name="email"
+                disabled="disabled"
+                value={this.state.profile.local.email} />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password">Password</label>
+            <div className="col-sm-10">
+               <input type="password"
+                className="form-control"
+                name="password"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPassword} />
+              <ErrorMessage messages={this.props.getValidationMessages('local.password')} />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
+            <div className="col-sm-10">
+              <input type="password"
+                className="form-control"
+                name="password_repeat"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPasswordRepeat} />
+              <ErrorMessage messages={this.props.getValidationMessages('local.password_repeat')} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+  /*
+      console.log('##############################################################');
+      console.log('Errors:', this.props.errors);
+      console.log('getValidationMessages(name)           ', this.props.getValidationMessages('name'));
+      console.log('getValidationMessages(gender)         ', this.props.getValidationMessages('gender'));
+      console.log('getValidationMessages(roles)          ', this.props.getValidationMessages('roles'));
+      console.log('getValidationMessages(email)          ', this.props.getValidationMessages('email'));
+      console.log('getValidationMessages(local.password)       ', this.props.getValidationMessages('local.password'));
+      console.log('getValidationMessages(local.password_repeat)', this.props.getValidationMessages('local.password_repeat'));
+      console.log('Valid:',  this.props.isValid());
+      console.log('##############################################################');
+   */
 
     return (
       <div className="row well">
         <form className="form-horizontal">
-          {/* Remove this, as soon ORG-182 is fixed (see below) */}
-          <ErrorMessage messages={this.props.getValidationMessages()} />
           <div className="form-group">
             <label className="control-label col-sm-2" htmlFor="profile-name">Name</label>
             <div className="col-sm-10">
@@ -136,7 +209,7 @@ var Profile = React.createClass({
                       id="profile-name"
                       disabled={this.isLoading() ? 'disabled' : ''}
                       placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
-                      value={this.state.name}
+                      value={this.state.profile.name}
                       onChange={this.handleChangedName} />
               <ErrorMessage messages={this.props.getValidationMessages('name')} />
             </div>
@@ -149,42 +222,16 @@ var Profile = React.createClass({
                 id="profile-gender-f"
                 value="f"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.gender === 'f'}
+                checked={this.state.profile.gender === 'f'}
                 onChange={this.handleChangedGender} /> Female<br/>
               <input type="radio"
                 name="gender"
                 id="profile-gender-m"
                 value="m"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.gender === 'm'}
+                checked={this.state.profile.gender === 'm'}
                 onChange={this.handleChangedGender} /> Male
               <ErrorMessage messages={this.props.getValidationMessages('gender')} />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password">Password</label>
-            <div className="col-sm-10">
-               <input type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPassword} />
-              <ErrorMessage messages={this.props.getValidationMessages('password')} />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
-            <div className="col-sm-10">
-              <input type="password"
-                className="form-control"
-                name="password_repeat"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                value={this.state.password_repeat}
-                onChange={this.handleChangedPasswordRepeat} />
-              <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
             </div>
           </div>
 
@@ -194,13 +241,15 @@ var Profile = React.createClass({
               <TagField
                 disabled={this.userHasRole('admin') ? false : true}
                 key={this.state.uuid + '_roles'}
-                tags={this.state.roles}
+                tags={this.state.profile.roles}
                 loading={this.isLoading()}
                 onChange={this.handleChangedRoles} />
-              {/* This should work, as soon ORG-182 is fixed (see above) */}
               <ErrorMessage messages={this.props.getValidationMessages('roles')} />
             </div>
           </div>
+
+          {localAccount}
+
           <div className="form-group">
             <div className="col-sm-2"></div>
             <div className="col-sm-10">
@@ -216,20 +265,13 @@ var Profile = React.createClass({
     );
   },
   getValidatorData: function() {
+    var profile = this.getProfile();
 
-    // Issue
-    // (a) Array validation fails  -> no roles!
-    // (b) Nested validation fails -> password not nested to `local`
-    // @see: https://github.com/jurassix/react-validation-mixin/issues/38
+    if(profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
+      profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
+    }
 
-    var e = {
-      name : this.state.name,
-      gender : this.state.gender,
-      //roles : this.state.roles,
-      password : this.state.password,
-      password_repeat : this.state.password_repeat
-    };
-    return e;
+    return profile;
   },
   validatorTypes: UserJoi.profileClient
 });

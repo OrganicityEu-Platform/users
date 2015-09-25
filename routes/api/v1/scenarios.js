@@ -7,6 +7,8 @@ var mongodb    = require('mongodb');
 var HttpStatus = require('http-status');
 var RestClient = require('node-rest-client').Client;
 var Scenario   = require('../../../models/schema/scenario.js');
+var uuid       = require('node-uuid');
+
 var validate     = require('express-validation');
 var ScenarioJoi  = require('../../../models/joi/scenario.js');
 
@@ -284,7 +286,7 @@ module.exports = function(router, passport) {
 
     scenario.version = 1;
     // generate unique grouping id
-    scenario.uuid = crypto.randomBytes(10).toString('hex');
+    scenario.uuid = uuid.v4();
     scenario.creator = req.user.uuid;
     // save the scenario
     scenario.save(function(err) {

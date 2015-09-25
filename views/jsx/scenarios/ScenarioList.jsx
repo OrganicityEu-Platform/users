@@ -1,12 +1,13 @@
-import $                from 'jquery';
-import React            from 'react';
-import FlashQueue       from '../FlashQueue.jsx';
-import LoadingMixin     from '../LoadingMixin.jsx';
-import ScenarioListItem from './ScenarioListItem.jsx';
-import Router           from 'react-router';
-import TagField         from '../form-components/TagField.jsx';
-import api              from '../../../api_routes.js';
-import ui               from '../../../ui_routes.js';
+import $                  from 'jquery';
+import React              from 'react';
+import FlashQueue         from '../FlashQueue.jsx';
+import LoadingMixin       from '../LoadingMixin.jsx';
+import ScenarioListItem   from './ScenarioListItem.jsx';
+import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
+import Router             from 'react-router';
+import TagField           from '../form-components/TagField.jsx';
+import api                from '../../../api_routes.js';
+import ui                 from '../../../ui_routes.js';
 
 var Link = Router.Link;
 
@@ -99,7 +100,8 @@ var ScenarioList = React.createClass({
   },
   render: function() {
     return (
-      <div className="scenarioList">
+
+      <div className="container scenarioList">
         <div className="row">
           <div className="col-md-12 well">
             <h3>Search and Filter</h3>
@@ -149,59 +151,11 @@ var ScenarioList = React.createClass({
             </form>
           </div>
         </div>
-        <div className="row">
-          <table className="scenarioListTable">
-            <thead>
-              <tr>
-                <th>
-                  <Link to={ui.route('scenarioList')}
-                    params={this.props.params}
-                    query={$.extend(
-                      {},
-                      this.props.query,
-                      { sortBy : 'title' },
-                      { sortDir : (this.state.sortDir == 'asc' ? 'desc' : 'asc') }
-                    )}>Title</Link></th>
-                <th>Summary</th>
-                <th>
-                  <Link to={ui.route('scenarioList')}
-                    params={this.props.params}
-                    query={$.extend(
-                      {},
-                      this.props.query,
-                      { sortBy : 'timestamp' },
-                      { sortDir : (this.state.sortDir == 'asc' ? 'desc' : 'asc') }
-                    )}>Last Updated</Link>
-                  </th>
-                <th>Creator</th>
-                <th>Version</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {(() => {
-                if (this.isLoading() && !this.state.refresh) {
-                  return (
-                    <tr>
-                      <td colSpan="6">Loading...</td>
-                    </tr>
-                  );
-                }
-                if (this.state.scenarios.length === 0) {
-                  return (
-                    <tr>
-                      <td colSpan="6">No scenarios found...</td>
-                    </tr>
-                  );
-                }
-              })()}
+        <div className="row scenario-thumbnails">
               {
-                this.state.scenarios.map((scenario) => <ScenarioListItem key={scenario.uuid} scenario={scenario}
+                this.state.scenarios.map((scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario}
                   onChange={this.reload}/>)
               }
-            </tbody>
-          </table>
         </div>
       </div>
     );

@@ -1,5 +1,4 @@
 var Questionnaire = require('../models/schema/questionnaire.js');
-var Question      = require('../models/schema/question.js');
 var Promise       = require('promise');
 var moment        = require('moment');
 var fs            = require('fs');

@@ -8,14 +8,9 @@ module.exports = function(router, passport) {
 
   router.get(api.route('currentUser'), function(req, res) {
     if (req.user) {
-      res.json({
-        uuid : req.user.uuid,
-        name : req.user.name,
-        roles : req.user.roles,
-        gender : req.user.gender
-      });
+      res.json(req.user);
     } else {
-      res.status(204).send();
+      res.status(403).send();
     }
   });
 

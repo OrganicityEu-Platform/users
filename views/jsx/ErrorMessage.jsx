@@ -7,9 +7,17 @@ import React from 'react';
  */
 var ErrorMessage = React.createClass({
   render: function() {
-    if (!this.props.messages) {
+
+    if (!this.props.messages || this.props.messages.length === 0) {
       return null;
     }
+
+    if(typeof this.props.messages === 'string') {
+      return (
+         <div>{this.renderHelpText(this.props.messages)}</div>
+      )
+    }
+
     return (
       <div>{this.props.messages.map(this.renderHelpText)}</div>
     );

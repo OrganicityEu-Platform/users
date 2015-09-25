@@ -11,7 +11,6 @@ var schema = mongoose.Schema({
   submitted : { type: Boolean, default: false   }, // set to true once the user presses submit
   answers   : [{
     question : {
-      uuid   : { type: String,   required: true },
       tech   : { type: Boolean,  required: true },
       text   : { type: String,   required: true },
       values : [{  // possible values the user can choose from
@@ -20,8 +19,8 @@ var schema = mongoose.Schema({
       }]
     }, // the question that was answered (copy of question data type)
     answer   : {
-      value  : { type: String, required: true }, // the value that was picked as answer by the user, might be unanswered
-      weight : { type: Number, required: true }  // the weight of the value picked
+      value  : { type: String/*, required: true*/ }, // the value that was picked as answer by the user, might be unanswered
+      weight : { type: Number/*, required: true*/ }  // the weight of the value picked
     }
   }],
   comment   : { type: String, required: false   }  // user can optionally write comments if he feels it necessary

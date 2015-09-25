@@ -1,12 +1,9 @@
 var Joi = require('joi');
 
 var QuestionnaireUpdate = {
-  version     : Joi.number().required(),
-  author      : Joi.string().required(),
   description : Joi.string(),
   explanation : Joi.string().required(),
   questions   : Joi.array().items(Joi.object().keys({
-    uuid   : Joi.string().required(),
     tech   : Joi.boolean().required(),
     text   : Joi.string().required(),
     values : Joi.array().items(Joi.object().keys({

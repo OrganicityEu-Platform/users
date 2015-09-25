@@ -10,39 +10,18 @@ module.exports = function(router, passport) {
   var UserJoi       = require('../../../models/joi/user.js');
 
   // ###############################################################
-  // Schema-based validation
-  // ###############################################################
-
-  var UserSchemaPatch = {
-    type : Object,
-    unknownKeys: 'remove',
-    schema : {
-      'roles': {
-        type: Array,
-        required: false,
-        schema: {
-          type: String
-        }
-      },
-      'name': { type: String, required: false },
-      'gender': { type: String, required: false },
-      'local' : {
-        type : Object,
-        schema : {
-          'email' : { type: String, required: false },
-          'password' : { type: String, required: false }
-        }
-      }
-    }
-  };
-
-  // ###############################################################
   // Routes
   // ###############################################################
 
+  var excludeFields = {
+    '_id'            : 0,
+    '__v'            : 0,
+    'local.password' : 0
+  };
+
   router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
 
-    User.find(function(err, users) {
+    User.find({}, excludeFields, function(err, users) {
       if (err) {
         return next(err);
       } else {
@@ -60,7 +39,7 @@ module.exports = function(router, passport) {
 
   var findUser = function(uuid, res, next, success) {
     var err;
-    User.findOne({ 'uuid' :  uuid }, function(err, user) {
+    User.findOne({ 'uuid' :  uuid }, excludeFields, function(err, user) {
       if (user === null) {
         err = new Error('User ' + uuid + ' not found');
         err.status = 404;
@@ -110,7 +89,7 @@ module.exports = function(router, passport) {
       }
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-        if (req.body.local && req.body.local.password.length > 0) {
+        if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
           user.local.password = user.generateHash(req.body.local.password);
         }
 

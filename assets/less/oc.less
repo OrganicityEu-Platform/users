@@ -1,5 +1,20 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+@oc-magenta: rgb(238,  62, 110);
+@oc-grey:    rgb(240, 242, 245);
+@oc-white:   rgb(254, 254, 250);
+
+body {
+  background-color: @oc-grey;
+  height: 100%;
+  overflow: scroll;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 .ocTable {
   .table;
   .table-striped;
@@ -98,4 +113,197 @@ input[type="submit"] {
 .flashfade-leave.flashfade-leave-active {
   max-height: 0;
   overflow: hidden;
+}
+
+.scenario-thumbnails {
+ -moz-column-width: 20em;
+ -webkit-column-width: 20em;
+ -moz-column-gap: 1em;
+ -webkit-column-gap:1em;
+
+}
+
+.scenario-thumbnails > .col-md-4 {
+ display: inline-block;
+ padding: .33rem;
+ width: 100%;
+ float: none;
+ color: #444;
+}
+
+.scenario-thumbnail {
+  position:relative;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.scenario-thumbnail:hover {
+  cursor: pointer; cursor: hand;
+}
+
+.scenario-thumbnail-location {
+  margin-left: 30px;
+}
+
+.scenario-thumbnail-title {
+
+}
+
+.navbar {
+  background-color: @oc-magenta;
+  border: 0;
+  border-radius: 0;
+}
+
+.navbar-create-btn {
+
+}
+
+.navbar-explore-btn {
+
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
+    color: @oc-grey;
+}
+
+.navbar-default .navbar-brand {
+    color: @oc-grey;
+}
+
+.navbar-nav {
+
+}
+
+.nav-logout-btn, .nav-login-btn, .nav-signup-btn {
+
+}
+
+.scenario-article, #disqus_thread {
+  background-color: @oc-white;
+}
+
+.navbar-brand img {
+  width: 80px;
+  position: relative;
+  top: -10px;
+}
+
+.oc-footer-large {
+  text-align: center;
+  background-color: @oc-white;
+}
+
+.scenario-article-header, .scenario-article-narrative, #disqus_thread {
+  padding: 5px 38px 0px 38px;
+}
+
+.scenario-article-narrative {
+  padding-bottom: 15px;
+  font-size: 17px;
+  color: #444;
+}
+
+.scenario-article-summary, .scenario-article-header-meta {
+  margin-top: 25px;
+}
+
+.scenario-article-header-meta {
+  font-size: 17px;
+  color: #7f929c;
+}
+
+.scenario-article-publisher, .scenario-article-badge {
+  margin-right: 86px;
+}
+
+.oc-page-wrapper {
+  display: table;
+  height: 100%;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.scenario-article-summary {
+  font-size: 25px;
+  color: #444;
+}
+
+.scenario-article-title {
+  font-size: 35px;
+  color: #444;
+}
+
+.oc-footer-large-eu-logo {
+  margin: 75px 0px 38px 0px;
+  width: 172px;
+  height: 119px;
+}
+
+.oc-footer-large-follow-link {
+  display: inline-block;
+  margin: 30px 0px 10px 0px;
+  font-size: 30px;
+  color: @oc-magenta;
+}
+
+.oc-footer-small {
+  text-align: center;
+  background-color: @oc-magenta;
+  height: 64px;
+  line-height: 64px;
+  color: @oc-grey;
+}
+
+ul.nav.navbar-nav {
+  float: none;
+  display: inline-block;
+  margin-bottom: -6px;
+}
+
+.oc-footer-large-social-links {
+  margin-top: 25px;
+}
+
+.navbar-default, .navbar-collapse {
+    border-top: none;
+    box-shadow: none;
+    text-align: center;
+}
+
+.oc-footers {
+  margin-top: 20px;
+  display: table-footer-group;
+  height: 1px;
+}
+
+.oc-evaluation-div {
+  .make-sm-column(12);
+  .center-block();
+}
+
+.oc-evaluation-description-div {
+  .row();
+  .make-sm-column(12);
+  font-style: italic;
+}
+
+.oc-evaluation-table-div {
+  table {
+    padding: 5px;
+  }
+  td.oc-evaluation-question {
+
+  }
+  td.oc-evaluation-answer-text {
+    text-align: right;
+  }
+  td.oc-evaluation-answer-select {
+    text-align: center;
+  }
+}
+
+.oc-evaluation-sendbutton-div {
+  .row();
+  .make-sm-column(12);
 }

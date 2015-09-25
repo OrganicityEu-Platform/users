@@ -1,8 +1,8 @@
-var api                 = require('../../../api_routes.js');
-var HttpStatus          = require('http-status');
-var validate            = require('express-validation');
+var api              = require('../../../api_routes.js');
+var HttpStatus       = require('http-status');
+var validate         = require('express-validation');
 var QuestionnaireJoi = require('../../../models/joi/questionnaire.js');
-var Questionnaire       = require('../../../models/schema/questionnaire.js');
+var Questionnaire    = require('../../../models/schema/questionnaire.js');
 
 module.exports = function(router, passport) {
 
@@ -17,7 +17,31 @@ module.exports = function(router, passport) {
           return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
         if (questionnaires.length === 0) {
-          return res.status(HttpStatus.NOT_FOUND).send();
+          return res.status(HttpStatus.OK).send({
+            description : 'Initial description',
+            explanation : 'Initial explanation',
+            questions : [{
+              tech: true,
+              text: 'Hypothetical tech initial question: do you like it?',
+              values: [
+                { value: 'No way!',                   weight: -2 },
+                { value: 'Hmmmm... (sceptical tone)', weight: -1 },
+                { value: 'Well... ok',                weight: 0 },
+                { value: 'Sounds alright',            weight: 1 },
+                { value: 'Hell yeah!',                weight: 2 }
+              ]
+            },{
+              tech: false,
+              text: 'Hypothetical non-tech initial question: do you like it?',
+              values: [
+                { value: 'No way!',                   weight: -2 },
+                { value: 'Hmmmm... (sceptical tone)', weight: -1 },
+                { value: 'Well... ok',                weight: 0 },
+                { value: 'Sounds alright',            weight: 1 },
+                { value: 'Hell yeah!',                weight: 2 }
+              ]
+            }]
+          });
         }
         if (multipleResults) {
           return res.status(HttpStatus.OK).send(questionnaires.map(function(q) { return q.toObject(); }));

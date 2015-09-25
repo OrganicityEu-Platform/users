@@ -70,8 +70,8 @@ describe('When signup, the API', function() {
   it('should return 200 OK when trying to sign up with correct data',
     function(done) {
       var login = {
-        email: "test@test",
-        password: "superSecurePassword"
+        email: 'test@test',
+        password: 'superSecurePassword'
       };
       inputValidationTestHelper(login, http.OK, done);
     }
@@ -80,8 +80,8 @@ describe('When signup, the API', function() {
   it('should return 400 BAD_REQUEST when trying to signup with password to short',
     function(done) {
       var login = {
-        email: "test@test",
-        password: "waste"
+        email: 'test@test',
+        password: 'waste'
       };
       inputValidationTestHelper(login, http.BAD_REQUEST, done);
     }
@@ -90,8 +90,8 @@ describe('When signup, the API', function() {
   it('should return 400 BAD_REQUEST when trying to signup with a non mail',
     function(done) {
       var login = {
-        email: "test",
-        password: "superSecurePassword"
+        email: 'test',
+        password: 'superSecurePassword'
       };
       inputValidationTestHelper(login, http.BAD_REQUEST, done);
     }
@@ -101,25 +101,23 @@ describe('When signup, the API', function() {
     function(done) {
       var login = {
         email: users[0].local.email,
-        password: "superSecurePassword"
+        password: 'superSecurePassword'
       };
       inputValidationTestHelper(login, http.INTERNAL_SERVER_ERROR, done);
     }
   );
 
-/*
-
-  it('should return 200 OK when trying to login with incorrect username',
-    function(done) {
-      var testUser = users[0];
-      var login = {
-        email: users[0].local.email + "x",
-        password: testUser.local.__passwordplain
-      };
-      inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
-    }
-  );
-
+  /*
+    it('should return 200 OK when trying to login with incorrect username',
+      function(done) {
+        var testUser = users[0];
+        var login = {
+          email: users[0].local.email + "x",
+          password: testUser.local.__passwordplain
+        };
+        inputValidationTestHelper(login, http.UNPROCESSABLE_ENTITY, done);
+      }
+    );
   */
 
 });
