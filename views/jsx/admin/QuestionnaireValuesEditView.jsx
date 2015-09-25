@@ -33,7 +33,6 @@ var QuestionnaireValuesEditView = React.createClass({
     }
   },
   render: function() {
-    var self = this;
     var qIndex = this.props.question;
     return (
       <div>

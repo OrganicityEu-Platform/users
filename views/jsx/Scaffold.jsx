@@ -23,15 +23,14 @@ var Scaffold = React.createClass({
   },
   componentDidMount: function() {
 
-    var self = this;
     $.ajax(api.reverse('currentUser'), {
       accepts : 'application/json',
-      success : self.onLogin,
-      error : function(jqXHR, textStatus, errorThrown) {
+      success : this.onLogin,
+      error : (jqXHR, textStatus, errorThrown) => {
         if (jqXHR.status === 422 || jqXHR.status === 403) {
-          self.onLogout();
+          this.onLogout();
         } else {
-          self.flashOnAjaxError(
+          this.flashOnAjaxError(
             api.reverse('currentUser'),
             'Error retrieving current user'
           )(jqXHR, textStatus, errorThrown);

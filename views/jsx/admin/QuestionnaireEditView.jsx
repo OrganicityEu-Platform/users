@@ -63,7 +63,6 @@ var QuestionnaireEditView = React.createClass({
     this.save('PATCH');
   },
   render: function() {
-    var self = this;
     if (this.isLoading()) {
       return (
         <div className="row">
