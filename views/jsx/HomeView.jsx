@@ -4,6 +4,7 @@ import { Nav, Navbar } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import FlashQueue from './FlashQueue.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
+import LoginModal from './LoginModal.jsx';
 import api from '../../api_routes.js';
 
 var Router = require('react-router');
@@ -65,6 +66,7 @@ var HomeView = React.createClass({
               disabled={this.isLoading() ? 'disabled' : ''}
               onClick={this.onClickAjaxError}>Create AJAX error</button>
           </p>
+          <LoginModal/>
         </div>
       </div>
     );

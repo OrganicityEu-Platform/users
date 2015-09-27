@@ -29,9 +29,6 @@ var ScenarioThumbnail = React.createClass({
                   <TimeAgo date={this.props.scenario.timestamp} />
                   : '' }
               </span>
-              <span className="scenario-thumbnail-location">
-                  location
-              </span>
             </span>
               <h3 className="scenario-thumbnail-title">
                 {this.props.scenario.title}

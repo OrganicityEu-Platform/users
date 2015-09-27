@@ -69,7 +69,7 @@ var Scaffold = React.createClass({
     linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
 
     return (
-      <div className="container oc-page-wrapper">
+      <div className="oc-page-wrapper">
         <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>}>
           <Nav navbar>
             {linksLeft}
