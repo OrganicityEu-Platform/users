@@ -171,7 +171,7 @@ var ScenarioEditView = React.createClass({
   step1 : function() {
     this.validatorTypes = ScenarioJoi.step1;
     return (
-      <div>
+      <div className="container well">
         <div className="row" key="scenarioEditStep1">
           <h2>Create your scenario <small>step one</small></h2>
           <h3>Write your short story!</h3>

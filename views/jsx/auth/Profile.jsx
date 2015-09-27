@@ -207,68 +207,70 @@ var Profile = React.createClass({
    */
 
     return (
-      <div className="row well">
-        <form className="form-horizontal">
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="profile-name">Name</label>
-            <div className="col-sm-10">
-              <input  type="text"
-                      className="form-control"
-                      id="profile-name"
-                      disabled={this.isLoading() ? 'disabled' : ''}
-                      placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
-                      value={this.state.profile.name}
-                      onChange={this.handleChangedName} />
-              <ErrorMessage messages={this.props.getValidationMessages('name')} />
+      <div className="container">
+        <div className="row well">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="profile-name">Name</label>
+              <div className="col-sm-10">
+                <input  type="text"
+                        className="form-control"
+                        id="profile-name"
+                        disabled={this.isLoading() ? 'disabled' : ''}
+                        placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
+                        value={this.state.profile.name}
+                        onChange={this.handleChangedName} />
+                <ErrorMessage messages={this.props.getValidationMessages('name')} />
+              </div>
             </div>
-          </div>
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="profile-gender">Gender</label>
-            <div className="col-sm-10">
-              <input type="radio"
-                name="gender"
-                id="profile-gender-f"
-                value="f"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.profile.gender === 'f'}
-                onChange={this.handleChangedGender} /> Female<br/>
-              <input type="radio"
-                name="gender"
-                id="profile-gender-m"
-                value="m"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                checked={this.state.profile.gender === 'm'}
-                onChange={this.handleChangedGender} /> Male
-              <ErrorMessage messages={this.props.getValidationMessages('gender')} />
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="profile-gender">Gender</label>
+              <div className="col-sm-10">
+                <input type="radio"
+                  name="gender"
+                  id="profile-gender-f"
+                  value="f"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  checked={this.state.profile.gender === 'f'}
+                  onChange={this.handleChangedGender} /> Female<br/>
+                <input type="radio"
+                  name="gender"
+                  id="profile-gender-m"
+                  value="m"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  checked={this.state.profile.gender === 'm'}
+                  onChange={this.handleChangedGender} /> Male
+                <ErrorMessage messages={this.props.getValidationMessages('gender')} />
+              </div>
             </div>
-          </div>
 
-          <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
-            <div className="col-sm-10">
-              <TagField
-                disabled={this.userHasRole('admin') ? false : true}
-                key={this.state.uuid + '_roles'}
-                tags={this.state.profile.roles}
-                loading={this.isLoading()}
-                onChange={this.handleChangedRoles} />
-              <ErrorMessage messages={this.props.getValidationMessages('roles')} />
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
+              <div className="col-sm-10">
+                <TagField
+                  disabled={this.userHasRole('admin') ? false : true}
+                  key={this.state.uuid + '_roles'}
+                  tags={this.state.profile.roles}
+                  loading={this.isLoading()}
+                  onChange={this.handleChangedRoles} />
+                <ErrorMessage messages={this.props.getValidationMessages('roles')} />
+              </div>
             </div>
-          </div>
 
-          {localAccount}
+            {localAccount}
 
-          <div className="form-group">
-            <div className="col-sm-2"></div>
-            <div className="col-sm-10">
-              <button id="profile-submit"
-                      type="submit"
-                      disabled={(this.props.isValid() && this.state.dirty) ? '' : 'disabled'}
-                      className="btn btn-default"
-                      onClick={this.handleSubmit}>Save Profile</button>
+            <div className="form-group">
+              <div className="col-sm-2"></div>
+              <div className="col-sm-10">
+                <button id="profile-submit"
+                        type="submit"
+                        disabled={(this.props.isValid() && this.state.dirty) ? '' : 'disabled'}
+                        className="btn btn-default"
+                        onClick={this.handleSubmit}>Save Profile</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     );
   },
