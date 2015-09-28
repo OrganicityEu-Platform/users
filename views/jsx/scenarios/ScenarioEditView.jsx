@@ -12,7 +12,6 @@ import validation        from 'react-validation-mixin';
 import strategy          from 'joi-validation-strategy';
 import ScenarioJoi       from '../../../models/joi/scenario.js';
 import ErrorMessage      from '../ErrorMessage.jsx';
-
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 
 

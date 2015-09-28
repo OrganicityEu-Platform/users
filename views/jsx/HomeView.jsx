@@ -5,6 +5,7 @@ import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstr
 import FlashQueue from './FlashQueue.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
 import LoginModal from './LoginModal.jsx';
+import CreateScenarioModal from './CreateScenarioModal.jsx';
 import api from '../../api_routes.js';
 
 var Router = require('react-router');
@@ -66,6 +67,7 @@ var HomeView = React.createClass({
               onClick={this.onClickAjaxError}>Create AJAX error</button>
           </p>
           <LoginModal/>
+          <CreateScenarioModal/>
         </div>
     );
   }

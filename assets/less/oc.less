@@ -4,6 +4,8 @@
 @oc-grey:    rgb(240, 242, 245);
 @oc-white:   rgb(254, 254, 250);
 
+@oc-clear-sky: rgb(39,111,191);
+
 body {
   background-color: @oc-grey;
   height: 100%;
@@ -217,15 +219,18 @@ input[type="submit"] {
  * Navigation
  */
 
- @media (min-width: 768px) {
-   ul.nav.navbar-nav {
-     float: none;
-     display: inline-block;
-     vertical-align: top;
-   }
-   .navbar-explore-btn {
-     margin-left: 87px;
-   }
+@media (min-width: 768px) {
+  ul.nav.navbar-nav {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .navbar-explore-btn {
+    margin-left: 87px;
+  }
+  .scenario-list {
+    .container;
+  }
  }
 
 .navbar {
@@ -268,6 +273,63 @@ input[type="submit"] {
     border-top: none;
     box-shadow: none;
     text-align: center;
+}
+
+.navbar-toggle {
+  border: none;
+}
+
+/*
+ * Search and filtered search
+ */
+
+#scenarioListSearchFormActors,
+#scenarioListSearchFormSectors,
+#scenarioListSearchFormDevices,
+#scenarioListSearchFormQ {
+  outline: none;
+  border-radius: 0;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  border-bottom: 2px solid @oc-magenta;
+  background-color: #F5F5F5;
+}
+
+#oc-search-btn {
+  background-color: @oc-magenta;
+  //background-color: @oc-clear-sky;
+  border: 0;
+  border-radius: 0 !important;
+  vertical-align: bottom;
+}
+
+// feedback testing
+.form-control:focus {
+  //border-bottom: 2px solid @oc-clear-sky !important; // feedback #1
+  //background-color: #FCEADE !important; // feedback #2
+}
+
+#oc-search-form {
+  vertical-align: bottom;
+}
+
+@media (min-width: 768px) {
+  #oc-search-btn {
+    margin-left: 8px;
+  }
+  #oc-search-form {
+    margin-left: 25px;
+  }
+}
+
+@media (max-width: @screen-xs-min) {
+  #oc-search-btn {
+    width: 100%;
+  }
 }
 
 /*

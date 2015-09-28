@@ -132,13 +132,13 @@ var ScenarioList = React.createClass({
                 onChange={this.handleUpdatedDevices} />
             </div>
             &nbsp;
-            <div className="form-group">
+            <div className="form-group" id="oc-search-form">
               <label htmlFor="scenarioListSearchFormQ">Search Terms</label>&nbsp;
               <input type="text"
                 id="scenarioListSearchFormQ"
                 name="q"
                 className="form-control"
-                placeholder="Search for..."
+                placeholder="search scenarios"
                 disabled={this.isLoading() ? 'disabled' : ''}
                 value={this.state.search.q}
                 onChange={this.handleUpdatedSearchTerm} />
@@ -146,7 +146,7 @@ var ScenarioList = React.createClass({
               <button type="submit"
                 value="Search"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                className="btn btn-primary">Go!</button>
+                className="btn btn-primary" id="oc-search-btn">search</button>
             </form>
           </div>
         </div>
