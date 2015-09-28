@@ -100,12 +100,11 @@ var ScenarioList = React.createClass({
   },
   render: function() {
     return (
-
-      <div className="container scenarioList">
+      <div className="scenario-list">
         <div className="row">
           <div className="col-md-12 well">
             <h3>Search and Filter</h3>
-            <form className="scenarioListSearchForm" onSubmit={this.handleSearch}>
+            <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
             <div className="form-group">
               <label htmlFor="scenarioListSearchFormActors">Actors</label>&nbsp;
               <TagField

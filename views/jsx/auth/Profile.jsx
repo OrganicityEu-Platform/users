@@ -207,7 +207,6 @@ var Profile = React.createClass({
    */
 
     return (
-      <div className="container">
         <div className="row well">
           <form className="form-horizontal">
             <div className="form-group">
@@ -271,7 +270,6 @@ var Profile = React.createClass({
             </div>
           </form>
         </div>
-      </div>
     );
   },
   getValidatorData: function() {

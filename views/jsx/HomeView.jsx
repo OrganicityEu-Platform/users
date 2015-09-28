@@ -28,7 +28,6 @@ var HomeView = React.createClass({
   },
   render : function() {
     return (
-      <div className="container">
         <div className="row">
           <h1>Lorem!</h1>
           <p>
@@ -68,7 +67,6 @@ var HomeView = React.createClass({
           </p>
           <LoginModal/>
         </div>
-      </div>
     );
   }
 });

@@ -102,7 +102,14 @@ input[type="submit"] {
  * Scenarios
  */
 
-.scenarioListSearchForm {
+ @media (max-width: @screen-md-min) {
+   div.well.scenario-thumbnail {
+     margin-left: -3px;
+     margin-right: -3px;
+   }
+ }
+
+.scenario-list-search-form {
   .form-inline;
 }
 
@@ -133,8 +140,6 @@ input[type="submit"] {
  -webkit-column-width: 20em;
  -moz-column-gap: 1em;
  -webkit-column-gap:1em;
- padding-left: 10px;
- padding-right: 10px;
 }
 
 .scenario-thumbnails > .col-md-4 {
@@ -149,6 +154,7 @@ input[type="submit"] {
   position:relative;
   display: block;
   margin-bottom: 8px;
+  border-radius: 0;
 }
 
 .scenario-thumbnail:hover {

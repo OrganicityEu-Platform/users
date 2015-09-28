@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, DropdownButton, MenuItem, CollapsibleNav } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin          from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
@@ -53,33 +53,72 @@ var Scaffold = React.createClass({
     var linksLeft = [];
     var linksRight = [];
 
-    linksLeft.push(<NavItemLink to="scenarioList" className="navbar-explore-btn">EXPLORE</NavItemLink>);
-    linksLeft.push(<NavItemLink key="scenarioCreate" to="scenarioCreate" className="navbar-create-btn">CREATE</NavItemLink>);
+    linksLeft.push(
+      <NavItemLink
+        to="scenarioList"
+        className="navbar-explore-btn">EXPLORE</NavItemLink>
+    );
+    linksLeft.push(
+      <NavItemLink
+        key="scenarioCreate"
+        to="scenarioCreate"
+        className="navbar-create-btn">CREATE</NavItemLink>
+    );
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
-        linksRight.push(<NavItemLink to="admin_userList">Users</NavItemLink>);
-        linksRight.push(<NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>);
+        linksRight.push(
+          <NavItemLink to="admin_userList">Users</NavItemLink>
+        );
+        linksRight.push(
+          <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>
+        );
       }
-      linksRight.push(<NavItemLink key="profile" to="profile">Profile</NavItemLink>);
-      linksRight.push(<NavItemLink key="logout" to="logout" className="nav-logout-btn">Logout</NavItemLink>);
+      linksRight.push(
+        <NavItemLink key="profile" to="profile">Profile</NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
+          key="logout"
+          to="logout"
+          className="nav-logout-btn">Logout</NavItemLink>
+      );
     } else {
-      linksRight.push(<NavItemLink key="login" to="login" className="nav-login-btn">Login</NavItemLink>);
-      linksRight.push(<NavItemLink key="signup" to="signup" className="nav-signup-btn">Signup</NavItemLink>);
+      linksRight.push(
+        <NavItemLink
+          key="login"
+          to="login"
+          className="nav-login-btn">Login</NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
+          key="signup"
+          to="signup"
+          className="nav-signup-btn">Signup</NavItemLink>
+      );
     }
-    linksRight.push(<NavItemLink to="sysinfo" data-about>About</NavItemLink>);
+    linksRight.push(
+      <NavItemLink to="sysinfo" data-about>About</NavItemLink>
+    );
 
     return (
-      <div className="oc-page-wrapper">
-        <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>}>
-          <Nav navbar>
-            {linksLeft}
-          </Nav>
-          <Nav navbar right>
-            {linksRight}
-          </Nav>
-        </Navbar>
+      <div className="container oc-page-wrapper">
+        <div className="row">
+          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
+            <CollapsibleNav eventKey={0}>
+              <Nav navbar>
+                {linksLeft}
+              </Nav>
+              <Nav navbar right>
+                {linksRight}
+              </Nav>
+            </CollapsibleNav>
+          </Navbar>
+        </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-        <RouteHandler onLogin={this.onLogin} onLogout={this.onLogout} currentUser={this.state.currentUser} />
+        <RouteHandler
+          onLogin={this.onLogin}
+          onLogout={this.onLogout}
+          currentUser={this.state.currentUser} />
         <div className="oc-footers">
           <FooterLarge/>
           <FooterSmall/>
