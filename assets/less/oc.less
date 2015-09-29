@@ -1,8 +1,9 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
-@oc-magenta: rgb(238,  62, 110);
-@oc-grey:    rgb(240, 242, 245);
-@oc-white:   rgb(254, 254, 250);
+@oc-magenta:    rgb(238,  62, 110);
+@oc-grey:       rgb(240, 242, 245);
+@oc-white:      rgb(254, 254, 250);
+@oc-meta-grey:  rgb(153,153,153);
 
 @oc-clear-sky: rgb(39,111,191);
 
@@ -171,6 +172,10 @@ input[type="submit"] {
 
 }
 
+.scenario-thumbnail-timestamp {
+  color: @oc-meta-grey;
+}
+
 .scenario-article, #disqus_thread {
   background-color: @oc-white;
 }
@@ -191,7 +196,7 @@ input[type="submit"] {
 
 .scenario-article-header-meta {
   font-size: 17px;
-  color: #7f929c;
+  color: @oc-meta-grey;
 }
 
 .scenario-article-publisher, .scenario-article-badge {
