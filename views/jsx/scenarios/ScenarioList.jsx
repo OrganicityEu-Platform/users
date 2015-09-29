@@ -123,7 +123,7 @@ var ScenarioList = React.createClass({
                 onChange={this.handleUpdatedSectors} />
             </div>
             &nbsp;
-            <div className="form-group">
+            <div className="form-group" id="oc-devices-form">
               <label htmlFor="scenarioListSearchFormDevices">Devices</label>&nbsp;
               <TagField
                 id="scenarioListSearchFormDevices"

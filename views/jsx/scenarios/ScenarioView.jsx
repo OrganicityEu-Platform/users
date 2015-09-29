@@ -30,15 +30,15 @@ var ScenarioView = React.createClass({
     }
     return (
       <div>
-        <div className="row col-sm-12">
+        <div className="row">
           <ScenarioTableView scenario={this.state} />
         </div>
-        <div className="row col-sm-12">
+        <div className="row">
           <button type="button" className="btn btn-default" onClick={this.clickedEvaluate}>EVALUATE</button>
           <ScenarioEditButton scenario={this.state}/>
           <ScenarioDeleteButton scenario={this.state}/>
         </div>
-        <div className="row col-sm-12">
+        <div className="row">
           <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
         </div>
       </div>
