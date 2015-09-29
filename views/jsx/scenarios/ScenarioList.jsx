@@ -102,7 +102,7 @@ var ScenarioList = React.createClass({
     return (
       <div className="scenario-list">
         <div className="row">
-          <div className="col-md-12 well">
+          <div className="col-md-12" id="oc-search-box">
             <h3>Search and Filter</h3>
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
             <div className="form-group">
