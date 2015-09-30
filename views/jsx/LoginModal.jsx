@@ -30,17 +30,16 @@ var LoginModal = React.createClass({
           {...this.props}
           show={this.state.show}
           onHide={this.hideModal}
-          dialogClassName="custom-modal"
+          dialogClassName="oc-login-modal"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">Login</Modal.Title>
+            <Modal.Title id="contained-modal-title-lg">Please login below</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Login/>
-            <LocalLogin/>
+
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.hideModal}>Close</Button>
+
           </Modal.Footer>
         </Modal>
       </ButtonToolbar>

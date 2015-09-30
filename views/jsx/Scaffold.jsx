@@ -10,6 +10,7 @@ import UserHasRoleMixin    from './UserHasRoleMixin.jsx';
 import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
+import CreateScenarioModal from './CreateScenarioModal.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;

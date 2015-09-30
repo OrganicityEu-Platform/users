@@ -114,4 +114,3 @@ var LocalLogin = React.createClass({
 });
 
 export default validation(strategy)(LocalLogin);
-

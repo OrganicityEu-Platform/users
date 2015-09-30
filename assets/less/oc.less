@@ -158,6 +158,7 @@ input[type="submit"] {
   display: block;
   margin-bottom: 8px;
   border-radius: 0;
+  background-color: @oc-white;
 }
 
 .scenario-thumbnail:hover {
@@ -176,7 +177,7 @@ input[type="submit"] {
   color: @oc-meta-grey;
 }
 
-.scenario-article, #disqus_thread {
+.scenario-article {
   background-color: @oc-white;
 }
 
@@ -185,7 +186,7 @@ input[type="submit"] {
 }
 
 .scenario-article-narrative {
-  padding-bottom: 15px;
+  padding-bottom: 25px;
   font-size: 17px;
   color: #444;
 }
@@ -224,6 +225,24 @@ input[type="submit"] {
  * Navigation
  */
 
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: @oc-magenta;
+  background: @oc-white;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: @oc-white;
+}
+
+.navbar-default .navbar-toggle:hover {
+  background-color: @oc-white;
+  .icon-bar {
+    background-color: @oc-magenta;
+  }
+}
+
 @media (min-width: 768px) {
   ul.nav.navbar-nav {
     float: none;
@@ -231,10 +250,17 @@ input[type="submit"] {
     vertical-align: top;
   }
   .navbar-explore-btn {
-    margin-left: 87px;
+    margin-left: 155px;
   }
-  .scenario-list {
+  .scenario-list,
+  .scenario-article,
+  .oc-scenario-controls,
+  .oc-disqus-wrapper
+   {
     .container;
+  }
+  .navbar-right {
+    width: 250px;
   }
  }
 
@@ -428,4 +454,61 @@ input[type="submit"] {
 .oc-evaluation-sendbutton-div {
   .row();
   .make-sm-column(12);
+}
+
+/*
+ * Modals
+ */
+
+.modal-open {
+    overflow-y: scroll !important;
+}
+
+.modal {
+    //overflow-y: auto;
+}
+
+.modal-content {
+  border-radius: 0;
+}
+
+.modal-backdrop.in {
+
+}
+
+.modal-header {
+  text-align: center;
+}
+
+.close {
+  color: @oc-magenta;
+  opacity: 1;
+  font-size: 30px;
+  margin-top: -8px !important;
+}
+
+/*
+ * Other
+ */
+ .oc-scenario-controls {
+   padding: 0;
+   margin-top: 20px;
+   text-align: center;
+}
+
+#disqus_thread {
+  margin-bottom: 40px;
+}
+
+.oc-footer-large-social-links {
+  font-size: 30px;
+}
+
+.oc-footer-large-social-links > span {
+  padding-top: 20px !important;
+}
+
+.oc-footer-large-social-links > a {
+  padding: 0px 23px 0px 23px;
+  color: rgb(80,80,80);
 }

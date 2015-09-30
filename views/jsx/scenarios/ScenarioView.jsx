@@ -34,12 +34,16 @@ var ScenarioView = React.createClass({
           <ScenarioTableView scenario={this.state} />
         </div>
         <div className="row">
-          <button type="button" className="btn btn-default" onClick={this.clickedEvaluate}>EVALUATE</button>
-          <ScenarioEditButton scenario={this.state}/>
-          <ScenarioDeleteButton scenario={this.state}/>
+          <div className="oc-scenario-controls">
+            <button type="button" className="btn btn-default" onClick={this.clickedEvaluate}>EVALUATE</button>
+            <ScenarioEditButton scenario={this.state}/>
+            <ScenarioDeleteButton scenario={this.state}/>
+          </div>
         </div>
         <div className="row">
-          <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
+          <div className="oc-disqus-wrapper">
+            <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
+          </div>
         </div>
       </div>
     );

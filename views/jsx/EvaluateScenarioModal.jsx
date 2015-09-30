@@ -22,7 +22,7 @@ var CreateScenarioModal = React.createClass({
     return (
       <ButtonToolbar>
         <Button bsStyle="primary" onClick={this.showModal}>
-        CREATE MODAL
+        EVALUATE MODAL
         </Button>
 
         <Modal
@@ -32,7 +32,7 @@ var CreateScenarioModal = React.createClass({
           dialogClassName="custom-modal"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">Create</Modal.Title>
+            <Modal.Title id="contained-modal-title-lg">Evaluate</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
