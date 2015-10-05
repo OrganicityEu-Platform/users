@@ -285,7 +285,7 @@ var ScenarioEditView = React.createClass({
       <div>
         <div className="row" key="scenarioEditStep4">
           <h2>Create your scenario <small>step four</small></h2>
-          <h3>Select the Device(s)!</h3>
+          <h3>Select the Tools(s)!</h3>
           <p>
             Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl
             consectetur et. Donec sed odio dui.
@@ -293,7 +293,7 @@ var ScenarioEditView = React.createClass({
           <div className="row well">
             <form className="form-horizontal">
               <div className="form-group">
-                <label className="control-label col-sm-2" htmlFor="sectors">Devices</label>
+                <label className="control-label col-sm-2" htmlFor="sectors">Tools</label>
                 <div className="col-sm-10">
                   <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
                 </div>

@@ -74,7 +74,7 @@ var LocalLogin = React.createClass({
             <div className="form-group">
                 <label>Email</label>
                 <input type="text"
-                  className="form-control"
+                  className="form-control oc-login-email"
                   name="email"
                   id="email"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -85,7 +85,7 @@ var LocalLogin = React.createClass({
             <div className="form-group">
                 <label>Password</label>
                 <input type="password"
-                  className="form-control"
+                  className="form-control oc-login-password"
                   name="password"
                   id="password"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -94,7 +94,7 @@ var LocalLogin = React.createClass({
             </div>
             <ErrorMessage messages={this.props.getValidationMessages('password')} />
             <button type="submit"
-                    className="btn btn-warning btn-lg"
+                    className="btn"
                     disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
                     onClick={this.handleSubmit}>Login</button>
           </form>

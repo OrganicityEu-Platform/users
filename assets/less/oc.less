@@ -7,11 +7,17 @@
 
 @oc-clear-sky: rgb(39,111,191);
 
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('../../static/fonts/CooperHewitt-Book.otf');
+}
+
 body {
   background-color: @oc-grey;
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  //font-family: 'Cooper Hewitt';
 }
 
 html {
@@ -105,12 +111,24 @@ input[type="submit"] {
  * Scenarios
  */
 
- @media (max-width: @screen-md-min) {
-   div.well.scenario-thumbnail {
-     margin-left: -3px;
-     margin-right: -3px;
-   }
- }
+.scenario-article-footer {
+  padding: 5px 38px 20px 38px;
+}
+
+.scenario-ast {
+  padding-right: 10px;
+}
+
+.scenario-article {
+  margin-top: 35px;
+}
+
+@media (max-width: @screen-md-min) {
+  div.well.scenario-thumbnail {
+    margin-left: ;
+    margin-right: ;
+  }
+}
 
 .scenario-list-search-form {
   .form-inline;
@@ -202,7 +220,7 @@ input[type="submit"] {
 }
 
 .scenario-article-header-meta {
-  font-size: 17px;
+  font-size: 15px;
   color: @oc-meta-grey;
 }
 
@@ -268,7 +286,10 @@ input[type="submit"] {
   .navbar-right {
     width: 250px;
   }
- }
+  #oc-search-form {
+    float: right;
+  }
+}
 
 .navbar {
   background-color: @oc-magenta;
@@ -322,6 +343,7 @@ input[type="submit"] {
 
 #oc-search-box {
   margin-bottom: 30px;
+  margin-top: 38px;
 }
 
 #oc-search-box > h3 {
@@ -332,11 +354,15 @@ input[type="submit"] {
   margin-right: 10px;
 }
 
+#scenarioListSearchFormQ {
+
+}
+
 #scenarioListSearchFormActors,
 #scenarioListSearchFormSectors,
 #scenarioListSearchFormDevices,
 #scenarioListSearchFormQ {
-  outline: none;
+  outline: none !important;
   border-radius: 0;
   border-top: none !important;
   border-left: none !important;
@@ -350,19 +376,40 @@ input[type="submit"] {
 
 #oc-search-btn {
   background-color: @oc-magenta;
-  //background-color: @oc-clear-sky;
   border: 0;
   border-radius: 0 !important;
-  vertical-align: bottom;
+  margin-bottom: -2px;
+  margin-left: 0 !important;
 }
 
 .form-control:focus {
-  //border-bottom: 2px solid @oc-clear-sky !important; // feedback #1
-  background-color: #FCEADE !important; // feedback #2
+  //border-bottom: 2px solid @oc-clear-sky !important;
+  //background-color: #FCEADE !important;
+}
+
+.oc-filters-panel {
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.oc-filters-panel .panel-heading {
+  background-color: @oc-grey;
+}
+.panel-collapse, .panel-body {
+  background-color: @oc-grey;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.panel-body {
+  border-top: 0 !important;
+  padding: 0;
 }
 
 #oc-search-form {
   vertical-align: bottom;
+
 }
 
 @media (min-width: 768px) {
@@ -376,17 +423,27 @@ input[type="submit"] {
 
 @media (max-width: @screen-xs-min) {
   #oc-search-btn {
-    width: 100%;
+    //width: 100%;
   }
 }
 
+.oc-search-field {
+  border: 0;
+  border-radius: 0;
+  background-color: @oc-grey;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-bottom: 2px solid @oc-magenta;
+}
+
 /*
- * Footer
+ * Footers
  */
 
 .oc-footer-large {
   text-align: center;
   background-color: @oc-white;
+  margin-top: 45px;
 }
 
 .oc-footer-large-social-links {
@@ -478,11 +535,11 @@ input[type="submit"] {
  */
 
 .modal-open {
-    overflow-y: scroll !important;
+
 }
 
 .modal {
-    //overflow-y: auto;
+
 }
 
 .modal-content {
@@ -508,7 +565,9 @@ input[type="submit"] {
  * Disqus
  */
 
-
-#disqus_thread {
-  margin-bottom: 40px;
+/*
+ * Login
+ */
+.oc-login-email, .oc-login-password {
+  border-radius: 0;
 }

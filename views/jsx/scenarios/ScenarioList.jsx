@@ -9,6 +9,8 @@ import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
 
+import { Accordion, Panel } from 'react-bootstrap';
+
 var Link = Router.Link;
 
 var ScenarioList = React.createClass({
@@ -103,51 +105,52 @@ var ScenarioList = React.createClass({
       <div className="scenario-list">
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
-            <h3>Search and Filter</h3>
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
-            <div className="form-group">
-              <label htmlFor="scenarioListSearchFormActors">Actors</label>&nbsp;
-              <TagField
-                id="scenarioListSearchFormActors"
-                tags={this.state.search.actors}
-                placeholder="actor tags"
-                onChange={this.handleUpdatedActors} />
-            </div>
-            &nbsp;
-            <div className="form-group">
-              <label htmlFor="scenarioListSearchFormSectors">Sectors</label>&nbsp;
-              <TagField
-                id="scenarioListSearchFormSectors"
-                tags={this.state.search.sectors}
-                placeholder="sectors tags"
-                onChange={this.handleUpdatedSectors} />
-            </div>
-            &nbsp;
-            <div className="form-group" id="oc-devices-form">
-              <label htmlFor="scenarioListSearchFormDevices">Devices</label>&nbsp;
-              <TagField
-                id="scenarioListSearchFormDevices"
-                tags={this.state.search.devices}
-                placeholder="device tags"
-                onChange={this.handleUpdatedDevices} />
-            </div>
-            &nbsp;
-            <div className="form-group" id="oc-search-form">
-              <label htmlFor="scenarioListSearchFormQ">Search Terms</label>&nbsp;
-              <input type="text"
-                id="scenarioListSearchFormQ"
-                name="q"
-                className="form-control"
-                placeholder="search scenarios"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                value={this.state.search.q}
-                onChange={this.handleUpdatedSearchTerm} />
-              </div>
-              <button type="submit"
-                value="Search"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                className="btn btn-primary" id="oc-search-btn">search</button>
+
+              <div className="form-group" id="oc-search-form">
+                <div className="input-group">
+                 <input type="text" className="form-control oc-search-field" id="scenarioListSearchFormQ" placeholder="search scenarios..." name="q" disabled={this.isLoading() ? 'disabled' : ''}
+                 value={this.state.search.q}
+                 onChange={this.handleUpdatedSearchTerm}/>
+                 <span className="input-group-btn">
+                   <button type="submit"
+                     value="Search"
+                     disabled={this.isLoading() ? 'disabled' : ''}
+                     className="btn btn-primary" id="oc-search-btn"><span className="fa fa-search"></span></button>
+                 </span>
+                </div>
+
+                </div>
+              <Accordion>
+                <Panel header="filters" eventKey="1" className="oc-filters-panel">
+                  <div className="form-group">
+                    <TagField
+                      id="scenarioListSearchFormActors"
+                      tags={this.state.search.actors}
+                      placeholder="actor tags"
+                      onChange={this.handleUpdatedActors} />
+                  </div>
+                  &nbsp;
+                  <div className="form-group">
+                    <TagField
+                      id="scenarioListSearchFormSectors"
+                      tags={this.state.search.sectors}
+                      placeholder="sectors tags"
+                      onChange={this.handleUpdatedSectors} />
+                  </div>
+                  &nbsp;
+                  <div className="form-group" id="oc-devices-form">
+                    <TagField
+                      id="scenarioListSearchFormDevices"
+                      tags={this.state.search.devices}
+                      placeholder="device tags"
+                      onChange={this.handleUpdatedDevices} />
+                  </div>
+                  &nbsp;
+                </Panel>
+              </Accordion>
             </form>
+
           </div>
         </div>
         <div className="row scenario-thumbnails">

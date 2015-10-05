@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import React from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Accordion, Panel } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import FlashQueue from './FlashQueue.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
 import LoginModal from './LoginModal.jsx';
 import CreateScenarioModal from './CreateScenarioModal.jsx';
 import EvaluateScenarioModal from './EvaluateScenarioModal.jsx';
+import EditScenarioModal from './EditScenarioModal.jsx';
 import api from '../../api_routes.js';
 
 var Router = require('react-router');
@@ -67,10 +68,10 @@ var HomeView = React.createClass({
               disabled={this.isLoading() ? 'disabled' : ''}
               onClick={this.onClickAjaxError}>Create AJAX error</button>
           </p>
-          <i class="fa fa-camera-retro fa-lg"></i>
           <LoginModal/>
           <CreateScenarioModal/>
           <EvaluateScenarioModal/>
+          <EditScenarioModal/>
         </div>
     );
   }
