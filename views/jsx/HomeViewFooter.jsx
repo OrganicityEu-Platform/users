@@ -1,5 +1,5 @@
 import React                from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Accordion, Panel } from 'react-bootstrap';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -25,9 +25,53 @@ var HomeViewFooter = React.createClass({
             <div className="col-md-6">
               <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam id dolor id nibh ultricies vehicula ut id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
             </div>
-            <div id="oc-home-view-section-read-more-btn-wrapper">
-              <Button id="oc-home-view-section-read-more-btn" onClick={this.clickHander}>READ MORE ABOUT ORGANICITY</Button>
+            <div className="col-md-6">
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
             </div>
+            <div className="col-md-6">
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+              <Accordion>
+                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
+                  amus labore sustainable VHS.
+                </Panel>
+              </Accordion>
+            </div>
+          </div>
+          <div id="oc-home-view-section-read-more-btn-wrapper">
+            <Button id="oc-home-view-section-read-more-btn" onClick={this.clickHander}>READ MORE ABOUT ORGANICITY</Button>
           </div>
         </div>
       </div>
