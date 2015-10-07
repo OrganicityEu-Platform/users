@@ -8,7 +8,7 @@
 @oc-clear-sky: rgb(39,111,191);
 
 @font-face {
-  font-family: 'Cooper Hewitt';
+  font-family: 'Cooper Hewitt Book';
   src: url('../../static/fonts/CooperHewitt-Book.otf');
 }
 
@@ -17,7 +17,7 @@ body {
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
-  //font-family: 'Cooper Hewitt';
+  //font-family: 'Cooper Hewitt Book';
 }
 
 html {
@@ -249,11 +249,19 @@ input[type="submit"] {
  * Navigation
  */
 
+.navbar-right {
+  width: auto;
+}
+
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
   color: @oc-magenta;
   background: @oc-white;
+}
+
+.navbar-default {
+  margin-bottom: 0;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -267,28 +275,8 @@ input[type="submit"] {
   }
 }
 
-@media (min-width: 768px) {
-  ul.nav.navbar-nav {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
-  }
-  .navbar-explore-btn {
-    margin-left: 155px;
-  }
-  .scenario-list,
-  .scenario-article,
-  .oc-scenario-controls,
-  .oc-disqus-wrapper
-   {
-    .container;
-  }
-  .navbar-right {
-    width: 250px;
-  }
-  #oc-search-form {
-    float: right;
-  }
+.navbar-toggle:active {
+  background-color: @oc-white !important;
 }
 
 .navbar {
@@ -322,7 +310,7 @@ input[type="submit"] {
 }
 
 .navbar-brand img {
-  width: 80px;
+  width: 90px;
   position: relative;
   top: -10px;
 }
@@ -337,9 +325,14 @@ input[type="submit"] {
   border: none;
 }
 
+
 /*
  * Search and filtered search
  */
+
+.panel-title {
+  color: @oc-meta-grey;
+}
 
 #oc-search-box {
   margin-bottom: 30px;
@@ -570,4 +563,117 @@ input[type="submit"] {
  */
 .oc-login-email, .oc-login-password {
   border-radius: 0;
+}
+
+/*
+ * Home View Header
+ */
+.oc-home-view-header-wrapper {
+  background-color: @oc-white;
+  text-align: center;
+  //font-family: 'Cooper Hewitt Book';
+}
+
+.oc-home-view-header {
+  padding-top: 20px;
+}
+
+.oc-home-view-title {
+  color: @oc-magenta;
+}
+
+/*
+ * Home View Section
+ */
+
+.oc-home-view-button-large {
+  border-radius: 0;
+  border: 0;
+  background-color: @oc-magenta;
+  color: @oc-white;
+}
+
+#oc-home-view-section-explore-all-scenarios-btn-wrapper {
+  text-align: center;
+}
+
+.oc-home-view-title-wrapper {
+  text-align: center;
+}
+
+#oc-home-view-section-explore-all-scenarios-btn {
+  .oc-home-view-button-large;
+}
+#oc-home-view-section-explore-all-scenarios-btn:hover {
+  color: black;
+}
+
+/*
+ * Home View Footer
+ */
+
+#oc-home-view-section-read-more-btn-wrapper {
+  text-align: center;
+}
+
+#oc-home-view-section-read-more-btn {
+  .oc-home-view-button-large;
+}
+
+#oc-home-view-section-read-more-btn:hover {
+  color: black;
+}
+
+/*
+ * Desktop
+ */
+@media (min-width: 768px) {
+  ul.nav.navbar-nav {
+    float: none;
+    display: inline-block;
+  }
+  .navbar-explore-btn {
+    margin-left: 40px;
+    margin-top: 5px;
+  }
+  .navbar-create-btn {
+    margin-top: 5px;
+  }
+  .navbar-default {
+    height: 75px;
+  }
+  .navbar-default .container {
+    margin-top: 12px;
+  }
+  .navbar-explore-btn > a, .navbar-create-btn > a {
+    border: 1px solid @oc-white;
+  }
+  .navbar-explore-btn > a {
+    margin-right: 2px;
+    padding: 10px 40px !important;
+  }
+  .navbar-create-btn > a {
+    margin-left: 2px;
+    padding: 10px 40px !important;
+  }
+  .navbar-create-btn > a:hover, .navbar-explore-btn > a:hover {
+    background-color: @oc-white !important;
+    color: @oc-magenta !important;
+  }
+  #oc-home-view-section-explore-all-scenarios-btn {
+    padding: 15px 125px;
+  }
+  #oc-home-view-section-read-more-btn {
+    padding: 15px 83px;
+  }
+  .scenario-list,
+  .scenario-article,
+  .oc-scenario-controls,
+  .oc-disqus-wrapper
+    {
+      .container;
+    }
+  #oc-search-form {
+    float: right;
+  }
 }

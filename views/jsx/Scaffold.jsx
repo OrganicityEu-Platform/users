@@ -73,6 +73,9 @@ var Scaffold = React.createClass({
         linksRight.push(
           <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>
         );
+        linksRight.push(
+          <NavItemLink to="sysinfo" data-about>About</NavItemLink>
+        );
       }
       linksRight.push(
         <NavItemLink key="profile" to="profile">Profile</NavItemLink>
@@ -97,10 +100,6 @@ var Scaffold = React.createClass({
           className="nav-signup-btn">Signup</NavItemLink>
       );
     }
-    linksRight.push(
-      <NavItemLink to="sysinfo" data-about>About</NavItemLink>
-    );
-
     return (
       <div className="container oc-page-wrapper">
         <div className="row">
