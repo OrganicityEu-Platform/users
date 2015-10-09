@@ -19,18 +19,31 @@ import UserJoi      from '../../../models/joi/user.js';
 import ErrorMessage from '../ErrorMessage.jsx';
 
 var Profile = React.createClass({
-  mixins: [Router.Navigation, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, Router.State, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {};
   },
   componentDidMount: function() {
 
+    console.log("componentDidMount");
+
+    if (!this.userIsLoggedIn()) {
+      var src = {
+        to : this.routeName()
+      };
+      sessionStorage.setItem('url', JSON.stringify(src));
+      this.transitionTo('login');
+      return;
+    }
+
     if(sessionStorage.getItem('url')) {
       var o = JSON.parse(sessionStorage.getItem('url'));
-      console.log(o)
-      sessionStorage.removeItem('url')
-      this.transitionTo(o.to, o.params, o.query);
-      return;
+      console.log('Go to ', o.to);
+      sessionStorage.removeItem('url');
+      if(o.to != this.routeName()) {
+        this.transitionTo(o.to, o.params, o.query);
+        return;
+      }
     }
 
     var url = api.reverse('currentUser');
@@ -63,6 +76,10 @@ var Profile = React.createClass({
         this.props.validate();
       }
     });
+  },
+  routeName: function() {
+    var routeName = this.getRoutes()[this.getRoutes().length - 1].name;
+    return routeName;
   },
   handleChangedName: function(evt) {
     this.state.dirty = true;

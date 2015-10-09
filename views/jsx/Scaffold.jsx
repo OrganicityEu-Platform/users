@@ -20,7 +20,8 @@ var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
-      currentUser : undefined
+      currentUser : undefined,
+      initialAjax : false
     };
   },
   componentDidMount: function() {
@@ -42,14 +43,28 @@ var Scaffold = React.createClass({
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
     this.state.currentUser = currentUser;
+    this.state.initialAjax = true;
     this.setState(this.state);
   },
   onLogout: function() {
     window.currentUser = undefined;
+    this.state.initialAjax = true;
     this.state.currentUser = undefined;
     this.setState(this.state);
   },
   render : function() {
+
+    var router;
+    if(this.state.initialAjax) {
+      console.log("Render scaffold");
+      router = (<RouteHandler
+        onLogin={this.onLogin}
+        onLogout={this.onLogout}
+        currentUser={this.state.currentUser} />)
+    } else {
+      console.log("Render initial scaffold");
+    }
+
     var linksLeft = [];
     var linksRight = [];
 
@@ -114,10 +129,7 @@ var Scaffold = React.createClass({
           </Navbar>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-        <RouteHandler
-          onLogin={this.onLogin}
-          onLogout={this.onLogout}
-          currentUser={this.state.currentUser} />
+         {router}
         <div className="oc-footers">
           <FooterLarge/>
           <FooterSmall/>
