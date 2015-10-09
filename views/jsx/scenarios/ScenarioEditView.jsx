@@ -445,6 +445,7 @@ var ScenarioEditView = React.createClass({
     );
   },
   render: function() {
+    //console.log('Render state: ', this.state);
     this.validatorTypes = null;
     var steps = this.getSteps();
     return steps[this.currentStep() - 1]();

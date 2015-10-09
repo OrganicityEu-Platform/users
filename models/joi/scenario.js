@@ -40,11 +40,22 @@ scenario.step6 = {
   thumbnail   : Joi.string().required()
 };
 
+// Same as step6, but without thmbnail!
+scenario.server = {
+  title       : joiTitle,
+  summary     : joiSummary,
+  narrative   : joiNarrative,
+  actors      : Joi.array().label('Actors').items(Joi.string()),
+  sectors     : Joi.array().label('Sectors').items(Joi.string()),
+  devices     : Joi.array().label('Devices').items(Joi.string()),
+  dataSources : Joi.array().label('Data Sources').items(Joi.string()),
+};
+
 scenario.createOrUpdate = {
   options : {
     allowUnknownBody: false
   },
-  body: scenario.step6
+  body: scenario.server
 };
 
 module.exports = scenario;

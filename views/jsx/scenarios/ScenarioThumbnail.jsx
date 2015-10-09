@@ -19,7 +19,6 @@ var ScenarioThumbnail = React.createClass({
   render: function() {
 
     var thumbnail;
-    console.log(this.props.scenario);
     if(this.props.scenario.thumbnail) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>)
     }
