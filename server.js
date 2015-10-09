@@ -24,13 +24,14 @@ var startServer = function(done) {
   require('./config/passport')(passport); // pass passport for configuration
 
   app.use(ui.asset('/static'), express.static('public'));
+  app.use(ui.asset('/uploads'), express.static('uploads'));
 
   // set up our express application
   if (app.get('env') !== 'test') {
     app.use(morgan('dev')); // log every request to the console
   }
   app.use(cookieParser()); // read cookies (needed for auth)
-  app.use(bodyParser.json()); // get information from html forms
+  app.use(bodyParser.json({limit: '10mb'})); // get information from html forms
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // required for passport

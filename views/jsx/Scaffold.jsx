@@ -24,7 +24,6 @@ var Scaffold = React.createClass({
     };
   },
   componentDidMount: function() {
-
     $.ajax(api.reverse('currentUser'), {
       accepts : 'application/json',
       success : this.onLogin,

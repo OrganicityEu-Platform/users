@@ -17,6 +17,7 @@ The scenario schema follows the immutable data type approach. Whenever something
   narrative   : { type: String, required: true  }, // markdown
   creator     : { type: String, required: true  }, // user uuid
   timestamp   : { type: Date, default: Date.now }, // set when created
+  thumbnail   : { type: String                  }, // the thumbnail
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
@@ -58,6 +59,8 @@ Used by clients when creating or updating a scenario resource. Included fields a
   dataSources : { type: [String]                }  // uuids of data source type
 }
 ```
+
+An image must be uploaded separatedly as form-data with the attribute `thumbnail`
 
 ### Tag
 
@@ -361,7 +364,7 @@ and 'limit' parameters:
   <tr>
     <td>Description</td>
     <td>
-      returns a JSON object with scenario's statistics 
+      returns a JSON object with scenario's statistics
     </td>
   </tr>
   <tr>

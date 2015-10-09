@@ -14,16 +14,17 @@ import ScenarioJoi       from '../../../models/joi/scenario.js';
 import ErrorMessage      from '../ErrorMessage.jsx';
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 
-
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
-  lastStep  : 5,
+  getSteps: function() {
+    return [this.step1, this.step2, this.step3, this.step4, this.step5, this.step6];
+  },
   editMode: function() {
     return this.props.params.uuid;
   },
   routeName: function() {
-    var routeName = this.getRoutes()[this.getRoutes().length-1].name;
+    var routeName = this.getRoutes()[this.getRoutes().length - 1].name;
     return routeName;
   },
   componentWillMount : function() {
@@ -52,14 +53,14 @@ var ScenarioEditView = React.createClass({
   },
   componentDidMount() {
     if (!this.userIsLoggedIn()) {
-        var src = {
-          to : this.routeName(),
-          params : this.getParams(),
-          query : this.props.query
-        };
-        sessionStorage.setItem('url', JSON.stringify(src));
-        this.transitionTo('login');
-        return;
+      var src = {
+        to : this.routeName(),
+        params : this.getParams(),
+        query : this.props.query
+      };
+      sessionStorage.setItem('url', JSON.stringify(src));
+      this.transitionTo('login');
+      return;
     }
 
     if (this.editMode()) {
@@ -107,6 +108,40 @@ var ScenarioEditView = React.createClass({
     this.state.devices = devices;
     this.setState(this.state);
   },
+  handleChangedFile : function(evt) {
+
+    var that = this;
+    //this.state.title = evt.target.value;
+    var files = evt.target.files; // FileList object
+    if (files.length > 0) {
+      var file = files[0];
+
+      that.state.thumbnail_type = file.type;
+
+      if (file.type !== 'image/jpeg') {
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (file2) => {
+
+        var b64File = file2.target.result;
+        that.state.thumbnail = b64File;
+
+        // Needed to get the width and height
+        var image  = new Image();
+        image.src    = b64File;
+        image.onload = function() {
+          that.state.thumbnail_width = this.width;
+          that.state.thumbnail_height = this.height;
+          that.setState(that.state);
+        };
+
+      };
+
+    }
+  },
   clickedPrevious : function() {
     if (this.currentStep() - 1 < this.firstStep) {
       console.log('User tried to go beyond first step. This is not possible!');
@@ -117,7 +152,7 @@ var ScenarioEditView = React.createClass({
   },
   clickedNext : function() {
 
-    if (this.currentStep() + 1 > this.lastStep) {
+    if (this.currentStep() + 1 > this.getSteps().length) {
       console.log('User tried to go beyond last step. This is not possible!');
       return;
     }
@@ -130,6 +165,8 @@ var ScenarioEditView = React.createClass({
   },
   clickedSubmit : function() {
 
+    var that = this;
+
     this.validateCurrentStep(() => {
       var method = this.editMode() ? 'PUT' : 'POST';
       var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
@@ -138,14 +175,53 @@ var ScenarioEditView = React.createClass({
       $.ajax(url, {
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify(this.getValidatorData()),
+        data: JSON.stringify(this.getUploadData()),
         method: method,
         error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
         success: (scenario) => {
-          this.clearState();
-          this.transitionTo('scenarioView', { uuid : scenario.uuid });
+
+          // Upload IMAGE from b64
+          // https://gist.github.com/borismus/1032746
+          var BASE64_MARKER = ';base64,';
+          function convertDataURIToBinary(dataURI) {
+            var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+            var base64 = dataURI.substring(base64Index);
+            var raw = window.atob(base64);
+            var rawLength = raw.length;
+            var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            var i;
+            for (i = 0; i < rawLength; i++) {
+              array[i] = raw.charCodeAt(i);
+            }
+            return array;
+          }
+
+          // Get uint8Array version of the stored base64
+          var uint8Array = convertDataURIToBinary(this.state.thumbnail);
+          var arrayBuffer = uint8Array.buffer;
+          var blob        = new Blob([arrayBuffer], { type: this.state.thumbnail_type });
+
+          // Lets upload a blob
+          var formData = new FormData();
+          formData.append('thumbnail', blob);
+
+          var url = api.reverse('scenario_by_uuid', { uuid : scenario.uuid }) + '/thumbnail';
+
+          $.ajax({
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: () => {
+              this.clearState();
+              this.transitionTo('scenarioView', { uuid : scenario.uuid });
+            }
+          });
         }
-      });
+      }
+      );
     });
 
   },
@@ -312,7 +388,44 @@ var ScenarioEditView = React.createClass({
     );
   },
   step5 : function() {
+
     this.validatorTypes = ScenarioJoi.step5;
+
+    return (
+      <div>
+        <div className="row well">
+          <form className="form-horizontal">
+            <div className="form-group">
+              <div className="col-sm-12">
+                Please upload an image. Width must be 1140 px and height can vary between 600 px and 800 px<br/>
+              </div>
+              <label className="control-label col-sm-2" htmlFor="title">Thumbnail</label>
+              <div className="col-sm-10">
+                <input type="file" className="form-control" name="thumbnail" id="thumbnail"
+                  onChange={this.handleChangedFile} />
+                <div id="uploadPreview"></div>
+                <ErrorMessage messages={this.props.getValidationMessages('thumbnail')} />
+                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
+                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_width')} />
+                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_height')} />
+              </div>
+              <div className="form-group">
+                <div className="col-sm-2"></div>
+                <div className="col-sm-10">
+                  <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Previous</button>
+                  <button type="button" className="btn btn-default" onClick={this.clickedNext}>Next</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  },
+  step6 : function() {
+    this.validatorTypes = ScenarioJoi.step6;
+
+    console.log('State', this.state);
 
     return (
       <div className="row" key="scenarioEditStep5">
@@ -333,7 +446,7 @@ var ScenarioEditView = React.createClass({
   },
   render: function() {
     this.validatorTypes = null;
-    var steps = [this.step1, this.step2, this.step3, this.step4, this.step5];
+    var steps = this.getSteps();
     return steps[this.currentStep() - 1]();
   },
   getValidatorData: function() {
@@ -343,7 +456,23 @@ var ScenarioEditView = React.createClass({
       narrative : this.state.narrative,
       sectors   : this.state.sectors,
       actors    : this.state.actors,
-      devices   : this.state.devices
+      devices   : this.state.devices,
+      thumbnail : this.state.thumbnail,
+      thumbnail_width : this.state.thumbnail_width,
+      thumbnail_height : this.state.thumbnail_height,
+      thumbnail_type : this.state.thumbnail_type
+    };
+    return data;
+  },
+  getUploadData: function() {
+    var data = {
+      title     : this.state.title,
+      summary   : this.state.summary,
+      narrative : this.state.narrative,
+      sectors   : this.state.sectors,
+      actors    : this.state.actors,
+      devices   : this.state.devices,
+      thumbnail : this.state.thumbnail
     };
     return data;
   },

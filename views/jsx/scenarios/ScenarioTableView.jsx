@@ -1,11 +1,22 @@
-import React from 'react';
-import TimeAgo    from 'react-timeago';
+import React    from 'react';
+import TimeAgo  from 'react-timeago';
+import ui       from '../../../ui_routes.js';
 
 var ScenarioTableView = React.createClass({
   render: function() {
     if (!this.props.scenario) {
       return null;
     }
+
+    var thumbnail = this.props.scenario.thumbnail;
+    if (thumbnail && thumbnail.startsWith('uploads/')) {
+      thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
+    } else if (thumbnail) {
+      thumbnail = (<img src={this.props.scenario.thumbnail} width="100%"/>);
+    }
+
+    console.log('Render Scenario', this.props.scenario);
+
     return (
       <div className="scenario-article">
         <header className="scenario-article-header">
@@ -24,7 +35,9 @@ var ScenarioTableView = React.createClass({
           </p>
         </header>
         <div className="scenario-article-section">
-          <div className="scenario-article-image"></div>
+          <div className="scenario-article-image">
+            {thumbnail}
+          </div>
           <div className="scenario-article-meta"></div>
           <div className="scenario-article-narrative">
             {this.props.scenario.narrative}
