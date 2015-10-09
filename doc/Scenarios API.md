@@ -43,7 +43,7 @@ Data Transfer Objects (DTOs)
 
 In this context a DTOs sole purpose is to define the schema of data transferred in various API methods between client and server. They are not used as database schemas and are not persisted 1:1.
 
-### ScenarioUpdate
+### Creare/Update Scenario
 
 Used by clients when creating or updating a scenario resource. Included fields are identical to fields in Scenario schema but type is stripped down to fields that users are allowed to set when creating or updating a scenario resource.
 
