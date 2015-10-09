@@ -471,8 +471,7 @@ var ScenarioEditView = React.createClass({
       narrative : this.state.narrative,
       sectors   : this.state.sectors,
       actors    : this.state.actors,
-      devices   : this.state.devices,
-      thumbnail : this.state.thumbnail
+      devices   : this.state.devices
     };
     return data;
   },

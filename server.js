@@ -32,7 +32,7 @@ var startServer = function(done) {
   }
   app.use(cookieParser()); // read cookies (needed for auth)
   app.use(bodyParser.json({limit: '10mb'})); // get information from html forms
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
   // required for passport
   app.use(session({ secret: 'organicityScenarioTool' })); // session secret
