@@ -177,6 +177,13 @@ a bundled version of all React .jsx files in `views/jsx/`. Then, after this inti
 react-router (see above) takes over and uses the Browser history API to realize a single-page app
 that feels like server-rendered but fast and responsive.
 
+## git hooks
+
+There are two githooks configured with [Husky](https://github.com/typicode/husky):
+
+* `git commit` runs a "gulp lint" in advance the commit (pre-commit hook)
+* `git push` runs a "gulp test" in advance the push (pre-push hook)
+
 ## TODOs
 
  * Take a look at how search engines see our single page app. The blogosphere says React is great
