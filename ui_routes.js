@@ -13,6 +13,9 @@ var ui_routes = {
   'scenarioView'           : '/scenarios/:uuid/?',
   'scenarioEvalView'       : '/scenarios/evaluate/:uuid?',
 
+  // User routes
+  'userView'               : '/users/:uuid/?',
+
   // authentication routes
   'profile'                : '/auth/profile/?',
   'login'                  : '/auth/login/?',
@@ -20,6 +23,7 @@ var ui_routes = {
   'local-login'            : '/auth/local-login/?',
   'signup'                 : '/auth/signup/?',
 
+  // Admin routes
   'sysinfo'                : '/sysinfo/?',
   'admin_userList'         : '/admin/users/?',
   'admin_userEdit'         : '/admin/users/:uuid/?',

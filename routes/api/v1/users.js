@@ -63,6 +63,7 @@ module.exports = function(router, passport) {
 
   router.get(api.route('user_info'), function(req, res, next) {
     findUser(req.params.uuid, res, next, function(user) {
+
       res.json({
         uuid : user.uuid,
         name : user.name

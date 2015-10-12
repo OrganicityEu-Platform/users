@@ -1,6 +1,8 @@
 import React    from 'react';
 import TimeAgo  from 'react-timeago';
 import ui       from '../../../ui_routes.js';
+import UserAvatar           from '../users/UserAvatar.jsx';
+
 
 var ScenarioTableView = React.createClass({
   render: function() {
@@ -22,7 +24,9 @@ var ScenarioTableView = React.createClass({
         <header className="scenario-article-header">
           <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
           <div className="scenario-article-header-meta">
-            <span className="scenario-article-publisher">user</span>
+            <span className="scenario-article-publisher">
+              Created by <UserAvatar uuid={this.props.scenario.creator} />
+            </span>
             <span className="scenario-article-badge">badge</span>
             <span className="scenario-article-timestamp">
               { this.props.scenario.timestamp ?

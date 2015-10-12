@@ -37,7 +37,9 @@ var ScenarioEditView = React.createClass({
     // if we're in the process of editing a scenario the browser session storage will remember
     // values until users persisted it on the server
     if (window.sessionStorage && window.sessionStorage.getItem(this.storageKey()) != null) {
-      return JSON.parse(window.sessionStorage.getItem(this.storageKey()));
+      var o = JSON.parse(window.sessionStorage.getItem(this.storageKey()));
+      o.creator = window.currentUser.uuid;
+      return o;
     }
 
     // if we're not in the editing process already and not editing, creating a new one
@@ -48,7 +50,8 @@ var ScenarioEditView = React.createClass({
       sectors : [],
       actors : [],
       devices : [],
-      step : 1
+      step : 1,
+      creator : window.currentUser.uuid
     };
   },
   componentDidMount() {

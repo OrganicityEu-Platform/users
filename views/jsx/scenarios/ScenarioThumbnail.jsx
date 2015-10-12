@@ -1,5 +1,4 @@
 
-import UserAvatar from '../users/UserAvatar.jsx';
 import TimeAgo    from 'react-timeago';
 import api        from '../../../api_routes.js';
 import ui         from '../../../ui_routes.js';
