@@ -23,7 +23,12 @@ var UserAvatar = React.createClass({
 
     var getScenarios = () => {
 
-      url = 'http://localhost:8080/organicity-scenario-tool/api/v1/scenarios?creator=' + this.props.params.uuid + '&sortBy=timestamp&sortDir=DESC';
+      var url = api.reverse('scenario_list', {
+        uuid : this.props.uuid,
+        creator : this.props.params.uuid,
+        sortBy : 'timestamp',
+        sortDir : 'DESC'
+      });
 
       $.ajax(url, {
         dataType : 'json',
