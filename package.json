@@ -45,7 +45,8 @@
     "run-sequence": "^1.1.2",
     "supertest": "^1.1.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.3.1"
+    "watchify": "^3.3.1",
+    "husky": "~0.10.1"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -93,5 +94,9 @@
     "react-validation-mixin": "5.2.0",
     "node-rest-client": "^1.5.1",
     "multer": "~1.0.6"
+  },
+  "scripts": {
+    "precommit": "gulp lint",
+    "prepush": "gulp test"
   }
 }
