@@ -1,6 +1,6 @@
 import React              from 'react';
 import { Button }         from 'react-bootstrap';
-import NewestScenarios    from './scenarios/NewestScenarios.jsx';
+import ScenariosNewest    from './scenarios/ScenariosNewest.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -17,7 +17,7 @@ var HomeViewSection = React.createClass({
           <div className="oc-home-view-section container">
             <div className="oc-home-view-title-wrapper">
               <h1 className="oc-home-view-title">Latest scenarios</h1>
-              <NewestScenarios limit="8"/>
+              <ScenariosNewest limit="8"/>
             </div>
             <div id="oc-home-view-section-explore-all-scenarios-btn-wrapper">
               <Button id="oc-home-view-section-explore-all-scenarios-btn" onClick={this.clickHander}>EXPLORE ALL SCENARIOS</Button>
