@@ -18,8 +18,8 @@ var ScenarioThumbnail = React.createClass({
   render: function() {
 
     var thumbnail;
-    if(this.props.scenario.thumbnail) {
-      thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>)
+    if (this.props.scenario.thumbnail) {
+      thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
     }
 
     return (
@@ -45,11 +45,10 @@ var ScenarioThumbnail = React.createClass({
             <p className="scenario-thumbnail-summary">
               { this.props.scenario.summary ? this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g, '<br>') : '' }
             </p>
-            <img src="" alt=""/>
           </div>
         </div>
       );
     }
-  });
+});
 
-  export default ScenarioThumbnail;
+export default ScenarioThumbnail;

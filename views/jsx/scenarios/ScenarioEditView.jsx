@@ -209,7 +209,7 @@ var ScenarioEditView = React.createClass({
           var formData = new FormData();
           formData.append('thumbnail', blob);
 
-          var url = api.reverse('scenario_by_uuid', { uuid : scenario.uuid }) + '/thumbnail';
+          var url = api.reverse('scenario_by_uuid_thumbnail', { uuid : scenario.uuid });
 
           $.ajax({
             url: url,
