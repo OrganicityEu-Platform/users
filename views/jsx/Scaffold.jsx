@@ -56,7 +56,6 @@ var Scaffold = React.createClass({
 
     var router;
     if(this.state.initialAjax) {
-      console.log("Render scaffold");
       router = (<RouteHandler
         onLogin={this.onLogin}
         onLogout={this.onLogout}

@@ -11,7 +11,8 @@ var prefixes = {
   'error'          : '/api/v1/error',
   'sysinfo'        : '/api/v1/sysinfo',
   'questionnaire'  : '/api/v1/questionnaire',
-  'evaluations'    : '/api/v1/evaluations'
+  'evaluations'    : '/api/v1/evaluations',
+  'counter'        : '/api/v1/counter',
 };
 
 var api_routes = {
@@ -65,6 +66,9 @@ var api_routes = {
 
   // sysinfo routes
   'sysinfo'                    : prefixes.sysinfo + '/?',
+
+  // Counter
+  'counter'                    : prefixes.counter + '/:scope/:id',
 
   // questionnaire routes
   'questionnaire'              : prefixes.questionnaire + '/?',

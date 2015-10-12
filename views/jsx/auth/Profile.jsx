@@ -18,14 +18,14 @@ import strategy     from 'joi-validation-strategy';
 import UserJoi      from '../../../models/joi/user.js';
 import ErrorMessage from '../ErrorMessage.jsx';
 
+import UserScenarios      from '../users/UserScenarios.jsx';
+
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {};
   },
   componentDidMount: function() {
-
-    console.log("componentDidMount");
 
     if (!this.userIsLoggedIn()) {
       var src = {
@@ -36,11 +36,11 @@ var Profile = React.createClass({
       return;
     }
 
-    if(sessionStorage.getItem('url')) {
+    if (sessionStorage.getItem('url')) {
       var o = JSON.parse(sessionStorage.getItem('url'));
       console.log('Go to ', o.to);
       sessionStorage.removeItem('url');
-      if(o.to != this.routeName()) {
+      if (o.to !== this.routeName()) {
         this.transitionTo(o.to, o.params, o.query);
         return;
       }
@@ -117,7 +117,7 @@ var Profile = React.createClass({
       gender: this.state.profile.gender
     };
 
-    if(this.state.profile.local) {
+    if (this.state.profile.local) {
       profile.local = {};
     }
 
@@ -210,19 +210,6 @@ var Profile = React.createClass({
       );
     }
 
-  /*
-      console.log('##############################################################');
-      console.log('Errors:', this.props.errors);
-      console.log('getValidationMessages(name)           ', this.props.getValidationMessages('name'));
-      console.log('getValidationMessages(gender)         ', this.props.getValidationMessages('gender'));
-      console.log('getValidationMessages(roles)          ', this.props.getValidationMessages('roles'));
-      console.log('getValidationMessages(email)          ', this.props.getValidationMessages('email'));
-      console.log('getValidationMessages(local.password)       ', this.props.getValidationMessages('local.password'));
-      console.log('getValidationMessages(local.password_repeat)', this.props.getValidationMessages('local.password_repeat'));
-      console.log('Valid:',  this.props.isValid());
-      console.log('##############################################################');
-   */
-
     return (
         <div className="row well">
           <form className="form-horizontal">
@@ -286,13 +273,15 @@ var Profile = React.createClass({
               </div>
             </div>
           </form>
+          <h3>Scenarios created</h3>
+          <UserScenarios uuid={this.props.uuid} />
         </div>
     );
   },
   getValidatorData: function() {
     var profile = this.getProfile();
 
-    if(profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
+    if (profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
       profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
     }
 

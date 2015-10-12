@@ -4,6 +4,8 @@ import FlashQueue         from '../FlashQueue.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
+import Counter            from '../Counter.jsx';
+import UserScenarios      from './UserScenarios.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -17,14 +19,12 @@ var UserAvatar = React.createClass({
     };
   },
   componentDidMount: function() {
-    console.log('this.proups', this.props.params);
     this.loading();
     var url = api.reverse('user_info', { uuid : this.props.params.uuid });
 
     var getScenarios = () => {
 
       var url = api.reverse('scenario_list', {
-        uuid : this.props.uuid,
         creator : this.props.params.uuid,
         sortBy : 'timestamp',
         sortDir : 'DESC'
@@ -72,19 +72,18 @@ var UserAvatar = React.createClass({
       userText = this.state.user.name;
     }
 
-    return (<div className="row">
-              <div className="col-md-12">
-                <h2>{userText}</h2>
-                <h3>Scenarios created by {userText}</h3>
-                <div className="row scenario-thumbnails">
-                {
-                  this.state.scenarios.map((scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario}
-                    onChange={this.reload}/>)
-                }
-                </div>
-              </div>
-            </div>
-          );
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <h2>{userText}</h2>
+          <div>
+            Profile views: <Counter scope="users" id={this.props.params.uuid} />
+          </div>
+          <h3>Scenarios created</h3>
+          <UserScenarios uuid={this.props.params.uuid} />
+        </div>
+      </div>
+    );
   }
 });
 

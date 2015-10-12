@@ -1,8 +1,8 @@
-import React    from 'react';
-import TimeAgo  from 'react-timeago';
-import ui       from '../../../ui_routes.js';
-import UserAvatar           from '../users/UserAvatar.jsx';
-
+import React      from 'react';
+import TimeAgo    from 'react-timeago';
+import ui         from '../../../ui_routes.js';
+import UserAvatar from '../users/UserAvatar.jsx';
+import Counter    from '../Counter.jsx';
 
 var ScenarioTableView = React.createClass({
   render: function() {
@@ -17,8 +17,6 @@ var ScenarioTableView = React.createClass({
       thumbnail = (<img src={this.props.scenario.thumbnail} width="100%"/>);
     }
 
-    console.log('Render Scenario', this.props.scenario);
-
     return (
       <div className="scenario-article">
         <header className="scenario-article-header">
@@ -32,6 +30,9 @@ var ScenarioTableView = React.createClass({
               { this.props.scenario.timestamp ?
               <TimeAgo date={this.props.scenario.timestamp} />
               : '' }
+            </span>
+            <span className="scenario-counter">
+              Views: <Counter scope="scenarios" id={this.props.scenario.uuid} />
             </span>
           </div>
           <p className="scenario-article-summary">
