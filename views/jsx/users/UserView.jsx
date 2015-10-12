@@ -5,7 +5,7 @@ import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
 import Counter            from '../Counter.jsx';
-import UserScenarios      from './UserScenarios.jsx';
+import ScenariosNewest    from '../scenarios/ScenariosNewest.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -80,7 +80,7 @@ var UserAvatar = React.createClass({
             Profile views: <Counter scope="users" id={this.props.params.uuid} />
           </div>
           <h3>Scenarios created</h3>
-          <UserScenarios uuid={this.props.params.uuid} />
+          <ScenariosNewest creator={this.props.params.uuid} />
         </div>
       </div>
     );

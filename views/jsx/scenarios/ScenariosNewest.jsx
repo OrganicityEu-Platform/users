@@ -7,7 +7,7 @@ import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
-var UserScenarios = React.createClass({
+var ScenariosNewest = React.createClass({
   mixins: [LoadingMixin],
   getInitialState: function() {
     return {
@@ -18,11 +18,16 @@ var UserScenarios = React.createClass({
   componentDidMount: function() {
     this.loading();
 
-    var url = api.reverse('scenario_list', {
-      creator : this.props.uuid,
+    var options = {
+      creator : this.props.creator,
       sortBy : 'timestamp',
-      sortDir : 'DESC'
-    });
+      sortDir : 'DESC',
+      limit : this.props.limit
+    };
+
+    console.log('Options', options);
+
+    var url = api.reverse('scenario_list', options);
 
     $.ajax(url, {
       dataType : 'json',
@@ -52,4 +57,4 @@ var UserScenarios = React.createClass({
   }
 });
 
-export default UserScenarios;
+export default ScenariosNewest;

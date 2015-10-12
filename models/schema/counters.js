@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+// Taken from: http://stackoverflow.com/a/13015739/605890
+
 var Counters = new mongoose.Schema({
   _id: String,
   next: {type: Number, default: 1}
@@ -12,28 +14,3 @@ Counters.statics.increment = function(counter, callback) {
 var Counters = mongoose.model('counters', Counters);
 
 module.exports = Counters;
-
-/*
-
-var mongoose = require('mongoose');
-
-// @see: http://stackoverflow.com/a/7592756/605890
-
-var Counters = mongoose.Schema({
-  _id: String,
-  next: Number
-});
-
-Counters.statics.findAndModify = function(query, sort, doc, options, callback) {
-  return this.collection.findAndModify(query, sort, doc, options, callback);
-};
-
-Counters.statics.increment = function(counter, callback) {
-  return this.collection.findAndModify({ _id: counter }, [], { $inc: { next: 1 } }, callback);
-};
-
-var Counters = mongoose.model('counters', Counters);
-
-module.exports = Counters;
-
-*/

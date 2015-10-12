@@ -13,12 +13,12 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 // Input validation
-import validation   from 'react-validation-mixin';
-import strategy     from 'joi-validation-strategy';
-import UserJoi      from '../../../models/joi/user.js';
-import ErrorMessage from '../ErrorMessage.jsx';
+import validation       from 'react-validation-mixin';
+import strategy         from 'joi-validation-strategy';
+import UserJoi          from '../../../models/joi/user.js';
+import ErrorMessage     from '../ErrorMessage.jsx';
 
-import UserScenarios      from '../users/UserScenarios.jsx';
+import ScenariosNewest  from '../scenarios/ScenariosNewest.jsx';
 
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
@@ -274,7 +274,7 @@ var Profile = React.createClass({
             </div>
           </form>
           <h3>Scenarios created</h3>
-          <UserScenarios uuid={this.props.uuid} />
+          <ScenariosNewest creator={this.state.profile.uuid} />
         </div>
     );
   },
