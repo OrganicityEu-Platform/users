@@ -7,11 +7,17 @@
 
 @oc-clear-sky: rgb(39,111,191);
 
+@font-face {
+  font-family: 'Cooper Hewitt Book';
+  src: url('../../static/fonts/CooperHewitt-Book.otf');
+}
+
 body {
   background-color: @oc-grey;
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  font-family: 'Cooper Hewitt Book';
 }
 
 html {
@@ -105,12 +111,24 @@ input[type="submit"] {
  * Scenarios
  */
 
- @media (max-width: @screen-md-min) {
-   div.well.scenario-thumbnail {
-     margin-left: -3px;
-     margin-right: -3px;
-   }
- }
+.scenario-article-footer {
+  padding: 5px 38px 20px 38px;
+}
+
+.scenario-ast {
+  padding-right: 10px;
+}
+
+.scenario-article {
+  margin-top: 35px;
+}
+
+@media (max-width: @screen-md-min) {
+  div.well.scenario-thumbnail {
+    margin-left: ;
+    margin-right: ;
+  }
+}
 
 .scenario-list-search-form {
   .form-inline;
@@ -177,12 +195,12 @@ input[type="submit"] {
   color: @oc-meta-grey;
 }
 
-.scenario-article {
-  background-color: @oc-white;
+.scenario-thumbnail-summary {
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
 }
 
-.scenario-article-header, .scenario-article-narrative, #disqus_thread {
-  padding: 5px 38px 0px 38px;
+.scenario-article {
+  background-color: @oc-white;
 }
 
 .oc-scenario-controls {
@@ -202,7 +220,7 @@ input[type="submit"] {
 }
 
 .scenario-article-header-meta {
-  font-size: 17px;
+  font-size: 15px;
   color: @oc-meta-grey;
 }
 
@@ -231,11 +249,19 @@ input[type="submit"] {
  * Navigation
  */
 
+.navbar-right {
+  width: auto;
+}
+
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
   color: @oc-magenta;
   background: @oc-white;
+}
+
+.navbar-default {
+  margin-bottom: 0;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -249,26 +275,9 @@ input[type="submit"] {
   }
 }
 
-@media (min-width: 768px) {
-  ul.nav.navbar-nav {
-    float: none;
-    display: inline-block;
-    vertical-align: top;
-  }
-  .navbar-explore-btn {
-    margin-left: 155px;
-  }
-  .scenario-list,
-  .scenario-article,
-  .oc-scenario-controls,
-  .oc-disqus-wrapper
-   {
-    .container;
-  }
-  .navbar-right {
-    width: 250px;
-  }
- }
+.navbar-toggle:active {
+  background-color: @oc-white !important;
+}
 
 .navbar {
   background-color: @oc-magenta;
@@ -301,7 +310,7 @@ input[type="submit"] {
 }
 
 .navbar-brand img {
-  width: 80px;
+  width: 90px;
   position: relative;
   top: -10px;
 }
@@ -316,12 +325,18 @@ input[type="submit"] {
   border: none;
 }
 
+
 /*
  * Search and filtered search
  */
 
+.panel-title {
+  color: @oc-meta-grey;
+}
+
 #oc-search-box {
   margin-bottom: 30px;
+  margin-top: 38px;
 }
 
 #oc-search-box > h3 {
@@ -332,11 +347,15 @@ input[type="submit"] {
   margin-right: 10px;
 }
 
+#scenarioListSearchFormQ {
+
+}
+
 #scenarioListSearchFormActors,
 #scenarioListSearchFormSectors,
 #scenarioListSearchFormDevices,
 #scenarioListSearchFormQ {
-  outline: none;
+  outline: none !important;
   border-radius: 0;
   border-top: none !important;
   border-left: none !important;
@@ -350,19 +369,40 @@ input[type="submit"] {
 
 #oc-search-btn {
   background-color: @oc-magenta;
-  //background-color: @oc-clear-sky;
   border: 0;
   border-radius: 0 !important;
-  vertical-align: bottom;
+  margin-bottom: -2px;
+  margin-left: 0 !important;
 }
 
 .form-control:focus {
-  //border-bottom: 2px solid @oc-clear-sky !important; // feedback #1
-  background-color: #FCEADE !important; // feedback #2
+  //border-bottom: 2px solid @oc-clear-sky !important;
+  //background-color: #FCEADE !important;
+}
+
+.oc-filters-panel {
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.oc-filters-panel .panel-heading {
+  background-color: @oc-grey;
+}
+.panel-collapse, .panel-body {
+  background-color: @oc-grey;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.panel-body {
+  border-top: 0 !important;
+  padding: 0;
 }
 
 #oc-search-form {
   vertical-align: bottom;
+
 }
 
 @media (min-width: 768px) {
@@ -376,17 +416,27 @@ input[type="submit"] {
 
 @media (max-width: @screen-xs-min) {
   #oc-search-btn {
-    width: 100%;
+    //width: 100%;
   }
 }
 
+.oc-search-field {
+  border: 0;
+  border-radius: 0;
+  background-color: @oc-grey;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-bottom: 2px solid @oc-magenta;
+}
+
 /*
- * Footer
+ * Footers
  */
 
 .oc-footer-large {
   text-align: center;
   background-color: @oc-white;
+  margin-top: 45px;
 }
 
 .oc-footer-large-social-links {
@@ -425,6 +475,12 @@ input[type="submit"] {
 @media (max-width: @screen-md-min) {
   .oc-footer-small {
     line-height: 40px;
+  }
+  .scenario-article-header,
+  .scenario-article-narrative,
+  #disqus_thread,
+  .scenario-article-footer {
+    padding: 5px 15px 0px 15px;
   }
 }
 
@@ -478,11 +534,11 @@ input[type="submit"] {
  */
 
 .modal-open {
-    overflow-y: scroll !important;
+
 }
 
 .modal {
-    //overflow-y: auto;
+
 }
 
 .modal-content {
@@ -504,11 +560,197 @@ input[type="submit"] {
   margin-top: -8px !important;
 }
 
+.social-logins {
+  display: inline-block;
+  font-size: 20px;
+  margin-top: 45px;
+}
+
+.login-help {
+  padding-top: 20px;
+}
+
+.social-logins > a {
+  padding: 0px 18px 0px 18px;
+  color: rgb(80,80,80);
+}
+
+.modal-footer, .modal-header {
+  border: 0;
+}
+
+.login-btn, .signup-btn {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  width:100%;
+  .oc-home-view-button-large
+}
+
 /*
  * Disqus
  */
 
+/*
+ * Login and Signup
+ */
+.oc-login-email,
+.oc-login-password,
+.oc-signup-email,
+.oc-signup-password {
+  border-radius: 0;
+  background-color: rgb(240,242,245);
+  border: 0;
+  box-shadow: none;
+  height: 55px;
+  font-size: 17px;
+}
 
-#disqus_thread {
-  margin-bottom: 40px;
+.oc-login-password:focus,
+.oc-login-email:focus,
+.oc-signup-email:focus,
+.oc-signup-password:focus {
+  box-shadow: 0 0 5px @oc-magenta;
+}
+
+.login-help-signup {
+  color: @oc-magenta;
+}
+
+#login-modal-title, #signup-modal-title {
+  margin-top: 15px;
+}
+
+/*
+ * Home View Header
+ */
+.oc-home-view-header-wrapper {
+  background-color: @oc-white;
+  text-align: center;
+  //font-family: 'Cooper Hewitt Book';
+}
+
+.oc-home-view-header {
+  padding-top: 20px;
+}
+
+.oc-home-view-title {
+  color: @oc-magenta;
+}
+
+/*
+ * Home View Section
+ */
+
+.oc-home-view-button-large {
+  border-radius: 0;
+  border: 0;
+  background-color: @oc-magenta;
+  color: @oc-white;
+}
+
+#oc-home-view-section-explore-all-scenarios-btn-wrapper {
+  text-align: center;
+}
+
+.oc-home-view-title-wrapper {
+  text-align: center;
+}
+
+#oc-home-view-section-explore-all-scenarios-btn {
+  .oc-home-view-button-large;
+}
+#oc-home-view-section-explore-all-scenarios-btn:hover {
+  color: black;
+}
+
+/*
+ * Home View Footer
+ */
+
+#oc-home-view-section-read-more-btn-wrapper {
+  text-align: center;
+}
+
+#oc-home-view-section-read-more-btn {
+  .oc-home-view-button-large;
+}
+
+#oc-home-view-section-read-more-btn:hover {
+  color: black;
+}
+
+.oc-faq {
+  color: @oc-magenta;
+}
+
+.oc-faq > a {
+  color: rgb(63,63,63);
+  padding-left: 8px;
+}
+
+.oc-home-view-footer {
+  .panel-body, .panel-heading {
+  background-color: @oc-white;
+  }
+  .panel-body {
+    padding: 0px 15px 10px 15px;
+  }
+}
+/*
+ * Desktop
+ */
+@media (min-width: 768px) {
+  ul.nav.navbar-nav {
+    float: none;
+    display: inline-block;
+  }
+  .navbar-explore-btn {
+    margin-left: 40px;
+    margin-top: 5px;
+  }
+  .navbar-create-btn {
+    margin-top: 5px;
+  }
+  .navbar-default {
+    height: 75px;
+  }
+  .navbar-default .container {
+    margin-top: 12px;
+  }
+  .navbar-explore-btn > a, .navbar-create-btn > a {
+    border: 1px solid @oc-white;
+  }
+  .navbar-explore-btn > a {
+    margin-right: 2px;
+    padding: 10px 40px !important;
+  }
+  .navbar-create-btn > a {
+    margin-left: 2px;
+    padding: 10px 40px !important;
+  }
+  .navbar-create-btn > a:hover, .navbar-explore-btn > a:hover {
+    background-color: @oc-white !important;
+    color: @oc-magenta !important;
+  }
+  #oc-home-view-section-explore-all-scenarios-btn {
+    padding: 15px 125px;
+  }
+  #oc-home-view-section-read-more-btn {
+    padding: 15px 83px;
+  }
+  .scenario-list,
+  .scenario-article,
+  .oc-scenario-controls,
+  .oc-disqus-wrapper
+    {
+      .container;
+    }
+  #oc-search-form {
+    float: right;
+  }
+  .scenario-article-header,
+  .scenario-article-narrative,
+  #disqus_thread {
+    padding: 5px 38px 0px 38px;
+  }
 }

@@ -24,14 +24,15 @@ var startServer = function(done) {
   require('./config/passport')(passport); // pass passport for configuration
 
   app.use(ui.asset('/static'), express.static('public'));
+  app.use(ui.asset('/uploads'), express.static('uploads'));
 
   // set up our express application
   if (app.get('env') !== 'test') {
     app.use(morgan('dev')); // log every request to the console
   }
   app.use(cookieParser()); // read cookies (needed for auth)
-  app.use(bodyParser.json()); // get information from html forms
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json({limit: '10mb'})); // get information from html forms
+  app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
   // required for passport
   app.use(session({ secret: 'organicityScenarioTool' })); // session secret
@@ -56,6 +57,7 @@ var startServer = function(done) {
   var routes_sysinfo       = require('./routes/api/v1/sysinfo.js')(router, passport);
   var routes_questionnaire = require('./routes/api/v1/questionnaire.js')(router, passport);
   var routes_evaluations   = require('./routes/api/v1/evaluations.js')(router, passport);
+  var routes_counter       = require('./routes/api/v1/counter.js')(router, passport);
 
   app.use(routes_scenarios);
   app.use(routes_auth);
@@ -63,6 +65,7 @@ var startServer = function(done) {
   app.use(routes_error);
   app.use(routes_questionnaire);
   app.use(routes_evaluations);
+  app.use(routes_counter);
 
   // serve all (other) requests to single-page-app contained in index.html
   var index = require('./index.js');

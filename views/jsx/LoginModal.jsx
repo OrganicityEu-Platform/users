@@ -22,9 +22,9 @@ var LoginModal = React.createClass({
   render: function() {
     return (
       <ButtonToolbar>
-        <Button bsStyle="primary" onClick={this.showModal}>
-        Login Modal
-        </Button>
+        <p onClick={this.showModal}>
+        login
+      </p>
 
         <Modal
           {...this.props}
@@ -33,10 +33,12 @@ var LoginModal = React.createClass({
           dialogClassName="oc-login-modal"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-lg">Please login below</Modal.Title>
+            <Modal.Title id="login-modal-title">Please login below</Modal.Title>
+              <Login/>
           </Modal.Header>
           <Modal.Body>
 
+          <LocalLogin/>
           </Modal.Body>
           <Modal.Footer>
 

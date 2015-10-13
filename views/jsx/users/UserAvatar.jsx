@@ -21,13 +21,16 @@ var UserAvatar = React.createClass({
     $.ajax(url, {
       dataType : 'json',
       error : (jqXHR, textStatus, errorThrown) => {
+        this.state.user = {
+          name : 'Unknown or deleted user'
+        };
+        this.setState(this.state);
         this.loaded();
-        this.flashOnAjaxError(url, 'Error loading user info')(jqXHR, textStatus, errorThrown);
       },
       success : (user) => {
-        this.state.loading = false;
         this.state.user = user;
         this.setState(this.state);
+        this.loaded();
       }
     });
   },
@@ -35,7 +38,13 @@ var UserAvatar = React.createClass({
     if (this.state.loading) {
       return <div>Loading...</div>;
     }
-    return <div>{this.state.user.name}</div>;
+
+    var userText = this.props.uuid;
+    if (this.state.user.name) {
+      userText = this.state.user.name;
+    }
+
+    return <Link to="userView" params={{ uuid: this.props.uuid }}>{userText}</Link>;
   }
 });
 

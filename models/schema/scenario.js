@@ -7,6 +7,7 @@ var scenario = mongoose.Schema({
   summary     : { type: String, required: true  }, // plain text
   narrative   : { type: String, required: true  }, // markdown
   creator     : { type: String, required: true  }, // user uuid
+  thumbnail   : { type: String                  }, // the thumbnail
   timestamp   : { type: Date, default: Date.now }, // set when created
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)

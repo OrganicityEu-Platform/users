@@ -20,11 +20,11 @@ var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
-      currentUser : undefined
+      currentUser : undefined,
+      initialAjax : false
     };
   },
   componentDidMount: function() {
-
     $.ajax(api.reverse('currentUser'), {
       accepts : 'application/json',
       success : this.onLogin,
@@ -43,14 +43,27 @@ var Scaffold = React.createClass({
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
     this.state.currentUser = currentUser;
+    this.state.initialAjax = true;
     this.setState(this.state);
   },
   onLogout: function() {
     window.currentUser = undefined;
+    this.state.initialAjax = true;
     this.state.currentUser = undefined;
     this.setState(this.state);
   },
   render : function() {
+
+    var router;
+    if(this.state.initialAjax) {
+      router = (<RouteHandler
+        onLogin={this.onLogin}
+        onLogout={this.onLogout}
+        currentUser={this.state.currentUser} />)
+    } else {
+      console.log("Render initial scaffold");
+    }
+
     var linksLeft = [];
     var linksRight = [];
 
@@ -72,6 +85,9 @@ var Scaffold = React.createClass({
         );
         linksRight.push(
           <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>
+        );
+        linksRight.push(
+          <NavItemLink to="sysinfo" data-about>About</NavItemLink>
         );
       }
       linksRight.push(
@@ -97,10 +113,6 @@ var Scaffold = React.createClass({
           className="nav-signup-btn">Signup</NavItemLink>
       );
     }
-    linksRight.push(
-      <NavItemLink to="sysinfo" data-about>About</NavItemLink>
-    );
-
     return (
       <div className="container oc-page-wrapper">
         <div className="row">
@@ -116,10 +128,7 @@ var Scaffold = React.createClass({
           </Navbar>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-        <RouteHandler
-          onLogin={this.onLogin}
-          onLogout={this.onLogout}
-          currentUser={this.state.currentUser} />
+         {router}
         <div className="oc-footers">
           <FooterLarge/>
           <FooterSmall/>

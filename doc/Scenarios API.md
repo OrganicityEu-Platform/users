@@ -17,6 +17,7 @@ The scenario schema follows the immutable data type approach. Whenever something
   narrative   : { type: String, required: true  }, // markdown
   creator     : { type: String, required: true  }, // user uuid
   timestamp   : { type: Date, default: Date.now }, // set when created
+  thumbnail   : { type: String                  }, // the thumbnail
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
@@ -43,7 +44,7 @@ Data Transfer Objects (DTOs)
 
 In this context a DTOs sole purpose is to define the schema of data transferred in various API methods between client and server. They are not used as database schemas and are not persisted 1:1.
 
-### ScenarioUpdate
+### Creare/Update Scenario
 
 Used by clients when creating or updating a scenario resource. Included fields are identical to fields in Scenario schema but type is stripped down to fields that users are allowed to set when creating or updating a scenario resource.
 
@@ -58,6 +59,8 @@ Used by clients when creating or updating a scenario resource. Included fields a
   dataSources : { type: [String]                }  // uuids of data source type
 }
 ```
+
+An image must be uploaded separatedly as form-data with the attribute `thumbnail`
 
 ### Tag
 
@@ -361,7 +364,7 @@ and 'limit' parameters:
   <tr>
     <td>Description</td>
     <td>
-      returns a JSON object with scenario's statistics 
+      returns a JSON object with scenario's statistics
     </td>
   </tr>
   <tr>

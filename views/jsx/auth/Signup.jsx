@@ -76,42 +76,41 @@ var Signup = React.createClass({
     }
 
     return (
-      <div className="col-sm-6 col-sm-offset-3">
-        <h1><span className="fa fa-sign-in"></span> Signup</h1>
+      <div className="col-sm-10 col-sm-offset-1">
         {errorMessage}
         <form action={api.reverse('signup')} method="post">
             <div className="form-group">
-                <label htmlFor="email">E-Mail</label>
                 <input type="text"
-                  className="form-control"
+                  className="form-control oc-signup-email"
                   name="email"
+                  placeholder="email"
                   value={this.state.email}
                   disabled={this.isLoading() ? 'disabled' : ''}
                   onChange={this.handleChangedEmail} />
                 <ErrorMessage messages={this.props.getValidationMessages('email')} />
             </div>
             <div className="form-group">
-                <label htmlFor="password">Password</label>
                 <input type="password"
-                  className="form-control"
+                  className="form-control oc-signup-password"
                   name="password"
+                  placeholder="password"
                   value={this.state.password}
                   disabled={this.isLoading() ? 'disabled' : ''}
                   onChange={this.handleChangedPassword} />
                 <ErrorMessage messages={this.props.getValidationMessages('password')} />
             </div>
             <div className="form-group">
-                <label htmlFor="password_repeat">Repeat Password</label>
                 <input type="password"
-                  className="form-control"
+                  className="form-control oc-signup-password"
                   name="password_repeat"
+                  placeholder="repeat password"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   value={this.state.password_repeat}
                   onChange={this.handleChangedPasswordRepeat} />
                 <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
             </div>
             <button type="submit"
-              className="btn btn-warning btn-lg"
+              className="signup-btn"
               disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
               onClick={this.handleSubmit}>Signup</button>
         </form>

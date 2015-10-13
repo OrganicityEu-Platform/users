@@ -4,6 +4,7 @@ import HomeView              from './HomeView.jsx';
 import ScenarioList          from './scenarios/ScenarioList.jsx';
 import ScenarioEditView      from './scenarios/ScenarioEditView.jsx';
 import ScenarioView          from './scenarios/ScenarioView.jsx';
+import UserView              from './users/UserView.jsx';
 import ScenarioEvalView      from './scenarios/ScenarioEvalView.jsx';
 import Login                 from './auth/Login.jsx';
 import Logout                from './auth/Logout.jsx';
@@ -26,6 +27,7 @@ var routes = (
     <Route name="scenarioCreate"      path={ui.route('scenarioCreate')}      handler={ScenarioEditView}      />
     <Route name="scenarioEdit"        path={ui.route('scenarioEdit')}        handler={ScenarioEditView}      />
     <Route name="scenarioView"        path={ui.route('scenarioView')}        handler={ScenarioView}          />
+    <Route name="userView"            path={ui.route('userView')}            handler={UserView}              />
     <Route name="scenarioEvalView"    path={ui.route('scenarioEvalView')}    handler={ScenarioEvalView}      />
     <Route name="login"               path={ui.route('login')}               handler={Login}                 />
     <Route name="local-login"         path={ui.route('local-login')}         handler={LocalLogin}            />
@@ -35,7 +37,7 @@ var routes = (
     <Route name="sysinfo"             path={ui.route('sysinfo')}             handler={SysInfo}               />
     <Route name="admin_userList"      path={ui.route('admin_userList')}      handler={UserListView}          />
     <Route name="admin_userEdit"      path={ui.route('admin_userEdit')}      handler={UserEditView}          />
-    <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />}
+    <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />
   </Route>
 );
 

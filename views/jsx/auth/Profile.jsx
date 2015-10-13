@@ -13,24 +13,37 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 // Input validation
-import validation   from 'react-validation-mixin';
-import strategy     from 'joi-validation-strategy';
-import UserJoi      from '../../../models/joi/user.js';
-import ErrorMessage from '../ErrorMessage.jsx';
+import validation       from 'react-validation-mixin';
+import strategy         from 'joi-validation-strategy';
+import UserJoi          from '../../../models/joi/user.js';
+import ErrorMessage     from '../ErrorMessage.jsx';
+
+import ScenariosNewest  from '../scenarios/ScenariosNewest.jsx';
 
 var Profile = React.createClass({
-  mixins: [Router.Navigation, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, Router.State, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {};
   },
   componentDidMount: function() {
 
-    if(sessionStorage.getItem('url')) {
-      var o = JSON.parse(sessionStorage.getItem('url'));
-      console.log(o)
-      sessionStorage.removeItem('url')
-      this.transitionTo(o.to, o.params, o.query);
+    if (!this.userIsLoggedIn()) {
+      var src = {
+        to : this.routeName()
+      };
+      sessionStorage.setItem('url', JSON.stringify(src));
+      this.transitionTo('login');
       return;
+    }
+
+    if (sessionStorage.getItem('url')) {
+      var o = JSON.parse(sessionStorage.getItem('url'));
+      console.log('Go to ', o.to);
+      sessionStorage.removeItem('url');
+      if (o.to !== this.routeName()) {
+        this.transitionTo(o.to, o.params, o.query);
+        return;
+      }
     }
 
     var url = api.reverse('currentUser');
@@ -63,6 +76,10 @@ var Profile = React.createClass({
         this.props.validate();
       }
     });
+  },
+  routeName: function() {
+    var routeName = this.getRoutes()[this.getRoutes().length - 1].name;
+    return routeName;
   },
   handleChangedName: function(evt) {
     this.state.dirty = true;
@@ -100,7 +117,7 @@ var Profile = React.createClass({
       gender: this.state.profile.gender
     };
 
-    if(this.state.profile.local) {
+    if (this.state.profile.local) {
       profile.local = {};
     }
 
@@ -193,19 +210,6 @@ var Profile = React.createClass({
       );
     }
 
-  /*
-      console.log('##############################################################');
-      console.log('Errors:', this.props.errors);
-      console.log('getValidationMessages(name)           ', this.props.getValidationMessages('name'));
-      console.log('getValidationMessages(gender)         ', this.props.getValidationMessages('gender'));
-      console.log('getValidationMessages(roles)          ', this.props.getValidationMessages('roles'));
-      console.log('getValidationMessages(email)          ', this.props.getValidationMessages('email'));
-      console.log('getValidationMessages(local.password)       ', this.props.getValidationMessages('local.password'));
-      console.log('getValidationMessages(local.password_repeat)', this.props.getValidationMessages('local.password_repeat'));
-      console.log('Valid:',  this.props.isValid());
-      console.log('##############################################################');
-   */
-
     return (
         <div className="row well">
           <form className="form-horizontal">
@@ -269,13 +273,15 @@ var Profile = React.createClass({
               </div>
             </div>
           </form>
+          <h3>Scenarios created</h3>
+          <ScenariosNewest creator={this.state.profile.uuid} />
         </div>
     );
   },
   getValidatorData: function() {
     var profile = this.getProfile();
 
-    if(profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
+    if (profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
       profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
     }
 
