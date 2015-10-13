@@ -39,11 +39,11 @@ var ScenarioThumbnail = React.createClass({
                 {this.props.scenario.title}
               </h3>
             </header>
-            <p>
-              {thumbnail}
-            </p>
             <p className="scenario-thumbnail-summary">
               { this.props.scenario.summary ? this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g, '<br>') : '' }
+            </p>
+            <p className="scenario-thumbnail-image-wrapper">
+              {thumbnail}
             </p>
           </div>
         </div>
