@@ -132,5 +132,109 @@ module.exports = function(router, passport) {
     });
   });
 
+  router.get(api.route('evaluation_score'), function(req, res) {
+    if (req.params.uuid === undefined) {
+      return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
+    }
+    var filter = {};
+    if (req.params.uuid) {
+      filter['scenario.uuid'] = req.params.uuid;
+    }
+    var query = Evaluation.find(filter);
+    query.exec(function(err, evaluations) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+      return res.status(HttpStatus.OK).send(processEvaluations(evaluations));
+    });
+  });
   return router;
 };
+/*
+ * ########################################################################################
+ * HELPER FUNCTIONS
+ * ########################################################################################
+ */
+/**
+ * checks if json is empty
+ * @param evaluation
+ * @returns {integer}
+ */
+function processEvaluations(evaluations) {
+  var techScoreStructure = {};
+  var nonTechScoreStructure = {};
+  var numOfTechEvaluations = 0;
+  var numOfNonTechEvaluations = 0;
+  for (var evaluation = 0; evaluation < evaluations.length; evaluation++) {
+    var techTotal = 0;
+    var techAnswers = 0;
+    var noTechTotal = 0;
+    var noTechAnswers = 0;
+    for (var answer = 0; answer < evaluations[evaluation].answers.length; answer++) {
+      if (evaluations[evaluation].answers[answer]._doc.question.tech === true) {
+        techTotal++;
+        if (evaluations[evaluation].answers[answer]._doc.answer &&
+           evaluations[evaluation].answers[answer]._doc.answer.value !== undefined) {
+          techAnswers++;
+        }
+      } else {
+        noTechTotal++;
+        if (evaluations[evaluation].answers[answer]._doc.answer &&
+            evaluations[evaluation].answers[answer]._doc.answer.value !== undefined) {
+          noTechAnswers++;
+        }
+      }
+    }
+    if (techTotal === techAnswers) { //pure tech evaluation
+      numOfTechEvaluations++;
+      techScoreStructure = processEvaluation(evaluations[evaluation], true, techScoreStructure);
+
+    } else if (noTechTotal === noTechAnswers) { //pure non-tech evaluation
+      numOfNonTechEvaluations++;
+      nonTechScoreStructure = processEvaluation(evaluations[evaluation], false, nonTechScoreStructure);
+
+    } else { //incomplete evaluation
+    }
+    console.log(JSON.stringify(answer));
+  }
+  var techTotalScore = totalScore(techScoreStructure, numOfTechEvaluations);
+  var nonTechTotalScore = totalScore(nonTechScoreStructure, numOfNonTechEvaluations);
+
+  var scores = {
+    tech: techTotalScore,
+    noTech: nonTechTotalScore,
+    numOfEvaluations: numOfTechEvaluations + numOfNonTechEvaluations
+  };
+  return scores;
+}
+
+function processEvaluation(evaluation, tech, structure) {
+  for (var answer = 0; answer < evaluation.answers.length; answer++) {
+    if (evaluation.answers[answer]._doc.question.tech === tech) {
+      if (evaluation.answers[answer]._doc.answer.value === undefined) { continue; }
+      var answerUuid = getQuestionAnserUUID(evaluation.answers[answer]._doc.question,
+        evaluation.answers[answer]._doc.answer.value);
+      if (structure[answerUuid]) {
+        structure[answerUuid] += evaluation.answers[answer]._doc.answer.weight;
+      } else {
+        structure[answerUuid] = evaluation.answers[answer]._doc.answer.weight;
+      }
+    }
+  }
+  return structure;
+}
+function getQuestionAnserUUID(question, answerValue) {
+  for (var v in question.values) {
+    if (question.values[v].value == answerValue) {
+      return question.values[v]._doc._id;
+    }
+  }
+}
+function totalScore(structure, totalAnsers) {
+  var totalS = 0;
+  for (var questionAnswerUuid in structure) {
+    totalS += structure[questionAnswerUuid] / totalAnsers;
+  }
+  return totalS;
+}

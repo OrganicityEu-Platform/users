@@ -29,12 +29,11 @@ var jscs               = require('gulp-jscs'); // JavaScript code style with jsc
 var eslint             = require('gulp-eslint'); // Plugin for processing files with eslint
 var cache              = require('gulp-cached');
 var less               = require('gulp-less');
-var LessPluginCleanCSS = require('less-plugin-clean-css');
+//var LessPluginCleanCSS = require('less-plugin-clean-css');
 var sourcemaps         = require('gulp-sourcemaps');
 var minifyCSS          = require('gulp-minify-css');
 var livereload         = require('gulp-livereload');
 var mocha              = require('gulp-mocha');
-
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
 var dependencies = [
@@ -208,14 +207,14 @@ gulp.task('lint-watch', function() {
 });
 
 gulp.task('less', function() {
-  var cleancss = new LessPluginCleanCSS({ advanced: true });
+  //var cleancss = new LessPluginCleanCSS({ advanced: true });
   if (process.env.DEVELOPMENT) {
     return gulp.src('./assets/less/**/*.less')
       .pipe(cache('less'))
       .pipe(sourcemaps.init())
       .pipe(less({
         paths: [path.join(__dirname, 'node_modules/bootstrap/less')],
-        plugins: [cleancss]
+        plugins: [ ]
       }))
       .on('error', function(err) {
         gutil.log(gutil.colors.red(err.toString()));
@@ -225,7 +224,7 @@ gulp.task('less', function() {
       .pipe(livereload());
   }
   return gulp.src('./assets/less/**/*.less')
-    .pipe(less({ plugins: [cleancss] }))
+    .pipe(less({ plugins: [ ] }))
     .on('error', function(err) {
       gutil.log(gutil.colors.red(err));
     })
