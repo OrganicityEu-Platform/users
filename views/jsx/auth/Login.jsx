@@ -7,24 +7,21 @@ var Link = Router.Link;
 var Login = React.createClass({
   render() {
     return (
-      <div className="jumbotron text-center">
-        <h1><span className="fa fa-lock"></span> Login or Register</h1>
-        <Link to="local-login" className="btn btn-default"><span className="fa fa-user"></span> Local Login</Link>
-        <Link to="signup" className="btn btn-default"><span className="fa fa-user"></span> Local Signup</Link>
-        <a href={api.reverse('auth_facebook')} className="btn btn-primary">
-          <span className="fa fa-facebook"></span> Facebook
+      <div className="social-logins">
+        <a href={api.reverse('auth_facebook')} className="">
+          <span className="fa fa-facebook"></span>
         </a>
-        <a href={api.reverse('auth_twitter')} className="btn btn-info">
-          <span className="fa fa-twitter"></span> Twitter
+        <a href={api.reverse('auth_twitter')} className="">
+          <span className="fa fa-twitter"></span>
         </a>
-        <a href={api.reverse('auth_google')} className="btn btn-danger">
-          <span className="fa fa-google-plus"></span> Google+
+        <a href={api.reverse('auth_google')} className="">
+          <span className="fa fa-google-plus"></span>
         </a>
-        <a href={api.reverse('auth_github')} className="btn btn-info">
-          <span className="fa fa-github"></span> Github
+        <a href={api.reverse('auth_github')} className="">
+          <span className="fa fa-github"></span>
         </a>
-        <a href={api.reverse('auth_disqus')} className="btn btn-warning">
-          <span className="fa fa-commenting-o"></span> Disqus
+        <a href={api.reverse('auth_disqus')} className="">
+          <span className="">DISQUS</span>
         </a>
       </div>
     );

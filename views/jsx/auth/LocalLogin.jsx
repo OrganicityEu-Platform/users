@@ -67,14 +67,13 @@ var LocalLogin = React.createClass({
     }
 
     return (
-      <div className="col-sm-6 col-sm-offset-3">
-          <h1><span className="fa fa-sign-in"></span> Login</h1>
+      <div className="col-sm-10 col-sm-offset-1">
           {errorMessage}
           <form action={api.reverse('local-login')} method="post">
             <div className="form-group">
-                <label>Email</label>
                 <input type="text"
                   className="form-control oc-login-email"
+                  placeholder="email"
                   name="email"
                   id="email"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -83,9 +82,9 @@ var LocalLogin = React.createClass({
             </div>
             <ErrorMessage messages={this.props.getValidationMessages('email')} />
             <div className="form-group">
-                <label>Password</label>
                 <input type="password"
                   className="form-control oc-login-password"
+                  placeholder="password"
                   name="password"
                   id="password"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -94,12 +93,11 @@ var LocalLogin = React.createClass({
             </div>
             <ErrorMessage messages={this.props.getValidationMessages('password')} />
             <button type="submit"
-                    className="btn"
+                    className="login-btn"
                     disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
                     onClick={this.handleSubmit}>Login</button>
           </form>
-          <hr/>
-          <p>Need an account? <Link to="signup" >Signup</Link></p>
+          <p className="login-help">Need an account? <Link to="signup" ><span className="login-help-signup">Signup</span></Link></p>
       </div>
     );
   },

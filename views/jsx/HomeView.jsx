@@ -5,6 +5,7 @@ import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstr
 import FlashQueue from './FlashQueue.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
 import LoginModal from './LoginModal.jsx';
+import SignupModal from './SignupModal.jsx';
 import HomeViewHeader from './HomeViewHeader.jsx';
 import HomeViewSection from './HomeViewSection.jsx';
 import HomeViewFooter from './HomeViewFooter.jsx';
@@ -45,6 +46,7 @@ var HomeView = React.createClass({
               onClick={this.onClickAjaxError}>Create AJAX error</button>
           </p>
           <LoginModal/>
+          <SignupModal/>
           <CreateScenarioModal/>
           <EvaluateScenarioModal/>
           <EditScenarioModal/>

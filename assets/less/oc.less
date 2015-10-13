@@ -199,10 +199,6 @@ input[type="submit"] {
   background-color: @oc-white;
 }
 
-.scenario-article-header, .scenario-article-narrative, #disqus_thread {
-  padding: 5px 38px 0px 38px;
-}
-
 .oc-scenario-controls {
    padding: 0;
    margin-top: 20px;
@@ -476,6 +472,12 @@ input[type="submit"] {
   .oc-footer-small {
     line-height: 40px;
   }
+  .scenario-article-header,
+  .scenario-article-narrative,
+  #disqus_thread,
+  .scenario-article-footer {
+    padding: 5px 15px 0px 15px;
+  }
 }
 
 .oc-footer-large-social-links {
@@ -554,15 +556,64 @@ input[type="submit"] {
   margin-top: -8px !important;
 }
 
+.social-logins {
+  display: inline-block;
+  font-size: 20px;
+  margin-top: 45px;
+}
+
+.login-help {
+  padding-top: 20px;
+}
+
+.social-logins > a {
+  padding: 0px 18px 0px 18px;
+  color: rgb(80,80,80);
+}
+
+.modal-footer, .modal-header {
+  border: 0;
+}
+
+.login-btn, .signup-btn {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  width:100%;
+  .oc-home-view-button-large
+}
+
 /*
  * Disqus
  */
 
 /*
- * Login
+ * Login and Signup
  */
-.oc-login-email, .oc-login-password {
+.oc-login-email,
+.oc-login-password,
+.oc-signup-email,
+.oc-signup-password {
   border-radius: 0;
+  background-color: rgb(240,242,245);
+  border: 0;
+  box-shadow: none;
+  height: 55px;
+  font-size: 17px;
+}
+
+.oc-login-password:focus,
+.oc-login-email:focus,
+.oc-signup-email:focus,
+.oc-signup-password:focus {
+  box-shadow: 0 0 5px @oc-magenta;
+}
+
+.login-help-signup {
+  color: @oc-magenta;
+}
+
+#login-modal-title, #signup-modal-title {
+  margin-top: 15px;
 }
 
 /*
@@ -692,5 +743,10 @@ input[type="submit"] {
     }
   #oc-search-form {
     float: right;
+  }
+  .scenario-article-header,
+  .scenario-article-narrative,
+  #disqus_thread {
+    padding: 5px 38px 0px 38px;
   }
 }

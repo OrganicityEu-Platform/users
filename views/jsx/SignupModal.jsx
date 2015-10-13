@@ -1,13 +1,13 @@
 import React                from 'react';
+import Signup               from './auth/Signup.jsx';
 import Login               from './auth/Login.jsx';
-import LocalLogin               from './auth/LocalLogin.jsx';
 
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
-var LoginModal = React.createClass({
+var SignupModal = React.createClass({
   getInitialState: function() {
     return {show: false};
   },
@@ -23,22 +23,22 @@ var LoginModal = React.createClass({
     return (
       <ButtonToolbar>
         <p onClick={this.showModal}>
-        login
+        register
       </p>
 
         <Modal
           {...this.props}
           show={this.state.show}
           onHide={this.hideModal}
-          dialogClassName="oc-login-modal"
+          dialogClassName="oc-signup-modal"
         >
           <Modal.Header closeButton>
-            <Modal.Title id="login-modal-title">Please login below</Modal.Title>
+            <Modal.Title id="signup-modal-title">Please register below</Modal.Title>
               <Login/>
           </Modal.Header>
           <Modal.Body>
+            <Signup/>
 
-          <LocalLogin/>
           </Modal.Body>
           <Modal.Footer>
 
@@ -49,4 +49,4 @@ var LoginModal = React.createClass({
   }
 });
 
-export default LoginModal;
+export default SignupModal;
