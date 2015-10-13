@@ -163,6 +163,19 @@ input[type="submit"] {
  -webkit-column-gap:1em;
 }
 
+.scenario-thumbnail-image-wrapper {
+  margin-bottom: 0 !important;
+}
+
+.scenario-thumbnail-header {
+  padding: 16px 15px 5px;
+}
+
+.scenario-thumbnail-image-wrapper > img {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+}
+
 .scenario-thumbnails > .col-md-4 {
  display: inline-block;
  padding: .33rem;
@@ -177,6 +190,8 @@ input[type="submit"] {
   margin-bottom: 8px;
   border-radius: 0;
   background-color: @oc-white;
+  text-align: left;
+  padding: 0;
 }
 
 .scenario-thumbnail:hover {
@@ -197,6 +212,7 @@ input[type="submit"] {
 
 .scenario-thumbnail-summary {
   overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  padding: 0px 15px 8px 15px;
 }
 
 .scenario-article {
