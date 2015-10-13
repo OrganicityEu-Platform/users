@@ -114,8 +114,7 @@ var Signup = React.createClass({
               disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
               onClick={this.handleSubmit}>Signup</button>
         </form>
-        <hr/>
-        <p>Already have an account? <Link to="local-login">Login</Link></p>
+        <p className="signup-help">Already have an account? <Link to="local-login"><span className="login-help-signup">Login</span></Link></p>
       </div>
     );
   },
