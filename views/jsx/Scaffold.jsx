@@ -13,6 +13,8 @@ import ui                  from '../../ui_routes.js';
 import CreateScenarioModal from './CreateScenarioModal.jsx';
 import SignupModal         from './SignupModal.jsx';
 import LoginModal          from './LoginModal.jsx';
+import LocalLogin from './auth/LocalLogin.jsx';
+import Signup from './auth/Signup.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -61,7 +63,7 @@ var Scaffold = React.createClass({
       router = (<RouteHandler
         onLogin={this.onLogin}
         onLogout={this.onLogout}
-        currentUser={this.state.currentUser} />)
+        currentUser={this.state.currentUser} />);
     } else {
       console.log("Render initial scaffold");
     }
@@ -105,12 +107,12 @@ var Scaffold = React.createClass({
       linksRight.push(
         <NavItem
           key="login"
-          className="nav-login-btn"><LoginModal/></NavItem>
+          className="nav-login-btn"><LocalLogin/></NavItem>
       );
       linksRight.push(
         <NavItem
           key="signup"
-          className="nav-signup-btn"><SignupModal/></NavItem>
+          className="nav-signup-btn"><Signup/></NavItem>
       );
     }
     return (
