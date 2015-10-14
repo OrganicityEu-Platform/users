@@ -5,6 +5,7 @@ import LoadingMixin from '../LoadingMixin.jsx';
 import api          from '../../../api_routes.js';
 import ui           from '../../../ui_routes.js';
 import Login               from './Login.jsx';
+import LocalLogin   from './LocalLogin.jsx';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 // Input validation
@@ -89,7 +90,7 @@ var Signup = React.createClass({
 
       <ButtonToolbar>
         <span onClick={this.showModal}>
-        register
+        signup
       </span>
 
         <Modal
@@ -141,7 +142,7 @@ var Signup = React.createClass({
                     disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
                     onClick={this.handleSubmit}>Signup</button>
               </form>
-              <p className="signup-help">Already have an account? <Link to="local-login"><span className="login-help-signup">Login</span></Link></p>
+              <p className="signup-help">Already have an account? <span className="login-help-signup"><LocalLogin/></span></p>
             </div>
           </Modal.Body>
           <Modal.Footer>

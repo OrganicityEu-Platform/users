@@ -111,6 +111,10 @@ input[type="submit"] {
  * Scenarios
  */
 
+.scenario-article-header {
+
+}
+
 .scenario-article-footer {
   padding: 5px 38px 20px 38px;
 }
@@ -242,7 +246,7 @@ input[type="submit"] {
 }
 
 .scenario-article-publisher, .scenario-article-badge {
-  margin-right: 86px;
+  margin-right: 66px;
 }
 
 .oc-page-wrapper {
@@ -255,11 +259,21 @@ input[type="submit"] {
 .scenario-article-summary {
   font-size: 25px;
   color: #444;
+  margin-bottom: 25px;
+}
+
+.scenario-article-publisher > a {
+  color: @oc-magenta;
 }
 
 .scenario-article-title {
-  font-size: 35px;
+  font-size: 45px;
   color: #444;
+  margin-top: 35px;
+}
+
+.scenario-counter {
+  float: right;
 }
 
 /*
@@ -493,7 +507,6 @@ input[type="submit"] {
   .oc-footer-small {
     line-height: 40px;
   }
-  .scenario-article-header,
   .scenario-article-narrative,
   #disqus_thread,
   .scenario-article-footer {
@@ -613,6 +626,7 @@ input[type="submit"] {
  * Disqus
  */
 
+
 /*
  * Login and Signup
  */
@@ -639,6 +653,10 @@ input[type="submit"] {
   color: @oc-magenta;
 }
 
+.btn-toolbar {
+  display: inline-block;
+}
+
 #login-modal-title, #signup-modal-title {
   margin-top: 15px;
 }
@@ -652,12 +670,19 @@ input[type="submit"] {
   //font-family: 'Cooper Hewitt Book';
 }
 
+.oc-home-view-header > p {
+  margin-top: 8px;
+  margin-bottom: 35px;
+}
+
 .oc-home-view-header {
   padding-top: 20px;
 }
 
 .oc-home-view-title {
   color: @oc-magenta;
+  margin-top: 35px;
+  margin-bottom: 20px;
 }
 
 /*
@@ -692,6 +717,12 @@ input[type="submit"] {
 
 #oc-home-view-section-read-more-btn-wrapper {
   text-align: center;
+  margin-top: 35px;
+  margin-bottom: 55px;
+}
+
+.oc-top-accordian {
+  margin-top: 25px;
 }
 
 #oc-home-view-section-read-more-btn {
@@ -771,10 +802,32 @@ input[type="submit"] {
   #oc-search-form {
     float: right;
   }
-  .scenario-article-header,
-  .scenario-article-narrative,
+  .scenario-article-header {
+    margin-left: 55px;
+    margin-right: 55px;
+    padding-top: 25px;
+  }
+  .scenario-article-image {
+    margin-left: 55px;
+    margin-right: 55px;
+  }
+  .scenario-article-narrative {
+    margin-left: 55px;
+    margin-right: 55px;
+    margin-top: 25px;
+  }
+  .scenario-article-meta {
+    margin-left: 55px;
+    margin-right: 55px;
+    margin-top: 25px;
+    padding-bottom: 15px;
+    text-align: center;
+  }
+  .scenario-article-timestamp {
+    padding-top: 5px;
+  }
   #disqus_thread {
-    padding: 5px 38px 0px 38px;
+    padding: 5px 55px 0px 55px;
   }
   .nav-login-btn > a {
     padding: 0px !important;

@@ -39,17 +39,6 @@ var HomeView = React.createClass({
           <HomeViewHeader />
           <HomeViewSection />
           <HomeViewFooter />
-          <p>
-            <button className="btn btn-primary" onClick={this.onClickNotification}>Notification</button>
-            <button className="btn btn-error"
-              disabled={this.isLoading() ? 'disabled' : ''}
-              onClick={this.onClickAjaxError}>Create AJAX error</button>
-          </p>
-          <LoginModal/>
-          <SignupModal/>
-          <CreateScenarioModal/>
-          <EvaluateScenarioModal/>
-          <EditScenarioModal/>
         </div>
     );
   }

@@ -6,6 +6,7 @@ import LoadingMixin        from '../LoadingMixin.jsx';
 import api                 from '../../../api_routes.js';
 import ui                  from '../../../ui_routes.js';
 import Login               from './Login.jsx';
+import Signup              from './Signup.jsx';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 // Input validation
@@ -134,9 +135,8 @@ var LocalLogin = React.createClass({
                   onClick={this.handleSubmit}>Login</button>
               </form>
               <p className="login-help">
-                Need an account? <Link to="signup" >
-                <span className="login-help-signup">Signup</span>
-              </Link>
+                Need an account?
+                <span className="login-help-signup"><Signup/></span>
             </p>
           </div>
 
