@@ -69,6 +69,7 @@ var QuestionnaireQuestionsEditView = React.createClass({
                         id={"question_"+index+"_tech"}
                         name={"question_"+index+"_tech"}
                         value={q.tech}
+                        checked={q.tech}
                         onChange={this.handleChangedTech(index)} />
                     </div>
                   </div>

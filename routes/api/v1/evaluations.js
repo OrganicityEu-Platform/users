@@ -132,7 +132,7 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.get(api.route('evaluation_score'), function(req, res) {
+  router.get(api.route('evaluation_score'),  [isLoggedIn], function(req, res) {
     if (req.params.uuid === undefined) {
       return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
     }
@@ -226,7 +226,7 @@ function processEvaluation(evaluation, tech, structure) {
 }
 function getQuestionAnserUUID(question, answerValue) {
   for (var v in question.values) {
-    if (question.values[v].value == answerValue) {
+    if (question.values[v].value === answerValue) {
       return question.values[v]._doc._id;
     }
   }

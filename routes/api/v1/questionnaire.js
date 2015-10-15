@@ -81,17 +81,53 @@ module.exports = function(router, passport) {
     });
   };
 
-  router.patch(
-    api.route('questionnaire'),
-    [isLoggedIn, validate(QuestionnaireJoi.postAndPut)],
-    replaceWithNewVersion
-  );
+  router.post(api.route('questionnaire'),[isLoggedIn, validate(QuestionnaireJoi.postAndPut)],replaceWithNewVersion);
 
-  router.post(
-    api.route('questionnaire'),
-    [isLoggedIn, validate(QuestionnaireJoi.postAndPut)],
-    replaceWithNewVersion
-  );
+  var patchExistingVersion = function(req, res) {
+    if (!req.user.hasRole(['admin'])) {
+      return res.status(HttpStatus.FORBIDDEN).send();
+    }
+    Questionnaire.find().sort({ 'version' : -1 }).exec(function(err, questionnaires) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
 
+      var updatedVersion = new Questionnaire(req.body);
+      var dbVersion = questionnaires[0];
+      dbVersion.description = updatedVersion.description;
+      dbVersion.explanation = updatedVersion.explanation;
+      var toSave = true;
+      if (updatedVersion.questions.length === dbVersion.questions.length) {
+        for (var i = 0; i < updatedVersion.questions.length; i++) {
+          var updatedQuestion = updatedVersion.questions[i];
+          var dbQuestion = dbVersion.questions[i];
+          if (updatedQuestion.values.length === dbQuestion.values.length) {
+            for (var j = 0; i < updatedQuestion.values.length; i++) {
+              dbQuestion.values[i].value = updatedQuestion.values[i].value;
+              //dbQuestion.values[i].weight = updatedQuestion.values[i].weight;
+            }
+          } else {
+            toSave = false;
+            break;
+          }
+        }
+      } else {
+        toSave = false;
+      }
+      if (toSave === false) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('The questionnaire has not identical structure');
+      }
+      dbVersion.save(function(err) {
+        if (err) {
+          console.log(err);
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        return res.status(HttpStatus.OK).send(dbVersion.toObject());
+      });
+    });
+  };
+  //router.patch(api.route('questionnaire'),[isLoggedIn,validate(QuestionnaireJoi.postAndPut)],replaceWithNewVersion);
+  router.patch(api.route('questionnaire'),[isLoggedIn],patchExistingVersion); //todo add validator
   return router;
 };
