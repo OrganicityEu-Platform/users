@@ -3,6 +3,8 @@ import TimeAgo    from 'react-timeago';
 import ui         from '../../../ui_routes.js';
 import UserAvatar from '../users/UserAvatar.jsx';
 import Counter    from '../Counter.jsx';
+import ScenarioEvalButton from './ScenarioEvalButton.jsx';
+import api                  from '../../../api_routes.js';
 
 var ScenarioTableView = React.createClass({
   render: function() {
@@ -20,6 +22,7 @@ var ScenarioTableView = React.createClass({
     return (
       <div className="scenario-article">
         <header className="scenario-article-header">
+
           <div className="col-md-10 header-meta">
             <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
               <span className="scenario-article-publisher">
@@ -35,7 +38,7 @@ var ScenarioTableView = React.createClass({
               </p>
           </div>
           <div className="col-md-2 scenario-article-widget">
-            <button className="scenario-article-eval-btn">EVALUATE</button>
+            <ScenarioEvalButton scenario={this.props.scenario}/>
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-score">SCORE:</p>
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} /></p>
