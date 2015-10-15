@@ -20,23 +20,29 @@ var ScenarioTableView = React.createClass({
     return (
       <div className="scenario-article">
         <header className="scenario-article-header">
-          <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
-          <div className="scenario-article-header-meta">
-            <span className="scenario-article-publisher">
-              Created by <UserAvatar uuid={this.props.scenario.creator} />
-            </span>
-            <p className="scenario-counter">
-              <Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} /> views
-            </p>
-            <p className="scenario-article-timestamp">
-              { this.props.scenario.timestamp ?
-              <TimeAgo date={this.props.scenario.timestamp} />
-              : '' }
-            </p>
+          <div className="col-md-10 header-meta">
+            <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
+              <span className="scenario-article-publisher">
+                Created by <UserAvatar uuid={this.props.scenario.creator} />
+              </span>
+              <span className="scenario-article-timestamp">
+                { this.props.scenario.timestamp ?
+                <TimeAgo date={this.props.scenario.timestamp} />
+                : '' }
+              </span>
+              <p className="scenario-article-summary">
+                {this.props.scenario.summary}
+              </p>
           </div>
-          <p className="scenario-article-summary">
-            {this.props.scenario.summary}
-          </p>
+          <div className="col-md-2 scenario-article-widget">
+            <button className="scenario-article-eval-btn">EVALUATE</button>
+            <div className="scenario-article-widget-data">
+              <p className="scenario-article-widget-data-score">SCORE:</p>
+              <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} /></p>
+              <p className="scenario-article-widget-data-likes"><i className="fa fa-thumbs-o-up"></i></p>
+              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i></p>
+            </div>
+          </div>
         </header>
         <div className="scenario-article-section">
           <div className="scenario-article-image">
