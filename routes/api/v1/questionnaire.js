@@ -81,7 +81,8 @@ module.exports = function(router, passport) {
     });
   };
 
-  router.post(api.route('questionnaire'),[isLoggedIn, validate(QuestionnaireJoi.postAndPut)],replaceWithNewVersion);
+  //router.post(api.route('questionnaire'),[isLoggedIn, validate(QuestionnaireJoi.postAndPut)],replaceWithNewVersion);
+  router.post(api.route('questionnaire'),[isLoggedIn],replaceWithNewVersion);
 
   var patchExistingVersion = function(req, res) {
     if (!req.user.hasRole(['admin'])) {
