@@ -22,9 +22,9 @@ var SignupModal = React.createClass({
   render: function() {
     return (
       <ButtonToolbar>
-        <p onClick={this.showModal}>
+        <span onClick={this.showModal}>
         register
-      </p>
+      </span>
 
         <Modal
           {...this.props}

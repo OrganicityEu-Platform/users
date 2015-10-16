@@ -26,7 +26,7 @@ var HomeViewFooter = React.createClass({
               <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit sit amet non magna. Nullam id dolor id nibh ultricies vehicula ut id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
             </div>
             <div className="col-md-6">
-              <Accordion>
+              <Accordion className="oc-top-accordian">
                 <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
                   amus labore sustainable VHS.
                 </Panel>
@@ -48,7 +48,7 @@ var HomeViewFooter = React.createClass({
               </Accordion>
             </div>
             <div className="col-md-6">
-              <Accordion>
+              <Accordion className="oc-top-accordian">
                 <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
                   amus labore sustainable VHS.
                 </Panel>

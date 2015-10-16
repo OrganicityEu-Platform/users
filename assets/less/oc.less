@@ -111,6 +111,41 @@ input[type="submit"] {
  * Scenarios
  */
 
+.scenario-article-header {
+
+}
+
+.scenario-article-eval-btn {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  width:100%;
+  .oc-home-view-button-large
+}
+
+.scenario-article-eval-btn:hover {
+  background-color: #191115;
+}
+
+.scenario-article-widget {
+  padding-right: 0px;
+}
+
+.scenario-article-widget-data {
+  padding-left: 5px;
+  margin-top: 20px;
+}
+
+.scenario-article-widget-data > p {
+  padding-top: 2px;
+  color: @oc-meta-grey;
+  border-bottom: 2px solid @oc-grey;
+  //font-size: 16px;
+}
+
+.scenario-article-widget-data > p > i {
+  padding-right: 10px;
+
+}
 .scenario-article-footer {
   padding: 5px 38px 20px 38px;
 }
@@ -192,6 +227,7 @@ input[type="submit"] {
   background-color: @oc-white;
   text-align: left;
   padding: 0;
+  border: 0;
 }
 
 .scenario-thumbnail:hover {
@@ -241,7 +277,7 @@ input[type="submit"] {
 }
 
 .scenario-article-publisher, .scenario-article-badge {
-  margin-right: 86px;
+  margin-right: 66px;
 }
 
 .oc-page-wrapper {
@@ -256,9 +292,28 @@ input[type="submit"] {
   color: #444;
 }
 
+.scenario-article-publisher > a {
+  color: @oc-magenta;
+}
+
 .scenario-article-title {
-  font-size: 35px;
+  font-size: 45px;
   color: #444;
+  margin-top: 0px;
+  padding-bottom: 10px;
+}
+
+.scenario-article-publisher,
+.scenario-article-timestamp {
+  color: @oc-meta-grey;
+}
+
+.header-meta {
+  padding-left: 0px;
+}
+
+.scenario-counter {
+  float: right;
 }
 
 /*
@@ -492,7 +547,6 @@ input[type="submit"] {
   .oc-footer-small {
     line-height: 40px;
   }
-  .scenario-article-header,
   .scenario-article-narrative,
   #disqus_thread,
   .scenario-article-footer {
@@ -582,7 +636,7 @@ input[type="submit"] {
   margin-top: 45px;
 }
 
-.login-help {
+.login-help, .signup-help {
   padding-top: 20px;
 }
 
@@ -602,9 +656,16 @@ input[type="submit"] {
   .oc-home-view-button-large
 }
 
+.login-btn:hover, .signup-btn:hover {
+  background-color: #191115;
+}
+
+
+
 /*
  * Disqus
  */
+
 
 /*
  * Login and Signup
@@ -632,6 +693,10 @@ input[type="submit"] {
   color: @oc-magenta;
 }
 
+.btn-toolbar {
+  display: inline-block;
+}
+
 #login-modal-title, #signup-modal-title {
   margin-top: 15px;
 }
@@ -645,12 +710,19 @@ input[type="submit"] {
   //font-family: 'Cooper Hewitt Book';
 }
 
+.oc-home-view-header > p {
+  margin-top: 8px;
+  margin-bottom: 35px;
+}
+
 .oc-home-view-header {
   padding-top: 20px;
 }
 
 .oc-home-view-title {
   color: @oc-magenta;
+  margin-top: 35px;
+  margin-bottom: 20px;
 }
 
 /*
@@ -676,7 +748,7 @@ input[type="submit"] {
   .oc-home-view-button-large;
 }
 #oc-home-view-section-explore-all-scenarios-btn:hover {
-  color: black;
+  background-color: #191115;
 }
 
 /*
@@ -685,6 +757,12 @@ input[type="submit"] {
 
 #oc-home-view-section-read-more-btn-wrapper {
   text-align: center;
+  margin-top: 35px;
+  margin-bottom: 55px;
+}
+
+.oc-top-accordian {
+  margin-top: 25px;
 }
 
 #oc-home-view-section-read-more-btn {
@@ -692,7 +770,7 @@ input[type="submit"] {
 }
 
 #oc-home-view-section-read-more-btn:hover {
-  color: black;
+  background-color: #191115;
 }
 
 .oc-faq {
@@ -764,9 +842,44 @@ input[type="submit"] {
   #oc-search-form {
     float: right;
   }
-  .scenario-article-header,
-  .scenario-article-narrative,
+  .scenario-article-header {
+    margin-left: 55px;
+    margin-right: 55px;
+    padding-top: 55px;
+  }
+  .scenario-article-image {
+    margin-left: 55px;
+    margin-right: 55px;
+  }
+  .scenario-article-image > img {
+    margin-top: 25px;
+  }
+  .scenario-article-narrative {
+    margin-left: 55px;
+    margin-right: 55px;
+    margin-top: 25px;
+  }
+  .scenario-article-meta {
+    margin-left: 55px;
+    margin-right: 55px;
+    margin-top: 25px;
+    padding-bottom: 15px;
+    text-align: center;
+  }
+  .scenario-article-timestamp {
+    padding-top: 5px;
+  }
   #disqus_thread {
-    padding: 5px 38px 0px 38px;
+    padding: 5px 55px 0px 55px;
+  }
+  .nav-login-btn > a {
+    padding: 0px !important;
+    margin-top: 15px;
+    margin-right: 25px;
+    margin-left: 65px;
+  }
+  .nav-signup-btn > a {
+    padding: 0px !important;
+    margin-top: 15px;
   }
 }

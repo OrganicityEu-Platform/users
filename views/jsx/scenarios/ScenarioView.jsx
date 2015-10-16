@@ -5,6 +5,7 @@ import ReactDisqusThread    from 'react-disqus-thread';
 
 import ScenarioTableView    from './ScenarioTableView.jsx';
 import ScenarioEditButton   from './ScenarioEditButton.jsx';
+import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api                  from '../../../api_routes.js';
 
@@ -35,7 +36,6 @@ var ScenarioView = React.createClass({
         </div>
         <div className="row">
           <div className="oc-scenario-controls">
-            <button type="button" className="btn btn-default" onClick={this.clickedEvaluate}>EVALUATE</button>
             <ScenarioEditButton scenario={this.state}/>
             <ScenarioDeleteButton scenario={this.state}/>
           </div>

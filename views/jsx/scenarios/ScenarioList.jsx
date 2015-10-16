@@ -30,6 +30,7 @@ var ScenarioList = React.createClass({
     };
   },
   componentDidMount: function() {
+    this.loading();
     this.reload();
   },
   buildQueryUrl: function() {
