@@ -7,6 +7,48 @@
 
 @oc-clear-sky: rgb(39,111,191);
 
+.marker {
+  width: 80px;
+  height: 80px;
+  background-color: @oc-magenta;
+  float: right;
+  border-bottom-left-radius: 100%;
+}
+
+.sat-wrapper {
+  display: block;
+  margin-bottom: 15px;
+  color: @oc-meta-grey;
+}
+
+.sat-wrapper > span {
+  display: block;
+  margin-left: 15px;
+}
+
+ /*
+ * SECTOR COLOURS
+ */
+.public_colour {
+  background-color: rgb(252, 180, 20) !important;
+}
+
+.energy_colour {
+  background-color: rgb(204, 189, 0) !important;
+}
+.cultural_colour {
+  background-color: rgb(172, 145, 195) !important;
+}
+.environment_colour {
+  background-color: rgb(75, 183, 95) !important;
+}
+
+.retail_colour {
+  background-color: rgb(161, 63, 52) !important;
+}
+
+
+
 @font-face {
   font-family: 'Cooper Hewitt Book';
   src: url('../../static/fonts/CooperHewitt-Book.otf');
@@ -192,10 +234,10 @@ input[type="submit"] {
 }
 
 .scenario-thumbnails {
- -moz-column-width: 20em;
- -webkit-column-width: 20em;
- -moz-column-gap: 1em;
- -webkit-column-gap:1em;
+ -moz-column-width: 21em;
+ -webkit-column-width: 21em;
+ -moz-column-gap: 1.5em;
+ -webkit-column-gap:1.5em;
 }
 
 .scenario-thumbnail-image-wrapper {
@@ -207,8 +249,19 @@ input[type="submit"] {
 }
 
 .scenario-thumbnail-image-wrapper > img {
-  -webkit-filter: grayscale(1);
-  filter: grayscale(1);
+  display:inline-block;
+  opacity: 0.5;
+  -webkit-filter: brightness(1.5) grayscale(1);
+  filter: brightness(1.5) grayscale(1);
+
+}
+
+.scenario-thumbnail-marker-score {
+  font-size: 22px;
+  color: @oc-white;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 .scenario-thumbnails > .col-md-4 {
