@@ -268,13 +268,14 @@ input[type="submit"] {
 .scenario-thumbnail-image-wrapper > img {
   display:inline-block;
   opacity: 0.5;
-  -webkit-filter: brightness(1.5) grayscale(1);
+  -webkit-filter: brightness(1.5) grayscale(100%);
   filter: brightness(1.5) grayscale(1);
 
 }
 
 .scenario-thumbnail-marker-score {
   font-size: 22px;
+  font-weight: bold;
   color: @oc-white;
   float: right;
   margin-right: 10px;
@@ -293,7 +294,7 @@ input[type="submit"] {
   position:relative;
   display: block;
   margin-bottom: 8px;
-  border-radius: 0;
+  border-radius: 2px;
   background-color: @oc-white;
   text-align: left;
   padding: 0;
@@ -511,7 +512,7 @@ input[type="submit"] {
 #oc-search-btn {
   background-color: @oc-magenta;
   border: 0;
-  border-radius: 0 !important;
+  border-radius: 2px !important;
   margin-bottom: -2px;
   margin-left: 0 !important;
 }
@@ -682,7 +683,7 @@ input[type="submit"] {
 }
 
 .modal-content {
-  border-radius: 0;
+  border-radius: 2px;
 }
 
 .modal-backdrop.in {
@@ -744,7 +745,7 @@ input[type="submit"] {
 .oc-login-password,
 .oc-signup-email,
 .oc-signup-password {
-  border-radius: 0;
+  border-radius: 2px;
   background-color: rgb(240,242,245);
   border: 0;
   box-shadow: none;
@@ -800,7 +801,7 @@ input[type="submit"] {
  */
 
 .oc-home-view-button-large {
-  border-radius: 0;
+  border-radius: 2px;
   border: 0;
   background-color: @oc-magenta;
   color: @oc-white;
@@ -816,6 +817,7 @@ input[type="submit"] {
 
 #oc-home-view-section-explore-all-scenarios-btn {
   .oc-home-view-button-large;
+  margin-top: 60px;
 }
 #oc-home-view-section-explore-all-scenarios-btn:hover {
   background-color: #191115;
@@ -868,12 +870,18 @@ input[type="submit"] {
     float: none;
     display: inline-block;
   }
-  .navbar-explore-btn {
-    margin-left: 40px;
+  .navbar-header {
+    margin-right: 50px !important;
+  }
+  .oc-left-links-wrapper {
+    display: inline-block;
     margin-top: 5px;
   }
+  .navbar-explore-btn {
+
+  }
   .navbar-create-btn {
-    margin-top: 5px;
+
   }
   .navbar-default {
     height: 75px;
@@ -881,15 +889,26 @@ input[type="submit"] {
   .navbar-default .container {
     margin-top: 12px;
   }
+  .myclass {
+    border: 1px solid yellow;
+  }
   .navbar-explore-btn > a, .navbar-create-btn > a {
-    border: 1px solid @oc-white;
+    border: 1px solid rgb(254,254,250);
+    border-radius: 1px;
+    box-shadow: 0px 0px 6px 3px rgba(254,254,250, 0.2);
+    -webkit-box-shadow: 0px 0px 6px 3px rgba(254,254,250,0.2);
   }
   .navbar-explore-btn > a {
-    margin-right: 2px;
+    margin-right: 7px;
     padding: 10px 40px !important;
   }
+  .btn-toolbar > span {
+    border-radius: 50%;
+    box-shadow: 0px 0px 15px 3px rgba(254, 254, 250, 0.3);
+    background-color: rgba(254, 254, 250, 0.2);
+  }
   .navbar-create-btn > a {
-    margin-left: 2px;
+    margin-left: 7px;
     padding: 10px 40px !important;
   }
   .navbar-create-btn > a:hover, .navbar-explore-btn > a:hover {
