@@ -1,7 +1,8 @@
 /*
  * Checks, if a user is logged in
  */
-var config = require('../config/config.js');
+var config     = require('../config/config.js');
+var HttpStatus = require('http-status');
 
 module.exports = function(passport) {
   return function(req, res, next) {
@@ -16,6 +17,7 @@ module.exports = function(passport) {
 
     // Check for HTTP Basic auth
     passport.authenticate('basic', { session: false }, function(err, user, info) {
+
       if (err) {
         return next(err);
       }
@@ -23,13 +25,13 @@ module.exports = function(passport) {
         //console.log('isLoggedIn(): unauthorized');
         res.format({
           'application/json': function() {
-            return res.status(401).send();
+            return res.status(HttpStatus.UNAUTHORIZED).json({});
           },
           'text/html': function() {
-            return res.status(401).send('401 Unauthorized');
+            return res.status(HttpStatus.UNAUTHORIZED).send('401 Unauthorized');
           },
           'default': function() {
-            return res.status(406).send('406 Not Acceptable');
+            return res.status(HttpStatus.NOT_ACCEPTABLE).send('406 Not Acceptable');
           }
         });
       } else {

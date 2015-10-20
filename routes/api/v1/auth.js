@@ -1,17 +1,16 @@
-var api = require('../../../api_routes.js');
-var ui  = require('../../../ui_routes.js');
+var api        = require('../../../api_routes.js');
+var ui         = require('../../../ui_routes.js');
 
-var validate     = require('express-validation');
-var UserJoi  = require('../../../models/joi/user.js');
+var validate   = require('express-validation');
+var UserJoi    = require('../../../models/joi/user.js');
 
 module.exports = function(router, passport) {
 
-  router.get(api.route('currentUser'), function(req, res) {
-    if (req.user) {
-      res.json(req.user);
-    } else {
-      res.status(403).send();
-    }
+  // Must be here, because we do not have passport var earlier
+  var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
+
+  router.get(api.route('currentUser'), [isLoggedIn], function(req, res) {
+    res.json(req.user);
   });
 
   var authSuccess = function(req, res) {

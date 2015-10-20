@@ -55,7 +55,7 @@ var Profile = React.createClass({
     $.ajax(url, {
       dataType: 'json',
       error: (xhr) => {
-        if (xhr.status = 403) {
+        if (xhr.status == 401 || xhr.status == 403) {
           this.loaded();
         } else {
           this.loadingError(url, 'Error retrieving current user');
