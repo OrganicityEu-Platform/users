@@ -20,7 +20,10 @@ var ScenarioThumbnail = React.createClass({
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
     var tools = this.props.scenario.devices.slice(0, 3).join(', ');
-    
+    var summary = this.props.scenario.summary.substring(0, 150).concat('...');
+
+    console.log(summary);
+
     var sector_colour = this.props.scenario.sectors[0];
     var sector_colour_marker;
     var sector_colour_overlay;
@@ -34,6 +37,8 @@ var ScenarioThumbnail = React.createClass({
     if (this.props.scenario.thumbnail) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
     }
+
+console.log(this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g, '<br>'));
 
     return (
       <div className="col-md-4">
@@ -54,10 +59,12 @@ var ScenarioThumbnail = React.createClass({
               <h3 className="scenario-thumbnail-title">
                 {this.props.scenario.title}
               </h3>
-              Created by <span className="scenario-article-publisher"><UserAvatar uuid={this.props.scenario.creator} /></span>
+              <span className="scenario-thumbnail-publisher-wrapper">
+                <span className="meta">Posted by: </span><span className="scenario-article-publisher"><UserAvatar uuid={this.props.scenario.creator} /></span>
+              </span>
             </header>
             <p className="scenario-thumbnail-summary">
-              { this.props.scenario.summary ? this.props.scenario.summary.replace(/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g,/(?:\r\n|\r|\n)/g, '<br>') : '' }
+              { summary}
             </p>
             <span className="sat-wrapper">
               <span>Sectors: {sectors}</span>
