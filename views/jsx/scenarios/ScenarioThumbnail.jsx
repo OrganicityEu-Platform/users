@@ -6,7 +6,6 @@ import React      from 'react';
 import UserAvatar from '../users/UserAvatar.jsx';
 import ellipsis   from '../../../util/ellipsis.js';
 
-
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -77,7 +76,7 @@ var ScenarioThumbnail = React.createClass({
           </div>
         </div>
       );
-    }
+  }
 });
 
 export default ScenarioThumbnail;
