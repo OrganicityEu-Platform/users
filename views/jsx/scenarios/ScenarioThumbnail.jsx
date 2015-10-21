@@ -21,8 +21,7 @@ var ScenarioThumbnail = React.createClass({
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
     var tools = this.props.scenario.devices.slice(0, 3).join(', ');
-    //var summary = ellipsis(this.props.scenario.summary, 160);
-    var summary = this.props.scenario.summary.substring(0, 160).concat('...');
+    var summary = ellipsis(this.props.scenario.summary, 160);
 
     console.log(summary);
 

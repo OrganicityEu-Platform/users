@@ -1,19 +1,23 @@
 // @see: http://stackoverflow.com/a/16879097/605890
 
 module.exports = function(str, maxLen) {
+
   // no need to cut off
   if (str.length <= maxLen) {
     return str;
   }
+  // Length > maxLen
 
-  // find the cutoff point
-  var oldPos = 0;
-  var pos = 0;
-  while (pos !== -1 && pos <= maxLen) {
-    oldPos = pos;
-    pos = str.indexOf(' ', pos) + 1;
+  // Reduce to 100 char
+  var shorten = str.substring(0, 160);
+
+  // Find the last space
+  var pos = shorten.lastIndexOf(' ');
+
+  // We do not have a space
+  if (pos === -1) {
+    return shorten + '...';
   }
-  if (pos > maxLen) { pos = oldPos; }
-  // return cut off string with ellipsis
+
   return str.substring(0, pos).trim() + '...';
 };
