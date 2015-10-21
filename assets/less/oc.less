@@ -7,6 +7,8 @@
 
 @oc-clear-sky: rgb(39,111,191);
 
+@oc-hover-black: #191115;
+
 .marker {
   width: 80px;
   height: 80px;
@@ -612,6 +614,15 @@ input[type="submit"] {
   background-color: @oc-magenta;
   line-height: 64px;
   color: @oc-grey;
+
+  a {
+    color: @oc-grey;
+
+    &:hover {
+      color: @oc-hover-black;
+      text-decoration: none;
+    }
+  }
 }
 
 @media (max-width: @screen-md-min) {

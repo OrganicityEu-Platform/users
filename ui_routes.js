@@ -6,6 +6,8 @@ var ui_routes = {
   'root'                   : '/?',
   'home'                   : '/?',
 
+  'contactUs' : '/contactUs/?',
+
   // scenario routes
   'scenarioList'           : '/scenarios/?',
   'scenarioCreate'         : '/scenarios/new/?',
