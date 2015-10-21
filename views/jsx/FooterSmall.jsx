@@ -1,4 +1,5 @@
 import React                from 'react';
+import Contact from './Contact.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -9,7 +10,7 @@ var FooterSmall = React.createClass({
         <div className="row oc-footer-small">
           <div className="col-md-3">&copy; OrganiCity 2015</div>
           <div className="col-md-6">VISIT ORGANICITY.ORG TO FIND OUT MORE</div>
-          <div className="col-md-3">Contact us</div>
+          <div className="col-md-3"><Contact /></div>
         </div>
     );
   }
