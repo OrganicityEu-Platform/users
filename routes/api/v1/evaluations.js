@@ -226,7 +226,7 @@ function processEvaluation(evaluation, tech, structure) {
 }
 function getQuestionAnserUUID(question, answerValue) {
   for (var v in question.values) {
-    if (question.values[v].value == answerValue) {
+    if (question.values[v].value === answerValue) {
       return question.values[v]._doc._id;
     }
   }

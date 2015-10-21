@@ -30,16 +30,16 @@ var Scaffold = React.createClass({
   },
   componentDidMount: function() {
     $.ajax(api.reverse('currentUser'), {
-      accepts : 'application/json',
+      dataType: 'json',
       success : this.onLogin,
-      error : (jqXHR, textStatus, errorThrown) => {
-        if (jqXHR.status === 422 || jqXHR.status === 403) {
+      error : (xhr, textStatus, errorThrown) => {
+        if (xhr.status === 401) {
           this.onLogout();
         } else {
           this.flashOnAjaxError(
             api.reverse('currentUser'),
             'Error retrieving current user'
-          )(jqXHR, textStatus, errorThrown);
+          )(xhr, textStatus, errorThrown);
         }
       }
     });
@@ -114,15 +114,20 @@ var Scaffold = React.createClass({
           key="signup"
           className="nav-signup-btn"><Signup/></NavItem>
       );
+
+
     }
     return (
       <div className="container oc-page-wrapper">
         <div className="row">
           <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
             <CollapsibleNav eventKey={0}>
-              <Nav navbar>
-                {linksLeft}
-              </Nav>
+              <span className="oc-left-links-wrapper">
+                <Nav navbar>
+                  {linksLeft}
+                </Nav>
+              </span>
+
               <Nav navbar right>
                 {linksRight}
               </Nav>
