@@ -7,12 +7,33 @@
 
 @oc-clear-sky: rgb(39,111,191);
 
+a {
+  color: @oc-magenta;
+}
+
+.oc-signup-wrapper,
+.oc-login-wrapper {
+  background-color: @oc-white;
+}
+
+.social-logins-wrapper {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
 .marker {
   width: 80px;
   height: 80px;
   background-color: @oc-magenta;
   float: right;
   border-bottom-left-radius: 100%;
+  border-top-right-radius: 2px;
+}
+
+.scenario-thumbnail-image-wrapper,
+.scenario-thumbnail-image-wrapper > img {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .sat-wrapper {
@@ -578,7 +599,6 @@ input[type="submit"] {
 .oc-footer-large {
   text-align: center;
   background-color: @oc-white;
-  margin-top: 45px;
 }
 
 .oc-footer-large-social-links {
@@ -707,8 +727,10 @@ input[type="submit"] {
   margin-top: 45px;
 }
 
-.login-help, .signup-help {
+.login-help,
+.signup-help {
   padding-top: 20px;
+  padding-bottom: 200px;
 }
 
 .social-logins > a {
