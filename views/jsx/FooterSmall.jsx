@@ -11,7 +11,11 @@ var FooterSmall = React.createClass({
         <div className="row oc-footer-small">
           <div className="col-md-3">&copy; OrganiCity 2015</div>
           <div className="col-md-6"><a className="oc-link" href={organicityLink}>VISIT ORGANICITY.EU TO FIND OUT MORE</a></div>
-          <div className="col-md-3">Contact us</div>
+          <div className="col-md-3">
+            <Link to="contactUs">
+              Contact Us
+            </Link>
+          </div>
         </div>
     );
   }
