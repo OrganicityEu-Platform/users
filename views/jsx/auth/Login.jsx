@@ -1,5 +1,6 @@
 import React from 'react';
 import api   from '../../../api_routes.js';
+import LocalLogin from './LocalLogin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -24,6 +25,7 @@ var Login = React.createClass({
           <span className="">DISQUS</span>
         </a>
       </div>
+
     );
   }
 });

@@ -10,9 +10,8 @@ import UserHasRoleMixin    from './UserHasRoleMixin.jsx';
 import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
-import CreateScenarioModal from './CreateScenarioModal.jsx';
-import SignupModal         from './SignupModal.jsx';
-import LoginModal          from './LoginModal.jsx';
+
+
 import LocalLogin from './auth/LocalLogin.jsx';
 import Signup from './auth/Signup.jsx';
 
@@ -101,21 +100,21 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">Logout</NavItemLink>
+          className="nav-logout-btn">logout</NavItemLink>
       );
     } else {
       linksRight.push(
-        <NavItem
-          key="login"
-          className="nav-login-btn"><LocalLogin/></NavItem>
+        <NavItemLink
+          key="local-login"
+          to="local-login"
+          className="nav-login-btn">login</NavItemLink>
       );
       linksRight.push(
-        <NavItem
+        <NavItemLink
           key="signup"
-          className="nav-signup-btn"><Signup/></NavItem>
+          to="signup"
+          className="nav-signup-btn">signup</NavItemLink>
       );
-
-
     }
     return (
       <div className="container oc-page-wrapper">

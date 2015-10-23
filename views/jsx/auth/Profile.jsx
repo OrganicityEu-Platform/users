@@ -175,8 +175,8 @@ var Profile = React.createClass({
         <div>
           <h4>Local account</h4>
           <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="email">Email</label>
-            <div className="col-sm-10">
+            <div className="">
+              <label className="control-label" htmlFor="email">Email</label>
                <input type="text"
                 className="form-control"
                 name="email"
@@ -185,8 +185,8 @@ var Profile = React.createClass({
             </div>
           </div>
           <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password">Password</label>
-            <div className="col-sm-10">
+            <div className="">
+              <label className="" htmlFor="password">Password</label>
                <input type="password"
                 className="form-control"
                 name="password"
@@ -196,8 +196,8 @@ var Profile = React.createClass({
             </div>
           </div>
           <div className="form-group">
-            <label className="control-label col-sm-2" htmlFor="password_repeat">Repeat Password</label>
-            <div className="col-sm-10">
+            <div className="">
+              <label className="" htmlFor="password_repeat">Repeat Password</label>
               <input type="password"
                 className="form-control"
                 name="password_repeat"
@@ -209,13 +209,12 @@ var Profile = React.createClass({
         </div>
       );
     }
-
     return (
-        <div className="row well">
-          <form className="form-horizontal">
+        <div className="row">
+          <form className="form-horizontal container">
             <div className="form-group">
-              <label className="control-label col-sm-2" htmlFor="profile-name">Name</label>
-              <div className="col-sm-10">
+              <div className="">
+                  <label className="" htmlFor="profile-name">Name</label>
                 <input  type="text"
                         className="form-control"
                         id="profile-name"
@@ -227,8 +226,8 @@ var Profile = React.createClass({
               </div>
             </div>
             <div className="form-group">
-              <label className="control-label col-sm-2" htmlFor="profile-gender">Gender</label>
-              <div className="col-sm-10">
+              <div className="">
+                <label className="" htmlFor="profile-gender">Gender</label>
                 <input type="radio"
                   name="gender"
                   id="profile-gender-f"
@@ -248,8 +247,8 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group">
-              <label className="control-label col-sm-2" htmlFor="profile-roles">Roles</label>
-              <div className="col-sm-10">
+              <div className="">
+                <label className="" htmlFor="profile-roles">Roles</label>
                 <TagField
                   disabled={this.userHasRole('admin') ? false : true}
                   key={this.state.uuid + '_roles'}
@@ -273,8 +272,10 @@ var Profile = React.createClass({
               </div>
             </div>
           </form>
-          <h3>Scenarios created</h3>
-          <ScenariosNewest creator={this.state.profile.uuid} />
+          <div className="container">
+            <h3>Scenarios created</h3>
+            <ScenariosNewest creator={this.state.profile.uuid} />
+          </div>
         </div>
     );
   },
