@@ -22,9 +22,6 @@ var ScenarioThumbnail = React.createClass({
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
     var tools = this.props.scenario.devices.slice(0, 3).join(', ');
     var summary = ellipsis(this.props.scenario.summary, 160);
-
-    console.log(summary);
-
     var sector_colour = this.props.scenario.sectors[0];
     var sector_colour_marker;
     var sector_colour_overlay;

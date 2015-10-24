@@ -1,9 +1,10 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
-@oc-magenta:    rgb(238,  62, 110);
-@oc-grey:       rgb(240, 242, 245);
-@oc-white:      rgb(254, 254, 250);
+@oc-magenta:    rgb(238,62,110);
+@oc-grey:       rgb(240,242,245);
+@oc-white:      rgb(254,254,250);
 @oc-meta-grey:  rgb(153,153,153);
+@oc-dark-gray:  rgb(142,144,144);
 
 @oc-clear-sky: rgb(39,111,191);
 
@@ -501,7 +502,28 @@ input[type="submit"] {
 
 .panel-title {
   color: @oc-meta-grey;
+  margin-top: 10px;
 }
+
+.panel-title > a {
+  background-color: @oc-white;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  padding-right: 20px;
+
+}
+
+.collapsed {
+  padding-left: 20px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-right: 0px !important;
+  background-color: @oc-grey !important;
+}
+
+
+
 
 #oc-search-box {
   margin-bottom: 30px;
@@ -522,8 +544,7 @@ input[type="submit"] {
 
 #scenarioListSearchFormActors,
 #scenarioListSearchFormSectors,
-#scenarioListSearchFormDevices,
-#scenarioListSearchFormQ {
+#scenarioListSearchFormDevices {
   outline: none !important;
   border-radius: 0;
   border-top: none !important;
@@ -532,15 +553,16 @@ input[type="submit"] {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
-  border-bottom: 2px solid @oc-magenta;
-  background-color: @oc-grey;
+  background-color: @oc-white;
 }
 
 #oc-search-btn {
-  background-color: @oc-magenta;
-  border: 0;
-  border-radius: 2px !important;
-  margin-bottom: -2px;
+  color: @oc-magenta;
+  background-color: @oc-white;
+  border: none;
+  border-bottom: 1px solid @oc-dark-gray;
+  border-top: 1px solid @oc-dark-gray;
+  border-right: 1px solid @oc-dark-gray;
   margin-left: 0 !important;
 }
 
@@ -555,11 +577,16 @@ input[type="submit"] {
   box-shadow: none;
 }
 
+.panel-heading {
+  padding-left: 0px;
+  padding-bottom: 20px;
+}
+
 .oc-filters-panel .panel-heading {
   background-color: @oc-grey;
 }
 .panel-collapse, .panel-body {
-  background-color: @oc-grey;
+  background-color: @oc-white;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -567,6 +594,7 @@ input[type="submit"] {
 .panel-body {
   border-top: 0 !important;
   padding: 0;
+  margin-top: 50px;
 }
 
 #oc-search-form {
@@ -591,11 +619,15 @@ input[type="submit"] {
 
 .oc-search-field {
   border: 0;
-  border-radius: 0;
-  background-color: @oc-grey;
+  border-top: 1px solid @oc-dark-gray;
+  border-bottom: 1px solid @oc-dark-gray;
+  border-left: 1px solid @oc-dark-gray;
+  border-radius-top-left: 2px;
+  border-radius-bottom-left: 2px;
+  background-color: @oc-white !important;
   -webkit-box-shadow: none;
   box-shadow: none;
-  border-bottom: 2px solid @oc-magenta;
+
 }
 
 /*
@@ -1009,4 +1041,74 @@ input[type="submit"] {
     padding: 0px !important;
     margin-top: 15px;
   }
+}
+
+/* Example Styles for React Tags*/
+div.ReactTags__tags {
+    position: relative;
+}
+
+.oc-actor-tags-wrapper,
+.oc-tools-tags-wrapper {
+  margin-top: 55px;
+}
+
+/* Styles for the input */
+div.ReactTags__tagInput {
+    width: 200px;
+    border-radius: 2px;
+    display: inline-block;
+}
+div.ReactTags__tagInput input,
+div.ReactTags__tagInput input:focus {
+    height: 31px;
+    margin: 0;
+    font-size: 12px;
+    width: 100%;
+    border: 1px solid #eee;
+}
+
+/* Styles for selected tags */
+div.ReactTags__selected {
+    float: left;
+}
+div.ReactTags__selected span.ReactTags__tag {
+    border: 1px solid #ddd;
+    background: #eee;
+    font-size: 12px;
+    display: inline-block;
+    padding: 5px;
+    margin: 0 5px;
+    cursor: move;
+    border-radius: 2px;
+}
+div.ReactTags__selected a.ReactTags__remove {
+    color: #aaa;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Styles for suggestions */
+div.ReactTags__suggestions {
+    position: absolute;
+}
+div.ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: .05em .01em .5em rgba(0,0,0,.2);
+    background: white;
+    width: 200px;
+}
+div.ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0;
+}
+div.ReactTags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+}
+div.ReactTags__suggestions ul li.active {
+    background: #b7cfe0;
+    cursor: pointer;
 }

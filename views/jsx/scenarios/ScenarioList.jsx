@@ -8,7 +8,7 @@ import Router             from 'react-router';
 import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
-
+import Tags from '../Tags.jsx';
 import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
@@ -124,6 +124,15 @@ var ScenarioList = React.createClass({
                 </div>
               <Accordion>
                 <Panel header="filters" eventKey="1" className="oc-filters-panel">
+                  <div className="oc-sector-tags-wrapper">
+                      <Tags suggestions={["public", "energy", "transport", "cultural", "environment", "healthcare", "retail", "agriculture"]} text="public"/>
+                  </div>
+                  <div className="oc-actor-tags-wrapper">
+                    <Tags suggestions={["designer", "researcher", "rapper", "citizen"]} text="citizen"/>
+                  </div>
+                  <div className="oc-tools-tags-wrapper">
+                    <Tags suggestions={["wearables", "ultra sonic sensors", "IR sensors", "Holograms", "Augmented reality"]} text="mobile"/>
+                  </div>
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormActors"
