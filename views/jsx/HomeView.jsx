@@ -15,6 +15,8 @@ import EditScenarioModal from './EditScenarioModal.jsx';
 import api from '../../api_routes.js';
 import Tags from './Tags.jsx';
 
+import SectorSelector from './SectorSelector.jsx';
+
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
@@ -37,6 +39,7 @@ var HomeView = React.createClass({
   render : function() {
     return (
         <div className="row">
+          <SectorSelector/>
           <HomeViewHeader />
           <HomeViewSection />
           <HomeViewFooter />
