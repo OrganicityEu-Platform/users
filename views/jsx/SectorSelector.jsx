@@ -1,20 +1,25 @@
 import React  from 'react';
 import ui     from '../../ui_routes.js';
 
+var selectedSectors = [];
 var SectorSelector = React.createClass({
   handleClick: function (event) {
     var itemClass     = event.currentTarget.className.toString();
     var selectedItem  = ' selected';
     var re = new RegExp(selectedItem, 'g');
     if (itemClass.indexOf(selectedItem) > -1) {
-      event.currentTarget.className = itemClass.replace(re, '');
       console.log('deselected it');
+      var toRemove = selectedSectors.indexOf(itemClass.split('-')[0]);
+      if (toRemove > -1) {
+        selectedSectors.splice(toRemove, 1);
+      }
+      event.currentTarget.className = itemClass.replace(re, '');
     }
-    if (itemClass.indexOf(selectedItem) <= -1) {
-      console.log('selected it');
+    if (itemClass.indexOf(selectedItem) == -1) {
+      console.log('selected it!');
       event.currentTarget.className = itemClass.concat(selectedItem);
-      this.selectedSectors.push(event.currentTarget.className.split('-')[0]);
-      console.log(this.selectedSectors);
+      selectedSectors.push(event.currentTarget.className.split('-')[0]);
+      console.log(selectedSectors);
     }
   },
   render: function () {
