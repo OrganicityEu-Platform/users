@@ -19,11 +19,19 @@ var ScenarioTableView = React.createClass({
       thumbnail = (<img src={this.props.scenario.thumbnail} width="100%"/>);
     }
 
+    var sector_colour = this.props.scenario.sectors[0];
+    var sector_colour_marker;
+
+    if (sector_colour) {
+      sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
+    }
+
     return (
       <div className="scenario-article">
+        <div className={sector_colour_marker}><span className="scenario-article-score">29</span></div>
         <header className="scenario-article-header">
 
-          <div className="col-md-10 header-meta">
+          <div className="col-md-8 header-meta">
             <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
               <span className="scenario-article-publisher">
                 Created by <UserAvatar uuid={this.props.scenario.creator} />
@@ -33,36 +41,38 @@ var ScenarioTableView = React.createClass({
                 <TimeAgo date={this.props.scenario.timestamp} />
                 : '' }
               </span>
-              <p className="scenario-article-summary">
-                {this.props.scenario.summary}
-              </p>
+
           </div>
           <div className="col-md-2 scenario-article-widget">
-            <ScenarioEvalButton scenario={this.props.scenario}/>
+
             <div className="scenario-article-widget-data">
-              <p className="scenario-article-widget-data-score">SCORE:</p>
-              <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} /></p>
-              <p className="scenario-article-widget-data-likes"><i className="fa fa-thumbs-o-up"></i></p>
-              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i></p>
+              <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
+              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i>29  comments</p>
+              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i> 29  evaluations</p>
+
             </div>
           </div>
         </header>
+
         <div className="scenario-article-section">
+          <div className="col-md-12"><p className="scenario-article-summary">
+            {this.props.scenario.summary}
+          </p></div>
           <div className="scenario-article-image">
             {thumbnail}
           </div>
           <div className="scenario-article-meta">
             <div className="col-md-4">
-              <span className="scenario-ast">actors:</span>
-              <span>{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
+              <span className="scenario-ast">Actors:</span><br></br>
+              <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
             </div>
             <div className="col-md-4">
-              <span className="scenario-ast">sectors:</span>
-              <span>{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
+              <span className="scenario-ast">Sectors:</span><br></br>
+              <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
             </div>
             <div className="col-md-4">
-              <span className="scenario-ast">tools:</span>
-              <span>{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
+              <span className="scenario-ast">Tools:</span><br></br>
+              <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
             </div>
           </div>
           <div className="scenario-article-narrative">

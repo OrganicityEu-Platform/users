@@ -22,6 +22,25 @@ a {
   color: @oc-magenta;
 }
 
+/* SCENARIO ARTICLE */
+
+.scenario-article-score {
+  font-weight: bold;
+  color: @oc-white;
+  font-size: 25px;
+  float: right;
+  padding-top: 15px;
+  padding-right: 15px;
+}
+.scenario-article-marker {
+  height: 105px;
+  width: 105px;
+  border-bottom-left-radius: 100%;
+  background-color: @oc-magenta;
+  float: right;
+}
+
+
 /* SECTOR SELECTOR WIDGET */
 
 .sector-item {
@@ -31,42 +50,42 @@ a {
 .public-sector-item {
   .sector-item;
   .public_colour;
-  border: 13px solid rgb(252, 180, 20);
+  border: 12px solid rgb(252, 180, 20);
 }
 .transport-sector-item {
   .sector-item;
   .transport_colour;
-  border: 7px solid @transport;
+  border: 12px solid @transport;
 }
 .agriculture-sector-item {
   .sector-item;
   .agriculture_colour;
-  border: 10px solid @agriculture;
+  border: 12px solid @agriculture;
 }
 .energy-sector-item {
   .sector-item;
   .energy_colour;
-  border: 6px solid @energy;
+  border: 12px solid @energy;
 }
 .retail-sector-item {
   .sector-item;
   .retail_colour;
-  border: 8px solid @retail;
+  border: 12px solid @retail;
 }
 .healthcare-sector-item {
   .sector-item;
   .healthcare_colour;
-  border: 8px solid @healthcare;
+  border: 12px solid @healthcare;
 }
 .cultural-sector-item {
   .sector-item;
   .cultural_colour;
-  border: 10px solid @cultural;
+  border: 12px solid @cultural;
 }
 .environment-sector-item {
   .sector-item;
   .environment_colour;
-  border: 5px solid @environment;
+  border: 12px solid @environment;
 }
 .transport-sector-item-wrapper,
 .public-sector-item-wrapper,
@@ -88,7 +107,7 @@ a {
 .healthcare-sector-item-wrapper > img,
 .environment-sector-item-wrapper > img,
 .agriculture-sector-item-wrapper > img {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 .transport-sector-item-wrapper > span,
 .public-sector-item-wrapper > span,
@@ -105,6 +124,7 @@ a {
   -webkit-animation:spin 0.5s linear;
   -moz-animation:spin 0.5s linear;
   animation:spin 0.5s linear;
+  border-style: groove;
 }
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
@@ -311,18 +331,20 @@ input[type="submit"] {
 
 .scenario-article-widget {
   padding-right: 0px;
+  margin-right: 10px;
 }
 
 .scenario-article-widget-data {
   padding-left: 5px;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .scenario-article-widget-data > p {
-  padding-top: 2px;
   color: @oc-meta-grey;
-  border-bottom: 2px solid @oc-grey;
-  //font-size: 16px;
+}
+
+.scenario-article-widget-data > span {
+
 }
 
 .scenario-article-widget-data > p > i {
@@ -334,11 +356,16 @@ input[type="submit"] {
 }
 
 .scenario-ast {
-  padding-right: 10px;
+  color: @oc-meta-grey;
+}
+.scenario-ast-items {
+  font-weight: bold;
 }
 
 .scenario-article {
-  margin-top: 35px;
+  margin-top: 55px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 @media (max-width: @screen-md-min) {
@@ -462,7 +489,7 @@ input[type="submit"] {
   color: #444;
 }
 
-.scenario-article-summary, .scenario-article-header-meta {
+.scenario-article-header-meta {
   margin-top: 25px;
 }
 
@@ -485,6 +512,8 @@ input[type="submit"] {
 .scenario-article-summary {
   font-size: 25px;
   color: #444;
+  margin-left: 8px;
+  margin-top: 10px;
 }
 
 .scenario-article-publisher > a {
@@ -495,7 +524,6 @@ input[type="submit"] {
   font-size: 45px;
   color: #444;
   margin-top: 0px;
-  padding-bottom: 10px;
 }
 
 .scenario-article-publisher,
@@ -1099,13 +1127,13 @@ input[type="submit"] {
     float: right;
   }
   .scenario-article-header {
-    margin-left: 55px;
-    margin-right: 55px;
-    padding-top: 55px;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-top: 35px;
   }
   .scenario-article-image {
-    margin-left: 55px;
-    margin-right: 55px;
+    margin-left: 25px;
+    margin-right: 25px;
   }
   .scenario-article-image > img {
     margin-top: 25px;
@@ -1120,7 +1148,6 @@ input[type="submit"] {
     margin-right: 55px;
     margin-top: 25px;
     padding-bottom: 15px;
-    text-align: center;
   }
   .scenario-article-timestamp {
     padding-top: 5px;
