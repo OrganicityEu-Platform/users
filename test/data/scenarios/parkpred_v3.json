@@ -8,5 +8,6 @@
   "actors"      : ["public", "private", "citizen"],
   "sectors"     : ["transport"],
   "devices"     : ["transport", "mobile"],
-  "creator"     : "leinad"
+  "creator"     : "leinad",
+  "thumbnail"   : "uploads/parkpred_v3"
 }

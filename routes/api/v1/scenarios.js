@@ -288,8 +288,10 @@ module.exports = function(router, passport) {
 
   router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
 
+    console.log('req.body.thumbnail', req.body.thumbnail);
+
     var oldPath = req.body.thumbnail;
-    if (req.body.thumbnail.indexOf('tmp/') === 0) {
+    if (oldPath && oldPath.indexOf('tmp/') === 0) {
       var urlParts = oldPath.split('/');
       urlParts[0] = 'uploads';
       var newPath = urlParts.join('/');
@@ -320,7 +322,7 @@ module.exports = function(router, passport) {
   router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
 
     var oldPath = req.body.thumbnail;
-    if (req.body.thumbnail.indexOf('tmp/') === 0) {
+    if (oldPath && oldPath.indexOf('tmp/') === 0) {
       var urlParts = oldPath.split('/');
       urlParts[0] = 'uploads';
       var newPath = urlParts.join('/');

@@ -8,5 +8,6 @@
   "actors"      : ["public", "citizen"],
   "sectors"     : ["transport", "logistics"],
   "devices"     : ["transport", "mobile"],
-  "creator"     : "leinad"
+  "creator"     : "leinad",
+  "thumbnail"   : "uploads/travel_v1"
 }

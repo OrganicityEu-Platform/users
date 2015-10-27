@@ -30,7 +30,7 @@ module.exports = function(router, passport) {
 
   // process the login form
   router.post(
-    api.route('local-login'),[validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
+    api.route('local-login'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-login', function(err, user, info) {
         if (err) {
           return next(err);
@@ -62,9 +62,7 @@ module.exports = function(router, passport) {
   // process the signup form
   router.post(api.route('signup'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-signup', function(err, user, info) {
-        console.log('foo');
         if (err) {
-          console.log('foo2');
           return next(err);
         }
 
