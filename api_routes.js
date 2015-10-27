@@ -13,6 +13,7 @@ var prefixes = {
   'questionnaire'  : '/api/v1/questionnaire',
   'evaluations'    : '/api/v1/evaluations',
   'counter'        : '/api/v1/counter',
+  'upload'         : '/api/v1/upload',
 };
 
 var api_routes = {
@@ -51,6 +52,9 @@ var api_routes = {
   'disconnect_github'          : prefixes.users + '/:uuid/unlink/github?',
   'disconnect_disqus'          : prefixes.users + '/:uuid/unlink/disqus?',
 
+  //
+  'upload'                     : prefixes.upload,
+
   // scenario routes
   'scenario_list'              : prefixes.scenarios + '/?',
   'scenario_by_uuid'           : prefixes.scenarios + '/:uuid/?',
@@ -60,7 +64,7 @@ var api_routes = {
   'devices_list'               : prefixes.devices + '/?',
   'related_by_uuid'            : prefixes.scenarios + '/related/:uuid/?',
   'discus_statistics'          : prefixes.scenarios + '/discus_statistics/:uuid/?',
-  'evaluation_score'     : prefixes.scenarios + '/evaluation/:uuid/?',
+  'evaluation_score'           : prefixes.scenarios + '/evaluation/:uuid/?',
 
   // erroring resource (for testing)
   'error'                      : prefixes.error + '/?',

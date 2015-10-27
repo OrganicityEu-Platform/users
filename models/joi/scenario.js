@@ -6,30 +6,31 @@ var joiTitle = Joi.string().label('Title').required();
 var joiSummary = Joi.string().label('Summary').required();
 var joiNarrative = Joi.string().label('Narrative').required();
 
-scenario.step1 = {
-  title       : joiTitle,
-  summary     : joiSummary,
-  narrative   : joiNarrative
-};
-
-// FIXME: use an object!
-// https://github.com/jurassix/react-validation-mixin/issues/47
-scenario.step5 = {
-  'thumbnail_height' : Joi.number().integer().min(600).max(800).label('Height').required(),
-  'thumbnail_width' : Joi.number().integer().min(1140).max(1140).label('Width').required(),
-  'thumbnail_type' : Joi.string().valid('image/jpeg').label('File type').options(
-    { language: { any: { allowOnly: 'must be a JPEG' } } }
-  ).required()
-};
-
 /*
+  FIXME: use an object!
   thumbnail : {
     width  : Joi.number().required(),
     height : Joi.number().required()
   }
 */
+// https://github.com/jurassix/react-validation-mixin/issues/47
 
-scenario.step6 = {
+scenario.thumbnail = {
+  'thumbnail_height' : Joi.number().integer().min(600).max(800).label('Height'),
+  'thumbnail_width'  : Joi.number().integer().min(1140).max(1140).label('Width'),
+  'thumbnail_type'   : Joi.string().valid('image/jpeg').label('File type').options(
+    { language: { any: { allowOnly: 'must be a JPEG' } } }
+  )
+};
+
+scenario.edit = {
+  title              : joiTitle,
+  summary            : joiSummary,
+  narrative          : joiNarrative,
+  thumbnail          : Joi.string().regex(/^uploads\/|^tmp\//)
+};
+
+scenario.preview = {
   title       : joiTitle,
   summary     : joiSummary,
   narrative   : joiNarrative,
@@ -37,7 +38,7 @@ scenario.step6 = {
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().required()
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 // Same as step6, but without thmbnail!
@@ -49,6 +50,7 @@ scenario.server = {
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 scenario.createOrUpdate = {

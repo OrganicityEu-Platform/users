@@ -1,5 +1,3 @@
-// @see: http://stackoverflow.com/a/16879097/605890
-
 module.exports = function(str, maxLen) {
 
   // no need to cut off
@@ -8,13 +6,13 @@ module.exports = function(str, maxLen) {
   }
   // Length > maxLen
 
-  // Reduce to 100 char
+  // Reduce to 160 character
   var shorten = str.substring(0, 160);
 
   // Find the last space
   var pos = shorten.lastIndexOf(' ');
 
-  // We do not have a space
+  // We do not have a space? return the shortened text
   if (pos === -1) {
     return shorten + '...';
   }

@@ -6,17 +6,20 @@ import Counter    from '../Counter.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                  from '../../../api_routes.js';
 
+import LoadingMixin     from '../LoadingMixin.jsx';
+
 var ScenarioTableView = React.createClass({
+  mixins: [LoadingMixin],
   render: function() {
     if (!this.props.scenario) {
       return null;
     }
 
     var thumbnail = this.props.scenario.thumbnail;
-    if (thumbnail && thumbnail.startsWith('uploads/')) {
+    if (thumbnail && (thumbnail.startsWith('uploads/') || thumbnail.startsWith('tmp/'))) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
-    } else if (thumbnail) {
-      thumbnail = (<img src={this.props.scenario.thumbnail} width="100%"/>);
+    } else {
+      thumbnail = undefined;
     }
 
     var sector_colour = this.props.scenario.sectors[0];
