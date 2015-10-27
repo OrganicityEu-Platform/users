@@ -30,6 +30,7 @@ var ScenarioTableView = React.createClass({
     }
 
     return (
+      <div>
       <div className="scenario-article">
         <div className={sector_colour_marker}><span className="scenario-article-score">29</span></div>
         <header className="scenario-article-header">
@@ -66,26 +67,38 @@ var ScenarioTableView = React.createClass({
           </div>
           <div className="scenario-article-meta">
             <div className="col-md-4">
-              <span className="scenario-ast">Actors:</span><br></br>
-              <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Actors:</span>
+                <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
+              </div>
+
             </div>
             <div className="col-md-4">
-              <span className="scenario-ast">Sectors:</span><br></br>
-              <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Sectors:</span>
+                <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
+              </div>
             </div>
             <div className="col-md-4">
-              <span className="scenario-ast">Tools:</span><br></br>
-              <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Tools:</span>
+                <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
+              </div>
             </div>
-          </div>
-          <div className="scenario-article-narrative">
-            {this.props.scenario.narrative}
           </div>
         </div>
+
         <footer className="scenario-article-footer">
 
         </footer>
       </div>
+      <div className="scenario-article-narrative-wrapper container">
+          <span className="col-md-1">Narrative</span>
+          <div className="scenario-article-narrative col-md-11">
+            {this.props.scenario.narrative}
+          </div>
+      </div>
+    </div>
     );
   }
 });
