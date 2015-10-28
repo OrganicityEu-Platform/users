@@ -16,8 +16,7 @@ var joiNarrative = Joi.string().label('Narrative').required();
 // https://github.com/jurassix/react-validation-mixin/issues/47
 
 scenario.thumbnail = {
-  'thumbnail_height' : Joi.number().integer().min(600).max(800).label('Height'),
-  'thumbnail_width'  : Joi.number().integer().min(1140).max(1140).label('Width'),
+  'thumbnail_width'  : Joi.number().integer().min(1140).label('Width'),
   'thumbnail_type'   : Joi.string().valid('image/jpeg').label('File type').options(
     { language: { any: { allowOnly: 'must be a JPEG' } } }
   )

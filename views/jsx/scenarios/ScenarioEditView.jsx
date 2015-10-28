@@ -15,10 +15,9 @@ import ErrorMessage      from '../ErrorMessage.jsx';
 
 // Mixins
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
-import LoadingMixin      from '../LoadingMixin.jsx';
 
 var ScenarioEditView = React.createClass({
-  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, LoadingMixin, UserIsLoggedInMixin],
+  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
   getSteps: function() {
     return [this.form, this.preview];
@@ -54,7 +53,11 @@ var ScenarioEditView = React.createClass({
       actors : [],
       devices : [],
       step : 1,
-      creator : window.currentUser.uuid
+      creator : window.currentUser.uuid,
+      thumbnail_height : null,
+      thumbnail_width : null,
+      thumbnail_type : null,
+      thumbnail : null
     };
   },
   componentDidMount() {
@@ -91,38 +94,34 @@ var ScenarioEditView = React.createClass({
     return parseInt(this.props.query.step);
   },
   handleChangedTitle : function(evt) {
-    this.state.title = evt.target.value;
-    this.setState(this.state);
+    this.setState({title: evt.target.value});
   },
   handleChangedSummary : function(evt) {
-    this.state.summary = evt.target.value;
-    this.setState(this.state);
+    this.setState({summary: evt.target.value});
   },
   handleChangedNarrative : function(evt) {
-    this.state.narrative = evt.target.value;
-    this.setState(this.state);
+    this.setState({narrative: evt.target.value});
   },
   handleChangedSectors : function(sectors) {
-    this.state.sectors = sectors;
-    this.setState(this.state);
+    this.setState({sectors: sectors});
   },
   handleChangedActors : function(actors) {
-    this.state.actors = actors;
-    this.setState(this.state);
+    this.setState({actors: actors});
   },
   handleChangedDevices : function(devices) {
-    this.state.devices = devices;
-    this.setState(this.state);
+    this.setState({devices: devices});
   },
   handleChangedFile : function(evt) {
 
-    this.loading();
-
-    //console.log('Image changed!');
-
-    $(this.refs.thumbnail.getDOMNode()).hide();
-    this.state.thumbnailInfo = 'Image upload in progress';
-    this.setState(this.state);
+    // Reset internal thumbnail state
+    this.setState({
+      thumbnail_height : undefined,
+      thumbnail_width : undefined,
+      thumbnail_type : undefined,
+      thumbnail : undefined,
+      thumbnail_info : 'Image upload in progress',
+      loading : true
+    });
 
     var that = this;
     //this.state.title = evt.target.value;
@@ -141,17 +140,25 @@ var ScenarioEditView = React.createClass({
         var image  = new Image();
         image.src    = b64File;
         image.onload = function() {
-          that.state.thumbnail_width = this.width;
-          that.state.thumbnail_height = this.height;
-          that.setState(that.state);
-          that.validatorTypes = ScenarioJoi.thumbnail;
+          that.setState({
+            thumbnail_width : this.width,
+            thumbnail_height : this.height
+          });
 
-          var reset = () => {
-            $(that.refs.thumbnail.getDOMNode()).show();
-            that.state.thumbnailInfo = undefined;
-            that.loaded(that.state);
+          var reset = (state) => {
+            state.thumbnail_info = undefined;
+            state.loading = false;
+            that.setState(state);
           };
 
+          that.validatorTypes = ScenarioJoi.thumbnail;
+          that.getValidatorData = function() {
+            return {
+              thumbnail_height : that.state.thumbnail_height,
+              thumbnail_width  : that.state.thumbnail_width,
+              thumbnail_type   : that.state.thumbnail_type
+            };
+          };
           that.validateCurrentStep(() => {
 
             //console.log('Thumbnail OKAY');
@@ -171,24 +178,26 @@ var ScenarioEditView = React.createClass({
                 contentType: false,
                 type: 'POST',
                 success: (res) => {
-                  that.state.thumbnail = res.file;
-                  that.state.thumbnail600 = res.thumbnail;
-                  reset();
+                  reset({
+                    thumbnail : res.file,
+                    thumbnail600 : res.thumbnail
+                  });
                 },
                 error : () => {
                   that.flashOnAjaxError(api.reverse('upload'), 'Error while uploading an image'),
-                  reset();
+                  reset({});
                 }
               });
             };
 
           }, () => {
             //console.log('Thumbnail ERROR');
-            reset();
+            reset({});
           });
         };
       };
     }
+
   },
   clickedPrevious : function() {
     if (this.currentStep() - 1 < this.firstStep) {
@@ -208,6 +217,18 @@ var ScenarioEditView = React.createClass({
     this.saveState();
 
     this.validatorTypes = ScenarioJoi.edit;
+    this.getValidatorData = function() {
+      return {
+        title     : this.state.title,
+        summary   : this.state.summary,
+        narrative : this.state.narrative,
+        sectors   : this.state.sectors,
+        actors    : this.state.actors,
+        devices   : this.state.devices,
+        thumbnail : this.state.thumbnail
+      };
+    };
+
     this.validateCurrentStep(() => {
       this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
     });
@@ -215,9 +236,19 @@ var ScenarioEditView = React.createClass({
   },
   clickedSubmit : function() {
 
-    var that = this;
-
     this.validatorTypes = ScenarioJoi.preview;
+    this.getValidatorData = function() {
+      return {
+        title     : this.state.title,
+        summary   : this.state.summary,
+        narrative : this.state.narrative,
+        sectors   : this.state.sectors,
+        actors    : this.state.actors,
+        devices   : this.state.devices,
+        thumbnail : this.state.thumbnail
+      };
+    };
+
     this.validateCurrentStep(() => {
       var method = this.editMode() ? 'PUT' : 'POST';
       var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
@@ -248,7 +279,7 @@ var ScenarioEditView = React.createClass({
           if (onerror) {
             onerror();
           }
-          this.setState(this.state); // Rerender to show errors
+          this.setState({}); // Rerender to show errors
         } else {
           //console.log('Input validation successful!');
           if (onvalidate) {
@@ -263,11 +294,13 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
-    console.log('State', this.state);
-
     var thumbnail600;
-    if (this.state.thumbnailInfo) {
-      thumbnail600 = (<div>{this.state.thumbnailInfo}</div>);
+    var inputFile = (<input type="file" className="form-control" name="thumbnail" id="thumbnail"
+              onChange={this.handleChangedFile} accept="image/jpeg" ref="thumbnail"/>);
+
+    if (this.state.thumbnail_info) {
+      thumbnail600 = (<div>{this.state.thumbnail_info}</div>);
+      inputFile = undefined;
     } else if (this.state.thumbnail600) {
       thumbnail600 = (<img src={ui.asset(this.state.thumbnail600)} width="200px"/>);
     }
@@ -275,7 +308,7 @@ var ScenarioEditView = React.createClass({
     return (
       <div>
         <div className="row" key="scenarioEditStep1">
-          <h2>Create your scenario <small>step one</small></h2>
+          <h2>Create your scenario <small>edit</small></h2>
           <h3>Write your short story!</h3>
           <p>
             Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
@@ -330,13 +363,11 @@ var ScenarioEditView = React.createClass({
             <div className="form-group">
               <div className="col-sm-2"></div>
               <div className="col-sm-10">
-                Please upload an image. File type must be JPEG, width 1140 px and
-                  height can vary between 600 px and 800 px<br/>
+                Please upload an image. File type must be JPEG with a width of at least width 1140 px<br/>
               </div>
               <label className="control-label col-sm-2" htmlFor="title">Thumbnail</label>
               <div className="col-sm-10">
-                <input type="file" className="form-control" name="thumbnail" id="thumbnail"
-                  onChange={this.handleChangedFile} accept="image/jpeg" ref="thumbnail"/>
+                {inputFile}
                 <div ref="uploadPreview">{thumbnail600}</div>
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
@@ -351,7 +382,7 @@ var ScenarioEditView = React.createClass({
                   type="button"
                   className="btn btn-default"
                   onClick={this.clickedPreview}
-                  disabled={this.isLoading() ? 'disabled' : ''}
+                  disabled={this.loading ? 'disabled' : ''}
                 >Preview</button>
               </div>
             </div>
@@ -364,7 +395,7 @@ var ScenarioEditView = React.createClass({
 
     return (
       <div className="row" key="scenarioEditStep5">
-        <h2>Create your scenario <small>step five</small></h2>
+        <h2>Create your scenario <small>preview</small></h2>
         <h3>Here's your story!</h3>
         <p>
           Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor
@@ -385,17 +416,7 @@ var ScenarioEditView = React.createClass({
     var steps = this.getSteps();
     return steps[this.currentStep() - 1]();
   },
-  getValidatorData: function() {
-    return {
-      title     : this.state.title,
-      summary   : this.state.summary,
-      narrative : this.state.narrative,
-      sectors   : this.state.sectors,
-      actors    : this.state.actors,
-      devices   : this.state.devices,
-      thumbnail : this.state.thumbnail
-    };
-  },
+  getValidatorData: undefined,
   validatorTypes: undefined
 });
 
