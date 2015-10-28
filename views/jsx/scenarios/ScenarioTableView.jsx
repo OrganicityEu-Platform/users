@@ -33,35 +33,35 @@ var ScenarioTableView = React.createClass({
     return (
       <div>
       <div className="scenario-article">
-        <div className={sector_colour_marker}><span className="scenario-article-score">29</span></div>
-        <header className="scenario-article-header">
-
-          <div className="col-md-8 header-meta">
-            <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
-              <span className="scenario-article-publisher">
-                Created by <UserAvatar uuid={this.props.scenario.creator} />
-              </span>
-              <span className="scenario-article-timestamp">
-                { this.props.scenario.timestamp ?
-                <TimeAgo date={this.props.scenario.timestamp} />
-                : '' }
-              </span>
-
-          </div>
-          <div className="col-md-2 scenario-article-widget">
+        <div>
+          <div className={sector_colour_marker}><span className="scenario-article-score">29</span></div>
+          <div className="scenario-article-widget">
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
               <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i>29  comments</p>
               <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i> 29  evaluations</p>
-
             </div>
           </div>
-        </header>
 
-        <div className="scenario-article-section">
+        </div>
+
+        <header className="container">
+          <h2 className="">{this.props.scenario.title}</h2>
+          <span className="scenario-article-publisher">
+            Created by <UserAvatar uuid={this.props.scenario.creator} />
+          </span>
+          <span className="scenario-article-timestamp">
+            { this.props.scenario.timestamp ?
+              <TimeAgo date={this.props.scenario.timestamp} />
+              : '' }
+          </span>
           <div className="">
-            <p className="scenario-article-summary">{this.props.scenario.summary}</p>
+            <p className="scenario-article-summary">
+              {this.props.scenario.summary}
+            </p>
           </div>
+        </header>
+        <div className="scenario-article-section">
           <div className={article_image_overlay}>
             {image}
           </div>
