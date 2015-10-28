@@ -15,11 +15,11 @@ var ScenarioTableView = React.createClass({
       return null;
     }
 
-    var thumbnail = this.props.scenario.thumbnail;
-    if (thumbnail && (thumbnail.startsWith('uploads/') || thumbnail.startsWith('tmp/'))) {
-      thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
+    var image = this.props.scenario.image;
+    if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
+      image = (<img src={ui.asset(this.props.scenario.image)} width="100%"/>);
     } else {
-      thumbnail = undefined;
+      image = undefined;
     }
 
     var sector_colour = this.props.scenario.sectors[0];
@@ -63,7 +63,7 @@ var ScenarioTableView = React.createClass({
             {this.props.scenario.summary}
           </p></div>
           <div className="scenario-article-image">
-            {thumbnail}
+            {image}
           </div>
           <div className="scenario-article-meta">
             <div className="col-md-4">

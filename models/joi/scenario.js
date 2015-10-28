@@ -26,7 +26,8 @@ scenario.edit = {
   title              : joiTitle,
   summary            : joiSummary,
   narrative          : joiNarrative,
-  thumbnail          : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail          : Joi.string().regex(/^uploads\/|^tmp\//),
+  image              : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 scenario.preview = {
@@ -37,7 +38,8 @@ scenario.preview = {
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
+  image       : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 // Same as step6, but without thmbnail!
@@ -49,7 +51,8 @@ scenario.server = {
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
+  image       : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 scenario.createOrUpdate = {

@@ -179,8 +179,8 @@ var ScenarioEditView = React.createClass({
                 type: 'POST',
                 success: (res) => {
                   reset({
-                    thumbnail : res.file,
-                    thumbnail600 : res.thumbnail
+                    image : res.file,
+                    thumbnail : res.thumbnail
                   });
                 },
                 error : () => {
@@ -225,7 +225,8 @@ var ScenarioEditView = React.createClass({
         sectors   : this.state.sectors,
         actors    : this.state.actors,
         devices   : this.state.devices,
-        thumbnail : this.state.thumbnail
+        thumbnail : this.state.thumbnail,
+        image     : this.state.image
       };
     };
 
@@ -245,7 +246,8 @@ var ScenarioEditView = React.createClass({
         sectors   : this.state.sectors,
         actors    : this.state.actors,
         devices   : this.state.devices,
-        thumbnail : this.state.thumbnail
+        thumbnail : this.state.thumbnail,
+        image     : this.state.image
       };
     };
 
@@ -294,15 +296,15 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
-    var thumbnail600;
+    var thumbnail;
     var inputFile = (<input type="file" className="form-control" name="thumbnail" id="thumbnail"
               onChange={this.handleChangedFile} accept="image/jpeg" ref="thumbnail"/>);
 
     if (this.state.thumbnail_info) {
-      thumbnail600 = (<div>{this.state.thumbnail_info}</div>);
+      thumbnail = (<div>{this.state.thumbnail_info}</div>);
       inputFile = undefined;
-    } else if (this.state.thumbnail600) {
-      thumbnail600 = (<img src={ui.asset(this.state.thumbnail600)} width="200px"/>);
+    } else if (this.state.thumbnail) {
+      thumbnail = (<img src={ui.asset(this.state.thumbnail)} width="200px"/>);
     }
 
     return (
@@ -368,7 +370,7 @@ var ScenarioEditView = React.createClass({
               <label className="control-label col-sm-2" htmlFor="title">Thumbnail</label>
               <div className="col-sm-10">
                 {inputFile}
-                <div ref="uploadPreview">{thumbnail600}</div>
+                <div ref="uploadPreview">{thumbnail}</div>
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_width')} />
