@@ -94,7 +94,8 @@
     "react-tag-input": "^1.0.3",
     "react-timeago": "^2.2.1",
     "react-validation-mixin": "5.2.0",
-    "url-assembler": "^1.2.4"
+    "url-assembler": "^1.2.4",
+    "gm": "~1.21.1"
   },
   "scripts": {
     "precommit": "gulp lint",

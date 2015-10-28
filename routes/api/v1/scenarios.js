@@ -286,86 +286,100 @@ module.exports = function(router, passport) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
+  var handleUpload = function(oldPath, callback) {
 
-    console.log('req.body.thumbnail', req.body.thumbnail);
-
-    var oldPath = req.body.thumbnail;
     if (oldPath && oldPath.indexOf('tmp/') === 0) {
       var urlParts = oldPath.split('/');
       urlParts[0] = 'uploads';
       var newPath = urlParts.join('/');
+
       fs.rename(oldPath, newPath, function() {
         console.log('Moved file from ', oldPath, ' to ', newPath);
+        callback(newPath);
       });
-      req.body.thumbnail = newPath;
+
+    } else {
+      callback(oldPath);
     }
 
-    var scenario = new Scenario(req.body);
+  };
 
-    scenario.version = 1;
-    // generate unique grouping id
-    scenario.uuid = uuid.v4();
-    scenario.creator = req.user.uuid;
-    // save the scenario
-    scenario.save(function(err) {
-      if (err) {
-        return res.send(err);
-      } else {
-        res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-        res.status(201).json(scenario.toObject());
-      }
-    });
+  router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
+
+    var callback = function(path) {
+
+      req.body.thumbnail = path;
+      var scenario = new Scenario(req.body);
+
+      scenario.version = 1;
+      // generate unique grouping id
+      scenario.uuid = uuid.v4();
+      scenario.creator = req.user.uuid;
+      // save the scenario
+      scenario.save(function(err) {
+        if (err) {
+          return res.send(err);
+        } else {
+          res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
+          res.status(201).json(scenario.toObject());
+        }
+      });
+
+    };
+
+    handleUpload(req.body.thumbnail, callback);
 
   });
 
   router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
 
-    var oldPath = req.body.thumbnail;
-    if (oldPath && oldPath.indexOf('tmp/') === 0) {
-      var urlParts = oldPath.split('/');
-      urlParts[0] = 'uploads';
-      var newPath = urlParts.join('/');
-      fs.rename(oldPath, newPath, function() {
-        console.log('Moved file from ', oldPath, ' to ', newPath);
-      });
-      req.body.thumbnail = newPath;
-    }
+    var callback = function(path) {
 
-    Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
+      req.body.thumbnail = path;
 
-      if (err) {
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-      }
+      Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
 
-      if (oldVersion === undefined || oldVersion == null || oldVersion.length === 0) {
-        return res.status(HttpStatus.NOT_FOUND).send();
-      }
-
-      if (!req.user.hasRole(['admin']) && !req.user.hasRole(['moderator']) && req.user.uuid !== oldVersion[0].creator) {
-        return res
-          .status(HttpStatus.FORBIDDEN)
-          .send('You must be either the creator of the scenario or an adminstrator to update it');
-      }
-
-      var fieldsInUpdate = ['title', 'summary', 'narrative', 'sectors', 'actors', 'devices', 'thumbnail'];
-      var update = req.body;
-      var newVersion = new Scenario();
-      fieldsInUpdate.forEach(function(field) {
-        newVersion[field] = update[field];
-      });
-      newVersion.uuid = oldVersion[0].uuid;
-      newVersion.version = oldVersion[0].version + 1;
-      newVersion.creator = req.user.uuid;
-
-      newVersion.save(function(err, scenario) {
         if (err) {
           return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
-        res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-        res.status(HttpStatus.CREATED).json(scenario.toObject());
+
+        if (oldVersion === undefined || oldVersion == null || oldVersion.length === 0) {
+          return res.status(HttpStatus.NOT_FOUND).send();
+        }
+
+        if (
+          !req.user.hasRole(['admin']) &&
+          !req.user.hasRole(['moderator']) &&
+          req.user.uuid !== oldVersion[0].creator
+        ) {
+          return res
+            .status(HttpStatus.FORBIDDEN)
+            .send('You must be either the creator of the scenario or an adminstrator to update it');
+        }
+
+        var fieldsInUpdate = ['title', 'summary', 'narrative', 'sectors', 'actors', 'devices', 'thumbnail'];
+        var update = req.body;
+        var newVersion = new Scenario();
+        fieldsInUpdate.forEach(function(field) {
+          newVersion[field] = update[field];
+        });
+        newVersion.uuid = oldVersion[0].uuid;
+        newVersion.version = oldVersion[0].version + 1;
+        newVersion.creator = req.user.uuid;
+
+        newVersion.save(function(err, scenario) {
+          if (err) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+          }
+          res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
+          res.status(HttpStatus.CREATED).json(scenario.toObject());
+        });
       });
-    });
+
+    };
+
+    handleUpload(req.body.thumbnail, callback);
+
   });
 
   router.delete(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {

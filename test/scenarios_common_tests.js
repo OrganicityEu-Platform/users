@@ -391,7 +391,6 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
   it('should have the logged in users UUID as creator and a timestamp in the returned document and location header',
     function(done) {
       var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
-      console.log('scenario', scenario);
       inputValidationTestHelper(scenario, http.CREATED, done, function(res) {
           ss.scenarioUpdateFields.forEach(function(field) {
             expect(res.body[field]).to.eql(scenario[field]);
