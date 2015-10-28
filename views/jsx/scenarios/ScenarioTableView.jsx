@@ -24,8 +24,9 @@ var ScenarioTableView = React.createClass({
 
     var sector_colour = this.props.scenario.sectors[0];
     var sector_colour_marker;
-
+    var article_image_overlay;
     if (sector_colour) {
+      article_image_overlay = sector_colour.toLowerCase().concat('_colour scenario-article-image');
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
     }
 
@@ -48,7 +49,6 @@ var ScenarioTableView = React.createClass({
 
           </div>
           <div className="col-md-2 scenario-article-widget">
-
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
               <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i>29  comments</p>
@@ -59,10 +59,10 @@ var ScenarioTableView = React.createClass({
         </header>
 
         <div className="scenario-article-section">
-          <div className="col-md-12"><p className="scenario-article-summary">
-            {this.props.scenario.summary}
-          </p></div>
-          <div className="scenario-article-image">
+          <div className="">
+            <p className="scenario-article-summary">{this.props.scenario.summary}</p>
+          </div>
+          <div className={article_image_overlay}>
             {image}
           </div>
           <div className="scenario-article-meta">
