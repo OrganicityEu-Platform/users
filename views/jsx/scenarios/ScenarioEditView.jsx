@@ -121,7 +121,8 @@ var ScenarioEditView = React.createClass({
     //console.log('Image changed!');
 
     $(this.refs.thumbnail.getDOMNode()).hide();
-    $(this.refs.uploadPreview.getDOMNode()).text('Image upload in progress');
+    this.state.thumbnailInfo = 'Image upload in progress';
+    this.setState(this.state);
 
     var that = this;
     //this.state.title = evt.target.value;
@@ -146,9 +147,9 @@ var ScenarioEditView = React.createClass({
           that.validatorTypes = ScenarioJoi.thumbnail;
 
           var reset = () => {
-            that.loaded();
             $(that.refs.thumbnail.getDOMNode()).show();
-            $(that.refs.uploadPreview.getDOMNode()).text('');
+            that.state.thumbnailInfo = undefined;
+            that.loaded(that.state);
           };
 
           that.validateCurrentStep(() => {
@@ -171,6 +172,7 @@ var ScenarioEditView = React.createClass({
                 type: 'POST',
                 success: (res) => {
                   that.state.thumbnail = res.file;
+                  that.state.thumbnail600 = res.thumbnail;
                   reset();
                 },
                 error : () => {
@@ -261,6 +263,15 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
+    console.log('State', this.state);
+
+    var thumbnail600;
+    if (this.state.thumbnailInfo) {
+      thumbnail600 = (<div>{this.state.thumbnailInfo}</div>);
+    } else if (this.state.thumbnail600) {
+      thumbnail600 = (<img src={ui.asset(this.state.thumbnail600)} width="200px"/>);
+    }
+
     return (
       <div>
         <div className="row" key="scenarioEditStep1">
@@ -326,7 +337,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="file" className="form-control" name="thumbnail" id="thumbnail"
                   onChange={this.handleChangedFile} accept="image/jpeg" ref="thumbnail"/>
-                <div ref="uploadPreview"></div>
+                <div ref="uploadPreview">{thumbnail600}</div>
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_width')} />
@@ -375,7 +386,7 @@ var ScenarioEditView = React.createClass({
     return steps[this.currentStep() - 1]();
   },
   getValidatorData: function() {
-    var data = {
+    return {
       title     : this.state.title,
       summary   : this.state.summary,
       narrative : this.state.narrative,
@@ -384,7 +395,6 @@ var ScenarioEditView = React.createClass({
       devices   : this.state.devices,
       thumbnail : this.state.thumbnail
     };
-    return data;
   },
   validatorTypes: undefined
 });
