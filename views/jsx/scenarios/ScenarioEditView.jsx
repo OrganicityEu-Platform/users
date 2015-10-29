@@ -54,11 +54,11 @@ var ScenarioEditView = React.createClass({
       devices : [],
       step : 1,
       creator : window.currentUser.uuid,
-      thumbnail_height : null,
-      thumbnail_width : null,
-      thumbnail_type : null,
-      thumbnail : null,
-      credit : null
+      thumbnail_height : undefined,
+      thumbnail_width : undefined,
+      thumbnail_type : undefined,
+      thumbnail : undefined,
+      credit : undefined
     };
   },
   componentDidMount() {
@@ -113,10 +113,19 @@ var ScenarioEditView = React.createClass({
     this.setState({devices: devices});
   },
   handleChangedCredit : function(evt) {
-    this.setState({credit: evt.target.value});
+    if (evt.target.value === '') {
+      this.setState({credit: undefined});
+    } else {
+      this.setState({credit: evt.target.value});
+    }
   },
   handleChangedCopyright : function(evt) {
-    this.setState({copyright: evt.target.value});
+    if (evt.target.value === '') {
+      this.setState({copyright: undefined});
+    } else {
+      this.setState({copyright: evt.target.value});
+    }
+
   },
   handleChangedFile : function(evt) {
 

@@ -37,8 +37,8 @@ scenario.preview = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
-  credit      : Joi.string().label('Credit/Copyright'),
-  copyright   : Joi.string().label('Copyright'),
+  credit      : Joi.string().label('Credit').optional(),
+  copyright   : Joi.string().label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
   thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
   image       : Joi.string().regex(/^uploads\/|^tmp\//)
@@ -52,8 +52,8 @@ scenario.server = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
-  credit      : Joi.string().label('Credit/Copyright'),
-  copyright   : Joi.string().label('Copyright'),
+  credit      : Joi.string().label('Credit').optional(),
+  copyright   : Joi.string().label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
   thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
   image       : Joi.string().regex(/^uploads\/|^tmp\//)
