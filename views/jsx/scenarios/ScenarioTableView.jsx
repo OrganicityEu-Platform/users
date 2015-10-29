@@ -46,15 +46,18 @@ var ScenarioTableView = React.createClass({
         </div>
 
         <header className="container">
-          <h2 className="">{this.props.scenario.title}</h2>
-          <span className="scenario-article-publisher">
-            Created by <UserAvatar uuid={this.props.scenario.creator} />
-          </span>
-          <span className="scenario-article-timestamp">
-            { this.props.scenario.timestamp ?
-              <TimeAgo date={this.props.scenario.timestamp} />
-              : '' }
-          </span>
+          <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
+          <div>
+            <span className="scenario-article-publisher">
+              Created by <UserAvatar uuid={this.props.scenario.creator} />
+            </span>
+            <span className="scenario-article-timestamp">
+              { this.props.scenario.timestamp ?
+                <TimeAgo date={this.props.scenario.timestamp} />
+                : '' }
+            </span>
+          </div>
+
           <div className="">
             <p className="scenario-article-summary">
               {this.props.scenario.summary}
