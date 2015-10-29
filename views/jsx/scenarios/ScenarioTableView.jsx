@@ -91,8 +91,8 @@ var ScenarioTableView = React.createClass({
         <div className="scenario-article-section">
           <div className={article_image_overlay}>
             {image}
-            {copyright}
           </div>
+          {copyright}
           <div className="scenario-article-meta">
             <div className="col-md-4">
               <div className="scenario-ast-wrapper">
