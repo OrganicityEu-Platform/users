@@ -15,6 +15,8 @@ var ScenarioTableView = React.createClass({
       return null;
     }
 
+    console.log('Scenario', this.props.scenario)
+
     var image = this.props.scenario.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
       image = (<img src={ui.asset(this.props.scenario.image)} width="100%"/>);
@@ -29,6 +31,28 @@ var ScenarioTableView = React.createClass({
       article_image_overlay = sector_colour.toLowerCase().concat('_colour scenario-article-image');
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
     }
+
+    var credit;
+    if (this.props.scenario.credit) {
+      credit = (
+        <div className="col-md-12">
+          <div className="scenario-ast-wrapper">
+            <span className="scenario-ast">Credit:</span>
+            <span className="scenario-ast-items">{this.props.scenario.credit}</span><br></br>
+          </div>
+        </div>
+      );
+    }
+
+    var copyright;
+    if (this.props.scenario.copyright) {
+      copyright = (
+        <div className="col-md-12 scenario-article-copyright">
+          &copy; {this.props.scenario.copyright}
+        </div>
+      );
+    }
+
 
     return (
       <div>
@@ -64,6 +88,7 @@ var ScenarioTableView = React.createClass({
         <div className="scenario-article-section">
           <div className={article_image_overlay}>
             {image}
+            {copyright}
           </div>
           <div className="scenario-article-meta">
             <div className="col-md-4">
@@ -85,6 +110,7 @@ var ScenarioTableView = React.createClass({
                 <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
               </div>
             </div>
+            {credit}
           </div>
         </div>
 

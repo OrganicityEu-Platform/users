@@ -57,7 +57,8 @@ var ScenarioEditView = React.createClass({
       thumbnail_height : null,
       thumbnail_width : null,
       thumbnail_type : null,
-      thumbnail : null
+      thumbnail : null,
+      credit : null
     };
   },
   componentDidMount() {
@@ -110,6 +111,12 @@ var ScenarioEditView = React.createClass({
   },
   handleChangedDevices : function(devices) {
     this.setState({devices: devices});
+  },
+  handleChangedCredit : function(evt) {
+    this.setState({credit: evt.target.value});
+  },
+  handleChangedCopyright : function(evt) {
+    this.setState({copyright: evt.target.value});
   },
   handleChangedFile : function(evt) {
 
@@ -226,6 +233,8 @@ var ScenarioEditView = React.createClass({
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
+        credit    : this.state.credit,
+        copyright : this.state.copyright,
         image     : this.state.image
       };
     };
@@ -247,6 +256,8 @@ var ScenarioEditView = React.createClass({
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
+        credit    : this.state.credit,
+        copyright : this.state.copyright,
         image     : this.state.image
       };
     };
@@ -375,6 +386,20 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_width')} />
                 <ErrorMessage messages={this.props.getValidationMessages('thumbnail_height')} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="sectors">Thumbnail copyright</label>
+              <div className="col-sm-10">
+                <input type="text" className="form-control" name="credit" id="credit" value={this.state.copyright}
+                  onChange={this.handleChangedCopyright} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label col-sm-2" htmlFor="sectors">Credit</label>
+              <div className="col-sm-10">
+                <input type="text" className="form-control" name="credit" id="credit" value={this.state.credit}
+                  onChange={this.handleChangedCredit} />
               </div>
             </div>
             <div className="form-group">

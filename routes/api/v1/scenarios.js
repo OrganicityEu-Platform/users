@@ -36,8 +36,23 @@ var scenarioProjection = {
   devices     : 1,
   dataSources : 1,
   thumbnail   : 1,
-  image       : 1
+  copyright   : 1,
+  image       : 1,
+  credit      : 1
 };
+
+var fieldsInUpdate = [
+  'title',
+  'summary',
+  'narrative',
+  'sectors',
+  'actors',
+  'devices',
+  'thumbnail',
+  'copyright',
+  'image',
+  'credit'
+];
 
 /**
  * Array of all fields contained in the scenario schema. Used e.g., to validate request query
@@ -96,6 +111,9 @@ module.exports = function(router, passport) {
         'sectors'     : { '$first' : '$sectors'     },
         'devices'     : { '$first' : '$devices'     },
         'thumbnail'   : { '$first' : '$thumbnail'   },
+        'copyright'   : { '$first' : '$thumbnail'   },
+        'image'       : { '$first' : 'image'        },
+        'credit'      : { '$first' : '$credit'      },
         'dataSources' : { '$first' : '$dataSources' }
       }
     };
@@ -364,7 +382,6 @@ module.exports = function(router, passport) {
               .send('You must be either the creator of the scenario or an adminstrator to update it');
           }
 
-          var fieldsInUpdate = ['title', 'summary', 'narrative', 'sectors', 'actors', 'devices', 'thumbnail', 'image'];
           var update = req.body;
           var newVersion = new Scenario();
           fieldsInUpdate.forEach(function(field) {
