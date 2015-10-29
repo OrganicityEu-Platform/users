@@ -9,7 +9,7 @@ var gm         = require('gm');
 
 var config = {
   brightness: 150,
-  fileWidth: 1140,
+  fileWidth: 1120,
   thumbnailWidth: 600
 };
 
@@ -62,6 +62,7 @@ module.exports = function(router, passport) {
                               'file': fileName,
                               'thumbnail': thumbnailName
                             });
+
                           } else {
                             res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
                               'error': 'Creation of ' + config.thumbnailWidth + 'px thumbnail failed'
