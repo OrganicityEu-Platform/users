@@ -17,7 +17,7 @@ module.exports = function(router, passport) {
 
   var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
-  router.post(api.route('upload'), [isLoggedIn, upload.single('file')], function(req, res) {
+  router.post(api.route('upload_thumbnail'), [isLoggedIn, upload.single('file')], function(req, res) {
 
     var file = req.file;
     //console.log('File', file);

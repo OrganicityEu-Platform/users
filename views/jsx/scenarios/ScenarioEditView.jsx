@@ -188,7 +188,7 @@ var ScenarioEditView = React.createClass({
               formData.append('file', blob);
 
               $.ajax({
-                url: api.reverse('upload'),
+                url: api.reverse('upload_thumbnail'),
                 data: formData,
                 processData: false,
                 contentType: false,

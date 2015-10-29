@@ -53,7 +53,7 @@ var api_routes = {
   'disconnect_disqus'          : prefixes.users + '/:uuid/unlink/disqus?',
 
   //
-  'upload'                     : prefixes.upload,
+  'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',
 
   // scenario routes
   'scenario_list'              : prefixes.scenarios + '/?',
