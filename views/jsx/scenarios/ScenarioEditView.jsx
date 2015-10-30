@@ -15,6 +15,7 @@ import ErrorMessage      from '../ErrorMessage.jsx';
 
 // Mixins
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
+import UploadImage         from '../UploadImage.jsx';
 
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
@@ -54,11 +55,12 @@ var ScenarioEditView = React.createClass({
       devices : [],
       step : 1,
       creator : window.currentUser.uuid,
-      thumbnail_height : undefined,
-      thumbnail_width : undefined,
-      thumbnail_type : undefined,
-      thumbnail : undefined,
-      credit : undefined
+      image_width : undefined,
+      image_type : undefined,
+      thumbnail : undefined,  // Here, the path will be stored
+      image : undefined,      // Here, the path will be stored
+      credit : undefined,
+      copyright : undefined
     };
   },
   componentDidMount() {
@@ -125,95 +127,9 @@ var ScenarioEditView = React.createClass({
     } else {
       this.setState({copyright: evt.target.value});
     }
-
   },
-  handleChangedFile : function(evt) {
-
-    // Reset internal thumbnail state
-    this.setState({
-      thumbnail_height : undefined,
-      thumbnail_width : undefined,
-      thumbnail_type : undefined,
-      thumbnail : undefined,
-      thumbnail_info : 'Image upload in progress',
-      loading : true
-    });
-
-    var that = this;
-    //this.state.title = evt.target.value;
-    var files = evt.target.files; // FileList object
-    if (files.length > 0) {
-      var file = files[0];
-
-      that.state.thumbnail_type = file.type;
-
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (file_base64) => {
-        var b64File = file_base64.target.result;
-
-        // Needed to get the width and height
-        var image  = new Image();
-        image.src    = b64File;
-        image.onload = function() {
-          that.setState({
-            thumbnail_width : this.width,
-            thumbnail_height : this.height
-          });
-
-          var reset = (state) => {
-            state.thumbnail_info = undefined;
-            state.loading = false;
-            that.setState(state);
-          };
-
-          that.validatorTypes = ScenarioJoi.thumbnail;
-          that.getValidatorData = function() {
-            return {
-              thumbnail_height : that.state.thumbnail_height,
-              thumbnail_width  : that.state.thumbnail_width,
-              thumbnail_type   : that.state.thumbnail_type
-            };
-          };
-          that.validateCurrentStep(() => {
-
-            //console.log('Thumbnail OKAY');
-            reader.readAsArrayBuffer(file);
-            reader.onload = (file_arraybuffer) => {
-              var arrayBuffer = file_arraybuffer.target.result;
-              var blob        = new Blob([arrayBuffer], { type: file.type });
-
-              // Lets upload a blob
-              var formData = new FormData();
-              formData.append('file', blob);
-
-              $.ajax({
-                url: api.reverse('upload_thumbnail'),
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: (res) => {
-                  reset({
-                    image : res.file,
-                    thumbnail : res.thumbnail
-                  });
-                },
-                error : () => {
-                  that.flashOnAjaxError(api.reverse('upload'), 'Error while uploading an image'),
-                  reset({});
-                }
-              });
-            };
-
-          }, () => {
-            //console.log('Thumbnail ERROR');
-            reset({});
-          });
-        };
-      };
-    }
-
+  onThumbnail : function(data) {
+    this.setState(data);
   },
   clickedPrevious : function() {
     if (this.currentStep() - 1 < this.firstStep) {
@@ -242,9 +158,9 @@ var ScenarioEditView = React.createClass({
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
+        image     : this.state.image,
         credit    : this.state.credit,
-        copyright : this.state.copyright,
-        image     : this.state.image
+        copyright : this.state.copyright
       };
     };
 
@@ -265,9 +181,9 @@ var ScenarioEditView = React.createClass({
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
+        image     : this.state.image,
         credit    : this.state.credit,
-        copyright : this.state.copyright,
-        image     : this.state.image
+        copyright : this.state.copyright
       };
     };
 
@@ -311,21 +227,14 @@ var ScenarioEditView = React.createClass({
       });
 
     } else {
-      callback();
+      if (callback) {
+        callback();
+      }
     }
   },
   form : function() {
 
-    var thumbnail;
-    var inputFile = (<input type="file" className="form-control" name="thumbnail" id="thumbnail"
-              onChange={this.handleChangedFile} accept="image/jpeg" ref="thumbnail"/>);
-
-    if (this.state.thumbnail_info) {
-      thumbnail = (<div>{this.state.thumbnail_info}</div>);
-      inputFile = undefined;
-    } else if (this.state.thumbnail) {
-      thumbnail = (<img src={ui.asset(this.state.thumbnail)} width="200px"/>);
-    }
+    console.log('Create form', this.state);
 
     return (
       <div>
@@ -385,16 +294,16 @@ var ScenarioEditView = React.createClass({
             <div className="form-group">
               <div className="col-sm-2"></div>
               <div className="col-sm-10">
-                Please upload an image. File type must be JPEG with a width of at least width 1140 px<br/>
+                Please upload an image. File type must be JPEG pr PNG with a width of at least width 1140 px<br/>
               </div>
               <label className="control-label col-sm-2" htmlFor="title">Thumbnail</label>
               <div className="col-sm-10">
-                {inputFile}
-                <div ref="uploadPreview">{thumbnail}</div>
-                <ErrorMessage messages={this.props.getValidationMessages('thumbnail')} />
-                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_type')} />
-                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_width')} />
-                <ErrorMessage messages={this.props.getValidationMessages('thumbnail_height')} />
+                  <UploadImage
+                    url={api.reverse('upload_thumbnail')}
+                    joi={ScenarioJoi.image}
+                    callback={this.onThumbnail}
+                    thumbnail={this.state.thumbnail}
+                  />
               </div>
             </div>
             <div className="form-group">

@@ -95,7 +95,8 @@
     "react-timeago": "^2.2.1",
     "react-validation-mixin": "5.2.0",
     "url-assembler": "^1.2.4",
-    "gm": "~1.21.1"
+    "gm": "~1.21.1",
+    "image-size": "~0.3.5"
   },
   "scripts": {
     "precommit": "gulp lint",

@@ -15,10 +15,10 @@ var joiNarrative = Joi.string().label('Narrative').required();
 */
 // https://github.com/jurassix/react-validation-mixin/issues/47
 
-scenario.thumbnail = {
-  'thumbnail_width'  : Joi.number().integer().min(1140).label('Width'),
-  'thumbnail_type'   : Joi.string().valid('image/jpeg').label('File type').options(
-    { language: { any: { allowOnly: 'must be a JPEG' } } }
+scenario.image = {
+  'width'  : Joi.number().integer().min(1140).label('Width'),
+  'type'   : Joi.string().valid('image/jpeg', 'image/png').label('Image file type').options(
+    { language: { any: { allowOnly: 'must be a JPEG or PNG' } } }
   )
 };
 
