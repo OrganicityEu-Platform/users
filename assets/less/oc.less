@@ -22,6 +22,48 @@ a {
   color: @oc-magenta;
 }
 
+/* SCENARIO CREATE/EDIT VIEW*/
+
+.oc-create-edit-view {
+  margin-top: 100px; // NEEDS TO BE REMOVED AND BE DESKTOP SPECIFIC
+}
+
+.oc-create-edit-title > label,
+.oc-create-edit-summary > label,
+.oc-create-edit-narrative > label,
+.oc-create-edit-sectors > label,
+.oc-create-edit-actors > label,
+.oc-create-edit-tools > label,
+.oc-create-edit-image > label,
+.oc-create-edit-image-copyright > label,
+.oc-create-edit-image-credit > label {
+  text-align: left !important;
+}
+
+.oc-create-edit-view .alert {
+  padding: 0px 0px 0px 0px !important;
+  margin: 5px 0px 0px 0px !important;
+  border: none;
+}
+
+.oc-create-edit-view .alert-danger {
+  background-color: @oc-white !important;
+}
+
+.oc-create-edit-title,
+.oc-create-edit-summary,
+.oc-create-edit-narrative,
+.oc-create-edit-sectors,
+.oc-create-edit-actors,
+.oc-create-edit-tools,
+.oc-create-edit-image,
+.oc-create-edit-image-copyright,
+.oc-create-edit-image-credit {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: @oc-white;
+}
+
 /* SCENARIO ARTICLE */
 
 .scenario-article-score {
@@ -1094,6 +1136,18 @@ input[type="submit"] {
   ul.nav.navbar-nav {
     float: none;
     display: inline-block;
+  }
+  /* SCENARIO CREATE/EDIT VIEW*/
+  .oc-create-edit-title > label,
+  .oc-create-edit-summary > label,
+  .oc-create-edit-narrative > label,
+  .oc-create-edit-sectors > label,
+  .oc-create-edit-actors > label,
+  .oc-create-edit-tools > label,
+  .oc-create-edit-image > label,
+  .oc-create-edit-image-copyright > label,
+  .oc-create-edit-image-credit > label {
+    font-size: 20px;
   }
   .scenario-article-widget {
     float: right;

@@ -234,22 +234,11 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
-    console.log('Create form', this.state);
-
     return (
-      <div>
-        <div className="row" key="scenarioEditStep1">
-          <h2>Create your scenario <small>edit</small></h2>
-          <h3>Write your short story!</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo
-            quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere
-            erat a ante venenatis dapibus posuere velit aliquet.
-          </p>
-        </div>
-        <div className="row well">
+      <div className="container oc-create-edit-view">
+        <div className="row">
           <form className="form-horizontal">
-            <div className="form-group">
+            <div className="form-group oc-create-edit-title">
               <label className="control-label col-sm-2" htmlFor="title">Title</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
@@ -257,15 +246,15 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-summary">
               <label className="control-label col-sm-2" htmlFor="summary">Summary</label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
+                <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
                 <ErrorMessage messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-narrative">
               <label className="control-label col-sm-2" htmlFor="narrative">Narrative</label>
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
@@ -273,30 +262,30 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-sectors">
               <label className="control-label col-sm-2" htmlFor="sectors">Sectors</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-actors">
               <label className="control-label col-sm-2" htmlFor="sectors">Actors</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-tools">
               <label className="control-label col-sm-2" htmlFor="sectors">Tools</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-image">
               <div className="col-sm-2"></div>
               <div className="col-sm-10">
                 Please upload an image. File type must be JPEG pr PNG with a width of at least width 1140 px<br/>
               </div>
-              <label className="control-label col-sm-2" htmlFor="title">Thumbnail</label>
+              <label className="control-label col-sm-2" htmlFor="title">Cover Image</label>
               <div className="col-sm-10">
                   <UploadImage
                     url={api.reverse('upload_thumbnail')}
@@ -306,14 +295,14 @@ var ScenarioEditView = React.createClass({
                   />
               </div>
             </div>
-            <div className="form-group">
-              <label className="control-label col-sm-2" htmlFor="sectors">Thumbnail copyright</label>
+            <div className="form-group oc-create-edit-image-copyright">
+              <label className="control-label col-sm-2" htmlFor="sectors">Image copyright</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="credit" id="credit" value={this.state.copyright}
                   onChange={this.handleChangedCopyright} />
               </div>
             </div>
-            <div className="form-group">
+            <div className="form-group oc-create-edit-image-credit">
               <label className="control-label col-sm-2" htmlFor="sectors">Credit</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="credit" id="credit" value={this.state.credit}
