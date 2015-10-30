@@ -38,6 +38,7 @@ module.exports = function(router, passport) {
   });
 
   var findUser = function(uuid, res, next, success) {
+
     var err;
     User.findOne({ 'uuid' :  uuid }, excludeFields, function(err, user) {
       if (user === null) {
@@ -64,10 +65,15 @@ module.exports = function(router, passport) {
   router.get(api.route('user_info'), function(req, res, next) {
     findUser(req.params.uuid, res, next, function(user) {
 
-      res.json({
+      var p = {
         uuid : user.uuid,
-        name : user.name
-      });
+        name : user.name,
+      };
+      if (user.facebook && user.facebook.id) {
+        p.image = 'https://graph.facebook.com/v2.5/' + user.facebook.id + '/picture?width=200&height=200';
+      }
+      res.json(p);
+
     });
   });
 
