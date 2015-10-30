@@ -212,9 +212,6 @@ var ScenarioEditView = React.createClass({
 
   },
   clickedSubmit : function() {
-
-    var that = this;
-
     this.validatorTypes = ScenarioJoi.preview;
     this.validateCurrentStep(() => {
       var method = this.editMode() ? 'PUT' : 'POST';

@@ -14,6 +14,7 @@ var prefixes = {
   'evaluations'    : '/api/v1/evaluations',
   'counter'        : '/api/v1/counter',
   'upload'         : '/api/v1/upload',
+  'contactUs' : '/api/v1/contactUs',
 };
 
 var api_routes = {
@@ -81,7 +82,9 @@ var api_routes = {
   // evaluations routes
   'evaluations_list'     : prefixes.evaluations + '/?',
   'evaluation_by_uuid'   : prefixes.evaluations + '/:uuid/?',
-  'evaluation_score'   : prefixes.evaluations + '/evaluations_score/:uuid/?'
+  'evaluation_score'   : prefixes.evaluations + '/evaluations_score/:uuid/?',
+
+  'contactUs' : prefixes.contactUs + '/?'
 };
 
 module.exports = {
