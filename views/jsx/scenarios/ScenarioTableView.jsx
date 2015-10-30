@@ -127,6 +127,7 @@ var ScenarioTableView = React.createClass({
             {this.props.scenario.narrative}
           </div>
       </div>
+      <ScenarioEvalButton scenario={this.props.scenario}/>
     </div>
     );
   }
