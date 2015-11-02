@@ -6,6 +6,7 @@ import api              from '../../../api_routes.js';
 import FlashQueue       from '../FlashQueue.jsx';
 import LoadingMixin     from '../LoadingMixin.jsx';
 import TagField         from '../form-components/TagField.jsx';
+import UploadImage      from '../UploadImage.jsx';
 
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 
@@ -55,7 +56,7 @@ var Profile = React.createClass({
     $.ajax(url, {
       dataType: 'json',
       error: (xhr) => {
-        if (xhr.status == 401 || xhr.status == 403) {
+        if (xhr.status === 401 || xhr.status === 403) {
           this.loaded();
         } else {
           this.loadingError(url, 'Error retrieving current user');
@@ -70,6 +71,7 @@ var Profile = React.createClass({
           e.local = profile.local;
         }
         e.uuid = profile.uuid;
+        e.avatar = profile.avatar;
         e.dirty = false;
 
         this.loaded({profile: e});
@@ -125,6 +127,10 @@ var Profile = React.createClass({
       profile.local.password = this.state.profile.password;
     }
 
+    if (this.state.avatar) {
+      profile.avatar = this.state.avatar;
+    }
+
     // patch would be forbidden if we try to change roles and we're not admin
     if (this.userHasRole('admin') && this.state.profile.roles) {
       profile.roles = this.state.profile.roles;
@@ -148,6 +154,12 @@ var Profile = React.createClass({
       }
     });
 
+  },
+  onThumbnail: function(data) {
+    this.state.dirty = true;
+    this.state.avatar = data.image;
+    this.setState(this.state);
+    this.props.validate();
   },
   render: function() {
 
@@ -214,7 +226,7 @@ var Profile = React.createClass({
           <form className="form-horizontal container">
             <div className="form-group">
               <div className="">
-                  <label className="" htmlFor="profile-name">Name</label>
+                <label className="" htmlFor="profile-name">Name</label>
                 <input  type="text"
                         className="form-control"
                         id="profile-name"
@@ -225,6 +237,20 @@ var Profile = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('name')} />
               </div>
             </div>
+
+            <div className="form-group">
+              <div className="">
+                <label className="control-label" htmlFor="email">Avatar</label>
+                <UploadImage
+                  url={api.reverse('user_thumbnail', {uuid: this.state.profile.uuid})}
+                  joi={UserJoi.image}
+                  callback={this.onThumbnail}
+                  thumbnail={this.state.profile.avatar}
+                  thumbnail_width="64px"
+                />
+              </div>
+            </div>
+
             <div className="form-group">
               <div className="">
                 <label className="" htmlFor="profile-gender">Gender</label>
@@ -251,7 +277,7 @@ var Profile = React.createClass({
                 <label className="" htmlFor="profile-roles">Roles</label>
                 <TagField
                   disabled={this.userHasRole('admin') ? false : true}
-                  key={this.state.uuid + '_roles'}
+                  key={this.state.profile.uuid + '_roles'}
                   tags={this.state.profile.roles}
                   loading={this.isLoading()}
                   onChange={this.handleChangedRoles} />

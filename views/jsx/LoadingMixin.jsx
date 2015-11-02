@@ -16,7 +16,6 @@ import FlashQueue from './FlashQueue.jsx';
 
 var LoadingMixin = {
   loading : function(extendState) {
-    console.log('this.isMounted()', this.isMounted());
     if (extendState) {
       var s = $.extend({}, extendState, { loading : true });
       this.setState(s);

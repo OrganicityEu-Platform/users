@@ -1,22 +1,19 @@
-var api        = require('../../../api_routes.js');
-var ui         = require('../../../ui_routes.js');
-var HashMap    = require('hashmap');
-var math       = require('mathjs');
-var crypto     = require('crypto'); // used to generate uuid
-var mongodb    = require('mongodb');
-var HttpStatus = require('http-status');
-var RestClient = require('node-rest-client').Client;
-var Scenario   = require('../../../models/schema/scenario.js');
-var uuid       = require('node-uuid');
+var api          = require('../../../api_routes.js');
+var ui           = require('../../../ui_routes.js');
+var HashMap      = require('hashmap');
+var math         = require('mathjs');
+var crypto       = require('crypto'); // used to generate uuid
+var mongodb      = require('mongodb');
+var HttpStatus   = require('http-status');
+var RestClient   = require('node-rest-client').Client;
+var Scenario     = require('../../../models/schema/scenario.js');
+var uuid         = require('node-uuid');
+var handleUpload = require('../../../util/handleUpload');
 
 var validate     = require('express-validation');
 var ScenarioJoi  = require('../../../models/joi/scenario.js');
 
 var configAuth   = require('../../../config/auth.js');
-
-var multer       = require('multer');
-var upload       = multer({ dest: 'uploads/' });
-var fs           = require('fs');
 
 /**
  * Used to project all fields in the scenario collection documents to the fields that the user is
@@ -305,30 +302,12 @@ module.exports = function(router, passport) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  var handleUpload = function(oldPath, callback) {
-
-    if (oldPath && oldPath.indexOf('tmp/') === 0) {
-      var urlParts = oldPath.split('/');
-      urlParts[0] = 'uploads';
-      var newPath = urlParts.join('/');
-
-      fs.rename(oldPath, newPath, function() {
-        console.log('Moved file from ', oldPath, ' to ', newPath);
-        callback(newPath);
-      });
-
-    } else {
-      callback(oldPath);
-    }
-
-  };
-
   router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
 
-    var callback_thumbnail = function(path) {
+    handleUpload(req.body.thumbnail, function(path) {
       req.body.thumbnail = path;
 
-      var callback_image = function(path) {
+      handleUpload(req.body.image, function(path) {
         req.body.image = path;
 
         var scenario = new Scenario(req.body);
@@ -346,12 +325,8 @@ module.exports = function(router, passport) {
             res.status(201).json(scenario.toObject());
           }
         });
-      };
-
-      handleUpload(req.body.image, callback_image);
-    };
-
-    handleUpload(req.body.thumbnail, callback_thumbnail);
+      });
+    });
   });
 
   router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {

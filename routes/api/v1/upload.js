@@ -9,12 +9,14 @@ var gm            = require('gm');
 
 var Joi           = require('joi');
 var ScenarioJoi   = require('../../../models/joi/scenario.js');
+var UserJoi       = require('../../../models/joi/user.js');
 var sizeOf        = require('image-size');
 
 var config = {
   brightness: 150,
   fileWidth: 1120,
   thumbnailWidth: 600,
+  avatarWidth: 64,
   fileTypes: ['image/jpeg', 'image/png']
 };
 
@@ -100,7 +102,7 @@ module.exports = function(router, passport) {
                           });
                       } else {
                         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                          'error': 'Creation of ' + config.thumbnailWidth + 'px image failed'
+                          'error': 'Creation of ' + config.fileWidth + 'px image failed'
                         });
                       }
                     });
@@ -115,6 +117,59 @@ module.exports = function(router, passport) {
           } else {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
               'error': 'Convert to Grayscale failed'
+            });
+          }
+        });
+    }
+  );
+
+  router.post(
+    api.route('user_thumbnail'),
+    [isLoggedIn, upload.single('file')], function(req, res) {
+
+      // #################################################
+      // File validation
+      // #################################################
+
+      var file = req.file;
+      console.log('File', file);
+
+      try {
+        var dimensions = sizeOf(file.path);
+      } catch (ex) {
+        res.status(400).json({ error : ex.message});
+        return;
+      }
+
+      var data = {
+        width: dimensions.width,
+        height: dimensions.height,
+        type: file.mimetype
+      };
+
+      var result = Joi.validate(data, UserJoi.image, {});
+      if (result.error) {
+        fs.unlink(file.path);
+        res.status(400).json({ error : result.error});
+        return;
+      }
+
+      var originalFile = file.path;
+      var fileName = file.path + '.' + config.avatarWidth + '.jpg';
+
+      gm(originalFile)
+        .resize(config.avatarWidth)
+        .write(fileName, function(err) {
+          if (!err) {
+
+            res.status(HttpStatus.CREATED).json({
+              'image': fileName,
+              'thumbnail': fileName,
+            });
+
+          } else {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+              'error': 'Creation of ' + config.avatarWidth + 'px image failed'
             });
           }
         });

@@ -1,13 +1,20 @@
+var User          = require('../../../models/schema/user.js');
+var api           = require('../../../api_routes.js');
+var unirest       = require('unirest');
+var RestClient    = require('node-rest-client').Client;
+var HttpStatus    = require('http-status');
+var handleUpload  = require('../../../util/handleUpload');
+
+var validate      = require('express-validation');
+var UserJoi       = require('../../../models/joi/user.js');
+var hasRole       = require('../../../models/hasRole.js');
+var gravatar      = require('gravatar');
+var configAuth    = require('../../../config/auth.js');
+
 module.exports = function(router, passport) {
 
   var isLoggedIn    = require('../../../models/isLoggedIn.js')(passport);
   var isUserOrAdmin = require('../../../models/isUserOrAdmin.js')(passport);
-  var hasRole       = require('../../../models/hasRole.js');
-  var User          = require('../../../models/schema/user.js');
-  var api           = require('../../../api_routes.js');
-
-  var validate      = require('express-validation');
-  var UserJoi       = require('../../../models/joi/user.js');
 
   // ###############################################################
   // Routes
@@ -38,6 +45,7 @@ module.exports = function(router, passport) {
   });
 
   var findUser = function(uuid, res, next, success) {
+
     var err;
     User.findOne({ 'uuid' :  uuid }, excludeFields, function(err, user) {
       if (user === null) {
@@ -64,10 +72,71 @@ module.exports = function(router, passport) {
   router.get(api.route('user_info'), function(req, res, next) {
     findUser(req.params.uuid, res, next, function(user) {
 
-      res.json({
+      var size = 64;
+
+      var p = {
         uuid : user.uuid,
-        name : user.name
-      });
+        name : user.name,
+      };
+
+      if (user.avatar) {
+        p.image = user.avatar;
+      } else if (user.facebook && user.facebook.id) {
+
+        // https://developers.facebook.com/docs/graph-api/reference/user/picture/
+        p.image = 'https://graph.facebook.com/v2.5/' + user.facebook.id + '/picture?width=' + size + '&height=' + size;
+
+      } else if (user.twitter && user.twitter.username) {
+
+        // https://stackoverflow.com/questions/14836956/how-to-get-user-image-with-twitter-api-1-1
+        p.image = 'https://twitter.com/' + user.twitter.username + '/profile_image?size=original';
+
+      } else if (user.google && user.google.id) {
+
+        /*
+         * IMPROVE: Use OAuth API to get bigger images
+         * http://stackoverflow.com/q/9128700/605890
+         * http://unirest.io/nodejs.html
+         */
+
+        var url = 'http://picasaweb.google.com/data/entry/api/user/' + user.google.id + '?alt=json';
+        unirest.get(url)
+          .header('Accept', 'application/json')
+          .send()
+          .end(function(response) {
+            if (response.body && response.body.entry && response.body.entry.author) {
+              p.image = response.body.entry.gphoto$thumbnail.$t;
+            }
+            res.json(p);
+          });
+        return; // Wait for google response
+      } else if (user.github && user.github.id) {
+        p.image = 'https://avatars.githubusercontent.com/u/' + user.github.id;
+      } else if (user.disqus && user.disqus.id) {
+
+        // https://disqus.com/api/docs/users/details/
+
+        var args = {
+          parameters: {
+            'api_secret': configAuth.disqusAuth.clientSecret,
+            'user' : user.disqus.id
+          },
+        };
+        client = new RestClient();
+        client.get('https://disqus.com/api/3.0/users/details.json', args, function(data, response) {
+          if (response.statusCode === HttpStatus.OK) {
+            p.image = data.response.avatar.permalink;
+          }
+          res.json(p);
+        });
+
+        return; // Wait for disqus response
+      } else if (user.local && user.local.email) {
+        var gravatarUrl = gravatar.url(user.local.email, {s: size, d: 'mm'}, true);
+        p.image = gravatarUrl;
+      }
+
+      res.json(p);
     });
   });
 
@@ -90,37 +159,47 @@ module.exports = function(router, passport) {
       }
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
-        if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
-          user.local.password = user.generateHash(req.body.local.password);
-        }
 
-        if (req.body.hasOwnProperty('name')) {
-          user.name = req.body.name;
-        }
+        handleUpload(req.body.avatar, function(path) {
 
-        // If set, gender will never be emty due to validation
-        if (req.body.gender) {
-          user.gender = req.body.gender;
-        }
-
-        // If set, roles will never be emty due to validation
-        if (req.body.roles) {
-          user.roles = req.body.roles;
-        }
-
-        user.save(function(err) {
-          if (err) {
-            return next(err);
+          if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
+            user.local.password = user.generateHash(req.body.local.password);
           }
-          res.format({
-            'application/json': function() {
-              res.json(user);
-            },
-            'default': function() {
-              res.send(406, 'Not Acceptable');
+
+          if (req.body.hasOwnProperty('name')) {
+            user.name = req.body.name;
+          }
+
+          // If set, gender will never be emty due to validation
+          if (req.body.gender) {
+            user.gender = req.body.gender;
+          }
+
+          // If set, roles will never be emty due to validation
+          if (req.body.roles) {
+            user.roles = req.body.roles;
+          }
+
+          if (path) {
+            user.avatar = path;
+          }
+
+          user.save(function(err) {
+            if (err) {
+              return next(err);
             }
+            res.format({
+              'application/json': function() {
+                res.json(user);
+              },
+              'default': function() {
+                res.send(406, 'Not Acceptable');
+              }
+            });
           });
+
         });
+
       });
     }
   );

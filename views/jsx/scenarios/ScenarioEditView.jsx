@@ -292,6 +292,7 @@ var ScenarioEditView = React.createClass({
                     joi={ScenarioJoi.image}
                     callback={this.onThumbnail}
                     thumbnail={this.state.thumbnail}
+                    thumbnail_width="200px"
                   />
               </div>
             </div>

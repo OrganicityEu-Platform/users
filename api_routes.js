@@ -43,8 +43,9 @@ var api_routes = {
 
   // users routes
   'users'                      : prefixes.users + '/?',
-  'user_info'                  : prefixes.users + '/info/:uuid/?',
   'user_by_uuid'               : prefixes.users + '/:uuid/?',
+  'user_info'                  : prefixes.users + '/:uuid/info/?',
+  'user_thumbnail'             : prefixes.users + '/:uuid/thumbnail/?',
   'disconnect_local'           : prefixes.users + '/:uuid/unlink/local?',
   'disconnect_facebook'        : prefixes.users + '/:uuid/unlink/facebook?',
   'disconnect_twitter'         : prefixes.users + '/:uuid/unlink/twitter?',
@@ -79,9 +80,9 @@ var api_routes = {
   'questionnaire'              : prefixes.questionnaire + '/?',
 
   // evaluations routes
-  'evaluations_list'     : prefixes.evaluations + '/?',
-  'evaluation_by_uuid'   : prefixes.evaluations + '/:uuid/?',
-  'evaluation_score'   : prefixes.evaluations + '/evaluations_score/:uuid/?'
+  'evaluations_list'           : prefixes.evaluations + '/?',
+  'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
+  'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?'
 };
 
 module.exports = {
