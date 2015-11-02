@@ -139,7 +139,7 @@ var UploadImage = React.createClass({
       thumbnail = (<div>{this.state.status}</div>);
       inputFile = undefined;
     } else if (this.state.thumbnail) {
-      thumbnail = (<img src={ui.asset(this.state.thumbnail)} width="200px"/>);
+      thumbnail = (<img src={ui.asset(this.state.thumbnail)} width={this.props.thumbnail_width}/>);
     }
 
     return (
