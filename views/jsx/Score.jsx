@@ -28,7 +28,7 @@ var Score = React.createClass({
       },
       success : (res) => {
         console.log(res);
-        this.loaded({score: res.tech+res.noTech});
+        this.loaded({score: parseFloat(res.tech)+parseFloat(res.noTech)});
       }
     });
 
