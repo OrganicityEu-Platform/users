@@ -13,6 +13,7 @@ var scenario = mongoose.Schema({
   sectors     : { type: [String]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
   dataSources : { type: [String]                }, // uuids of data source type
+  score       : { type: Object                }, // score
 });
 
 scenario.index(

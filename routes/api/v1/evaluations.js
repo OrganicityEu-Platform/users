@@ -4,6 +4,7 @@ var HttpStatus    = require('http-status');
 var uuid          = require('node-uuid');
 var validate      = require('express-validation');
 var EvaluationJoi = require('../../../models/joi/evaluation.js');
+var Scenario      = require('../../../models/schema/scenario.js');
 
 module.exports = function(router, passport) {
 
@@ -132,13 +133,14 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.get(api.route('evaluation_score'),  [isLoggedIn], function(req, res) {
+  router.get(api.route('evaluation_score'),  function(req, res) {
     if (req.params.uuid === undefined) {
       return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
     }
+    var scenarioUuid = req.params.uuid;
     var filter = {};
-    if (req.params.uuid) {
-      filter['scenario.uuid'] = req.params.uuid;
+    if (scenarioUuid) {
+      filter['scenario.uuid'] = scenarioUuid;
     }
     var query = Evaluation.find(filter);
     query.exec(function(err, evaluations) {
@@ -146,7 +148,24 @@ module.exports = function(router, passport) {
         console.log(err);
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
-      return res.status(HttpStatus.OK).send(processEvaluations(evaluations));
+      var score = processEvaluations(evaluations);
+      Scenario.find({ uuid : scenarioUuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
+        if (err) {
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        if (!scenarios || scenarios.length === 0) {
+          return res.status(HttpStatus.NOT_FOUND).send();
+        }
+        scenarios[0].score = score;
+        scenarios[0].save(function(err) {
+          if (err) {
+            console.log(err);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+          }
+          return;
+        });
+      });
+      return res.status(HttpStatus.OK).send(score);
     });
   });
   return router;
@@ -155,7 +174,7 @@ module.exports = function(router, passport) {
  * ########################################################################################
  * HELPER FUNCTIONS
  * ########################################################################################
- */
+
 /**
  * checks if json is empty
  * @param evaluation
@@ -196,16 +215,17 @@ function processEvaluations(evaluations) {
 
     } else { //incomplete evaluation
     }
-    console.log(JSON.stringify(answer));
   }
   var techTotalScore = totalScore(techScoreStructure, numOfTechEvaluations);
   var nonTechTotalScore = totalScore(nonTechScoreStructure, numOfNonTechEvaluations);
 
   var scores = {
-    tech: techTotalScore,
-    noTech: nonTechTotalScore,
+    tech: techTotalScore.toFixed(2),
+    noTech: nonTechTotalScore.toFixed(2),
     numOfEvaluations: numOfTechEvaluations + numOfNonTechEvaluations
   };
+
+  console.log(JSON.stringify(scores));
   return scores;
 }
 
