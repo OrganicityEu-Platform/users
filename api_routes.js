@@ -13,6 +13,7 @@ var prefixes = {
   'questionnaire'  : '/api/v1/questionnaire',
   'evaluations'    : '/api/v1/evaluations',
   'counter'        : '/api/v1/counter',
+  'upload'         : '/api/v1/upload',
 };
 
 var api_routes = {
@@ -50,6 +51,9 @@ var api_routes = {
   'disconnect_google'          : prefixes.users + '/:uuid/unlink/google?',
   'disconnect_github'          : prefixes.users + '/:uuid/unlink/github?',
   'disconnect_disqus'          : prefixes.users + '/:uuid/unlink/disqus?',
+
+  //
+  'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',
 
   // scenario routes
   'scenario_list'              : prefixes.scenarios + '/?',

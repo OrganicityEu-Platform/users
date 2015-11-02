@@ -9,6 +9,8 @@ The first version of this application is based on:
 ```
 sudo apt-get install curl libcurl4-openssl-dev
 sudo apt-get install build-essential
+sudo apt-get install imagemagick
+sudo apt-get install graphicsmagick
 ```
 
 ## Install nodejs (last stable)

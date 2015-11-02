@@ -5,5 +5,6 @@
   "dataSources" : [],
   "actors"      : ["citizen"],
   "sectors"     : ["environment"],
-  "devices"     : ["sensors"]
+  "devices"     : ["sensors"],
+  "thumbnail"   : "uploads/agingpop_none"
 }

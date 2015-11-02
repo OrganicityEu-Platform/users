@@ -23,7 +23,8 @@ var startServer = function(done) {
 
   require('./config/passport')(passport); // pass passport for configuration
 
-  app.use(ui.asset('/static'), express.static('public'));
+  app.use(ui.asset('/tmp'),     express.static('tmp'));
+  app.use(ui.asset('/static'),  express.static('public'));
   app.use(ui.asset('/uploads'), express.static('uploads'));
 
   // set up our express application
@@ -58,6 +59,7 @@ var startServer = function(done) {
   var routes_questionnaire = require('./routes/api/v1/questionnaire.js')(router, passport);
   var routes_evaluations   = require('./routes/api/v1/evaluations.js')(router, passport);
   var routes_counter       = require('./routes/api/v1/counter.js')(router, passport);
+  var routes_upload        = require('./routes/api/v1/upload.js')(router, passport);
 
   app.use(routes_scenarios);
   app.use(routes_auth);
@@ -66,6 +68,7 @@ var startServer = function(done) {
   app.use(routes_questionnaire);
   app.use(routes_evaluations);
   app.use(routes_counter);
+  app.use(routes_upload);
 
   // serve all (other) requests to single-page-app contained in index.html
   var index = require('./index.js');

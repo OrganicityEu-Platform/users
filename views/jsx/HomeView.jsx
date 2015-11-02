@@ -13,6 +13,9 @@ import CreateScenarioModal from './CreateScenarioModal.jsx';
 import EvaluateScenarioModal from './EvaluateScenarioModal.jsx';
 import EditScenarioModal from './EditScenarioModal.jsx';
 import api from '../../api_routes.js';
+import Tags from './Tags.jsx';
+
+import SectorSelector from './SectorSelector.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;

@@ -13,7 +13,7 @@ follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity
  * `build`: builds the tool for production deployment
  * `clean`: removes last build
  * `api`: builds and serves the REST API documentation and opens it in a browser
- * `pdf`: Renders all Mardown files under `doc/` to PDF files
+ * `pdf`: Renders all Markdown files under `doc/` to PDF files
  * `test`: runs unit tests using [Jasmine](http://jasmine.github.io/)
  * `lint`: Check code styles according to the Google JavaScript coding conventions using **jscs** and **eslint**
 

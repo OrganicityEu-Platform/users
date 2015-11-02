@@ -3,6 +3,7 @@ var expect    = require('expect.js');
 var http      = require('http-status');
 var api       = require('../api_routes.js');
 var moment    = require('moment');
+var fs        = require('fs');
 
 var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
 
@@ -184,6 +185,14 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
     }
   );
 
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (incorrect thumbnail field)',
+    function(done) {
+      var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
+      scenario.thumbnail = 'waste';
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
   // ######################################################################################
   // 201 CREATED
   // ######################################################################################
@@ -334,8 +343,11 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
     }
   );
 
-  it('should return 201 CREATED when trying to send a correct dummy object (all fields)',
+  it('should return 201 CREATED when trying to send a correct dummy object (all fields with new file)',
     function(done) {
+
+      fs.closeSync(fs.openSync('tmp/foo', 'w'));
+
       var scenario = {
         'title' : 'title',
         'summary' : 'summary',
@@ -343,7 +355,27 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
         'actors' : ['actor1', 'actor2'],
         'sectors' : ['sector1', 'sector2'],
         'devices' : ['device1', 'device2'],
-        'dataSources' : ['dataSource1', 'dataSource2']
+        'dataSources' : ['dataSource1', 'dataSource2'],
+        'thumbnail' : 'tmp/foo'
+      };
+      inputValidationTestHelper(scenario, http.CREATED, done);
+    }
+  );
+
+  it('should return 201 CREATED when trying to send a correct dummy object (all fields with existing file)',
+    function(done) {
+
+      fs.closeSync(fs.openSync('uploads/bar', 'w'));
+
+      var scenario = {
+        'title' : 'title',
+        'summary' : 'summary',
+        'narrative' : 'narrative',
+        'actors' : ['actor1', 'actor2'],
+        'sectors' : ['sector1', 'sector2'],
+        'devices' : ['device1', 'device2'],
+        'dataSources' : ['dataSource1', 'dataSource2'],
+        'thumbnail' : 'uploads/foo'
       };
       inputValidationTestHelper(scenario, http.CREATED, done);
     }

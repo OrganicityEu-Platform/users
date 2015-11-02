@@ -10,9 +10,8 @@ import UserHasRoleMixin    from './UserHasRoleMixin.jsx';
 import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
-import CreateScenarioModal from './CreateScenarioModal.jsx';
-import SignupModal         from './SignupModal.jsx';
-import LoginModal          from './LoginModal.jsx';
+
+
 import LocalLogin from './auth/LocalLogin.jsx';
 import Signup from './auth/Signup.jsx';
 
@@ -30,16 +29,16 @@ var Scaffold = React.createClass({
   },
   componentDidMount: function() {
     $.ajax(api.reverse('currentUser'), {
-      accepts : 'application/json',
+      dataType: 'json',
       success : this.onLogin,
-      error : (jqXHR, textStatus, errorThrown) => {
-        if (jqXHR.status === 422 || jqXHR.status === 403) {
+      error : (xhr, textStatus, errorThrown) => {
+        if (xhr.status === 401) {
           this.onLogout();
         } else {
           this.flashOnAjaxError(
             api.reverse('currentUser'),
             'Error retrieving current user'
-          )(jqXHR, textStatus, errorThrown);
+          )(xhr, textStatus, errorThrown);
         }
       }
     });
@@ -101,18 +100,20 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">Logout</NavItemLink>
+          className="nav-logout-btn">logout</NavItemLink>
       );
     } else {
       linksRight.push(
-        <NavItem
-          key="login"
-          className="nav-login-btn"><LocalLogin/></NavItem>
+        <NavItemLink
+          key="local-login"
+          to="local-login"
+          className="nav-login-btn">login</NavItemLink>
       );
       linksRight.push(
-        <NavItem
+        <NavItemLink
           key="signup"
-          className="nav-signup-btn"><Signup/></NavItem>
+          to="signup"
+          className="nav-signup-btn">signup</NavItemLink>
       );
     }
     return (
@@ -120,9 +121,12 @@ var Scaffold = React.createClass({
         <div className="row">
           <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
             <CollapsibleNav eventKey={0}>
-              <Nav navbar>
-                {linksLeft}
-              </Nav>
+              <span className="oc-left-links-wrapper">
+                <Nav navbar>
+                  {linksLeft}
+                </Nav>
+              </span>
+
               <Nav navbar right>
                 {linksRight}
               </Nav>

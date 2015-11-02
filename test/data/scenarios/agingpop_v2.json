@@ -8,5 +8,6 @@
   "actors"      : ["citizen"],
   "sectors"     : ["environment"],
   "devices"     : ["sensors"],
-  "creator"     : "daniel"
+  "creator"     : "daniel",
+  "thumbnail"   : "uploads/agingpop_v2"
 }
