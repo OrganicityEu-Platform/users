@@ -160,7 +160,7 @@ module.exports = function(router, passport) {
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
 
-        handleUpload(req.body.avatar, function(path) {
+        handleUpload(req.body.avatar, next, function(path) {
 
           if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
             user.local.password = user.generateHash(req.body.local.password);

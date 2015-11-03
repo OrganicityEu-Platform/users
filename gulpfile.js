@@ -145,6 +145,7 @@ var watches = {
   'doc' : [
     'doc/*.md'
   ],
+  //'test' : 'test/scenarios_create.spec.js'
   'test' : 'test/*.spec.js'
 };
 

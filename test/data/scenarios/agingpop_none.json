@@ -6,5 +6,6 @@
   "actors"      : ["citizen"],
   "sectors"     : ["environment"],
   "devices"     : ["sensors"],
-  "thumbnail"   : "uploads/agingpop_none"
+  "thumbnail"   : "tmp/agingpop_none",
+  "image"       : "tmp/agingpop_none_image"
 }

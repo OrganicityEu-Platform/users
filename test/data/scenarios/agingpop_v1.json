@@ -9,5 +9,6 @@
   "sectors"     : ["environment"],
   "devices"     : ["sensors"],
   "creator"     : "daniel",
-  "thumbnail"   : "uploads/agingpop_v1"
+  "thumbnail"   : "tmp/agingpop_v1",
+  "image"       : "tmp/agingpop_v1_image"
 }
