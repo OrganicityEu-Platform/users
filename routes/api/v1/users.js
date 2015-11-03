@@ -160,7 +160,12 @@ module.exports = function(router, passport) {
 
       User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
 
-        handleUpload(req.body.avatar, function(path) {
+        handleUpload(req.body.avatar, function(err, path) {
+
+          if (err) {
+            err.status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return next(err);
+          }
 
           if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
             user.local.password = user.generateHash(req.body.local.password);

@@ -302,12 +302,23 @@ module.exports = function(router, passport) {
     return processQueryByScenarioUUID(req.params.uuid, req, res);
   });
 
-  router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
+  router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res, next) {
 
-    handleUpload(req.body.thumbnail, function(path) {
+    handleUpload(req.body.thumbnail, function(err, path) {
       req.body.thumbnail = path;
 
-      handleUpload(req.body.image, function(path) {
+      if (err) {
+        err.status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return next(err);
+      }
+
+      handleUpload(req.body.image, function(err, path) {
+
+        if (err) {
+          err.status = HttpStatus.INTERNAL_SERVER_ERROR;
+          return next(err);
+        }
+
         req.body.image = path;
 
         var scenario = new Scenario(req.body);
