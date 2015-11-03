@@ -8,6 +8,8 @@ var bodyParser        = require('body-parser');
 var session           = require('express-session');
 var expressListRoutes = require('express-list-routes');
 var timers            = require('timers');
+var CronJob           = require('cron').CronJob;
+var findRemove        = require('find-remove');
 
 // configuration ==============================================================
 var app               = express();
@@ -22,6 +24,19 @@ var server; // the server instance
 var startServer = function(done) {
 
   require('./config/passport')(passport); // pass passport for configuration
+
+  var deleteFiles = function() {
+    // Delete all files older than one day
+    var s = 24 * 60 * 60;
+    var result = findRemove('tmp/', {age: {seconds: s}});
+    console.log('Deleted ' + Object.keys(result).length + ' files from tmp/');
+  };
+
+  // Call one, the server starts
+  deleteFiles();
+
+  // Run as cronjob
+  new CronJob('0 0 0 * * *', deleteFiles, null, true, 'Europe/Berlin');
 
   app.use(ui.asset('/tmp'),     express.static('tmp'));
   app.use(ui.asset('/static'),  express.static('public'));
