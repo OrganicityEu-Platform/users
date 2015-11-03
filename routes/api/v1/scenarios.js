@@ -304,20 +304,26 @@ module.exports = function(router, passport) {
 
   router.post(api.route('scenario_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res, next) {
 
-    handleUpload(req.body.thumbnail, function(err, path) {
+    if (req.body.thumbnail && !req.body.image) {
+      var err = new Error('Image not given');
+      err.status = HttpStatus.BAD_REQUEST;
+      return next(err);
+    }
+
+    if (!req.body.thumbnail && req.body.image) {
+      var err = new Error('Thumbnail not given');
+      err.status = HttpStatus.BAD_REQUEST;
+      return next(err);
+    }
+
+    handleUpload(req.body.thumbnail, next, function(path) {
       req.body.thumbnail = path;
 
-      if (err) {
-        err.status = HttpStatus.INTERNAL_SERVER_ERROR;
-        return next(err);
-      }
+      //console.log('Thumbnail OK');
 
-      handleUpload(req.body.image, function(err, path) {
+      handleUpload(req.body.image, next, function(path) {
 
-        if (err) {
-          err.status = HttpStatus.INTERNAL_SERVER_ERROR;
-          return next(err);
-        }
+        //console.log('Image OK');
 
         req.body.image = path;
 
@@ -340,59 +346,68 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res) {
+  router.put(api.route('scenario_by_uuid'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)],
+    function(req, res, next) {
 
-    var callback_thumbnail = function(path) {
-      req.body.thumbnail = path;
+      if (req.body.thumbnail && !req.body.image) {
+        var err = new Error('Image not given');
+        err.status = HttpStatus.BAD_REQUEST;
+        return next(err);
+      }
 
-      var callback_image = function(path) {
-        req.body.image = path;
+      if (!req.body.thumbnail && req.body.image) {
+        var err = new Error('Thumbnail not given');
+        err.status = HttpStatus.BAD_REQUEST;
+        return next(err);
+      }
 
-        Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
+      handleUpload(req.body.thumbnail, next, function(path) {
+        req.body.thumbnail = path;
 
-          if (err) {
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-          }
+        handleUpload(req.body.image, next, function(path) {
+          req.body.image = path;
 
-          if (oldVersion === undefined || oldVersion == null || oldVersion.length === 0) {
-            return res.status(HttpStatus.NOT_FOUND).send();
-          }
+          Scenario.find({ uuid : req.params.uuid }).sort({ version : -1 }).limit(1).exec(function(err, oldVersion) {
 
-          if (
-            !req.user.hasRole(['admin']) &&
-            !req.user.hasRole(['moderator']) &&
-            req.user.uuid !== oldVersion[0].creator
-          ) {
-            return res
-              .status(HttpStatus.FORBIDDEN)
-              .send('You must be either the creator of the scenario or an adminstrator to update it');
-          }
-
-          var update = req.body;
-          var newVersion = new Scenario();
-          fieldsInUpdate.forEach(function(field) {
-            newVersion[field] = update[field];
-          });
-          newVersion.uuid = oldVersion[0].uuid;
-          newVersion.version = oldVersion[0].version + 1;
-          newVersion.creator = req.user.uuid;
-
-          newVersion.save(function(err, scenario) {
             if (err) {
               return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
             }
-            res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
-            res.status(HttpStatus.CREATED).json(scenario.toObject());
+
+            if (oldVersion === undefined || oldVersion == null || oldVersion.length === 0) {
+              return res.status(HttpStatus.NOT_FOUND).send();
+            }
+
+            if (
+              !req.user.hasRole(['admin']) &&
+              !req.user.hasRole(['moderator']) &&
+              req.user.uuid !== oldVersion[0].creator
+            ) {
+              return res
+                .status(HttpStatus.FORBIDDEN)
+                .send('You must be either the creator of the scenario or an adminstrator to update it');
+            }
+
+            var update = req.body;
+            var newVersion = new Scenario();
+            fieldsInUpdate.forEach(function(field) {
+              newVersion[field] = update[field];
+            });
+            newVersion.uuid = oldVersion[0].uuid;
+            newVersion.version = oldVersion[0].version + 1;
+            newVersion.creator = req.user.uuid;
+
+            newVersion.save(function(err, scenario) {
+              if (err) {
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+              }
+              res.location(api.reverse('scenario_by_uuid', {uuid: scenario.uuid}));
+              res.status(HttpStatus.CREATED).json(scenario.toObject());
+            });
           });
         });
-
-      };
-
-      handleUpload(req.body.image, callback_image);
-    };
-
-    handleUpload(req.body.thumbnail, callback_thumbnail);
-  });
+      });
+    }
+  );
 
   router.delete(api.route('scenario_by_uuid'), [isLoggedIn], function(req, res) {
 

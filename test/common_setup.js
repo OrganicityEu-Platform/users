@@ -7,7 +7,7 @@ var moment   = require('moment');
 var errorHandlerWrapper = function(success) {
   return function(err) {
     if (err) {
-      done(err);
+      success(err);
       console.log(err.stack);
       return;
     }

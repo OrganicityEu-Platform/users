@@ -9,5 +9,6 @@
   "sectors"     : ["transport"],
   "devices"     : ["transport", "mobile"],
   "creator"     : "leinad",
-  "thumbnail"   : "uploads/parkpred_v2"
+  "thumbnail"   : "tmp/parkpred_v2",
+  "image"       : "tmp/parkpred_v2_image"
 }

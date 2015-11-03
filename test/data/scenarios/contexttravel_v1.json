@@ -9,5 +9,6 @@
   "sectors"     : ["transport", "logistics"],
   "devices"     : ["transport", "mobile"],
   "creator"     : "leinad",
-  "thumbnail"   : "uploads/travel_v1"
+  "thumbnail"   : "tmp/travel_v1",
+  "image"       : "tmp/travel_v1_image"
 }

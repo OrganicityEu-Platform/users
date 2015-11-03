@@ -19,7 +19,7 @@ var scenarios_common_tests  = require('./scenarios_common_tests.js');
 
 var server;
 
-describe('When updating a user, the API', function() {
+describe('When updating an user, the API', function() {
 
   var users;
   var scenarios;
