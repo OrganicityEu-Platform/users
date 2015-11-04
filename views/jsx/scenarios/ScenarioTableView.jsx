@@ -33,6 +33,8 @@ var ScenarioTableView = React.createClass({
     if (sector_colour) {
       article_image_overlay = sector_colour.toLowerCase().concat('_colour scenario-article-image');
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
+    }else {
+      sector_colour_marker = 'scenario-article-marker';
     }
 
     var credit;
