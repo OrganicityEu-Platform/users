@@ -37,7 +37,7 @@ var ScenarioTableView = React.createClass({
     if (this.props.scenario.credit) {
       credit = (
         <div className="col-md-12">
-          <div className="scenario-ast-wrapper">
+          <div className="scenario-article-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
             <span className="scenario-ast-items">{this.props.scenario.credit}</span><br></br>
           </div>
@@ -128,7 +128,13 @@ var ScenarioTableView = React.createClass({
             {this.props.scenario.narrative}
           </div>
       </div>
-      <ScenarioEvalButton scenario={this.props.scenario}/>
+      <div className="col-md-3"></div>
+      <div className="col-md-2"></div>
+      <div className="col-md-2">
+        <ScenarioEvalButton scenario={this.props.scenario}/>
+      </div>
+      <div className="col-md-2"></div>
+      <div className="col-md-3"></div>
     </div>
     );
   }

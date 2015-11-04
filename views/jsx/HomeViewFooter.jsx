@@ -69,9 +69,13 @@ var HomeViewFooter = React.createClass({
                 </Panel>
               </Accordion>
             </div>
-          </div>
-          <div id="oc-home-view-section-read-more-btn-wrapper">
-            <Button id="oc-home-view-section-read-more-btn" onClick={this.clickHander}>READ MORE ABOUT ORGANICITY</Button>
+            <div id="oc-home-view-section-read-more-btn-wrapper">
+              <div className="col-md-4"></div>
+              <div className="col-md-4">
+                <Button id="oc-home-view-section-read-more-btn" onClick={this.clickHander}>READ MORE ABOUT ORGANICITY</Button>
+                </div>
+              <div className="col-md-4"></div>
+            </div>
           </div>
         </div>
       </div>

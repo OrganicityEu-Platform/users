@@ -20,7 +20,11 @@ var HomeViewSection = React.createClass({
               <ScenariosNewest limit="8"/>
             </div>
             <div id="oc-home-view-section-explore-all-scenarios-btn-wrapper">
-              <Button id="oc-home-view-section-explore-all-scenarios-btn" onClick={this.clickHander}>EXPLORE ALL SCENARIOS</Button>
+              <div className="col-md-4"></div>
+              <div className="col-md-4">
+                <Button id="oc-home-view-section-explore-all-scenarios-btn" onClick={this.clickHander}>EXPLORE ALL SCENARIOS</Button>
+              </div>
+              <div className="col-md-4"></div>
             </div>
           </div>
         </div>
