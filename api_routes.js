@@ -13,7 +13,7 @@ var prefixes = {
   'questionnaire'  : '/api/v1/questionnaire',
   'evaluations'    : '/api/v1/evaluations',
   'counter'        : '/api/v1/counter',
-  'upload'         : '/api/v1/upload',
+  'upload'         : '/api/v1/upload'
 };
 
 var api_routes = {
@@ -65,8 +65,6 @@ var api_routes = {
   'devices_list'               : prefixes.devices + '/?',
   'related_by_uuid'            : prefixes.scenarios + '/related/:uuid/?',
   'discus_statistics'          : prefixes.scenarios + '/discus_statistics/:uuid/?',
-  'evaluation_score'           : prefixes.scenarios + '/evaluation/:uuid/?',
-
   // erroring resource (for testing)
   'error'                      : prefixes.error + '/?',
 
@@ -82,7 +80,8 @@ var api_routes = {
   // evaluations routes
   'evaluations_list'           : prefixes.evaluations + '/?',
   'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
-  'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?'
+  'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?',
+  'evaluations_count'           : prefixes.evaluations + '/evaluations_count/:uuid/?'
 };
 
 module.exports = {

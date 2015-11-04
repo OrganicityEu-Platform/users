@@ -168,6 +168,27 @@ module.exports = function(router, passport) {
       return res.status(HttpStatus.OK).send(score);
     });
   });
+
+  router.get(api.route('evaluations_count'), function(req, res) {
+    if (req.params.uuid === undefined) {
+      return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
+    }
+    var scenarioUuid = req.params.uuid;
+    var filter = {};
+    if (scenarioUuid) {
+      filter['scenario.uuid'] = scenarioUuid;
+    }
+    var query = Evaluation.find(filter);
+    query.exec(function(err, evaluations) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+      var count = evaluations.length;
+      return res.status(HttpStatus.OK).send({count : count});
+    });
+  });
+
   return router;
 };
 /*
