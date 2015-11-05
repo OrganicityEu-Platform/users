@@ -28,7 +28,7 @@ var startServer = function(done) {
   var deleteFiles = function() {
     // Delete all files older than one day
     var s = 24 * 60 * 60;
-    var result = findRemove('tmp/', {age: {seconds: s}});
+    var result = findRemove('tmp/', {age: {seconds: s}, files: '*.*'});
     //console.log('Deleted ' + Object.keys(result).length + ' files from tmp/');
   };
 
