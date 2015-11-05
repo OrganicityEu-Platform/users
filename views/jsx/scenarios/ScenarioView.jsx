@@ -8,6 +8,7 @@ import ScenarioEditButton   from './ScenarioEditButton.jsx';
 import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api                  from '../../../api_routes.js';
+import ErrorMessage         from '../ErrorMessage.jsx';
 
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation],
@@ -16,9 +17,20 @@ var ScenarioView = React.createClass({
   },
   componentDidMount: function() {
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
-    $.getJSON(url, (scenario) => {
-      if (this.isMounted()) {
-        this.setState(scenario);
+
+    $.ajax({
+      dataType: 'json',
+      url: url,
+      success: (scenario) => {
+        if (this.isMounted()) {
+          console.log('Scenario', scenario);
+          this.setState(scenario);
+        }
+      },
+      error: (jqXHR, textStatus, errorThrown) => {
+        this.setState({
+          error: jqXHR
+        });
       }
     });
   },
@@ -29,6 +41,12 @@ var ScenarioView = React.createClass({
     if (this.state === null) {
       return null;
     }
+
+    if (this.state.error) {
+      var message = (this.state.error.status + ': ' + this.state.error.statusText);
+      return (<ErrorMessage messages={message} />);
+    }
+
     return (
       <div>
         <div className="row">
@@ -42,7 +60,11 @@ var ScenarioView = React.createClass({
         </div>
         <div className="row">
           <div className="oc-disqus-wrapper">
-            <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
+            <ReactDisqusThread
+              categoryId="3957189"
+              shortname="organicity"
+              identifier={this.state.uuid}
+              title={this.state.title}/>
           </div>
         </div>
       </div>

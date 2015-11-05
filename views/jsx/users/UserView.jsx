@@ -8,6 +8,7 @@ import ui                 from '../../../ui_routes.js';
 import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
 import Counter            from '../Counter.jsx';
 import ScenariosNewest    from '../scenarios/ScenariosNewest.jsx';
+import ErrorMessage       from '../ErrorMessage.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -24,47 +25,27 @@ var UserAvatar = React.createClass({
     this.loading();
     var url = api.reverse('user_info', { uuid : this.props.params.uuid });
 
-    var getScenarios = () => {
-
-      var url = api.reverse('scenario_list', {
-        creator : this.props.params.uuid,
-        sortBy : 'timestamp',
-        sortDir : 'DESC'
-      });
-
-      $.ajax(url, {
-        dataType : 'json',
-        error : (jqXHR, textStatus, errorThrown) => {
-          this.loaded();
-          this.flashOnAjaxError(url, 'Error loading user info')(jqXHR, textStatus, errorThrown);
-        },
-        success : (scenarios) => {
-          this.state.scenarios = scenarios;
-          this.setState(this.state);
-          this.loaded();
-        }
-      });
-    };
-
     $.ajax(url, {
       dataType : 'json',
       error : (jqXHR, textStatus, errorThrown) => {
-        getScenarios();
-        this.state.user = {
-          name : 'Unknown or deleted user'
-        };
-        this.setState(this.state);
+        this.setState({error: jqXHR});
+        this.loaded();
       },
       success : (user) => {
-        getScenarios();
         this.state.user = user;
         this.setState(this.state);
       }
     });
   },
   render: function() {
+
     if (this.state.loading) {
       return <div>Loading...</div>;
+    }
+
+    if (this.state.error) {
+      var message = (this.state.error.status + ': ' + this.state.error.statusText);
+      return (<ErrorMessage messages={message} />);
     }
 
     var userText = this.props.params.uuid;
