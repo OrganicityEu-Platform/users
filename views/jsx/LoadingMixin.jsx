@@ -15,8 +15,13 @@ import FlashQueue from './FlashQueue.jsx';
  */
 
 var LoadingMixin = {
-  loading : function() {
-    this.setState({ loading : true });
+  loading : function(extendState) {
+    if (extendState) {
+      var s = $.extend({}, extendState, { loading : true });
+      this.setState(s);
+    } else {
+      this.setState({ loading : true });
+    }
   },
   isLoading: function() {
     return this.state !== undefined && this.state != null && this.state.loading;

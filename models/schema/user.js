@@ -5,6 +5,8 @@ var user = mongoose.Schema({
   uuid    : String,
   name    : String,
   gender  : String,
+  roles : [String],
+  avatar : String,
   local            : {
     email        : String,
     password     : String
@@ -39,8 +41,7 @@ var user = mongoose.Schema({
     token        : String,
     email        : String,
     name         : String
-  },
-  roles : [String]
+  }
 });
 
 // generate a hash

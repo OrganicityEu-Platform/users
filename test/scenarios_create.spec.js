@@ -39,7 +39,9 @@ describe('When creating a scenario, the API', function() {
     users = undefined;
     mongoose.connection.close();
     if (server) {
-      serverApp.stop(done);
+      serverApp.stop(function() {
+        ss.teardown(done);
+      });
     }
   });
 

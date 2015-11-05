@@ -15,11 +15,10 @@ var joiNarrative = Joi.string().label('Narrative').required();
 */
 // https://github.com/jurassix/react-validation-mixin/issues/47
 
-scenario.thumbnail = {
-  'thumbnail_height' : Joi.number().integer().min(600).max(800).label('Height'),
-  'thumbnail_width'  : Joi.number().integer().min(1140).max(1140).label('Width'),
-  'thumbnail_type'   : Joi.string().valid('image/jpeg').label('File type').options(
-    { language: { any: { allowOnly: 'must be a JPEG' } } }
+scenario.image = {
+  'width'  : Joi.number().integer().min(1140).label('Width'),
+  'type'   : Joi.string().valid('image/jpeg', 'image/png').label('Image file type').options(
+    { language: { any: { allowOnly: 'must be a JPEG or PNG' } } }
   )
 };
 
@@ -27,7 +26,8 @@ scenario.edit = {
   title              : joiTitle,
   summary            : joiSummary,
   narrative          : joiNarrative,
-  thumbnail          : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail          : Joi.string().regex(/^uploads\/|^tmp\//),
+  image              : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 scenario.preview = {
@@ -37,8 +37,11 @@ scenario.preview = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
+  credit      : Joi.string().label('Credit').optional(),
+  copyright   : Joi.string().label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
+  image       : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 // Same as step6, but without thmbnail!
@@ -49,8 +52,11 @@ scenario.server = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
+  credit      : Joi.string().label('Credit').optional(),
+  copyright   : Joi.string().label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//)
+  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
+  image       : Joi.string().regex(/^uploads\/|^tmp\//)
 };
 
 scenario.createOrUpdate = {

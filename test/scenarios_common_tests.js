@@ -3,7 +3,7 @@ var expect    = require('expect.js');
 var http      = require('http-status');
 var api       = require('../api_routes.js');
 var moment    = require('moment');
-var fs        = require('fs');
+var fsSync    = require('fs-sync');
 
 var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
 
@@ -346,8 +346,6 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
   it('should return 201 CREATED when trying to send a correct dummy object (all fields with new file)',
     function(done) {
 
-      fs.closeSync(fs.openSync('tmp/foo', 'w'));
-
       var scenario = {
         'title' : 'title',
         'summary' : 'summary',
@@ -356,8 +354,13 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
         'sectors' : ['sector1', 'sector2'],
         'devices' : ['device1', 'device2'],
         'dataSources' : ['dataSource1', 'dataSource2'],
-        'thumbnail' : 'tmp/foo'
+        'thumbnail' : 'tmp/thumb',
+        'image' : 'tmp/image'
       };
+
+      ss.createImage(scenario.thumbnail);
+      ss.createImage(scenario.image);
+
       inputValidationTestHelper(scenario, http.CREATED, done);
     }
   );
@@ -365,7 +368,27 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
   it('should return 201 CREATED when trying to send a correct dummy object (all fields with existing file)',
     function(done) {
 
-      fs.closeSync(fs.openSync('uploads/bar', 'w'));
+      var scenario = {
+        'title' : 'title',
+        'summary' : 'summary',
+        'narrative' : 'narrative',
+        'actors' : ['actor1', 'actor2'],
+        'sectors' : ['sector1', 'sector2'],
+        'devices' : ['device1', 'device2'],
+        'dataSources' : ['dataSource1', 'dataSource2'],
+        'thumbnail' : 'tmp/thumb',
+        'image' : 'tmp/image'
+      };
+
+      ss.createImage(scenario.thumbnail);
+      ss.createImage(scenario.image);
+
+      inputValidationTestHelper(scenario, http.CREATED, done);
+    }
+  );
+
+  it('should return 400 BAD REQUEST when trying to send a correct dummy object (images missed)',
+    function(done) {
 
       var scenario = {
         'title' : 'title',
@@ -375,9 +398,32 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
         'sectors' : ['sector1', 'sector2'],
         'devices' : ['device1', 'device2'],
         'dataSources' : ['dataSource1', 'dataSource2'],
-        'thumbnail' : 'uploads/foo'
+        'thumbnail' : 'tmp/thumb'
       };
-      inputValidationTestHelper(scenario, http.CREATED, done);
+
+      ss.createImage(scenario.thumbnail);
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD REQUEST when trying to send a correct dummy object (thumbnail missed)',
+    function(done) {
+
+      var scenario = {
+        'title' : 'title',
+        'summary' : 'summary',
+        'narrative' : 'narrative',
+        'actors' : ['actor1', 'actor2'],
+        'sectors' : ['sector1', 'sector2'],
+        'devices' : ['device1', 'device2'],
+        'dataSources' : ['dataSource1', 'dataSource2'],
+        'image' : 'tmp/image'
+      };
+
+      ss.createImage(scenario.image);
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
     }
   );
 
@@ -388,10 +434,25 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
     }
   );
 
+  it('should return 400 BAD REQUEST when trying to send a non existsing thumbnail (all fields)',
+    function(done) {
+      var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
+      fsSync.remove(scenario.thumbnail);
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD REQUEST when trying to send a non existsing image (all fields)',
+    function(done) {
+      var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
+      fsSync.remove(scenario.image);
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
   it('should have the logged in users UUID as creator and a timestamp in the returned document and location header',
     function(done) {
       var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
-      console.log('scenario', scenario);
       inputValidationTestHelper(scenario, http.CREATED, done, function(res) {
           ss.scenarioUpdateFields.forEach(function(field) {
             expect(res.body[field]).to.eql(scenario[field]);

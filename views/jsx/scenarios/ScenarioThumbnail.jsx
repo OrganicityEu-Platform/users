@@ -27,7 +27,7 @@ var ScenarioThumbnail = React.createClass({
     var sector_colour_overlay;
 
     if (sector_colour) {
-      sector_colour_marker = sector_colour.toLowerCase().concat('_colour marker');
+      sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
       sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
     }
 
@@ -62,7 +62,7 @@ var ScenarioThumbnail = React.createClass({
             <p className="scenario-thumbnail-summary">
               { summary}
             </p>
-            <span className="sat-wrapper">
+            <span className="scenario-thumbnail-sat-wrapper">
               <span>Sectors: {sectors}</span>
               <span>Actors: {actors}</span>
               <span>Tools: {tools}</span>

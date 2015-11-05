@@ -40,10 +40,9 @@ var UserAvatar = React.createClass({
     }
 
     var userText = this.props.uuid;
-    if (this.state.user.name) {
+    if (this.state.user.name && this.state.user.name !== '') {
       userText = this.state.user.name;
     }
-
     return <Link to="userView" params={{ uuid: this.props.uuid }}>{userText}</Link>;
   }
 });

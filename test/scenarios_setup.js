@@ -1,9 +1,11 @@
-var fs       = require('fs');
-var Scenario = require('../models/schema/scenario.js');
-var User     = require('../models/schema/user.js');
-var Promise  = require('promise');
-var moment   = require('moment');
-var cs       = require('./common_setup.js');
+var fs         = require('fs');
+var fsSync     = require('fs-sync');
+var Scenario   = require('../models/schema/scenario.js');
+var User       = require('../models/schema/user.js');
+var Promise    = require('promise');
+var moment     = require('moment');
+var cs         = require('./common_setup.js');
+var findRemove = require('find-remove');
 
 /**
  * Sets up the Scenario and User collections by removing all entries that might be left over from
@@ -17,7 +19,12 @@ var setup = function(done) {
 };
 
 var teardown = function(done) {
+  var result = findRemove('tmp/', { files: '*.*'});
   done();
+};
+
+var createImage = function(path) {
+  fsSync.copy('test/image.jpg', path, { force: true});
 };
 
 /**
@@ -28,7 +35,20 @@ var teardown = function(done) {
 var loadScenarios = function(toLoad) {
   return toLoad
     .map(function(tl) { return __dirname + '/data/scenarios/' + tl.uuid + '_' + tl.v + '.json'; })
-    .map(function(fn) { return JSON.parse(fs.readFileSync(fn)); });
+    .map(function(fn) {
+      var json = JSON.parse(fs.readFileSync(fn));
+
+      // Create thumbnail, iff needed
+      if (json.thumbnail) {
+        createImage(json.thumbnail);
+      }
+
+      if (json.image) {
+        createImage(json.image);
+      }
+
+      return json;
+    });
 };
 
 /**
@@ -84,5 +104,6 @@ module.exports = {
   insertUsers          : cs.insertUsers,
   scenarioFields       : scenarioFields,
   scenarioUpdateFields : scenarioUpdateFields,
-  cloneConstrained     : cloneConstrained
+  cloneConstrained     : cloneConstrained,
+  createImage          : createImage
 };

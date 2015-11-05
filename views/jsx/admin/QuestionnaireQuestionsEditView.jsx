@@ -9,6 +9,7 @@ var QuestionnaireQuestionsEditView = React.createClass({
   },
   handleChangedQuestionText: function(questionIndex) {
     return (evt) => {
+
       this.state.questions[questionIndex].text = evt.target.value;
       this.props.onChange(this.state.questions);
     };
@@ -21,7 +22,8 @@ var QuestionnaireQuestionsEditView = React.createClass({
   },
   handleChangedTech: function(questionIndex) {
     return (evt) => {
-      this.state.questions[questionIndex].tech = !(evt.target.value === 'on');
+      //console.log('check box handler' +  event.target.checked);
+      this.state.questions[questionIndex].tech = event.target.checked ;
       this.props.onChange(this.state.questions);
     };
   },
@@ -69,6 +71,7 @@ var QuestionnaireQuestionsEditView = React.createClass({
                         id={"question_"+index+"_tech"}
                         name={"question_"+index+"_tech"}
                         value={q.tech}
+                        checked={q.tech}
                         onChange={this.handleChangedTech(index)} />
                     </div>
                   </div>

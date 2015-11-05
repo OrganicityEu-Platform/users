@@ -17,6 +17,18 @@ user.signupClient = {
   password_repeat : joiPasswordRepeat
 };
 
+user.image = {
+  'type'   : Joi.string().valid('image/jpeg', 'image/png').label('Image file type').options(
+    { language: { any: { allowOnly: 'must be a JPEG or PNG' } } }
+  ),
+  'width'  : Joi.number().integer().min(64).label('Width'),
+  'height' : Joi.any().label('Height').valid(
+      Joi.ref('width')
+    ).required().options(
+      { language: { any: { allowOnly: 'and width must be the same' } } }
+    )
+};
+
 user.emailAndPassword = {
   email           : joiMail,
   password        : joiPassword
@@ -37,6 +49,7 @@ user.profile = {
   roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
     { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
   ),
+  avatar : Joi.string().label('Avatar'),
   local : {
     password: joiPassword.optional().allow('')
   }

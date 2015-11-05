@@ -8,6 +8,8 @@ var bodyParser        = require('body-parser');
 var session           = require('express-session');
 var expressListRoutes = require('express-list-routes');
 var timers            = require('timers');
+var CronJob           = require('cron').CronJob;
+var findRemove        = require('find-remove');
 
 // configuration ==============================================================
 var app               = express();
@@ -23,14 +25,30 @@ var startServer = function(done) {
 
   require('./config/passport')(passport); // pass passport for configuration
 
+  var deleteFiles = function() {
+    // Delete all files older than one day
+    var s = 24 * 60 * 60;
+    var result = findRemove('tmp/', {age: {seconds: s}});
+    //console.log('Deleted ' + Object.keys(result).length + ' files from tmp/');
+  };
+
+  // set up our express application
+  if (app.get('env') !== 'test') {
+    // log every request to the console
+    app.use(morgan('dev'));
+
+    // Call one, the server starts
+    deleteFiles();
+
+    // Run as cronjob
+    // Should not be used within the tests, otherwise they neve stop
+    new CronJob('0 0 0 * * *', deleteFiles, null, true, 'Europe/Berlin');
+  }
+
   app.use(ui.asset('/tmp'),     express.static('tmp'));
   app.use(ui.asset('/static'),  express.static('public'));
   app.use(ui.asset('/uploads'), express.static('uploads'));
 
-  // set up our express application
-  if (app.get('env') !== 'test') {
-    app.use(morgan('dev')); // log every request to the console
-  }
   app.use(cookieParser()); // read cookies (needed for auth)
   app.use(bodyParser.json({limit: '10mb'})); // get information from html forms
   app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
