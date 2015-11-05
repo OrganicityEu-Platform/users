@@ -238,7 +238,7 @@ var ScenarioEditView = React.createClass({
       <div className="container oc-create-edit-view">
         <div className="row">
           <form className="form-horizontal">
-            <div className="form-group oc-create-edit-title">
+            <div className="form-group oc-create-edit oc-create-edit-title">
               <label className="control-label col-sm-2" htmlFor="title">Title</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
@@ -246,7 +246,7 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-summary">
+            <div className="form-group oc-create-edit oc-create-edit-summary">
               <label className="control-label col-sm-2" htmlFor="summary">Summary</label>
               <div className="col-sm-10">
                 <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
@@ -254,7 +254,7 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-narrative">
+            <div className="form-group oc-create-edit oc-create-edit-narrative">
               <label className="control-label col-sm-2" htmlFor="narrative">Narrative</label>
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
@@ -262,25 +262,25 @@ var ScenarioEditView = React.createClass({
                 <ErrorMessage messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-sectors">
+            <div className="form-group oc-create-edit oc-create-edit-sectors">
               <label className="control-label col-sm-2" htmlFor="sectors">Sectors</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-actors">
+            <div className="form-group oc-create-edit oc-create-edit-actors">
               <label className="control-label col-sm-2" htmlFor="sectors">Actors</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-tools">
+            <div className="form-group oc-create-edit oc-create-edit-tools">
               <label className="control-label col-sm-2" htmlFor="sectors">Tools</label>
               <div className="col-sm-10">
                 <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-image">
+            <div className="form-group oc-create-edit oc-create-edit-image">
               <div className="col-sm-2"></div>
               <div className="col-sm-10">
                 Please upload an image. File type must be JPEG pr PNG with a width of at least width 1140 px<br/>
@@ -296,14 +296,14 @@ var ScenarioEditView = React.createClass({
                   />
               </div>
             </div>
-            <div className="form-group oc-create-edit-image-copyright">
+            <div className="form-group oc-create-edit oc-create-edit-image-copyright">
               <label className="control-label col-sm-2" htmlFor="sectors">Image copyright</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="credit" id="credit" value={this.state.copyright}
                   onChange={this.handleChangedCopyright} />
               </div>
             </div>
-            <div className="form-group oc-create-edit-image-credit">
+            <div className="form-group oc-create-edit oc-create-edit-image-credit">
               <label className="control-label col-sm-2" htmlFor="sectors">Credit</label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="credit" id="credit" value={this.state.credit}

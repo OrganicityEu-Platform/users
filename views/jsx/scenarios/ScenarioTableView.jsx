@@ -4,6 +4,8 @@ import ui         from '../../../ui_routes.js';
 import UserAvatar from '../users/UserAvatar.jsx';
 import Counter    from '../Counter.jsx';
 import Score    from '../Score.jsx';
+import Comments    from '../Comments.jsx';
+import Evaluations    from '../Evaluations.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                  from '../../../api_routes.js';
 
@@ -37,7 +39,7 @@ var ScenarioTableView = React.createClass({
     if (this.props.scenario.credit) {
       credit = (
         <div className="col-md-12">
-          <div className="scenario-ast-wrapper">
+          <div className="scenario-article-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
             <span className="scenario-ast-items">{this.props.scenario.credit}</span><br></br>
           </div>
@@ -63,8 +65,8 @@ var ScenarioTableView = React.createClass({
           <div className="scenario-article-widget">
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
-              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i>29  comments</p>
-              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i> 29  evaluations</p>
+              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
+              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i><Evaluations scope="scenarios" className="scenario-article-evaluations" id={this.props.scenario.uuid} />  evaluations</p>
             </div>
           </div>
 
@@ -128,7 +130,13 @@ var ScenarioTableView = React.createClass({
             {this.props.scenario.narrative}
           </div>
       </div>
-      <ScenarioEvalButton scenario={this.props.scenario}/>
+      <div className="col-md-3"></div>
+      <div className="col-md-2"></div>
+      <div className="col-md-2">
+        <ScenarioEvalButton scenario={this.props.scenario}/>
+      </div>
+      <div className="col-md-2"></div>
+      <div className="col-md-3"></div>
     </div>
     );
   }
