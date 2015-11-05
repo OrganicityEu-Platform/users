@@ -28,7 +28,7 @@ var startServer = function(done) {
   var deleteFiles = function() {
     // Delete all files older than one day
     var s = 24 * 60 * 60;
-    var result = findRemove('tmp/', {age: {seconds: s}});
+    var result = findRemove('tmp/', {age: {seconds: s}, files: '*.*'});
     //console.log('Deleted ' + Object.keys(result).length + ' files from tmp/');
   };
 
@@ -78,6 +78,7 @@ var startServer = function(done) {
   var routes_evaluations   = require('./routes/api/v1/evaluations.js')(router, passport);
   var routes_counter       = require('./routes/api/v1/counter.js')(router, passport);
   var routes_upload        = require('./routes/api/v1/upload.js')(router, passport);
+  var routes_contactUs = require('./routes/api/v1/contact.js')(router);
 
   app.use(routes_scenarios);
   app.use(routes_auth);
@@ -87,6 +88,7 @@ var startServer = function(done) {
   app.use(routes_evaluations);
   app.use(routes_counter);
   app.use(routes_upload);
+  app.use(routes_contactUs);
 
   // serve all (other) requests to single-page-app contained in index.html
   var index = require('./index.js');

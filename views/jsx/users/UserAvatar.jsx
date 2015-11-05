@@ -16,14 +16,17 @@ var UserAvatar = React.createClass({
     };
   },
   componentDidMount: function() {
+
+    if (!this.props.uuid) {
+      this.loaded();
+      return;
+    }
+
     this.loading();
     var url = api.reverse('user_info', { uuid : this.props.uuid });
     $.ajax(url, {
       dataType : 'json',
       error : (jqXHR, textStatus, errorThrown) => {
-        this.state.user = {
-          name : 'Unknown or deleted user'
-        };
         this.setState(this.state);
         this.loaded();
       },
@@ -35,14 +38,20 @@ var UserAvatar = React.createClass({
     });
   },
   render: function() {
+
     if (this.state.loading) {
       return <div>Loading...</div>;
     }
 
-    var userText = this.props.uuid;
-    if (this.state.user.name && this.state.user.name !== '') {
+    var userText = 'Unknown or deleted user';
+    if (this.state.user && this.state.user.name && this.state.user.name !== '') {
       userText = this.state.user.name;
     }
+
+    if (!this.props.uuid) {
+      return (<span><i>{userText}</i></span>);
+    }
+
     return <Link to="userView" params={{ uuid: this.props.uuid }}>{userText}</Link>;
   }
 });
