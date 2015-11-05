@@ -44,8 +44,17 @@ var myContactForm = React.createClass({
     });
   },
 
+  getContactRecord: function() {
+    return {
+      name: this.state.name,
+      address: this.state.address,
+      subject: this.state.subject,
+      body: this.state.body
+    };
+  },
+
   getValidatorData: function() {
-    return this.state;
+    return this.getContactRecord();
   },
 
   validatorTypes: contactUsValidation.form,
@@ -57,7 +66,7 @@ var myContactForm = React.createClass({
     $.ajax(contactUrl, {
       dataType: 'json',
       contentType: 'application/json',
-      data: JSON.stringify(this.state),
+      data: JSON.stringify(this.getContactRecord()),
       method: 'POST',
       success: this.showSuccessMessage,
       error: this.showErrorMessage
