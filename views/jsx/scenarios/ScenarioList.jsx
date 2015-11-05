@@ -103,7 +103,7 @@ var ScenarioList = React.createClass({
   },
   render: function() {
     return (
-      <div className="scenario-list">
+      <div className="scenario-list col-lg-8 col-lg-offset-2">
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>

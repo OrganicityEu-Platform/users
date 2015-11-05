@@ -11,9 +11,9 @@ var HomeViewFooter = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="col-lg-8 col-lg-offset-2">
         <div className="oc-home-view-footer-wrapper">
-          <div className="oc-home-view-footer container">
+          <div className="oc-home-view-footer">
             <div className="oc-home-view-title-wrapper">
               <div className="oc-home-view-title">
                 <h1>Co-creating cities of the future</h1>

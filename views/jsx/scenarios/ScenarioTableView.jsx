@@ -33,6 +33,8 @@ var ScenarioTableView = React.createClass({
     if (sector_colour) {
       article_image_overlay = sector_colour.toLowerCase().concat('_colour scenario-article-image');
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
+    }else {
+      sector_colour_marker = 'scenario-article-marker';
     }
 
     var credit;
@@ -56,9 +58,8 @@ var ScenarioTableView = React.createClass({
       );
     }
 
-
     return (
-      <div>
+      <div className="col-lg-8 col-lg-offset-2">
       <div className="scenario-article">
         <div>
           <div className={sector_colour_marker}><span className="scenario-article-score"><Score scope="scenarios" className="scenario-article-score" id={this.props.scenario.uuid} /></span></div>
@@ -118,18 +119,20 @@ var ScenarioTableView = React.createClass({
             </div>
             {credit}
           </div>
+
+          <div className="scenario-article-narrative-wrapper">
+              <span className="col-md-1">Narrative</span>
+              <div className="scenario-article-narrative col-md-11">
+                {this.props.scenario.narrative}
+              </div>
+          </div>
         </div>
 
         <footer className="scenario-article-footer">
 
         </footer>
       </div>
-      <div className="scenario-article-narrative-wrapper container">
-          <span className="col-md-1">Narrative</span>
-          <div className="scenario-article-narrative col-md-11">
-            {this.props.scenario.narrative}
-          </div>
-      </div>
+
       <div className="col-md-3"></div>
       <div className="col-md-2"></div>
       <div className="col-md-2">

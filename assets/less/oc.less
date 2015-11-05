@@ -1,5 +1,7 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 
+@import "oc_fonts.less";
+
 @import "oc_colors.less";
 @import "oc_sector_colors.less";
 
@@ -20,11 +22,6 @@
 
 // import always last
 @import "oc_desktop.less";
-
-@font-face {
-  font-family: 'Cooper Hewitt Book';
-  src: url('../../static/fonts/CooperHewitt-Book.otf');
-}
 
 body {
   background-color: @oc-grey;
@@ -186,4 +183,13 @@ input[type="submit"] {
 
 .btn-toolbar {
   display: inline-block;
+}
+
+.example-appear {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
 }
