@@ -40,7 +40,7 @@ var ScenarioView = React.createClass({
             <ScenarioDeleteButton scenario={this.state}/>
           </div>
         </div>
-        <div className="row">
+        <div className="col-lg-8 col-lg-offset-2">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread categoryId="3957189" shortname="organicity" identifier={this.state.uuid} title={this.state.title}/>
           </div>

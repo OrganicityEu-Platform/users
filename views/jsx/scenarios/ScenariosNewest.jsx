@@ -47,7 +47,7 @@ var ScenariosNewest = React.createClass({
       return <div>Loading User Scenarios...</div>;
     }
     return (
-      <div className="row scenario-thumbnails">
+      <div className="scenario-thumbnails">
       {
         this.state.scenarios.map((scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario}
           onChange={this.reload}/>)

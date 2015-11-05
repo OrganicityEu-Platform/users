@@ -13,8 +13,8 @@ var HomeViewSection = React.createClass({
   render: function() {
     return (
       <div>
-        <div className="oc-home-view-section-wrapper">
-          <div className="oc-home-view-section container">
+        <div className="oc-home-view-section-wrapper col-lg-8 col-lg-offset-2">
+          <div className="oc-home-view-section">
             <div className="oc-home-view-title-wrapper">
               <h1 className="oc-home-view-title">Latest scenarios</h1>
               <ScenariosNewest limit="8"/>

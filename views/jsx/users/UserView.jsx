@@ -86,7 +86,7 @@ var UserAvatar = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-lg-8 col-lg-offset-2">
           <h2>{userText}</h2>
           <p>
             <img src={image} width="64" height="64"/>
