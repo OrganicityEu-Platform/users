@@ -1,5 +1,6 @@
 
 @import "../oc_colors.less";
+@import "../oc_fonts.less";
 
 .scenario-thumbnails {
  -moz-column-width: 21em;
@@ -57,8 +58,12 @@
   margin-left: 30px;
 }
 
-.scenario-thumbnail-timestamp {
+.scenario-thumbnail-timestamp,
+.scenario-thumbnail-sat-wrapper,
+.scenario-thumbnail-publisher-wrapper {
   color: @oc-meta-grey;
+  font-family: 'Cooper Hewitt Semibold';
+  font-size: 12px;
 }
 
 .scenario-thumbnail-summary {
@@ -85,7 +90,6 @@
   display: block;
   margin-bottom: 15px;
   margin-top: 0px;
-  color: @oc-meta-grey;
 }
 
 .scenario-thumbnail-marker {
@@ -95,4 +99,15 @@
   float: right;
   border-bottom-left-radius: 100%;
   border-top-right-radius: 2px;
+}
+
+.scenario-thumbnail-title {
+  font-family: 'Cooper Hewitt Semibold';
+  font-size: 24px;
+  color: @oc-dark-grey;
+}
+
+.scenario-thumbnail-publisher {
+  font-family: 'Cooper Hewitt Book' !important;
+  color: @oc-magenta;
 }

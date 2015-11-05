@@ -76,6 +76,7 @@ var ScenarioEditView = React.createClass({
     }
 
     if (this.editMode()) {
+
       var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
       $.getJSON(url, (scenario) => {
         if (this.isMounted()) {
@@ -237,6 +238,9 @@ var ScenarioEditView = React.createClass({
     return (
       <div className="container oc-create-edit-view">
         <div className="row">
+          <div className="scenario-create-edit-view-title-wrapper">
+            <h1>{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
+          </div>
           <form className="form-horizontal">
             <div className="form-group oc-create-edit oc-create-edit-title">
               <label className="control-label col-sm-2" htmlFor="title">Title</label>
