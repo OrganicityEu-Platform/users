@@ -102,7 +102,11 @@ var LocalLogin = React.createClass({
                     disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
                     onClick={this.handleSubmit}>Login</button>
           </form>
+          {
+            /*classname="login-help"*/
+          }
           <p className="login-help">Need an account? <Link to="signup" >Signup</Link></p>
+          <p className="login-help"><Link to="forgot-password" >Forgot password?</Link></p>
       </div>
       </div>
     );
