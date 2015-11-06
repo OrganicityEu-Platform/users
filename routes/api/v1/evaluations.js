@@ -64,8 +64,7 @@ module.exports = function(router, passport) {
   var evaluationUpdateFields = ['scenario','submitted','answers','comment'];
   var forbiddenUpdateFields = ['uuid', 'user', 'timestamp'];
 
-  router.post(api.route('evaluations_list'), [isLoggedIn], function(req, res) {
-
+  router.post(api.route('evaluations_list'), function(req, res) {
     if (forbiddenUpdateFields.some(function(field) { return req.body[field]; })) {
       return res
         .status(HttpStatus.BAD_REQUEST)
@@ -80,8 +79,18 @@ module.exports = function(router, passport) {
 
     var evaluation = new Evaluation(req.body);
     evaluation.uuid = uuid.v4();
-    evaluation.user = req.user.uuid;
+    if (req.user === undefined) {
+      evaluation.user = 'Anonymous';
+    } else {
+      evaluation.user = req.user.uuid;
+    }
     evaluation.timestamp = new Date().toISOString();
+
+    if (isEvaluationComplete(evaluation) == false) {
+      return res
+        .status(HttpStatus.PARTIAL_CONTENT)
+        .send('You have to complete all questions of the evaluations.');
+    }
     evaluation.save(function(err) {
       if (err) {
         console.log(err);
@@ -117,7 +126,6 @@ module.exports = function(router, passport) {
           .status(HttpStatus.FORBIDDEN)
           .send('Evaluation was already flagged as submitted, can\'t be changed afterwards.');
       }
-
       evaluationUpdateFields.forEach(function(field) {
         evaluation[field] = req.body[field];
       });
@@ -265,6 +273,35 @@ function processEvaluation(evaluation, tech, structure) {
   }
   return structure;
 }
+
+function isEvaluationComplete(evaluation) {
+  var techTotal = 0;
+  var techAnswers = 0;
+  var noTechTotal = 0;
+  var noTechAnswers = 0;
+  for (var answer = 0; answer < evaluation.answers.length; answer++) {
+    if (evaluation.answers[answer]._doc.question.tech === true) {
+      techTotal++;
+      if (evaluation.answers[answer]._doc.answer &&
+        evaluation.answers[answer]._doc.answer.value !== undefined) {
+        techAnswers++;
+      }
+    } else {
+      noTechTotal++;
+      if (evaluation.answers[answer]._doc.answer &&
+        evaluation.answers[answer]._doc.answer.value !== undefined) {
+        noTechAnswers++;
+      }
+    }
+  }
+  if (techTotal === techAnswers) { //pure tech evaluation
+    return true;
+  } else if (noTechTotal === noTechAnswers) { //pure non-tech evaluation
+    return true;
+  }
+  return false;
+}
+
 function getQuestionAnserUUID(question, answerValue) {
   for (var v in question.values) {
     if (question.values[v].value === answerValue) {
