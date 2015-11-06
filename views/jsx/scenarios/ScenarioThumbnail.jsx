@@ -5,7 +5,7 @@ import ui         from '../../../ui_routes.js';
 import React      from 'react';
 import UserAvatar from '../users/UserAvatar.jsx';
 import ellipsis   from '../../../util/ellipsis.js';
-
+import Score    from '../Score.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -42,7 +42,7 @@ var ScenarioThumbnail = React.createClass({
           className="well scenario-thumbnail"
           onClick={this.clickHandler}>
           <div>
-            <div className={sector_colour_marker}><span className="scenario-thumbnail-marker-score">29</span></div>
+            <div className={sector_colour_marker}><span className="scenario-thumbnail-marker-score"><Score scope="scenarios" className="scenario-article-score-thumbnail" id={this.props.scenario.uuid} /></span></div>
           </div>
             <header className="scenario-thumbnail-header">
               <span>
