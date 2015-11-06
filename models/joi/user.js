@@ -41,6 +41,33 @@ user.emailAndPasswordServer = {
   body: user.emailAndPassword
 };
 
+user.forgotPassword = {
+  email: joiMail
+};
+
+user.forgotPasswordServer = {
+  options : {
+    allowUnknownBody: false
+  },
+  body: user.forgotPassword
+};
+
+user.updatePassword = {
+  id              : Joi.string(),
+  password        : joiPassword,
+  password_repeat : joiPasswordRepeat
+};
+
+user.updatePasswordServer = {
+  options : {
+    allowUnknownBody: false
+  },
+  body: {
+    id              : Joi.string(),
+    password        : joiPassword,
+  }
+};
+
 user.profile = {
   name   : Joi.string().label('Name'),
   gender : Joi.string().valid('m', 'f').label('Gender').options(

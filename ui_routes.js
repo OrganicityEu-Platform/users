@@ -24,6 +24,7 @@ var ui_routes = {
   'logout'                 : '/auth/logout/?',
   'local-login'            : '/auth/local-login/?',
   'signup'                 : '/auth/signup/?',
+  'forgot-password'        : '/auth/forgot-password/?',
 
   // Admin routes
   'sysinfo'                : '/sysinfo/?',

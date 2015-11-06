@@ -44,6 +44,7 @@ var Signup = React.createClass({
   handleSubmit : function(evt) {
     evt.preventDefault();
     if (this.props.isValid()) {
+      this.loading();
       var url = api.reverse('signup');
       $.ajax(url, {
         error: (xhr, textStatus, errorThrown) => {

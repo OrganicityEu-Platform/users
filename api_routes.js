@@ -54,6 +54,8 @@ var api_routes = {
   'disconnect_google'          : prefixes.users + '/:uuid/unlink/google?',
   'disconnect_github'          : prefixes.users + '/:uuid/unlink/github?',
   'disconnect_disqus'          : prefixes.users + '/:uuid/unlink/disqus?',
+  'forgot-password'            : prefixes.users + '/forgot-password',
+  'update-password'            : prefixes.users + '/update-password',
 
   //
   'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',

@@ -1,21 +1,27 @@
 import React                 from 'react';
 import Scaffold              from './Scaffold.jsx';
 import HomeView              from './HomeView.jsx';
+import SysInfo               from './SysInfo.jsx';
+import ContactUs             from './ContactUs.jsx';
+
 import ScenarioList          from './scenarios/ScenarioList.jsx';
 import ScenarioEditView      from './scenarios/ScenarioEditView.jsx';
 import ScenarioView          from './scenarios/ScenarioView.jsx';
-import UserView              from './users/UserView.jsx';
 import ScenarioEvalView      from './scenarios/ScenarioEvalView.jsx';
+
+import UserView              from './users/UserView.jsx';
+
 import Login                 from './auth/Login.jsx';
 import Logout                from './auth/Logout.jsx';
+import ForgotPassword        from './auth/ForgotPassword.jsx';
 import LocalLogin            from './auth/LocalLogin.jsx';
 import Signup                from './auth/Signup.jsx';
 import Profile               from './auth/Profile.jsx';
-import SysInfo               from './SysInfo.jsx';
 import UserListView          from './auth/UserListView.jsx';
 import UserEditView          from './auth/UserEditView.jsx';
+
 import QuestionnaireEditView from './admin/QuestionnaireEditView.jsx';
-import ContactUs from './ContactUs.jsx';
+
 import ui                    from '../../ui_routes.js';
 
 var Router = require('react-router');
@@ -39,7 +45,8 @@ var routes = (
     <Route name="admin_userList"      path={ui.route('admin_userList')}      handler={UserListView}          />
     <Route name="admin_userEdit"      path={ui.route('admin_userEdit')}      handler={UserEditView}          />
     <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />
-    <Route name="contactUs" path={ui.route('contactUs')} handler={ContactUs} />
+    <Route name="forgot-password"     path={ui.route('forgot-password')}     handler={ForgotPassword} />
+    <Route name="contactUs"           path={ui.route('contactUs')}           handler={ContactUs} />
   </Route>
 );
 

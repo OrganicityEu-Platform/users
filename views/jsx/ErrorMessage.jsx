@@ -6,25 +6,56 @@ import React from 'react';
  * <ErrorMessage messages={[]} />
  */
 var ErrorMessage = React.createClass({
+  getInitialState() {
+    return {
+      type: 'danger'
+    };
+  },
+  componentDidMount() {
+    var allowedTypes = ['success', 'info', 'warning', 'danger'];
+    if (allowedTypes.some((t) => t === this.props.type)) {
+      this.setState({
+        type: this.props.type
+      });
+    }
+  },
   render: function() {
 
-    if (!this.props.messages || this.props.messages.length === 0) {
+    if (!this.props.message && !this.props.messages) {
       return null;
     }
 
-    if(typeof this.props.messages === 'string') {
+    if (this.props.message) {
       return (
-         <div>{this.renderHelpText(this.props.messages)}</div>
-      )
+         <div>{this.renderDiv(this.props.message)}</div>
+      );
     }
 
-    return (
-      <div>{this.props.messages.map(this.renderHelpText)}</div>
-    );
+    if (this.props.messages) {
+
+      // Workaround:
+      // FIXME: https://github.com/jurassix/react-validation-mixin/issues/56
+      if (typeof(this.props.messages) === 'string') {
+        return (
+           <div>{this.renderDiv(this.props.messages)}</div>
+        );
+      }
+
+      return (
+        <div>{this.props.messages.map(this.renderDiv)}</div>
+      );
+    }
+
+    return null;
+
   },
-  renderHelpText: function(message) {
+  renderDiv: function(message) {
+
+    console.log('Render Message', message);
+
+    var classes = ['alert', 'alert-' + this.state.type];
     return (
-      <div className="alert alert-danger">{message}</div>
+      <div className={classes.join(' ')}>{message}</div>
     );
   }
 });

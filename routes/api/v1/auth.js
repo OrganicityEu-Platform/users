@@ -1,8 +1,8 @@
 var api        = require('../../../api_routes.js');
 var ui         = require('../../../ui_routes.js');
+var UserJoi    = require('../../../models/joi/user.js');
 
 var validate   = require('express-validation');
-var UserJoi    = require('../../../models/joi/user.js');
 
 module.exports = function(router, passport) {
 
@@ -58,7 +58,9 @@ module.exports = function(router, passport) {
           });
         });
       })(req, res, next);
-    });
+    }
+  );
+
   // process the signup form
   router.post(api.route('signup'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
       passport.authenticate('local-signup', function(err, user, info) {

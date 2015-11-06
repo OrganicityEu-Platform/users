@@ -1,5 +1,8 @@
+var config            = require('../../../config/config.js');
+
 var User          = require('../../../models/schema/user.js');
 var api           = require('../../../api_routes.js');
+var ui            = require('../../../ui_routes.js');
 var unirest       = require('unirest');
 var RestClient    = require('node-rest-client').Client;
 var HttpStatus    = require('http-status');
@@ -10,6 +13,9 @@ var UserJoi       = require('../../../models/joi/user.js');
 var hasRole       = require('../../../models/hasRole.js');
 var gravatar      = require('gravatar');
 var configAuth    = require('../../../config/auth.js');
+
+var uuid          = require('node-uuid');
+var mailer        = require('nodemailer');
 
 module.exports = function(router, passport) {
 
@@ -162,7 +168,7 @@ module.exports = function(router, passport) {
 
         handleUpload(req.body.avatar, next, function(path) {
 
-          if (req.body.local && req.body.local.password && req.body.local.password.length > 0) {
+          if (req.body.local && req.body.local.password) {
             user.local.password = user.generateHash(req.body.local.password);
           }
 
@@ -220,6 +226,118 @@ module.exports = function(router, passport) {
       }
     });
   });
+
+  //
+
+  router.post(
+    api.route('forgot-password'),
+    [validate(UserJoi.forgotPasswordServer)],
+    function(req, res, next) {
+
+      User.findOne({'local.email': req.body.email}, function(err, user) {
+
+        if (err) {
+          return next(err);
+        }
+
+        if (!user) {
+          console.error('Mail ' + req.body.email + ' does not exists');
+          return res.status(200).json({});
+        } else {
+
+          var id = uuid.v4();
+
+          user.local.passwordReset = {
+            id: id,
+            timestamp : Date.now()
+          };
+          user.save(function(err) {
+
+            // Generate URL
+            var url;
+            if (config.host_external && config.port_external) {
+              url = config.host_external + ':' + config.port_external;
+            } else {
+              url = config.host + ':' + config.port;
+            }
+
+            url += ui.reverse('forgot-password') + '?id=' + id;
+
+            // Send mail
+            var mail = {
+              'from': 'OrganiCity Scenarios <info@organicity.eu>',
+              'to': req.body.email,
+              'subject': 'New password for OrganiCity Scenarios',
+              'text': 'Hello,' +
+                '\n\n' +
+                'please open the following link to reset your password:' +
+                '\n\n' +
+                url +
+                '\n\n' +
+                'Your OrganiCity Team'
+            };
+
+            console.log('Sending Mail: ' + JSON.stringify(mail));
+
+            var transporter = mailer.createTransport();
+            transporter.sendMail(mail, function(error, info) {
+              if (error) {
+                console.log('Failure while sending mail: ' + error + '(' + info.response + ')');
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'Maling error'});
+              } else {
+                console.log('Message sent: ' + info.response);
+                return res.status(HttpStatus.OK).json({});
+              }
+            });
+          });
+        }
+      });
+    }
+  );
+
+  router.post(
+    api.route('update-password'),
+    [validate(UserJoi.updatePasswordServer)],
+    function(req, res, next) {
+
+      console.log(req.body);
+
+      User.findOne({'local.passwordReset.id': req.body.id}, function(err, user) {
+
+        if (err) {
+          return next(err);
+        }
+
+        if (!user) {
+          console.error('Password reset ID ' + req.body.id + ' does not exists');
+          var err = 'Password reset ID ' + req.body.id + ' does not exists or is not valid anymore';
+          return res.status(400).json({error: err});
+        } else {
+
+          var difference = Date.now() - user.local.passwordReset.timestamp;
+          var secondsDifference = Math.floor(difference / 1000);
+          console.log('DIFF:', secondsDifference);
+
+          // Code is
+          var seconds = 60 * 60 * 24;
+          if (secondsDifference < seconds) {
+            console.log('Password reset ID ' + req.body.id + ' found');
+
+            user.local.passwordReset = undefined;
+            user.local.password = user.generateHash(req.body.password);
+
+            user.save(function(err) {
+              return res.status(200).json({});
+            });
+          } else {
+            console.error('Password reset ID ' + req.body.id + ' is not valid anymore');
+            var err = 'Password reset ID ' + req.body.id + ' does not exists or is not valid anymore';
+            return res.status(400).json({error: err});
+          }
+        }
+      });
+    }
+  );
 
   // =============================================================================
   // UNLINK ACCOUNTS =============================================================

@@ -9,7 +9,11 @@ var user = mongoose.Schema({
   avatar : String,
   local            : {
     email        : String,
-    password     : String
+    password     : String,
+    passwordReset : {
+      id : String,
+      timestamp : Date
+    }
   },
   facebook         : {
     id           : String,
