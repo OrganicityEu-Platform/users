@@ -38,15 +38,6 @@ var Message = React.createClass({
     }
 
     if (this.props.messages) {
-
-      // Workaround:
-      // FIXME: https://github.com/jurassix/react-validation-mixin/issues/56
-      if (typeof(this.props.messages) === 'string') {
-        return (
-           <div>{this.renderDiv(this.props.messages)}</div>
-        );
-      }
-
       return (
         <div>{this.props.messages.map(this.renderDiv)}</div>
       );
@@ -56,9 +47,6 @@ var Message = React.createClass({
 
   },
   renderDiv: function(message) {
-
-    console.log('Render Message', message);
-
     var classes = ['alert', 'alert-' + this.state.type];
     return (
       <div className={classes.join(' ')}>{message}</div>
