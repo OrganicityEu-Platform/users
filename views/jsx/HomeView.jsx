@@ -4,7 +4,6 @@ import { Nav, Navbar, Accordion, Panel } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import FlashQueue from './FlashQueue.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
-import LoginModal from './LoginModal.jsx';
 import SignupModal from './SignupModal.jsx';
 import HomeViewHeader from './HomeViewHeader.jsx';
 import HomeViewSection from './HomeViewSection.jsx';

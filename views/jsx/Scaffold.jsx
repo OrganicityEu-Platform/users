@@ -11,8 +11,6 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
-
-import LocalLogin from './auth/LocalLogin.jsx';
 import Signup from './auth/Signup.jsx';
 
 var Router = require('react-router');
@@ -58,13 +56,13 @@ var Scaffold = React.createClass({
   render : function() {
 
     var router;
-    if(this.state.initialAjax) {
+    if (this.state.initialAjax) {
       router = (<RouteHandler
         onLogin={this.onLogin}
         onLogout={this.onLogout}
         currentUser={this.state.currentUser} />);
     } else {
-      console.log("Render initial scaffold");
+      console.log('Render initial scaffold');
     }
 
     var linksLeft = [];
@@ -105,8 +103,8 @@ var Scaffold = React.createClass({
     } else {
       linksRight.push(
         <NavItemLink
-          key="local-login"
-          to="local-login"
+          key="login"
+          to="login"
           className="nav-login-btn">login</NavItemLink>
       );
       linksRight.push(

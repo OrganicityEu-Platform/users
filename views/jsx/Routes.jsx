@@ -11,10 +11,9 @@ import ScenarioEvalView      from './scenarios/ScenarioEvalView.jsx';
 
 import UserView              from './users/UserView.jsx';
 
-import Login                 from './auth/Login.jsx';
 import Logout                from './auth/Logout.jsx';
 import ForgotPassword        from './auth/ForgotPassword.jsx';
-import LocalLogin            from './auth/LocalLogin.jsx';
+import Login                 from './auth/Login.jsx';
 import Signup                from './auth/Signup.jsx';
 import Profile               from './auth/Profile.jsx';
 import UserListView          from './auth/UserListView.jsx';
@@ -37,7 +36,6 @@ var routes = (
     <Route name="userView"            path={ui.route('userView')}            handler={UserView}              />
     <Route name="scenarioEvalView"    path={ui.route('scenarioEvalView')}    handler={ScenarioEvalView}      />
     <Route name="login"               path={ui.route('login')}               handler={Login}                 />
-    <Route name="local-login"         path={ui.route('local-login')}         handler={LocalLogin}            />
     <Route name="signup"              path={ui.route('signup')}              handler={Signup}                />
     <Route name="profile"             path={ui.route('profile')}             handler={Profile}               />
     <Route name="logout"              path={ui.route('logout')}              handler={Logout}                />
