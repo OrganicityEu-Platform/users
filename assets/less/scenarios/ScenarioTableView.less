@@ -3,6 +3,11 @@
 @import "../oc_colors.less";
 @import "../oc_buttons.less";
 
+.scenario-article-header {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .scenario-article-score {
   font-weight: bold;
   color: @oc-white;
@@ -83,17 +88,21 @@
 
 .scenario-article {
   background-color: @oc-white;
-  padding-bottom: 25px;
 }
 
 .scenario-article-narrative {
-  padding-bottom: 25px;
   font-size: 17px;
   color: #444;
 }
 
 .scenario-article-narrative-wrapper {
   padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+  background-color: @oc-white;
+  display: inline-block;
 }
 
 .scenario-article-header-meta {
@@ -105,9 +114,6 @@
   color: @oc-meta-grey;
 }
 
-.scenario-article-publisher, .scenario-article-badge {
-  margin-right: 55px;
-}
 .scenario-article-publisher {
   margin-left: 10px;
 }
@@ -135,4 +141,13 @@
 .scenario-article-publisher,
 .scenario-article-timestamp {
   color: @oc-meta-grey;
+}
+
+.scenario-article-timestamp { margin-left: 40px;}
+
+.scenario-article-meta {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 25px;
+  padding-bottom: 35px;
 }

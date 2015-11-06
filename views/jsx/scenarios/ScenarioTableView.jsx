@@ -73,7 +73,7 @@ var ScenarioTableView = React.createClass({
 
         </div>
 
-        <header className="container">
+        <header className="scenario-article-header">
           <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
           <div>
             <span className="scenario-article-publisher">
@@ -120,17 +120,18 @@ var ScenarioTableView = React.createClass({
             {credit}
           </div>
 
-          <div className="scenario-article-narrative-wrapper">
-              <span className="col-md-1">Narrative</span>
-              <div className="scenario-article-narrative col-md-11">
-                {this.props.scenario.narrative}
-              </div>
-          </div>
+
         </div>
 
         <footer className="scenario-article-footer">
 
         </footer>
+      </div>
+      <div className="scenario-article-narrative-wrapper">
+          <span className="col-md-1">Narrative</span>
+          <div className="scenario-article-narrative col-md-11">
+            {this.props.scenario.narrative}
+          </div>
       </div>
 
       <div className="col-md-3"></div>
