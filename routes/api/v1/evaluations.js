@@ -86,7 +86,7 @@ module.exports = function(router, passport) {
     }
     evaluation.timestamp = new Date().toISOString();
 
-    if (isEvaluationComplete(evaluation) == false) {
+    if (isEvaluationComplete(evaluation) === false) {
       return res
         .status(HttpStatus.PARTIAL_CONTENT)
         .send('You have to complete all questions of the evaluations.');
@@ -96,6 +96,7 @@ module.exports = function(router, passport) {
         console.log(err);
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
+      calculateScore(evaluation.uuid);
       Evaluation.findOne({ uuid : evaluation.uuid }, function(err, retrieved) {
         if (err) {
           console.log(err);
@@ -203,12 +204,48 @@ module.exports = function(router, passport) {
  * ########################################################################################
  * HELPER FUNCTIONS
  * ########################################################################################
-
 /**
  * checks if json is empty
  * @param evaluation
  * @returns {integer}
  */
+function calculateScore(uuid) {
+  if (uuid === undefined) {
+    return -1.0;
+  }
+  var scenarioUuid = uuid;
+  var filter = {};
+  if (scenarioUuid) {
+    filter['scenario.uuid'] = scenarioUuid;
+  }
+  var query = Evaluation.find(filter);
+  query.exec(function(err, evaluations) {
+    if (err) {
+      console.log(err);
+      return -1.0;
+    }
+    var score = processEvaluations(evaluations);
+    Scenario.find({ uuid : scenarioUuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
+      if (err) {
+        console.log(err);
+        return -1.0;
+      }
+      if (!scenarios || scenarios.length === 0) {
+        return -1.0;
+      }
+      scenarios[0].score = score;
+      scenarios[0].save(function(err) {
+        if (err) {
+          console.log(err);
+          return -1.0;
+        }
+        return;
+      });
+    });
+    return score;
+  });
+}
+
 function processEvaluations(evaluations) {
   var techScoreStructure = {};
   var nonTechScoreStructure = {};
