@@ -8,7 +8,7 @@ import ScenarioEditButton   from './ScenarioEditButton.jsx';
 import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import api                  from '../../../api_routes.js';
-import ErrorMessage         from '../ErrorMessage.jsx';
+import Message              from '../Message.jsx';
 
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation],
@@ -44,7 +44,7 @@ var ScenarioView = React.createClass({
 
     if (this.state.error) {
       var message = (this.state.error.status + ': ' + this.state.error.statusText);
-      return (<ErrorMessage messages={message} />);
+      return (<Message type="danger" message={message} />);
     }
 
     return (

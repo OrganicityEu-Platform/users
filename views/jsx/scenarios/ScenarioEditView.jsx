@@ -11,7 +11,7 @@ import ScenarioTableView from './ScenarioTableView.jsx';
 import validation        from 'react-validation-mixin';
 import strategy          from 'joi-validation-strategy';
 import ScenarioJoi       from '../../../models/joi/scenario.js';
-import ErrorMessage      from '../ErrorMessage.jsx';
+import Message      from '../Message.jsx';
 
 // Mixins
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
@@ -247,7 +247,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
-                <ErrorMessage messages={this.props.getValidationMessages('title')} />
+                <Message type="danger" messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
@@ -255,7 +255,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
-                <ErrorMessage messages={this.props.getValidationMessages('summary')} />
+                <Message type="danger" messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
@@ -263,7 +263,7 @@ var ScenarioEditView = React.createClass({
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
-                <ErrorMessage messages={this.props.getValidationMessages('narrative')} />
+                <Message type="danger" messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-sectors">
@@ -341,7 +341,7 @@ var ScenarioEditView = React.createClass({
           fringilla.
         </p>
         <ScenarioTableView scenario={this.state} />
-        <ErrorMessage messages={this.props.getValidationMessages()} />
+        <Message type="danger" messages={this.props.getValidationMessages()} />
         <p>
           <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Edit</button>
           <button type="button" className="btn btn-default" onClick={this.clickedSubmit}>Submit</button>

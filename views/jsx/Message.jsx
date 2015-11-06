@@ -1,11 +1,17 @@
 import React from 'react';
 
 /*
- * Prints an array of Messages as errors
+ * Prints messages.
  *
- * <ErrorMessage messages={[]} />
+ * Args:
+ * - message:  Prints a single message
+ * - messages: prints an array of messages
+ * - type: ['success', 'info', 'warning', 'danger']
+ *
+ * <Message message="..." />
+ * <essage messages={[]} />
  */
-var ErrorMessage = React.createClass({
+var Message = React.createClass({
   getInitialState() {
     return {
       type: 'danger'
@@ -60,4 +66,4 @@ var ErrorMessage = React.createClass({
   }
 });
 
-export default ErrorMessage;
+export default Message;

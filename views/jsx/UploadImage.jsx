@@ -2,7 +2,7 @@ import $            from 'jquery';
 import React        from 'react';
 import FlashQueue   from './FlashQueue.jsx';
 import api          from '../../api_routes.js';
-import ErrorMessage from './ErrorMessage.jsx';
+import Message      from './Message.jsx';
 import ui           from '../../ui_routes.js';
 
 import validation   from 'react-validation-mixin';
@@ -146,10 +146,10 @@ var UploadImage = React.createClass({
       <div>
         {inputFile}
         <div>{thumbnail}</div>
-        <ErrorMessage messages={this.props.getValidationMessages('type')} />
-        <ErrorMessage messages={this.props.getValidationMessages('width')} />
-        <ErrorMessage messages={this.props.getValidationMessages('height')} />
-        <ErrorMessage messages={this.props.getValidationMessages('size')} />
+        <Message type="danger" messages={this.props.getValidationMessages('type')} />
+        <Message type="danger" messages={this.props.getValidationMessages('width')} />
+        <Message type="danger" messages={this.props.getValidationMessages('height')} />
+        <Message type="danger" messages={this.props.getValidationMessages('size')} />
       </div>
     );
 

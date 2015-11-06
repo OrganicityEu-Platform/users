@@ -17,7 +17,7 @@ var Link = Router.Link;
 import validation       from 'react-validation-mixin';
 import strategy         from 'joi-validation-strategy';
 import UserJoi          from '../../../models/joi/user.js';
-import ErrorMessage     from '../ErrorMessage.jsx';
+import Message          from '../Message.jsx';
 
 import ScenariosNewest  from '../scenarios/ScenariosNewest.jsx';
 
@@ -204,7 +204,7 @@ var Profile = React.createClass({
                 name="password"
                 disabled={this.isLoading() ? 'disabled' : ''}
                 onChange={this.handleChangedPassword} />
-              <ErrorMessage messages={this.props.getValidationMessages('local.password')} />
+              <Message type="danger" messages={this.props.getValidationMessages('local.password')} />
             </div>
           </div>
           <div className="form-group">
@@ -215,7 +215,7 @@ var Profile = React.createClass({
                 name="password_repeat"
                 disabled={this.isLoading() ? 'disabled' : ''}
                 onChange={this.handleChangedPasswordRepeat} />
-              <ErrorMessage messages={this.props.getValidationMessages('local.password_repeat')} />
+              <Message type="danger" messages={this.props.getValidationMessages('local.password_repeat')} />
             </div>
           </div>
         </div>
@@ -234,7 +234,7 @@ var Profile = React.createClass({
                         placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
                         value={this.state.profile.name}
                         onChange={this.handleChangedName} />
-                <ErrorMessage messages={this.props.getValidationMessages('name')} />
+                <Message type="danger" messages={this.props.getValidationMessages('name')} />
               </div>
             </div>
 
@@ -268,7 +268,7 @@ var Profile = React.createClass({
                   disabled={this.isLoading() ? 'disabled' : ''}
                   checked={this.state.profile.gender === 'm'}
                   onChange={this.handleChangedGender} /> Male
-                <ErrorMessage messages={this.props.getValidationMessages('gender')} />
+                <Message type="danger" messages={this.props.getValidationMessages('gender')} />
               </div>
             </div>
 
@@ -281,7 +281,7 @@ var Profile = React.createClass({
                   tags={this.state.profile.roles}
                   loading={this.isLoading()}
                   onChange={this.handleChangedRoles} />
-                <ErrorMessage messages={this.props.getValidationMessages('roles')} />
+                <Message type="danger" messages={this.props.getValidationMessages('roles')} />
               </div>
             </div>
 

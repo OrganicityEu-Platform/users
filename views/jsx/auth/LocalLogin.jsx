@@ -11,7 +11,7 @@ import Login               from './Login.jsx';
 import validation   from 'react-validation-mixin';
 import strategy     from 'joi-validation-strategy';
 import UserJoi      from '../../../models/joi/user.js';
-import ErrorMessage from '../ErrorMessage.jsx';
+import Message      from '../Message.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -64,7 +64,7 @@ var LocalLogin = React.createClass({
 
     var errorMessage;
     if (this.state.error) {
-      errorMessage = (<ErrorMessage messages={this.state.error} />);
+      errorMessage = (<Message type="danger" messages={this.state.error} />);
     }
 
     return (
@@ -85,7 +85,7 @@ var LocalLogin = React.createClass({
                   value={this.state.email}
                   onChange={this.handleChangedEmail} />
             </div>
-            <ErrorMessage messages={this.props.getValidationMessages('email')} />
+            <Message type="danger" messages={this.props.getValidationMessages('email')} />
             <div className="form-group">
                 <input type="password"
                   className="form-control oc-login-password"
@@ -96,7 +96,7 @@ var LocalLogin = React.createClass({
                   value={this.state.password}
                   onChange={this.handleChangedPassword} />
             </div>
-            <ErrorMessage messages={this.props.getValidationMessages('password')} />
+            <Message type="danger" messages={this.props.getValidationMessages('password')} />
             <button type="submit"
                     className="login-btn"
                     disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}

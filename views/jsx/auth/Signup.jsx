@@ -10,7 +10,7 @@ import Login               from './Login.jsx';
 import validation   from 'react-validation-mixin';
 import strategy     from 'joi-validation-strategy';
 import UserJoi      from '../../../models/joi/user.js';
-import ErrorMessage from '../ErrorMessage.jsx';
+import Message      from '../Message.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -74,7 +74,7 @@ var Signup = React.createClass({
 
     var errorMessage;
     if (this.state.error) {
-      errorMessage = (<ErrorMessage messages={this.state.error} />);
+      errorMessage = (<Message type="danger" messages={this.state.error} />);
     }
 
     return (
@@ -93,7 +93,7 @@ var Signup = React.createClass({
                     value={this.state.email}
                     disabled={this.isLoading() ? 'disabled' : ''}
                     onChange={this.handleChangedEmail} />
-                  <ErrorMessage messages={this.props.getValidationMessages('email')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('email')} />
               </div>
               <div className="form-group">
                   <input type="password"
@@ -103,7 +103,7 @@ var Signup = React.createClass({
                     value={this.state.password}
                     disabled={this.isLoading() ? 'disabled' : ''}
                     onChange={this.handleChangedPassword} />
-                  <ErrorMessage messages={this.props.getValidationMessages('password')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('password')} />
               </div>
               <div className="form-group">
                   <input type="password"
@@ -113,7 +113,7 @@ var Signup = React.createClass({
                     disabled={this.isLoading() ? 'disabled' : ''}
                     value={this.state.password_repeat}
                     onChange={this.handleChangedPasswordRepeat} />
-                  <ErrorMessage messages={this.props.getValidationMessages('password_repeat')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
               </div>
               <button type="submit"
                 className="signup-btn"

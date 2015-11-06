@@ -8,7 +8,7 @@ import ui                 from '../../../ui_routes.js';
 import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
 import Counter            from '../Counter.jsx';
 import ScenariosNewest    from '../scenarios/ScenariosNewest.jsx';
-import ErrorMessage       from '../ErrorMessage.jsx';
+import Message            from '../Message.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -33,7 +33,7 @@ var UserAvatar = React.createClass({
       },
       success : (user) => {
         this.state.user = user;
-        this.setState(this.state);
+        this.loaded(this.state);
       }
     });
   },
@@ -45,7 +45,7 @@ var UserAvatar = React.createClass({
 
     if (this.state.error) {
       var message = (this.state.error.status + ': ' + this.state.error.statusText);
-      return (<ErrorMessage messages={message} />);
+      return (<Message message={message} type="danger"/>);
     }
 
     var userText = this.props.params.uuid;

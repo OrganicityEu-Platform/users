@@ -3,7 +3,7 @@ import React from 'react';
 import { Accordion, Panel } from 'react-bootstrap';
 import api from '../../api_routes.js';
 import { Router, Link } from 'react-router';
-import ErrorMessage from './ErrorMessage.jsx';
+import Message from './Message.jsx';
 import Joi from 'joi';
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
@@ -91,6 +91,7 @@ var myContactForm = React.createClass({
 
 
   render: function() {
+    // TODO: Use <Message message={...} type="success" />
     var successMessage = this.state && this.state.successful
         ? (
             <div className="col-sm-12">
@@ -102,7 +103,7 @@ var myContactForm = React.createClass({
         : null;
 
     var errorMessage = this.state && this.state.error
-        ? <ErrorMessage messages={this.state.error} />
+        ? <Message messages={this.state.error} type="danger" />
         : null;
 
     var canSubmit = this.props.isValid()
@@ -165,8 +166,7 @@ var myContactForm = React.createClass({
                 <div className="col-sm-8">
                   <input type="text" className="form-control" name="name"
                     id="name" onChange={this.nameChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('name')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('name')} />
                 </div>
               </div>
 
@@ -178,8 +178,7 @@ var myContactForm = React.createClass({
                 <div className="col-sm-8">
                   <input type="text" className="form-control" name="address"
                     id="address" onChange={this.addressChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('address')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('address')} />
                 </div>
               </div>
 
@@ -191,8 +190,7 @@ var myContactForm = React.createClass({
                 <div className="col-sm-8">
                   <input type="text" className="form-control" name="subject"
                     id="subject" onChange={this.subjectChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('subject')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('subject')} />
                 </div>
               </div>
 
@@ -204,8 +202,7 @@ var myContactForm = React.createClass({
                 <div className="col-sm-8">
                   <textarea className="form-control" name="body" id="body"
                     onChange={this.bodyChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('body')} />
+                  <Message type="danger" messages={this.props.getValidationMessages('body')} />
                 </div>
               </div>
 
