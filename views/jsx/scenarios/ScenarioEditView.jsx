@@ -43,6 +43,7 @@ var ScenarioEditView = React.createClass({
     if (window.sessionStorage && window.sessionStorage.getItem(this.storageKey()) != null) {
       var o = JSON.parse(window.sessionStorage.getItem(this.storageKey()));
       o.creator = window.currentUser.uuid;
+      o.btnClickedOnce = false;
       return o;
     }
     // if we're not in the editing process already and not editing, creating a new one
@@ -60,7 +61,8 @@ var ScenarioEditView = React.createClass({
       thumbnail : undefined,  // Here, the path will be stored
       image : undefined,      // Here, the path will be stored
       credit : undefined,
-      copyright : undefined
+      copyright : undefined,
+      btnClickedOnce : false
     };
   },
   componentDidMount() {
@@ -99,41 +101,79 @@ var ScenarioEditView = React.createClass({
     return parseInt(this.props.query.step);
   },
   handleChangedTitle : function(evt) {
-    this.setState({title: evt.target.value});
+    this.setState({title: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        console.log('this', this);
+        this.props.validate();
+      }
+    });
   },
   handleChangedSummary : function(evt) {
-    this.setState({summary: evt.target.value});
+    this.setState({summary: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedNarrative : function(evt) {
-    this.setState({narrative: evt.target.value});
+    this.setState({narrative: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedSectors : function(sectors) {
-    this.setState({sectors: sectors});
+    this.setState({sectors: sectors}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedActors : function(actors) {
-    this.setState({actors: actors});
+    this.setState({actors: actors}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedDevices : function(devices) {
-    this.setState({devices: devices});
+    this.setState({devices: devices}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedCredit : function(evt) {
     if (evt.target.value === '') {
       this.setState({credit: undefined});
     } else {
-      this.setState({credit: evt.target.value});
+      this.setState({credit: evt.target.value}, () => {
+        if (this.state.btnClickedOnce) {
+          this.props.validate();
+        }
+      });
     }
   },
   handleChangedCopyright : function(evt) {
     if (evt.target.value === '') {
       this.setState({copyright: undefined});
     } else {
-      this.setState({copyright: evt.target.value});
+      this.setState({copyright: evt.target.value}, () => {
+        if (this.state.btnClickedOnce) {
+          this.props.validate();
+        }
+      });
     }
   },
   onThumbnail : function(data) {
     this.setState(data);
   },
   clickedPrevious : function() {
+
+    this.setState({
+      btnClickedOnce: false
+    });
+
     if (this.currentStep() - 1 < this.firstStep) {
       console.log('User tried to go beyond first step. This is not possible!');
       return;
@@ -142,6 +182,10 @@ var ScenarioEditView = React.createClass({
     this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() - 1 });
   },
   clickedPreview : function() {
+
+    this.setState({
+      btnClickedOnce: true
+    });
 
     if (this.currentStep() + 1 > this.getSteps().length) {
       console.log('User tried to go beyond last step. This is not possible!');
@@ -353,7 +397,6 @@ var ScenarioEditView = React.createClass({
   },
   render: function() {
     //console.log('Render state: ', this.state);
-    this.validatorTypes = null;
     var steps = this.getSteps();
     return steps[this.currentStep() - 1]();
   },

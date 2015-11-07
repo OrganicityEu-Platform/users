@@ -18,7 +18,8 @@ var ForgotPassword = React.createClass({
   mixins: [LoadingMixin],
   getInitialState : function() {
     return {
-      initialized: false
+      initialized: false,
+      btnClickedOnce: false
     };
   },
   componentDidMount : function() {
@@ -43,85 +44,119 @@ var ForgotPassword = React.createClass({
     }
   },
   handleChangedEmail : function(evt) {
-    this.state.email = evt.target.value;
-    this.state.initialized = true;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      email : evt.target.value,
+      initialized : true
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPassword : function(evt) {
-    this.state.password = evt.target.value;
-    this.state.initialized = true;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      password : evt.target.value,
+      initialized : true
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPasswordRepeat : function(evt) {
-    this.state.password_repeat = evt.target.value;
-    this.state.initialized = true;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      password_repeat : evt.target.value,
+      initialized : true
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleGoBack : function(evt) {
     console.log('Go back');
     this.setState({send: false});
   },
   handleSubmit : function(evt) {
+
     evt.preventDefault();
-    if (this.props.isValid()) {
-      this.loading();
-      var url = api.reverse('forgot-password');
-      $.ajax(url, {
-        error: (xhr, textStatus, errorThrown) => {
-          this.loaded();
-          this.setState({send: false});
-        },
-        success: (currentUser) => {
-          this.loaded();
-          this.setState({send: true});
-        },
-        method: 'POST',
-        data: {
-          email: this.state.email
+
+    this.setState({
+      btnClickedOnce: true
+    }, () => {
+      this.props.validate((error) => {
+        if (!error) {
+          this.loading();
+          var url = api.reverse('forgot-password');
+          $.ajax(url, {
+            error: (xhr, textStatus, errorThrown) => {
+              this.loaded();
+              this.setState({send: false});
+              if (xhr.responseJSON.error) {
+                this.setState({error: xhr.responseJSON.error});
+              }
+            },
+            success: (currentUser) => {
+              this.loaded();
+              this.setState({send: true});
+            },
+            method: 'POST',
+            data: {
+              email: this.state.email
+            }
+          });
         }
       });
-    }
+    });
   },
   handleSubmitPassword : function(evt) {
+
     evt.preventDefault();
-    if (this.props.isValid()) {
-      this.loading();
-      var url = api.reverse('update-password');
-      $.ajax(url, {
-        error: (xhr, textStatus, errorThrown) => {
-          this.loaded();
-          this.setState({send: false});
-          if(xhr.responseJSON.error) {
-            this.setState({error: xhr.responseJSON.error});
-          }
-        },
-        success: (currentUser) => {
-          this.loaded();
-          this.setState({send: true});
-        },
-        method: 'POST',
-        data: {
-          id: this.state.id,
-          password: this.state.password
+
+    this.setState({
+      btnClickedOnce: true
+    }, () => {
+      this.props.validate((error) => {
+        if (!error) {
+          this.loading();
+          var url = api.reverse('update-password');
+          $.ajax(url, {
+            error: (xhr, textStatus, errorThrown) => {
+              this.loaded();
+              this.setState({send: false});
+              if (xhr.responseJSON.error) {
+                this.setState({error: xhr.responseJSON.error});
+              }
+            },
+            success: (currentUser) => {
+              this.loaded();
+              this.setState({send: true});
+            },
+            method: 'POST',
+            data: {
+              id: this.state.id,
+              password: this.state.password
+            }
+          });
+
         }
       });
-    }
+    });
   },
   render() {
+
+    if (this.state.error) {
+      return (<Message type="danger" message={this.state.error}/>);
+    }
+
     if (this.state.id) {
 
       if (this.state.send) {
         return (<Message type="danger" message="Password update successful sent!" type="success"/>);
       }
 
-      if (this.state.error) {
-        return (<Message type="danger" message={this.state.error}/>);
-      }
-
       return (
+        <form>
         <div className="row">
           <div className="col-sm-6">
               <div className="form-group">
@@ -147,6 +182,7 @@ var ForgotPassword = React.createClass({
               onClick={this.handleSubmitPassword}>Update password</button>
           </div>
         </div>
+        </form>
       );
     } else {
       if (this.state.send) {
@@ -164,6 +200,7 @@ var ForgotPassword = React.createClass({
       }
 
       return (
+        <form>
         <div className="row">
           <div className="col-sm-6">
             <div className="form-group">
@@ -179,6 +216,7 @@ var ForgotPassword = React.createClass({
               onClick={this.handleSubmit}>Send mail</button>
           </div>
         </div>
+        </form>
       );
 
     }

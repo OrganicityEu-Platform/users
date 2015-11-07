@@ -27,8 +27,12 @@ var Comments = React.createClass({
         this.loaded();
       },
       success : (res) => {
-        console.log(res);
-        this.loaded({comments:  res.comments });
+        if (res) {
+          console.log(res);
+          this.loaded({comments: res.comments });
+        } else {
+          this.loaded({comments: 0 });
+        }
       }
     });
 

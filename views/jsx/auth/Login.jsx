@@ -22,58 +22,69 @@ var LocalLogin = React.createClass({
     return {
       email : '',
       password : '',
-      error : null
+      error : null,
+      btnClickedOnce : false
     };
   },
   handleChangedEmail : function(evt) {
-    this.state.email = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({email: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPassword : function(evt) {
-    this.state.password = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({password: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleSubmit : function(evt) {
+
     evt.preventDefault();
-    this.loading();
-    $.ajax(api.reverse('local-login'), {
-      error: (xhr, textStatus, errorThrown) => {
-        this.loaded();
-        if (xhr.status === 422) {
-          this.state.error = 'Error logging in: username and/or password unknown';
-          this.setState(this.state);
-        } else {
-          this.flashOnAjaxError(xhr, textStatus, errorThrown);
+
+    this.setState({
+      error: undefined,
+      btnClickedOnce: true
+    }, () => {
+      this.props.validate((error) => {
+        if (!error) {
+          this.loading();
+          $.ajax(api.reverse('local-login'), {
+            error: (xhr, textStatus, errorThrown) => {
+              this.loaded();
+              if (xhr.status === 422) {
+                this.setState({error: 'Error logging in: username and/or password unknown'});
+              } else {
+                this.flashOnAjaxError(xhr, textStatus, errorThrown);
+              }
+            },
+            success: (currentUser) => {
+              this.loaded();
+              this.props.onLogin(currentUser);
+              this.transitionTo(ui.reverse('profile'));
+            },
+            method: 'POST',
+            data: {
+              email: this.state.email,
+              password: this.state.password
+            }
+          });
         }
-      },
-      success: (currentUser) => {
-        this.loaded();
-        this.props.onLogin(currentUser);
-        this.transitionTo(ui.reverse('profile'));
-      },
-      method: 'POST',
-      data: {
-        email: this.state.email,
-        password: this.state.password
-      }
+      });
     });
   },
   render : function() {
 
-    var errorMessage;
-    if (this.state.error) {
-      errorMessage = (<Message type="danger" messages={this.state.error} />);
-    }
-
     return (
+      <form>
       <div className="row oc-login-wrapper">
       <div className="col-sm-6 col-sm-offset-3">
         <div className="social-logins-wrapper">
           <SocialmediaLogin/>
         </div>
-          {errorMessage}
+          <Message type="danger" message={this.state.error} />
           <div className="form-group">
               <input type="text"
                 className="form-control oc-login-email"
@@ -107,6 +118,7 @@ var LocalLogin = React.createClass({
           <p className="login-help"><Link to="forgot-password" >Forgot password?</Link></p>
       </div>
       </div>
+      </form>
     );
   },
   getValidatorData: function() {

@@ -46,8 +46,6 @@ var UploadImage = React.createClass({
   },
   handleChangedFile : function(evt) {
 
-    console.log('FOO');
-
     // Reset state
     this.setState({
       height : undefined,
@@ -63,8 +61,13 @@ var UploadImage = React.createClass({
       loading : true
     });
 
-    var that = this;
-    //this.state.title = evt.target.value;
+    var reset = (state) => {
+      this.props.callback(state);
+      state.status = undefined;
+      state.loading = false;
+      this.setState(state);
+    };
+
     var files = evt.target.files; // FileList object
     if (files.length > 0) {
       var file = files[0];
@@ -77,50 +80,51 @@ var UploadImage = React.createClass({
         // Needed to get the width and height
         var image  = new Image();
         image.src    = b64File;
-        image.onload = function() {
-          that.setState({
-            width : this.width,
-            height : this.height,
+        image.onload = () => {
+
+          this.setState({
+            width : image.width,
+            height : image.height,
             type : file.type,
             size : file.size
+          }, () => {
+
+            this.props.validate((error) => {
+
+              if (!error) {
+
+                //console.log('file OKAY');
+                reader.readAsArrayBuffer(file);
+                reader.onload = (file_arraybuffer) => {
+                  var arrayBuffer = file_arraybuffer.target.result;
+                  var blob        = new Blob([arrayBuffer], { type: file.type });
+
+                  // Lets upload a blob
+                  var formData = new FormData();
+                  formData.append('file', blob);
+
+                  $.ajax({
+                    url: this.props.url,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: (e) => {
+                      reset(e);
+                    },
+                    error : () => {
+                      this.flashOnAjaxError(this.props.url, 'Error while uploading an image'),
+                      reset({});
+                    }
+                  });
+                };
+              } else {
+                reset({});
+              }
+            });
+
           });
 
-          var reset = (state) => {
-            that.props.callback(state);
-            state.status = undefined;
-            state.loading = false;
-            that.setState(state);
-          };
-
-          that.props.validate((error) => {
-            if (!error) {
-              //console.log('file OKAY');
-              reader.readAsArrayBuffer(file);
-              reader.onload = (file_arraybuffer) => {
-                var arrayBuffer = file_arraybuffer.target.result;
-                var blob        = new Blob([arrayBuffer], { type: file.type });
-
-                // Lets upload a blob
-                var formData = new FormData();
-                formData.append('file', blob);
-
-                $.ajax({
-                  url: that.props.url,
-                  data: formData,
-                  processData: false,
-                  contentType: false,
-                  type: 'POST',
-                  success: reset,
-                  error : () => {
-                    that.flashOnAjaxError(that.props.url, 'Error while uploading an image'),
-                    reset({});
-                  }
-                });
-              };
-            } else {
-              reset({});
-            }
-          });
         };
       };
     }

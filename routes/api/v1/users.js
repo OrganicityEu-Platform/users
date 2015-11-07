@@ -282,10 +282,10 @@ module.exports = function(router, passport) {
             var transporter = mailer.createTransport();
             transporter.sendMail(mail, function(error, info) {
               if (error) {
-                console.log('Failure while sending mail: ' + error + '(' + info.response + ')');
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'Maling error'});
+                console.log('Failure while sending mail: ', error, '(', info, ')');
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'Mailing error'});
               } else {
-                console.log('Message sent: ' + info.response);
+                console.log('Message sent: ', info);
                 return res.status(HttpStatus.OK).json({});
               }
             });

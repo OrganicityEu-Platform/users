@@ -73,9 +73,8 @@ var Profile = React.createClass({
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
         e.dirty = false;
-
         this.loaded({profile: e});
-        this.props.validate();
+        //this.props.validate();
       }
     });
   },
@@ -84,36 +83,68 @@ var Profile = React.createClass({
     return routeName;
   },
   handleChangedName: function(evt) {
-    this.state.dirty = true;
-    this.state.profile.name = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        name : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedGender: function(evt) {
-    this.state.dirty = true;
-    this.state.profile.gender = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        gender : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedRoles: function(roles) {
-    this.state.dirty = true;
-    this.state.profile.roles = roles;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        roles : roles
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPassword : function(evt) {
-    this.state.dirty = true;
-    this.state.profile.password = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        password : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPasswordRepeat : function(evt) {
-    this.state.dirty = true;
-    this.state.profile.password_repeat = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        password_repeat : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   getProfile : function() {
+
     var profile = {
       name: this.state.profile.name,
       gender: this.state.profile.gender
@@ -141,25 +172,35 @@ var Profile = React.createClass({
   handleSubmit: function(evt) {
     evt.preventDefault();
 
-    this.loading();
-    var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
-    $.ajax(url, {
-      type : 'PATCH',
-      data : JSON.stringify(this.getProfile()),
-      contentType : 'application/json',
-      error : this.loadingError(url, 'Error updating user profile'),
-      success : () => {
-        this.loaded({ dirty : false });
-        this.flash('success', 'Profile succesfully updated!');
-      }
+    this.setState({
+      error: undefined,
+      btnClickedOnce: true
+    }, () => {
+      this.props.validate((error) => {
+        if (!error) {
+          this.loading();
+          var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
+          $.ajax(url, {
+            type : 'PATCH',
+            data : JSON.stringify(this.getProfile()),
+            contentType : 'application/json',
+            error : this.loadingError(url, 'Error updating user profile'),
+            success : () => {
+              this.loaded({ dirty : false, btnClickedOnce: false});
+              this.flash('success', 'Profile succesfully updated!');
+            }
+          });
+        }
+      });
     });
-
   },
   onThumbnail: function(data) {
-    this.state.dirty = true;
-    this.state.avatar = data.image;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({
+      dirty: true,
+      avatar: data.image
+    }, () => {
+      this.props.validate();
+    });
   },
   render: function() {
 

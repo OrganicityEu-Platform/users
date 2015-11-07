@@ -1,16 +1,16 @@
-import $            from 'jquery';
-import React        from 'react';
-import FlashQueue   from '../FlashQueue.jsx';
-import LoadingMixin from '../LoadingMixin.jsx';
-import api          from '../../../api_routes.js';
-import ui           from '../../../ui_routes.js';
-import Login               from './Login.jsx';
+import $                from 'jquery';
+import React            from 'react';
+import FlashQueue       from '../FlashQueue.jsx';
+import LoadingMixin     from '../LoadingMixin.jsx';
+import api              from '../../../api_routes.js';
+import ui               from '../../../ui_routes.js';
+import SocialmediaLogin from './SocialmediaLogin.jsx';
 
 // Input validation
-import validation   from 'react-validation-mixin';
-import strategy     from 'joi-validation-strategy';
-import UserJoi      from '../../../models/joi/user.js';
-import Message      from '../Message.jsx';
+import validation       from 'react-validation-mixin';
+import strategy         from 'joi-validation-strategy';
+import UserJoi          from '../../../models/joi/user.js';
+import Message          from '../Message.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -23,67 +23,80 @@ var Signup = React.createClass({
       email : '',
       password : '',
       password_repeat : '',
-      error : null
+      error : null,
+      btnClickedOnce : false
     };
   },
   handleChangedEmail : function(evt) {
-    this.state.email = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({email: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPassword : function(evt) {
-    this.state.password = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({password: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleChangedPasswordRepeat : function(evt) {
-    this.state.password_repeat = evt.target.value;
-    this.setState(this.state);
-    this.props.validate();
+    this.setState({password_repeat: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
   },
   handleSubmit : function(evt) {
     evt.preventDefault();
-    if (this.props.isValid()) {
-      this.loading();
-      var url = api.reverse('signup');
-      $.ajax(url, {
-        error: (xhr, textStatus, errorThrown) => {
-          this.loaded();
-          var error = JSON.parse(xhr.responseText);
-          if (xhr.status === 422) {
-            this.state.error = error.message;
-            this.setState(this.state);
-          } else {
-            this.flashOnAjaxError(xhr, textStatus, errorThrown);
+
+    this.setState({
+      error: undefined,
+      btnClickedOnce: true
+    }, () => {
+      this.props.validate((error) => {
+        if (!error) {
+          if (this.props.isValid()) {
+            this.loading();
+            var url = api.reverse('signup');
+            $.ajax(url, {
+              error: (xhr, textStatus, errorThrown) => {
+                this.loaded();
+                var error = JSON.parse(xhr.responseText);
+                if (xhr.status === 422) {
+                  this.state.error = error.message;
+                  this.setState(this.state);
+                } else {
+                  this.flashOnAjaxError(xhr, textStatus, errorThrown);
+                }
+              },
+              success: (currentUser) => {
+                this.loaded();
+                this.props.onLogin(currentUser);
+                this.transitionTo(ui.route('profile'));
+              },
+              method: 'POST',
+              data: {
+                email: this.state.email,
+                password: this.state.password
+              }
+            });
           }
-        },
-        success: (currentUser) => {
-          this.loaded();
-          this.props.onLogin(currentUser);
-          this.transitionTo(ui.route('profile'));
-        },
-        method: 'POST',
-        data: {
-          email: this.state.email,
-          password: this.state.password
         }
       });
-    }
+    });
   },
   render : function() {
 
-    var errorMessage;
-    if (this.state.error) {
-      errorMessage = (<Message type="danger" messages={this.state.error} />);
-    }
-
     return (
+      <form>
       <div className="row oc-signup-wrapper">
         <div className="col-sm-6 col-sm-offset-3">
           <div className="social-logins-wrapper">
-            <Login/>
+            <SocialmediaLogin/>
           </div>
-          {errorMessage}
+          <Message type="danger" message={this.state.error} />
           <div className="form-group">
               <input type="text"
                 className="form-control oc-signup-email"
@@ -97,7 +110,7 @@ var Signup = React.createClass({
           <div className="form-group">
               <input type="password"
                 className="form-control oc-signup-password"
-                placeholder="password"
+                placeholder="password with at least at least 6 characters"
                 name="password"
                 value={this.state.password}
                 disabled={this.isLoading() ? 'disabled' : ''}
@@ -121,6 +134,7 @@ var Signup = React.createClass({
           <p className="signup-help">Already have an account? <Link to="login">Login</Link></p>
         </div>
       </div>
+      </form>
     );
   },
   getValidatorData: function() {
