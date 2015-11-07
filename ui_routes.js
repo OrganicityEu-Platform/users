@@ -22,7 +22,6 @@ var ui_routes = {
   'profile'                : '/auth/profile/?',
   'login'                  : '/auth/login/?',
   'logout'                 : '/auth/logout/?',
-  'local-login'            : '/auth/local-login/?',
   'signup'                 : '/auth/signup/?',
   'forgot-password'        : '/auth/forgot-password/?',
 

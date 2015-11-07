@@ -54,7 +54,7 @@ var ScenarioEditView = React.createClass({
       actors : [],
       devices : [],
       step : 1,
-      creator : window.currentUser.uuid,
+      creator : window.currentUser ? window.currentUser.uuid : undefined,
       image_width : undefined,
       image_type : undefined,
       thumbnail : undefined,  // Here, the path will be stored

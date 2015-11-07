@@ -84,43 +84,41 @@ var Signup = React.createClass({
             <Login/>
           </div>
           {errorMessage}
-          <form action={api.reverse('signup')} method="post">
-              <div className="form-group">
-                  <input type="text"
-                    className="form-control oc-signup-email"
-                    placeholder="email"
-                    name="email"
-                    value={this.state.email}
-                    disabled={this.isLoading() ? 'disabled' : ''}
-                    onChange={this.handleChangedEmail} />
-                  <Message type="danger" messages={this.props.getValidationMessages('email')} />
-              </div>
-              <div className="form-group">
-                  <input type="password"
-                    className="form-control oc-signup-password"
-                    placeholder="password"
-                    name="password"
-                    value={this.state.password}
-                    disabled={this.isLoading() ? 'disabled' : ''}
-                    onChange={this.handleChangedPassword} />
-                  <Message type="danger" messages={this.props.getValidationMessages('password')} />
-              </div>
-              <div className="form-group">
-                  <input type="password"
-                    className="form-control oc-signup-password"
-                    placeholder="repeat password"
-                    name="password_repeat"
-                    disabled={this.isLoading() ? 'disabled' : ''}
-                    value={this.state.password_repeat}
-                    onChange={this.handleChangedPasswordRepeat} />
-                  <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
-              </div>
-              <button type="submit"
-                className="signup-btn"
-                disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
-                onClick={this.handleSubmit}>Signup</button>
-          </form>
-          <p className="signup-help">Already have an account? <Link to="local-login">Login</Link></p>
+          <div className="form-group">
+              <input type="text"
+                className="form-control oc-signup-email"
+                placeholder="email"
+                name="email"
+                value={this.state.email}
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedEmail} />
+              <Message type="danger" messages={this.props.getValidationMessages('email')} />
+          </div>
+          <div className="form-group">
+              <input type="password"
+                className="form-control oc-signup-password"
+                placeholder="password"
+                name="password"
+                value={this.state.password}
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPassword} />
+              <Message type="danger" messages={this.props.getValidationMessages('password')} />
+          </div>
+          <div className="form-group">
+              <input type="password"
+                className="form-control oc-signup-password"
+                placeholder="repeat password"
+                name="password_repeat"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                value={this.state.password_repeat}
+                onChange={this.handleChangedPasswordRepeat} />
+              <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
+          </div>
+          <button type="submit"
+            className="signup-btn"
+            disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
+            onClick={this.handleSubmit}>Signup</button>
+          <p className="signup-help">Already have an account? <Link to="login">Login</Link></p>
         </div>
       </div>
     );
