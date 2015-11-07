@@ -315,15 +315,16 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group">
-              <div className="col-sm-2"></div>
-              <div className="col-sm-10">
+
+              <div className="col-md-2 col-md-offset-5">
                 <button
                   type="button"
-                  className="btn btn-default"
+                  className="oc-button-submit"
                   onClick={this.clickedPreview}
                   disabled={this.loading ? 'disabled' : ''}
                 >Preview</button>
               </div>
+
             </div>
           </form>
         </div>

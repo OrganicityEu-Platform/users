@@ -13,6 +13,8 @@ import Message            from '../Message.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
+var bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien rutrum erat sagittis ultricies a eu arcu. Pellentesque ut sem vel nunc eleifend dapibus eu eget nunc. Quisque ac mattis elit. Nunc tristique aliquet rutrum. Vestibulum ultrices eros tellus, vitae bibendum nibh pulvinar a. Integer rutrum faucibus est, a dignissim tellus pulvinar vitae. Integer elementum dictum mi non ultricies.';
+
 var UserAvatar = React.createClass({
   mixins: [FlashQueue.Mixin, LoadingMixin],
   getInitialState: function() {
@@ -68,15 +70,28 @@ var UserAvatar = React.createClass({
     return (
       <div className="row">
         <div className="col-lg-8 col-lg-offset-2">
-          <h2>{userText}</h2>
-          <p>
-            <img src={image} width="64" height="64"/>
-          </p>
-          <p>
-            Profile views: <Counter scope="users" id={this.props.params.uuid} />
-          </p>
-          <h3>Scenarios created</h3>
-          <ScenariosNewest creator={this.props.params.uuid} />
+          <div className="user-view-profile-wrapper row">
+            <div className="user-view-profile-image-wrapper col-md-3">
+              <img className="img-circle" src={image} width="210" height="210"/>
+            </div>
+            <div className="col-md-9">
+              <div className="row">
+                <div className="col-md-6">
+                  <h2>{userText}</h2>
+                  Profile views: <Counter scope="users" id={this.props.params.uuid} />
+                </div>
+                <div className="user-view-profile-roles col-md-6">roles go here</div>
+              </div>
+              <div className="row">
+                <div className="col-md-8">{bio}</div>
+                <div className="col-md-4">meta</div>
+              </div>
+            </div>
+          </div>
+          <div className="user-view-thumbnails-wrapper container">
+              <h3>My scenarios</h3>
+            <ScenariosNewest creator={this.props.params.uuid} />
+          </div>
         </div>
       </div>
     );

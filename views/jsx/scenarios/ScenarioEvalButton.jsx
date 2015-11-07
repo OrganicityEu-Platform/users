@@ -12,7 +12,7 @@ var ScenarioEvalButton = React.createClass({
   },
   render: function() {
       return (
-        <button className="scenario-article-eval-btn" onClick={this.handleClick}>EVALUATE</button>
+        <button className="oc-button-submit" onClick={this.handleClick}>EVALUATE</button>
       );
   }
 });
