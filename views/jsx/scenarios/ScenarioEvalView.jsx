@@ -81,7 +81,7 @@ var ScenarioEvalView = React.createClass({
 
     if (this.state.submitted) {
       return (
-        <div className="row col-sm-12">
+        <div className="col-lg-8 col-lg-offset-2">
           Thank you!
         </div>
       );
@@ -89,7 +89,7 @@ var ScenarioEvalView = React.createClass({
 
     if (!this.props.query.tech) {
       return (
-        <div className="row col-sm-12">
+        <div className="col-lg-8 col-lg-offset-2">
           Are you a...<br/>
           <button type="button"
             className="btn btn-default"
@@ -109,7 +109,7 @@ var ScenarioEvalView = React.createClass({
     //Evaluation    > scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
 
     return (
-      <div className="oc-evaluation-div">
+      <div className="col-lg-8 col-lg-offset-2 oc-evaluation-div">
         <form>
           <div className="oc-evaluation-description-div">
             {this.state.questionnaire.description}

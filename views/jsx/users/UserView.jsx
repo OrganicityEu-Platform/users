@@ -77,7 +77,7 @@ var UserAvatar = React.createClass({
             <div className="col-md-9">
               <div className="row">
                 <div className="col-md-6">
-                  <h2>{userText}</h2>
+                  <h2 onClick={this.clickHandle}>{userText}</h2>
                   Profile views: <Counter scope="users" id={this.props.params.uuid} />
                 </div>
                 <div className="user-view-profile-roles col-md-6">roles go here</div>
@@ -88,8 +88,8 @@ var UserAvatar = React.createClass({
               </div>
             </div>
           </div>
-          <div className="user-view-thumbnails-wrapper container">
-              <h3>My scenarios</h3>
+          <div className="user-view-thumbnails-wrapper">
+              <h3>Published scenarios</h3>
             <ScenariosNewest creator={this.props.params.uuid} />
           </div>
         </div>
