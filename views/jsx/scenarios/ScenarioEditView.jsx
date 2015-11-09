@@ -5,18 +5,18 @@ import TagField          from '../form-components/TagField.jsx';
 import api               from '../../../api_routes.js';
 import ui                from '../../../ui_routes.js';
 import Router            from 'react-router';
+import ScenarioCheck     from './ScenarioCheck.jsx'
 import ScenarioTableView from './ScenarioTableView.jsx';
 
 // Input validation
 import validation        from 'react-validation-mixin';
 import strategy          from 'joi-validation-strategy';
 import ScenarioJoi       from '../../../models/joi/scenario.js';
-import Message      from '../Message.jsx';
+import Message           from '../Message.jsx';
 
 // Mixins
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 import UploadImage         from '../UploadImage.jsx';
-
 
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
@@ -34,6 +34,9 @@ var ScenarioEditView = React.createClass({
   componentWillMount : function() {
     if (!this.props.query.step) {
       this.props.query.step = '' + this.firstStep;
+    }
+    if (this.currentStep() === 1) {
+      this.prepareValidationPreview();
     }
   },
   getInitialState: function() {
@@ -84,8 +87,14 @@ var ScenarioEditView = React.createClass({
       $.getJSON(url, (scenario) => {
         if (this.isMounted()) {
           this.setState(scenario);
+          this.props.validate();
         }
       });
+    } else {
+      // Generate intial validation
+      setTimeout(() => {
+        this.props.validate();
+      }, 10);
     }
   },
   storageKey : function() {
@@ -103,8 +112,9 @@ var ScenarioEditView = React.createClass({
   handleChangedTitle : function(evt) {
     this.setState({title: evt.target.value}, () => {
       if (this.state.btnClickedOnce) {
-        console.log('this', this);
         this.props.validate();
+      } else {
+        this.props.validate('title');
       }
     });
   },
@@ -112,6 +122,8 @@ var ScenarioEditView = React.createClass({
     this.setState({summary: evt.target.value}, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('summary');
       }
     });
   },
@@ -119,6 +131,8 @@ var ScenarioEditView = React.createClass({
     this.setState({narrative: evt.target.value}, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('narrative');
       }
     });
   },
@@ -192,8 +206,15 @@ var ScenarioEditView = React.createClass({
       return;
     }
 
+    this.prepareValidationPreview();
     this.saveState();
 
+    this.validateCurrentStep(() => {
+      this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
+    });
+
+  },
+  prepareValidationPreview : function() {
     this.validatorTypes = ScenarioJoi.edit;
     this.getValidatorData = function() {
       return {
@@ -209,11 +230,7 @@ var ScenarioEditView = React.createClass({
         copyright : this.state.copyright
       };
     };
-
-    this.validateCurrentStep(() => {
-      this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
-    });
-
+    //this.props.validate();
   },
   clickedSubmit : function() {
 
@@ -280,6 +297,11 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
+    //console.log('state', this.state);
+    //console.log('title', this.props.isValid('title'));
+    //console.log('summary', this.props.isValid('summary'));
+    //console.log('narrative', this.props.isValid('narrative'));
+
     return (
       <div className="container oc-create-edit-view">
         <div className="row">
@@ -288,7 +310,7 @@ var ScenarioEditView = React.createClass({
           </div>
           <form className="form-horizontal">
             <div className="form-group oc-create-edit oc-create-edit-title">
-              <label className="control-label col-sm-2" htmlFor="title">Title <i className={this.state.title ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
+              <label className="control-label col-sm-2" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/></label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
@@ -296,7 +318,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
-              <label className="control-label col-sm-2" htmlFor="summary">Summary <i className={this.state.summary ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
+              <label className="control-label col-sm-2" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/></label>
               <div className="col-sm-10">
                 <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
@@ -304,7 +326,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
-              <label className="control-label col-sm-2" htmlFor="narrative">Narrative <i className={this.state.narrative ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
+              <label className="control-label col-sm-2" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/></label>
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
