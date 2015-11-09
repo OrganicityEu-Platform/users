@@ -64,6 +64,20 @@ user.methods.hasRole = function(roles) {
   return false;
 };
 
+user.methods.getMailAddress = function() {
+  if (this.local) {
+    return this.local.email;
+  } else if (this.facebook) {
+    return this.facebook.email;
+  } else if (this.google) {
+    return this.google.email;
+  } else if (this.disqus) {
+    return this.disqus.email;
+  } else {
+    return '';
+  }
+};
+
 var User = mongoose.model('User', user);
 
 module.exports = User;

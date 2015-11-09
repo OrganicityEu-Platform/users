@@ -8,22 +8,27 @@ import Joi from 'joi';
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import contactUsValidation from '../../models/joi/contactUs.js';
+import loggedIn from './UserIsLoggedInMixin.jsx';
+import Contact from '../../models/contact.js';
 
 
 var myContactForm = React.createClass({
+  mixins: [loggedIn],
+
   getInitialState: function() {
     return {
-      name: '',
       address: '',
-      subject: '',
-      body: ''
+      message: ''
     };
   },
 
-  nameChanged: function(event) {
-    this.setState({name: event.target.value}, state => {
-      this.props.validate('name');
-    });
+  componentDidMount: function() {
+    console.log("will mount.", window.currentUser);
+
+    if (window.currentUser && this.state.address == '') {
+      console.log("contactus: current user: ", window.currentUser);
+      this.setState({address: window.currentUser.getMailAddress()});
+    }
   },
 
   addressChanged: function(event) {
@@ -32,24 +37,16 @@ var myContactForm = React.createClass({
     });
   },
 
-  subjectChanged: function(event) {
-    this.setState({subject: event.target.value}, state => {
-      this.props.validate('subject');
-    });
-  },
-
-  bodyChanged: function(event) {
-    this.setState({body: event.target.value}, state => {
-      this.props.validate('body');
+  messageChanged: function(event) {
+    this.setState({message: event.target.value}, state => {
+      this.props.validate('message');
     });
   },
 
   getContactRecord: function() {
     return {
-      name: this.state.name,
       address: this.state.address,
-      subject: this.state.subject,
-      body: this.state.body
+      message: this.state.message
     };
   },
 
@@ -60,7 +57,7 @@ var myContactForm = React.createClass({
   validatorTypes: contactUsValidation.form,
 
   submitForm: function() {
-    console.log('submitting form', this.state);
+    console.log('submitting form', this.getContactRecord());
 
     var contactUrl = api.reverse('contactUs');
     $.ajax(contactUrl, {
@@ -91,12 +88,25 @@ var myContactForm = React.createClass({
 
 
   render: function() {
+    if (typeof this.props.currentUser == 'undefined')
+    {
+      return (<div>
+          <h4>Contact Us</h4>
+          <a href={'mailto:' + Contact.mailAddress}>
+            {Contact.mailAddress}
+          </a>
+        </div>);
+    }
+
+    var userMail = // this.props.currentUser.getMailAddress();
+      'user@mail.com';
+
     var successMessage = this.state && this.state.successful
         ? (
-            <div className="col-sm-12">
-            Your message has been sent. Thanks for your feedback!
-            <br />
-            We will get back to you as soon as possible.
+            <div>
+              Your message has been sent. Thank you for your feedback!
+              <br />
+              We will get back to you as soon as possible.
             </div>
         )
         : null;
@@ -110,123 +120,37 @@ var myContactForm = React.createClass({
 
     return (
       <div>
-        <h1>Concat Us</h1>
-        <div className="container">
-          <div className="col-md-6 oc-contactus-faq">
-            <h2>Frequently Asked Questions</h2>
-
-              <Accordion>
-                <Panel header={<i className="fa fa-plus oc-faq">
-                  How does this FAQ actually work?
-                  </i>} eventKey="0">
-                  If you click on the headers of these questions, an answer is
-                  blended into view just below the header-question. Continue
-                  in the same manner for all further questions that you might
-                  have about this site.
-                </Panel>
-              </Accordion>
-
-              <Accordion>
-                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
-                  amus labore sustainable VHS.
-                </Panel>
-              </Accordion>
-              <Accordion>
-                <Panel header={<i className="fa fa-plus oc-faq">Nulla vitae elit libero, a pharetra augue?</i>} eventKey="0">
-                  amus labore sustainable VHS.
-                </Panel>
-              </Accordion>
-
-              <Accordion>
-                <Panel header={<i className="fa fa-plus oc-faq">
-                  But my question is not answered by this FAQ!
-                  </i>} eventKey="0">
-                  No problem! Please just use the contact form on this page,
-                  and we will get back to you as fast as possible.
-                </Panel>
-              </Accordion>
-
+        <h4>Contact Us</h4>
+        <form className="form-horizontal">
+          <div className="form-group">
+            <input type="text" className="form-control" name="address"
+              placeholder="Your Email Address" value={userMail}
+              id="address" onChange={this.addressChanged} />
+            <ErrorMessage
+              messages={this.props.getValidationMessages('address')} />
           </div>
-          <div className="col-md-6">
-            <h2>Contact</h2>
-            <p>
-              If you have any questions about managing scenarios, voicing your
-              opinion, or this platform in general, do not hesitate to contact
-              us:
-            </p>
+
+          <div className="form-group">
+            <textarea className="form-control" name="body" id="body"
+              placeholder="Your Message"
+              onChange={this.bodyChanged} />
+            <ErrorMessage
+              messages={this.props.getValidationMessages('body')} />
+          </div>
+
+          <div className="form-group">
+            <button type="button" className="btn btn-default"
+              onClick={this.submitForm}
+              disabled={canSubmit ? '' : 'disabled'}>
+              Submit
+            </button>
+          </div>
+
+          <div className="form-group">
             {errorMessage}
-
-            <form className="form-horizontal">
-              <div className="form-group">
-                <label className="control-label col-sm-4" htmlFor="name">
-                  Your Name
-                </label>
-
-                <div className="col-sm-8">
-                  <input type="text" className="form-control" name="name"
-                    id="name" onChange={this.nameChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('name')} />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="control-label col-sm-4" htmlFor="address">
-                  Your Email Address
-                </label>
-
-                <div className="col-sm-8">
-                  <input type="text" className="form-control" name="address"
-                    id="address" onChange={this.addressChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('address')} />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="control-label col-sm-4" htmlFor="subject">
-                  Subject
-                </label>
-
-                <div className="col-sm-8">
-                  <input type="text" className="form-control" name="subject"
-                    id="subject" onChange={this.subjectChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('subject')} />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="control-label col-sm-4" htmlFor="body">
-                  Message
-                </label>
-
-                <div className="col-sm-8">
-                  <textarea className="form-control" name="body" id="body"
-                    onChange={this.bodyChanged} />
-                  <ErrorMessage
-                    messages={this.props.getValidationMessages('body')} />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <div className="col-sm-4">
-                </div>
-                <div className="col-sm-8">
-                  <button type="button" className="btn btn-default"
-                    onClick={this.submitForm}
-                    disabled={canSubmit ? '' : 'disabled'}>
-                    Submit
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                {successMessage}
-              </div>
-            </form>
+            {successMessage}
           </div>
-        </div>
+        </form>
       </div>
     );
   }

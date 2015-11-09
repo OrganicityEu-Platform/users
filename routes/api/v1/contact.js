@@ -3,18 +3,19 @@ var HttpStatus = require('http-status');
 var mailer = require('nodemailer');
 var contactUsValidation = require('../../../models/joi/contactUs.js');
 var validate = require('express-validation');
+var Contact = require('../../../models/contact.js');
 
 function sendContactMail(req, res) {
   var mail = {
-    'from': req.body.name + ' <' + req.body.address + '>',
-    'to': 'buether@itm.uni-luebeck.de',
-    'subject': 'OrganiCity Scenarios Contact Form: ' + req.body.subject,
+    'from': req.body.address,
+    'to': Contact.mailAddress,
+    'subject': 'New Entry from the OrganiCity Scenarios Contact Form',
     'text': 'Hello, \n\n' +
       'A message was submitted on the OrganiCity Scenarios Contact Form:\n\n' +
-      req.body.body
+      req.body.message
   };
 
-  // console.log(req.body.body, typeof req.body.body);
+  // console.log(req.body, typeof req.body);
 
   // console.log('Sending Mail: ' + JSON.stringify(mail));
 
@@ -23,7 +24,9 @@ function sendContactMail(req, res) {
     if (error) {
       console.log('Failure while sending mail: ' +
         error + '(' + info.response + ')');
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(
+        'Failure while sending mail: ' +
+          error + '(' + info.response + ')');
     } else {
       console.log('Message sent: ' + info.response);
       res.status(HttpStatus.OK).send();
