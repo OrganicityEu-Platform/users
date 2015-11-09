@@ -312,24 +312,27 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit oc-create-edit-title">
               <label className="control-label col-sm-2" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/></label>
               <div className="col-sm-10">
-                <input type="text" className="form-control" name="title" id="title" value={this.state.title}
+                <input maxLength="50" type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
+                  <span className="scenario-create-edit-char-remain">{50 - this.state.title.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
               <label className="control-label col-sm-2" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/></label>
               <div className="col-sm-10">
-                <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
+                <textarea maxLength="240" type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
+                  <span className="scenario-create-edit-char-remain">{240 - this.state.summary.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
               <label className="control-label col-sm-2" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/></label>
               <div className="col-sm-10">
-                <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
+                <textarea maxLength="5000" className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
+                  <span className="scenario-create-edit-char-remain">{5000 - this.state.narrative.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>
