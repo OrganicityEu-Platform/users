@@ -61,37 +61,35 @@ var ScenarioTableView = React.createClass({
     return (
       <div className="col-lg-8 col-lg-offset-2">
       <div className="scenario-article">
-        <div>
-          <div className={sector_colour_marker}><span className="scenario-article-score"><Score scope="scenarios" className="scenario-article-score" id={this.props.scenario.uuid} /></span></div>
-          <div className="scenario-article-widget">
+        <header className="scenario-article-header row">
+          <div className="col-lg-8">
+            <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
+              <div>
+                <span className="scenario-article-publisher">
+                  Created by <UserAvatar uuid={this.props.scenario.creator} />
+                </span>
+                <span className="scenario-article-timestamp">
+                  { this.props.scenario.timestamp ?
+                    <TimeAgo date={this.props.scenario.timestamp} />
+                    : '' }
+                </span>
+              </div>
+              <div className="">
+                <p className="scenario-article-summary">
+                  {this.props.scenario.summary}
+                </p>
+              </div>
+          </div>
+          <div className="col-lg-2">
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
               <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
               <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i><Evaluations scope="scenarios" className="scenario-article-evaluations" id={this.props.scenario.uuid} />  evaluations</p>
             </div>
           </div>
-
-        </div>
-
-        <header className="scenario-article-header">
-          <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
-          <div>
-            <span className="scenario-article-publisher">
-              Created by <UserAvatar uuid={this.props.scenario.creator} />
-            </span>
-            <span className="scenario-article-timestamp">
-              { this.props.scenario.timestamp ?
-                <TimeAgo date={this.props.scenario.timestamp} />
-                : '' }
-            </span>
-          </div>
-
-          <div className="">
-            <p className="scenario-article-summary">
-              {this.props.scenario.summary}
-            </p>
-          </div>
+          <div className="col-lg-2"><div className={sector_colour_marker}><span className="scenario-article-score"><Score scope="scenarios" className="scenario-article-score" id={this.props.scenario.uuid} /></span></div></div>
         </header>
+
         <div className="scenario-article-section">
           <div className={article_image_overlay}>
             {image}
@@ -126,13 +124,17 @@ var ScenarioTableView = React.createClass({
         <footer className="scenario-article-footer">
 
         </footer>
+
       </div>
+
       <div className="scenario-article-narrative-wrapper">
           <span className="col-md-1">Narrative</span>
           <div className="scenario-article-narrative col-md-11">
             {this.props.scenario.narrative}
           </div>
       </div>
+
+
 
       <div className="col-md-3"></div>
       <div className="col-md-2"></div>

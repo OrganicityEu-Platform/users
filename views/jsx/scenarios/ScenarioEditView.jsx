@@ -17,6 +17,7 @@ import Message      from '../Message.jsx';
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 import UploadImage         from '../UploadImage.jsx';
 
+
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
@@ -44,7 +45,6 @@ var ScenarioEditView = React.createClass({
       o.creator = window.currentUser.uuid;
       return o;
     }
-
     // if we're not in the editing process already and not editing, creating a new one
     return {
       title : '',
@@ -64,6 +64,7 @@ var ScenarioEditView = React.createClass({
     };
   },
   componentDidMount() {
+
     if (!this.userIsLoggedIn()) {
       var src = {
         to : this.routeName(),
@@ -243,7 +244,7 @@ var ScenarioEditView = React.createClass({
           </div>
           <form className="form-horizontal">
             <div className="form-group oc-create-edit oc-create-edit-title">
-              <label className="control-label col-sm-2" htmlFor="title">Title</label>
+              <label className="control-label col-sm-2" htmlFor="title">Title <i className={this.state.title ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
               <div className="col-sm-10">
                 <input type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
@@ -251,7 +252,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
-              <label className="control-label col-sm-2" htmlFor="summary">Summary</label>
+              <label className="control-label col-sm-2" htmlFor="summary">Summary <i className={this.state.summary ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
               <div className="col-sm-10">
                 <textarea type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
@@ -259,7 +260,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
-              <label className="control-label col-sm-2" htmlFor="narrative">Narrative</label>
+              <label className="control-label col-sm-2" htmlFor="narrative">Narrative <i className={this.state.narrative ? 'scenario-article-check-icon fa fa-check' : 'scenario-article-check-icon fa fa-exclamation-circle'}></i></label>
               <div className="col-sm-10">
                 <textarea className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
