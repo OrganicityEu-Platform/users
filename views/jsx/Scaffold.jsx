@@ -19,7 +19,7 @@ var Link = Router.Link;
 
 var Scaffold = React.createClass({
   mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
-  getInitialState: function() {
+  getInitialState: function() {
     return {
       currentUser : undefined,
       initialAjax : false
@@ -43,15 +43,17 @@ var Scaffold = React.createClass({
   },
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
-    this.state.currentUser = currentUser;
-    this.state.initialAjax = true;
-    this.setState(this.state);
+    this.setState({
+        currentUser: currentUser,
+        initialAjax: true
+    });
   },
   onLogout: function() {
     window.currentUser = undefined;
-    this.state.initialAjax = true;
-    this.state.currentUser = undefined;
-    this.setState(this.state);
+    this.setState({
+        currentUser: undefined,
+        initialAjax: true
+    });
   },
   render : function() {
 
@@ -135,7 +137,7 @@ var Scaffold = React.createClass({
          {router}
         <div className="oc-footers">
           <FooterLarge/>
-          <FooterSmall/>
+          <FooterSmall currentUser={this.state.currentUser} />
         </div>
       </div>
     );

@@ -21,7 +21,8 @@ var Logout = React.createClass({
         error : this.flashOnAjaxError(api.reverse('logout'), 'Error while logging out'),
         success : () => {
           this.setState({ loggedOut : true });
-          window.currentUser = undefined;
+          this.props.onLogout(); // Scaffold.onLogout
+
           // timeout allows to display message
           window.setTimeout(() => {
             this.transitionTo('home');

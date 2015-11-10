@@ -1,12 +1,16 @@
 var Joi = require('joi');
 
-var form = {
-  name: Joi.string().label('Name').min(3).max(60).required(),
-  address: Joi.string().email().label('Email Address').required(),
-  subject: Joi.string().label('Subject').max(140).required(),
-  body: Joi.string().label('Message').required()
+var contactUs = {};
+
+contactUs.form = {
+  options : {
+    allowUnknownBody: false
+  },
+  body: {
+    address: Joi.string().email().label('Email Address').required(),
+    message: Joi.string().label('Message').required()
+  }
 };
 
-module.exports = {
-  form: form
-};
+module.exports = contactUs;
+
