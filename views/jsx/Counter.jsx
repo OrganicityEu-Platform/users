@@ -15,6 +15,10 @@ var Counter = React.createClass({
   },
   componentDidMount: function() {
 
+    if (!this.props.scope || !this.props.id) {
+      return;
+    }
+
     var url = api.reverse('counter', {
       scope : this.props.scope,
       id : this.props.id
