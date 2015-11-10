@@ -111,32 +111,30 @@ var ScenarioEvalView = React.createClass({
     return (
       <div className="col-lg-8 col-lg-offset-2 oc-evaluation-div">
         <form>
-          <div className="oc-evaluation-description-div">
+          <div className="oc-evaluation-description-div col-lg-12">
             {this.state.questionnaire.description}
           </div>
           <div className="oc-evaluation-table-div">
-            <div className="table-responsive">
-            <table className="table">
+            <div className="row oc-radios-wrapper">
+
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
-
-                  <tr key={"question_"+qIdx+"_radios"}>
-                    <td className="oc-evaluation-question">{q.text}</td>
+                  <div key={"question_"+qIdx+"_radios"}>
+                    <div className="oc-evaluation-question col-lg-5">{q.text}</div>
                     {q.values.map((a,aIdx) => (
-                      <td className="oc-evaluation-answer-radio">
+                      <div className="oc-evaluation-answer-radio col-lg-1">
                         <input type="radio"
                           className="form-control"
                           name={"question_"+qIdx}
                           id={"question_"+qIdx+"_answer_"+aIdx}
                           onClick={this.selectedAnswer(qIdx, aIdx)} />
-                        <label className="radio-label" htmlFor={"question_"+qIdx+"_answer_"+aIdx}></label>
-                      </td>
+                        <label className="radio-label" htmlFor={"question_"+qIdx+"_answer_"+aIdx}><span className="oc-evaluation-answer-radio-num">{a.value}</span></label>
+                      </div>
                     ))}
-                  </tr>
+                  </div>
                 ]
               )}
-            </table>
-          </div>
+            </div>
           </div>
           <div className="oc-evaluation-sendbutton-div">
             <button type="button" className="btn btn-primary" onClick={this.sendEvaluation}>Send Evaluation</button>
