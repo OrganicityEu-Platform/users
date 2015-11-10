@@ -1,22 +1,23 @@
-import $                 from 'jquery';
-import React             from 'react';
-import FlashQueue        from '../FlashQueue.jsx';
-import TagField          from '../form-components/TagField.jsx';
-import api               from '../../../api_routes.js';
-import ui                from '../../../ui_routes.js';
-import Router            from 'react-router';
-import ScenarioCheck     from './ScenarioCheck.jsx'
-import ScenarioTableView from './ScenarioTableView.jsx';
+import $                    from 'jquery';
+import React                from 'react';
+import FlashQueue           from '../FlashQueue.jsx';
+import TagField             from '../form-components/TagField.jsx';
+import api                  from '../../../api_routes.js';
+import ui                   from '../../../ui_routes.js';
+import Router               from 'react-router';
+import ScenarioCheck        from './ScenarioCheck.jsx'
+import ScenarioTableView    from './ScenarioTableView.jsx';
 
 // Input validation
-import validation        from 'react-validation-mixin';
-import strategy          from 'joi-validation-strategy';
-import ScenarioJoi       from '../../../models/joi/scenario.js';
-import Message           from '../Message.jsx';
+import validation           from 'react-validation-mixin';
+import strategy             from 'joi-validation-strategy';
+import ScenarioJoi          from '../../../models/joi/scenario.js';
+import ScenarioConfig       from '../../../config/scenario.js';
+import Message              from '../Message.jsx';
 
 // Mixins
-import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
-import UploadImage         from '../UploadImage.jsx';
+import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
+import UploadImage          from '../UploadImage.jsx';
 
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
@@ -312,27 +313,27 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit oc-create-edit-title">
               <label className="control-label col-sm-2" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/></label>
               <div className="col-sm-10">
-                <input maxLength="50" type="text" className="form-control" name="title" id="title" value={this.state.title}
+                <input maxLength={ScenarioConfig.max.title} type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
-                  <span className="scenario-create-edit-char-remain">{50 - this.state.title.length} characters remaining</span>
+                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('title')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
               <label className="control-label col-sm-2" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/></label>
               <div className="col-sm-10">
-                <textarea maxLength="240" type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
+                <textarea maxLength={ScenarioConfig.max.summary} type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
-                  <span className="scenario-create-edit-char-remain">{240 - this.state.summary.length} characters remaining</span>
+                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('summary')} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
               <label className="control-label col-sm-2" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/></label>
               <div className="col-sm-10">
-                <textarea maxLength="5000" className="form-control" name="narrative" id="narrative" value={this.state.narrative}
+                <textarea maxLength={ScenarioConfig.max.narrative} className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
-                  <span className="scenario-create-edit-char-remain">{5000 - this.state.narrative.length} characters remaining</span>
+                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
                 <Message type="danger" messages={this.props.getValidationMessages('narrative')} />
               </div>
             </div>

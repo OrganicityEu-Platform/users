@@ -1,10 +1,11 @@
-var Joi = require('joi');
+var Joi             = require('joi');
+var ScenarioConfig  = require('../../config/scenario.js');
 
 var scenario = {};
 
-var joiTitle = Joi.string().label('Title').required();
-var joiSummary = Joi.string().label('Summary').required();
-var joiNarrative = Joi.string().label('Narrative').required();
+var joiTitle = Joi.string().max(ScenarioConfig.max.title).label('Title').required();
+var joiSummary = Joi.string().max(ScenarioConfig.max.summary).label('Summary').required();
+var joiNarrative = Joi.string().max(ScenarioConfig.max.narrative).label('Narrative').required();
 
 /*
   FIXME: use an object!

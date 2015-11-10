@@ -1,9 +1,10 @@
-var request   = require('supertest');
-var expect    = require('expect.js');
-var http      = require('http-status');
-var api       = require('../api_routes.js');
-var moment    = require('moment');
-var fsSync    = require('fs-sync');
+var request          = require('supertest');
+var expect          = require('expect.js');
+var http            = require('http-status');
+var api             = require('../api_routes.js');
+var moment          = require('moment');
+var fsSync          = require('fs-sync');
+var SceanrioConfig  = require('../config/scenario.js');
 
 var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
 
@@ -189,6 +190,54 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
     function(done) {
       var scenario = ss.loadScenarios([{uuid: 'agingpop', v: 'none'}])[0];
       scenario.thumbnail = 'waste';
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (title to long)',
+    function(done) {
+      var scenario = {
+        'summary' : 'summary',
+        'narrative' : 'narrative'
+      };
+
+      // Make title one char to long
+      for (var i = 0; i <= SceanrioConfig.max.title; i++) {
+        scenario.title += 'a';
+      }
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (narrative to long)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'summary' : 'summary'
+      };
+
+      // Make narrative one char to long
+      for (var i = 0; i <= SceanrioConfig.max.narrative; i++) {
+        scenario.narrative += 'a';
+      }
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (summary to long)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'narrative' : 'narrative'
+      };
+
+      // Make summary one char to long
+      for (var i = 0; i <= SceanrioConfig.max.summary; i++) {
+        scenario.summary += 'a';
+      }
+
       inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
     }
   );
