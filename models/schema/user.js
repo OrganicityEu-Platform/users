@@ -59,7 +59,7 @@ user.methods.validPassword = function(password) {
 };
 
 // checks if password is valid
-user.methods.toJson = function() {
+user.methods.json = function() {
 
   var o = this.toObject();
 
@@ -75,16 +75,16 @@ user.methods.toJson = function() {
     delete o.twitter.token;
   }
 
+  if (o.facebook) {
+    delete o.facebook.token;
+  }
+
   if (o.google) {
     delete o.google.token;
   }
 
   if (o.github) {
-    delete o.twitter.token;
-  }
-
-  if (o.github) {
-    delete o.twitter.token;
+    delete o.github.token;
   }
 
   if (o.disqus) {
@@ -105,5 +105,11 @@ user.methods.hasRole = function(roles) {
 };
 
 var User = mongoose.model('User', user);
+
+User.excludeFields = {
+  '_id'            : 0,
+  '__v'            : 0,
+  'local.password' : 0
+};
 
 module.exports = User;

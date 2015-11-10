@@ -10,7 +10,7 @@ module.exports = function(router, passport) {
   var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
   router.get(api.route('currentUser'), [isLoggedIn], function(req, res) {
-    res.json(req.user.toJson());
+    res.json(req.user.json());
   });
 
   var authSuccess = function(req, res) {
@@ -50,7 +50,7 @@ module.exports = function(router, passport) {
           if (err) {
             return next(err);
           }
-          return res.json(user.toJson());
+          return res.json(user.json());
         });
       })(req, res, next);
     }

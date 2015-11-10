@@ -26,15 +26,9 @@ module.exports = function(router, passport) {
   // Routes
   // ###############################################################
 
-  var excludeFields = {
-    '_id'            : 0,
-    '__v'            : 0,
-    'local.password' : 0
-  };
-
   router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
 
-    User.find({}, excludeFields, function(err, users) {
+    User.find({}, User.excludeFields, function(err, users) {
       if (err) {
         return next(err);
       } else {
@@ -53,7 +47,7 @@ module.exports = function(router, passport) {
   var findUser = function(uuid, res, next, success) {
 
     var err;
-    User.findOne({ 'uuid' :  uuid }, excludeFields, function(err, user) {
+    User.findOne({ 'uuid' :  uuid }, User.excludeFields, function(err, user) {
       if (user === null) {
         err = new Error('User ' + uuid + ' not found');
         err.status = 404;
@@ -65,7 +59,7 @@ module.exports = function(router, passport) {
       } else {
         res.format({
           'application/json': function() {
-            success(user);
+            success(user.json());
           },
           'default': function() {
             res.send(406, 'Not Acceptable');
@@ -196,7 +190,7 @@ module.exports = function(router, passport) {
             }
             res.format({
               'application/json': function() {
-                res.json(user);
+                res.json(user.json());
               },
               'default': function() {
                 res.send(406, 'Not Acceptable');
@@ -217,7 +211,7 @@ module.exports = function(router, passport) {
       } else {
         res.format({
           'application/json': function() {
-            res.json(user);
+            res.json(user.json());
           },
           'default': function() {
             res.send(406, 'Not Acceptable');
