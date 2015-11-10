@@ -405,13 +405,13 @@ var ScenarioEditView = React.createClass({
               </div>
               <label className="control-label col-sm-2" htmlFor="title">Cover Image</label>
               <div className="col-sm-10">
-                  <UploadImage
-                    url={api.reverse('upload_thumbnail')}
-                    joi={ScenarioJoi.image}
-                    callback={this.onThumbnail}
-                    thumbnail={this.state.thumbnail}
-                    thumbnail_width="200px"
-                  />
+                <UploadImage
+                  url={api.reverse('upload_thumbnail')}
+                  joi={ScenarioJoi.image}
+                  callback={this.onThumbnail}
+                  thumbnail={this.state.thumbnail}
+                  thumbnail_width="200px"
+                />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-image-copyright">

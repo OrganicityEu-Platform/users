@@ -30,12 +30,17 @@ var UploadImage = React.createClass({
       info : undefined,
       width : undefined,
       type : undefined,
-      thumbnail : this.props.thumbnail,  // Here, the path will be stored
-      image : undefined,      // Here, the path will be stored
+      thumbnail : this.props.thumbnail,  // Here, the thumbnail path will be stored
+      image : undefined,      // Here, the image path will be stored
     };
   },
   componentDidMount : function() {
     this.validatorTypes = this.props.joi;
+  },
+  componentWillReceiveProps : function() {
+    this.setState({
+      thumbnail: this.props.thumbnail
+    });
   },
   getValidatorData : function() {
     return {
