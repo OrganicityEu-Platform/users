@@ -41,6 +41,7 @@ var ScenarioEditView = React.createClass({
   },
   getInitialState: function() {
 
+    /*
     // if we're in the process of editing a scenario the browser session storage will remember
     // values until users persisted it on the server
     if (window.sessionStorage && window.sessionStorage.getItem(this.storageKey()) != null) {
@@ -49,6 +50,8 @@ var ScenarioEditView = React.createClass({
       o.btnClickedOnce = false;
       return o;
     }
+    */
+
     // if we're not in the editing process already and not editing, creating a new one
     return {
       title : '',
@@ -76,7 +79,7 @@ var ScenarioEditView = React.createClass({
         params : this.getParams(),
         query : this.props.query
       };
-      sessionStorage.setItem('url', JSON.stringify(src));
+      //sessionStorage.setItem('url', JSON.stringify(src));
       this.transitionTo('login');
       return;
     }
@@ -100,12 +103,14 @@ var ScenarioEditView = React.createClass({
   storageKey : function() {
     this.editMode() ? 'ocScenarioEdit' : 'ocScenarioCreate';
   },
+  /*
   clearState : function() {
     window.sessionStorage.removeItem(this.storageKey());
   },
   saveState : function() {
     window.sessionStorage.setItem(this.storageKey(), JSON.stringify(this.state));
   },
+  */
   currentStep : function() {
     return parseInt(this.props.query.step);
   },
@@ -184,6 +189,7 @@ var ScenarioEditView = React.createClass({
   },
   clickedPrevious : function() {
 
+    // Trim, as soon the button is clicked
     this.setState({
       btnClickedOnce: false
     });
@@ -192,13 +198,19 @@ var ScenarioEditView = React.createClass({
       console.log('User tried to go beyond first step. This is not possible!');
       return;
     }
-    this.saveState();
+    //this.saveState();
     this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() - 1 });
   },
   clickedPreview : function() {
 
+    // Trim, as soon the button is clicked
     this.setState({
-      btnClickedOnce: true
+      btnClickedOnce: true,
+      title     : this.state.title.trim(),
+      summary   : this.state.summary.trim(),
+      narrative : this.state.narrative.trim(),
+      credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
+      copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
     });
 
     if (this.currentStep() + 1 > this.getSteps().length) {
@@ -207,7 +219,7 @@ var ScenarioEditView = React.createClass({
     }
 
     this.prepareValidationPreview();
-    this.saveState();
+    //this.saveState();
 
     this.validateCurrentStep(() => {
       this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
@@ -218,16 +230,16 @@ var ScenarioEditView = React.createClass({
     this.validatorTypes = ScenarioJoi.edit;
     this.getValidatorData = function() {
       return {
-        title     : this.state.title,
-        summary   : this.state.summary,
-        narrative : this.state.narrative,
+        title     : this.state.title.trim(),
+        summary   : this.state.summary.trim(),
+        narrative : this.state.narrative.trim(),
         sectors   : this.state.sectors,
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
         image     : this.state.image,
-        credit    : this.state.credit,
-        copyright : this.state.copyright
+        credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
+        copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
       };
     };
     //this.props.validate();
@@ -237,16 +249,16 @@ var ScenarioEditView = React.createClass({
     this.validatorTypes = ScenarioJoi.preview;
     this.getValidatorData = function() {
       return {
-        title     : this.state.title,
-        summary   : this.state.summary,
-        narrative : this.state.narrative,
+        title     : this.state.title.trim(),
+        summary   : this.state.summary.trim(),
+        narrative : this.state.narrative.trim(),
         sectors   : this.state.sectors,
         actors    : this.state.actors,
         devices   : this.state.devices,
         thumbnail : this.state.thumbnail,
         image     : this.state.image,
-        credit    : this.state.credit,
-        copyright : this.state.copyright
+        credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
+        copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
       };
     };
 
@@ -262,7 +274,7 @@ var ScenarioEditView = React.createClass({
         method: method,
         error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
         success: (scenario) => {
-          this.clearState();
+          //this.clearState();
           this.transitionTo('scenarioView', { uuid : scenario.uuid });
         }
       }

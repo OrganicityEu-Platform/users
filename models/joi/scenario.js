@@ -3,9 +3,9 @@ var ScenarioConfig  = require('../../config/scenario.js');
 
 var scenario = {};
 
-var joiTitle = Joi.string().max(ScenarioConfig.max.title).label('Title').required();
-var joiSummary = Joi.string().max(ScenarioConfig.max.summary).label('Summary').required();
-var joiNarrative = Joi.string().max(ScenarioConfig.max.narrative).label('Narrative').required();
+var joiTitle = Joi.string().max(ScenarioConfig.max.title).trim().label('Title').required();
+var joiSummary = Joi.string().max(ScenarioConfig.max.summary).trim().label('Summary').required();
+var joiNarrative = Joi.string().max(ScenarioConfig.max.narrative).trim().label('Narrative').required();
 
 /*
   FIXME: use an object!
@@ -38,8 +38,8 @@ scenario.preview = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
-  credit      : Joi.string().label('Credit').optional(),
-  copyright   : Joi.string().label('Copyright').optional(),
+  credit      : Joi.string().trim().min(1).label('Credit').optional(),
+  copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
   thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
   image       : Joi.string().regex(/^uploads\/|^tmp\//)
@@ -53,8 +53,8 @@ scenario.server = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
-  credit      : Joi.string().label('Credit').optional(),
-  copyright   : Joi.string().label('Copyright').optional(),
+  credit      : Joi.string().trim().min(1).label('Credit').optional(),
+  copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
   dataSources : Joi.array().label('Data Sources').items(Joi.string()),
   thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
   image       : Joi.string().regex(/^uploads\/|^tmp\//)

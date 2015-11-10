@@ -242,6 +242,68 @@ var tests = function(getServer, getUsers, inputValidationTestHelper, ss) {
     }
   );
 
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (title just whitespaces)',
+    function(done) {
+      var scenario = {
+        'title' : '  ',
+        'narrative' : 'narrative',
+        'summary' : 'summary'
+      };
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (narrative just whitespaces)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'narrative' : '  ',
+        'summary' : 'summary'
+      };
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (summary just whitespaces)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'narrative' : 'narrative',
+        'summary' : '  '
+      };
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (credit just whitespaces)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'narrative' : 'narrative',
+        'summary' : 'summary',
+        'credit' : '  '
+      };
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
+  it('should return 400 BAD_REQUEST when trying to send a corrupted dummy object (copyright just whitespaces)',
+    function(done) {
+      var scenario = {
+        'title' : 'title',
+        'narrative' : 'narrative',
+        'summary' : 'summary',
+        'copyright' : '  '
+      };
+
+      inputValidationTestHelper(scenario, http.BAD_REQUEST, done);
+    }
+  );
+
   // ######################################################################################
   // 201 CREATED
   // ######################################################################################
