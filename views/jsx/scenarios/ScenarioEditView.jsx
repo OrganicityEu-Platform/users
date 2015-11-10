@@ -29,8 +29,7 @@ var ScenarioEditView = React.createClass({
     return this.props.params.uuid;
   },
   routeName: function() {
-    var routeName = this.getRoutes()[this.getRoutes().length - 1].name;
-    return routeName;
+    return this.getRoutes()[this.getRoutes().length - 1].name;
   },
   componentWillMount : function() {
     if (!this.props.query.step) {
@@ -303,6 +302,17 @@ var ScenarioEditView = React.createClass({
     //console.log('summary', this.props.isValid('summary'));
     //console.log('narrative', this.props.isValid('narrative'));
 
+    var errorMessageTitle = null;
+    var errorMessageSummary = null;
+    var errorMessageNarrative = null;
+
+    // Just show the error messages, if the button was clicked once
+    if (this.state.btnClickedOnce) {
+      errorMessageTitle = (<Message type="danger" messages={this.props.getValidationMessages('title')} />);
+      errorMessageSummary = (<Message type="danger" messages={this.props.getValidationMessages('summary')} />);
+      errorMessageNarrative = (<Message type="danger" messages={this.props.getValidationMessages('narrative')} />);
+    }
+
     return (
       <div className="container oc-create-edit-view">
         <div className="row">
@@ -312,38 +322,41 @@ var ScenarioEditView = React.createClass({
           <form className="form-horizontal">
             <div className="form-group oc-create-edit oc-create-edit-title">
               <label className="control-label col-sm-3" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/>
-              <span className="scenario-create-edit-view-field-info">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </span>
               </label>
               <div className="col-sm-9">
                 <input maxLength={ScenarioConfig.max.title} type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
-                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
-                <Message type="danger" messages={this.props.getValidationMessages('title')} />
+                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
+                {errorMessageTitle}
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
               <label className="control-label col-sm-3" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </span>
               </label>
               <div className="col-sm-9">
                 <textarea maxLength={ScenarioConfig.max.summary} type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
-                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
-                <Message type="danger" messages={this.props.getValidationMessages('summary')} />
+                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
+                {errorMessageSummary}
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
               <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </span>
               </label>
               <div className="col-sm-9">
                 <textarea maxLength={ScenarioConfig.max.narrative} className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
-                  <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
-                <Message type="danger" messages={this.props.getValidationMessages('narrative')} />
+                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
+                {errorMessageNarrative}
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-sectors">
