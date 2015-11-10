@@ -196,6 +196,37 @@ input[type="submit"] {
   opacity: 1;
 }
 
-.hello {
-  padding-left: 5px;
+
+/* RADIO */
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label:before {
+  background-color: @oc-dark-grey;
+  border: 2px solid @oc-white;
+  border-radius: 6px;
+  margin: -2px 6px 0 0;
+  content: "";
+  display: inline-block;
+  font-size: 24px;
+  height: 12px;
+  width: 12px;
+  line-height: 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+input[type="radio"]:checked + label:before {
+  background-color: @oc-magenta;
+  border-color: @oc-magenta;
+}
+
+.radio-label {
+  margin-bottom: 0px;
+}
+
+.table-responsive {
+    overflow-x: auto;
 }

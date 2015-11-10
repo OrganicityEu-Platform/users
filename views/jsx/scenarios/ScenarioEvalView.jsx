@@ -115,13 +115,11 @@ var ScenarioEvalView = React.createClass({
             {this.state.questionnaire.description}
           </div>
           <div className="oc-evaluation-table-div">
-            <table>
+            <div className="table-responsive">
+            <table className="table">
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
-                  <tr key={"question_"+qIdx+"_headers"}>
-                    <td>&nbsp;</td>
-                    {q.values.map((a) => <td className="oc-evaluation-answer-text">{a.value}</td>)}
-                  </tr>,
+
                   <tr key={"question_"+qIdx+"_radios"}>
                     <td className="oc-evaluation-question">{q.text}</td>
                     {q.values.map((a,aIdx) => (
@@ -131,12 +129,14 @@ var ScenarioEvalView = React.createClass({
                           name={"question_"+qIdx}
                           id={"question_"+qIdx+"_answer_"+aIdx}
                           onClick={this.selectedAnswer(qIdx, aIdx)} />
+                        <label className="radio-label" htmlFor={"question_"+qIdx+"_answer_"+aIdx}></label>
                       </td>
                     ))}
                   </tr>
                 ]
               )}
             </table>
+          </div>
           </div>
           <div className="oc-evaluation-sendbutton-div">
             <button type="button" className="btn btn-primary" onClick={this.sendEvaluation}>Send Evaluation</button>
