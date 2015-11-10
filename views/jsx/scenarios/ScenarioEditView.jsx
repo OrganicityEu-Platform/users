@@ -401,7 +401,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit oc-create-edit-image">
               <div className="col-sm-2"></div>
               <div className="col-sm-10">
-                Please upload an image. File type must be JPEG pr PNG with a width of at least width 1140 px<br/>
+                Please upload an image. File type must be JPEG or PNG with a width of at least width 1140 px<br/>
               </div>
               <label className="control-label col-sm-2" htmlFor="title">Cover Image</label>
               <div className="col-sm-10">
