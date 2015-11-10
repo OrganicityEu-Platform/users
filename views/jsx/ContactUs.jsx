@@ -7,10 +7,10 @@ import ErrorMessage from './ErrorMessage.jsx';
 import Joi from 'joi';
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
-import contactUsValidation from '../../models/joi/contactUs.js';
+import ContactUsValidation from '../../models/joi/contactUs.js';
 import loggedIn from './UserIsLoggedInMixin.jsx';
 import Contact from '../../models/contact.js';
-
+import User from '../../logic/user.js';
 
 var myContactForm = React.createClass({
   mixins: [loggedIn],
@@ -18,21 +18,23 @@ var myContactForm = React.createClass({
   getInitialState: function() {
     return {
       address: '',
-      message: ''
+      addressIsSetByUser: false,
+      message: '',
+      error: null,
+      success: false
     };
   },
 
-  componentDidMount: function() {
-    console.log("will mount.", window.currentUser);
+  componentWillMount: function() {
+    console.log("mountin!", this.props);
 
-    if (window.currentUser && this.state.address == '') {
-      console.log("contactus: current user: ", window.currentUser);
-      this.setState({address: window.currentUser.getMailAddress()});
-    }
   },
 
   addressChanged: function(event) {
-    this.setState({address: event.target.value}, state => {
+    this.setState({
+      address: event.target.value,
+      addressIsSetByUser: true
+    }, state => {
       this.props.validate('address');
     });
   },
@@ -45,7 +47,7 @@ var myContactForm = React.createClass({
 
   getContactRecord: function() {
     return {
-      address: this.state.address,
+      address: this.getMailAddress(),
       message: this.state.message
     };
   },
@@ -54,7 +56,7 @@ var myContactForm = React.createClass({
     return this.getContactRecord();
   },
 
-  validatorTypes: contactUsValidation.form,
+  validatorTypes: ContactUsValidation.form,
 
   submitForm: function() {
     console.log('submitting form', this.getContactRecord());
@@ -72,6 +74,7 @@ var myContactForm = React.createClass({
 
   showSuccessMessage: function(data, textStatus, jqXHR) {
     this.setState({
+      addressIsSetByUser: false,
       error: null,
       success: true
     });
@@ -86,6 +89,15 @@ var myContactForm = React.createClass({
     });
   },
 
+  getMailAddress: function() {
+    var getDefaultAddress =
+      !this.state.addressIsSetByUser && this.state.address == ''
+      && typeof this.props.currentUser != 'undefined';
+
+    return getDefaultAddress
+      ? User.getMailAddress(this.props.currentUser)
+      : this.state.address;
+  },
 
   render: function() {
     if (typeof this.props.currentUser == 'undefined')
@@ -97,9 +109,6 @@ var myContactForm = React.createClass({
           </a>
         </div>);
     }
-
-    var userMail = // this.props.currentUser.getMailAddress();
-      'user@mail.com';
 
     var successMessage = this.state && this.state.successful
         ? (
@@ -124,18 +133,23 @@ var myContactForm = React.createClass({
         <form className="form-horizontal">
           <div className="form-group">
             <input type="text" className="form-control" name="address"
-              placeholder="Your Email Address" value={userMail}
+              placeholder="Your Email Address" value={this.getMailAddress()}
               id="address" onChange={this.addressChanged} />
             <ErrorMessage
               messages={this.props.getValidationMessages('address')} />
           </div>
 
           <div className="form-group">
-            <textarea className="form-control" name="body" id="body"
+            <textarea className="form-control" name="message" id="message"
               placeholder="Your Message"
-              onChange={this.bodyChanged} />
+              onChange={this.messageChanged} />
             <ErrorMessage
-              messages={this.props.getValidationMessages('body')} />
+              messages={this.props.getValidationMessages('message')} />
+          </div>
+
+          <div className="form-group">
+            {errorMessage}
+            {successMessage}
           </div>
 
           <div className="form-group">
@@ -144,11 +158,6 @@ var myContactForm = React.createClass({
               disabled={canSubmit ? '' : 'disabled'}>
               Submit
             </button>
-          </div>
-
-          <div className="form-group">
-            {errorMessage}
-            {successMessage}
           </div>
         </form>
       </div>
