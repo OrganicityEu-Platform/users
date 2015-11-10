@@ -25,11 +25,6 @@ var myContactForm = React.createClass({
     };
   },
 
-  componentWillMount: function() {
-    console.log("mountin!", this.props);
-
-  },
-
   addressChanged: function(event) {
     this.setState({
       address: event.target.value,
@@ -46,6 +41,7 @@ var myContactForm = React.createClass({
   },
 
   getContactRecord: function() {
+
     return {
       address: this.getMailAddress(),
       message: this.state.message
@@ -56,19 +52,23 @@ var myContactForm = React.createClass({
     return this.getContactRecord();
   },
 
-  validatorTypes: ContactUsValidation.form,
+  validatorTypes: ContactUsValidation.form.body,
 
   submitForm: function() {
-    console.log('submitting form', this.getContactRecord());
+    this.props.validate(error => {
+      if (error) {
+        return;
+      }
 
-    var contactUrl = api.reverse('contactUs');
-    $.ajax(contactUrl, {
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify(this.getContactRecord()),
-      method: 'POST',
-      success: this.showSuccessMessage,
-      error: this.showErrorMessage
+      var contactUrl = api.reverse('contactUs');
+      $.ajax(contactUrl, {
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(this.getContactRecord()),
+        method: 'POST',
+        success: this.showSuccessMessage,
+        error: this.showErrorMessage
+      });
     });
   },
 
@@ -110,7 +110,7 @@ var myContactForm = React.createClass({
         </div>);
     }
 
-    var successMessage = this.state && this.state.successful
+    var successMessage = this.state && this.state.success
         ? (
             <div>
               Your message has been sent. Thank you for your feedback!
@@ -124,8 +124,7 @@ var myContactForm = React.createClass({
         ? <ErrorMessage messages={this.state.error} />
         : null;
 
-    var canSubmit = this.props.isValid()
-      && this.state !== this.getInitialState();
+    var canSubmit = this.props.isValid();
 
     return (
       <div>
