@@ -120,7 +120,7 @@ var ScenarioEvalView = React.createClass({
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
                   <div key={"question_"+qIdx+"_radios"}>
-                    <div className="oc-evaluation-question col-lg-5">{q.text}</div>
+                    <div className="oc-evaluation-question col-lg-6">{q.text}</div>
                     {q.values.map((a,aIdx) => (
                       <div className="oc-evaluation-answer-radio col-lg-1">
                         <input type="radio"
