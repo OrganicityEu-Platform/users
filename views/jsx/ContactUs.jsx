@@ -125,14 +125,14 @@ var myContactForm = React.createClass({
       {
         return (
           <div onClick={this.resetForm}>
-            <Message type="danger" messages={this.state.error} />
+            <Message type="danger" message={this.state.error} />
           </div>
         );
       }
 
       return (
           <div onClick={this.resetForm}>
-            <Message type="success" messages="Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible." />
+            <Message type="success" message="Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible." />
           </div>
         );
     }
@@ -148,15 +148,15 @@ var myContactForm = React.createClass({
               placeholder="Your Email Address" value={this.getMailAddress()}
               id="address" onChange={this.addressChanged} />
             <Message type="danger"
-              message={this.props.getValidationMessages('address')} />
+              messages={this.props.getValidationMessages('address')} />
           </div>
 
           <div className="form-group">
             <textarea className="form-control" name="message" id="message"
               placeholder="Your Message"
               onChange={this.messageChanged} />
-            <ErrorMessage
-              message={this.props.getValidationMessages('message')} />
+            <Message type="danger"
+              messages={this.props.getValidationMessages('message')} />
           </div>
 
           <div className="form-group">
