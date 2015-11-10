@@ -54,7 +54,11 @@ var UserAvatar = React.createClass({
       return (<span><i>{userText}</i></span>);
     }
 
-    return <Link to="userView" params={{ uuid: this.props.uuid }}>{userText}</Link>;
+    return (
+      <span className="user-avatar">
+        <Link to="userView" params={{ uuid: this.props.uuid }}>{userText}</Link>
+      </span>
+    );
   }
 });
 

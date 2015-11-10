@@ -13,10 +13,6 @@ var ScenarioThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
 
-  clickHandler: function() {
-    this.transitionTo('scenarioView', { uuid: this.props.scenario.uuid });
-  },
-
   render: function() {
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
@@ -38,12 +34,15 @@ var ScenarioThumbnail = React.createClass({
 
     return (
       <div className="col-md-4">
-        <div
-          className="well scenario-thumbnail"
-          onClick={this.clickHandler}>
-          <div>
-            <div className={sector_colour_marker}><span className="scenario-thumbnail-marker-score"><Score scope="scenarios" className="scenario-article-score-thumbnail" id={this.props.scenario.uuid} /></span></div>
-          </div>
+        <div className="well scenario-thumbnail">
+          <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
+            <div>
+              <div className={sector_colour_marker}>
+                <span className="scenario-thumbnail-marker-score">
+                  <Score scope="scenarios" className="scenario-article-score-thumbnail" id={this.props.scenario.uuid} />
+                </span>
+              </div>
+            </div>
             <header className="scenario-thumbnail-header">
               <span>
                 <span className="scenario-thumbnail-timestamp">
@@ -56,11 +55,12 @@ var ScenarioThumbnail = React.createClass({
                 {this.props.scenario.title}
               </h3>
               <span className="scenario-thumbnail-publisher-wrapper">
-                <span className="meta">Posted by: </span><span className="scenario-thumbnail-publisher"><UserAvatar uuid={this.props.scenario.creator} /></span>
+                <span className="meta">Posted by: </span>
+                <span className="scenario-thumbnail-publisher"><UserAvatar uuid={this.props.scenario.creator} /></span>
               </span>
             </header>
             <p className="scenario-thumbnail-summary">
-              { summary}
+              aaaa {summary}
             </p>
             <span className="scenario-thumbnail-sat-wrapper">
               <span>Sectors: {sectors}</span>
@@ -70,9 +70,10 @@ var ScenarioThumbnail = React.createClass({
             <div className={sector_colour_overlay}>
               {thumbnail}
             </div>
-          </div>
+          </Link>
         </div>
-      );
+      </div>
+    );
   }
 });
 
