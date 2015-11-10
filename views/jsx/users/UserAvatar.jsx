@@ -43,8 +43,10 @@ var UserAvatar = React.createClass({
       return <div>Loading...</div>;
     }
 
-    var userText = 'Unknown or deleted user';
-    if (this.state.user && this.state.user.name && this.state.user.name !== '') {
+    var userText = this.props.uuid;
+    if (!this.state.user) {
+      userText = 'Deleted user';
+    } else if (this.state.user.name && this.state.user.name !== '') {
       userText = this.state.user.name;
     }
 
