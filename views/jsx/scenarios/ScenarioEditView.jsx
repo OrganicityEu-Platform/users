@@ -310,8 +310,11 @@ var ScenarioEditView = React.createClass({
           </div>
           <form className="form-horizontal">
             <div className="form-group oc-create-edit oc-create-edit-title">
-              <label className="control-label col-sm-2" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/></label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/>
+              <span className="scenario-create-edit-view-field-info">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <input maxLength="50" type="text" className="form-control" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
                   <span className="scenario-create-edit-char-remain">{50 - this.state.title.length} characters remaining</span>
@@ -319,8 +322,11 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-summary">
-              <label className="control-label col-sm-2" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/></label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/>
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <textarea maxLength="240" type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
                   <span className="scenario-create-edit-char-remain">{240 - this.state.summary.length} characters remaining</span>
@@ -328,8 +334,11 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-narrative">
-              <label className="control-label col-sm-2" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/></label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/>
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <textarea maxLength="5000" className="form-control" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
                   <span className="scenario-create-edit-char-remain">{5000 - this.state.narrative.length} characters remaining</span>
@@ -337,20 +346,29 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-sectors">
-              <label className="control-label col-sm-2" htmlFor="sectors">Sectors</label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="sectors">Sectors
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-actors">
-              <label className="control-label col-sm-2" htmlFor="sectors">Actors</label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="sectors">Actors
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-tools">
-              <label className="control-label col-sm-2" htmlFor="sectors">Tools</label>
-              <div className="col-sm-10">
+              <label className="control-label col-sm-3" htmlFor="sectors">Tools
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
                 <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
               </div>
             </div>
