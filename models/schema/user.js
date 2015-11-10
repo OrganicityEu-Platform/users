@@ -58,6 +58,42 @@ user.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
 
+// checks if password is valid
+user.methods.toJson = function() {
+
+  var o = this.toObject();
+
+  delete o._id;
+  delete o.__v;
+
+  if (o.local) {
+    delete o.local.password;
+    delete o.local.passwordReset;
+  }
+
+  if (o.twitter) {
+    delete o.twitter.token;
+  }
+
+  if (o.google) {
+    delete o.google.token;
+  }
+
+  if (o.github) {
+    delete o.twitter.token;
+  }
+
+  if (o.github) {
+    delete o.twitter.token;
+  }
+
+  if (o.disqus) {
+    delete o.disqus.token;
+  }
+
+  return o;
+};
+
 user.methods.hasRole = function(roles) {
   for (var i = 0; i <= roles.length; i++) {
     var role = roles[i];
