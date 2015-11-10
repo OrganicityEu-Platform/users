@@ -41,7 +41,6 @@ var myContactForm = React.createClass({
   },
 
   getContactRecord: function() {
-
     return {
       address: this.getMailAddress(),
       message: this.state.message
@@ -74,7 +73,6 @@ var myContactForm = React.createClass({
 
   showSuccessMessage: function(data, textStatus, jqXHR) {
     this.setState({
-      addressIsSetByUser: false,
       error: null,
       success: true
     });
@@ -82,11 +80,14 @@ var myContactForm = React.createClass({
 
   showErrorMessage: function(jqXHR, textStatus, errorThrown) {
     this.setState({
-      error: "Sorry, your Request could not be sent.<br />" +
-        "The error message was:<br />" +
-        jqXHR.responseText,
+      error: jqXHR.responseText,
       success: false
     });
+  },
+
+  resetForm: function() {
+    console.log("reseting form.");
+    this.setState(this.getInitialState());
   },
 
   getMailAddress: function() {
@@ -97,6 +98,14 @@ var myContactForm = React.createClass({
     return getDefaultAddress
       ? User.getMailAddress(this.props.currentUser)
       : this.state.address;
+  },
+
+  isSubmitted: function() {
+    return this.state.error || this.state.success;
+  },
+
+  hasErrors: function() {
+    return this.isSubmitted() && this.state.error;
   },
 
   render: function() {
@@ -110,19 +119,25 @@ var myContactForm = React.createClass({
         </div>);
     }
 
-    var successMessage = this.state && this.state.success
-        ? (
-            <div>
-              Your message has been sent. Thank you for your feedback!
-              <br />
-              We will get back to you as soon as possible.
-            </div>
-        )
-        : null;
+    if (this.isSubmitted())
+    {
+      if (this.hasErrors())
+      {
+        return (
+          <div onClick={this.resetForm}>
+            <ErrorMessage messages={this.state.error} />
+          </div>
+        );
+      }
 
-    var errorMessage = this.state && this.state.error
-        ? <ErrorMessage messages={this.state.error} />
-        : null;
+      return (
+          <div onClick={this.resetForm}>
+            Your message has been sent. Thank you for your feedback!
+            <br />
+            We will get back to you as soon as possible.
+          </div>
+        );
+    }
 
     var canSubmit = this.props.isValid();
 
@@ -147,17 +162,13 @@ var myContactForm = React.createClass({
           </div>
 
           <div className="form-group">
-            {errorMessage}
-            {successMessage}
-          </div>
-
-          <div className="form-group">
             <button type="button" className="btn btn-default"
               onClick={this.submitForm}
               disabled={canSubmit ? '' : 'disabled'}>
-              Submit
-            </button>
-          </div>
+            Submit
+          </button>
+        </div>
+
         </form>
       </div>
     );

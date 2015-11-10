@@ -10,13 +10,13 @@ UserLogic.getMailAddress = function(user) {
     return '';
   }
 
-  if (user.local) {
+  if (isDefined(user.local) && isDefined(user.local.email)) {
     return user.local.email;
-  } else if (user.facebook) {
+  } else if (isDefined(user.facebook) && isDefined(user.facebook.email)) {
     return user.facebook.email;
-  } else if (user.google) {
+  } else if (isDefined(user.google) && isDefined(user.google.email)) {
     return user.google.email;
-  } else if (user.disqus) {
+  } else if (isDefined(user.disqus) && isDefined(user.disqus.email)) {
     return user.disqus.email;
   } else {
     return '';

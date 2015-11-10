@@ -25,13 +25,12 @@ function sendContactMail(req, res) {
   };
 
   var transporter = mailer.createTransport();
-  transporter.sendMail(mail, function(error, info) {
+  transporter.sendMail(mail, function(error) {
     if (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(
-        'Failure while sending mail: ' +
-          error + '(' + info + ')');
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send('Failure while sending mail: ' + error);
     } else {
-      res.status(HttpStatus.OK).send();
+      res.status(HttpStatus.OK).send({});
     }
   });
 };
