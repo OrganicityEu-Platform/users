@@ -1,6 +1,10 @@
 
 var UserLogic = {};
 
+var isDefined = function(value) {
+  return typeof value !== 'undefined' && value;
+};
+
 UserLogic.getMailAddress = function(user) {
   if (typeof user == 'undefined') {
     return '';
@@ -23,10 +27,6 @@ UserLogic.getName = function(user) {
   if (typeof user == 'undefined') {
     return '';
   }
-
-  var isDefined = function(value) {
-    return typeof value !== 'undefined' && value;
-  };
 
   if (isDefined(user.name)) {
     return user.name;
@@ -53,6 +53,5 @@ UserLogic.getName = function(user) {
 
   return '<empty>';
 };
-
 
 module.exports = UserLogic;

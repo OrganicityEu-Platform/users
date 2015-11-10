@@ -4,7 +4,7 @@ var contactUs = {};
 
 contactUs.form = {
   options : {
-  allowUnknownBody: false
+    allowUnknownBody: false
   },
   body: {
     address: Joi.string().email().label('Email Address').required(),
