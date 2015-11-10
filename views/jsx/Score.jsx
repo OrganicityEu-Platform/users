@@ -15,6 +15,10 @@ var Score = React.createClass({
   },
   componentDidMount: function() {
 
+    if (!this.props.scope || !this.props.id) {
+      return;
+    }
+
     var url = api.reverse('evaluation_score', {
       uuid : this.props.id
     });
@@ -28,7 +32,7 @@ var Score = React.createClass({
       },
       success : (res) => {
         console.log(res);
-        this.loaded({score: parseFloat(res.tech)+parseFloat(res.noTech)});
+        this.loaded({score: parseFloat(res.tech) + parseFloat(res.noTech)});
       }
     });
 

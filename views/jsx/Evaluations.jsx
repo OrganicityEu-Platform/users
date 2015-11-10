@@ -15,6 +15,10 @@ var Evaluations = React.createClass({
   },
   componentDidMount: function() {
 
+    if (!this.props.scope || !this.props.id) {
+      return;
+    }
+
     var url = api.reverse('evaluations_count', {
       uuid : this.props.id
     });

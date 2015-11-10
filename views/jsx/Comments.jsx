@@ -15,6 +15,10 @@ var Comments = React.createClass({
   },
   componentDidMount: function() {
 
+    if (!this.props.scope || !this.props.id) {
+      return;
+    }
+
     var url = api.reverse('discus_statistics', {
       uuid : this.props.id
     });
