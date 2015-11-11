@@ -5,6 +5,6 @@
  */
 
 module.exports = {
-  mailAddress: '--this-is-an-invalid-target-email-address--'
+  mailAddress: 'scenarios@organicity.eu'
 };
 
