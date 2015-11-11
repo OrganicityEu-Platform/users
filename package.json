@@ -98,7 +98,6 @@
     "passport-twitter": "~1.0.3",
     "promise": "^7.0.4",
     "react": "^0.13.3",
-    "react-addons-css-transition-group": "^0.14.2",
     "react-bootstrap": "^0.24.2",
     "react-disqus-thread": "^0.2.2",
     "react-mixin": "^1.7.0",

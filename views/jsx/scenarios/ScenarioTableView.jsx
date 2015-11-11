@@ -11,51 +11,22 @@ import api                  from '../../../api_routes.js';
 
 import LoadingMixin     from '../LoadingMixin.jsx';
 
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-
-var Eval = React.createClass({
-  render: function() {
-    return (
-      <ReactCSSTransitionGroup
-        transitionName="acenario-article-eval-anim"
-        transitionAppear={true}
-        transitionAppearTimeout={500}>
-        <div className="scneario-article-eval-wrapper col-lg-12">
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-        </div>
-      </ReactCSSTransitionGroup>
-    );
-  }
-});
-
 var ScenarioTableView = React.createClass({
-  handleEval: function () {
-    return (
-      React.render(
-        <Eval/>,
-        document.getElementById('scenario-article-view-eval-container')
-      )
-    );
-  },
   mixins: [LoadingMixin],
   render: function() {
     if (!this.props.scenario) {
       return null;
     }
-    console.log('Scenario', this.props.scenario)
+
+    //console.log('Scenario', this.props.scenario)
+
     var image = this.props.scenario.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
-      image = (
-        <img
-          src={ui.asset(this.props.scenario.image)}
-          width="100%"/>
-      );
+      image = (<img src={ui.asset(this.props.scenario.image)} width="100%"/>);
     } else {
       image = undefined;
     }
+
     var sector_colour = this.props.scenario.sectors[0];
     var sector_colour_marker;
     var article_image_overlay;
@@ -65,21 +36,19 @@ var ScenarioTableView = React.createClass({
     }else {
       sector_colour_marker = 'scenario-article-marker';
     }
+
     var credit;
     if (this.props.scenario.credit) {
       credit = (
         <div className="col-md-12">
           <div className="scenario-article-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
-            <span className="scenario-ast-items">
-              {this.props.scenario.credit}
-            </span>
-            <br>
-            </br>
+            <span className="scenario-ast-items">{this.props.scenario.credit}</span><br></br>
           </div>
         </div>
       );
     }
+
     var copyright;
     if (this.props.scenario.copyright) {
       copyright = (
@@ -88,22 +57,21 @@ var ScenarioTableView = React.createClass({
         </div>
       );
     }
+
     return (
       <div className="col-lg-8 col-lg-offset-2">
-        <div className="scenario-article">
-          <header className="scenario-article-header row">
-            <div className="col-lg-8">
-              <h2 className="scenario-article-title">
-                {this.props.scenario.title}
-              </h2>
+      <div className="scenario-article">
+        <header className="scenario-article-header row">
+          <div className="col-lg-8">
+            <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
               <div>
                 <span className="scenario-article-publisher">
                   Created by <UserAvatar uuid={this.props.scenario.creator} />
-              </span>
-              <span className="scenario-article-timestamp">
-                { this.props.scenario.timestamp ?
-                  <TimeAgo date={this.props.scenario.timestamp} />
-                  : '' }
+                </span>
+                <span className="scenario-article-timestamp">
+                  { this.props.scenario.timestamp ?
+                    <TimeAgo date={this.props.scenario.timestamp} />
+                    : '' }
                 </span>
               </div>
               <div className="">
@@ -111,119 +79,73 @@ var ScenarioTableView = React.createClass({
                   {this.props.scenario.summary}
                 </p>
               </div>
+          </div>
+          <div className="col-lg-2">
+            <div className="scenario-article-widget-data">
+              <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
+              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
+              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i><Evaluations scope="scenarios" className="scenario-article-evaluations" id={this.props.scenario.uuid} />  evaluations</p>
             </div>
-            <div className="col-lg-2">
-              <div className="scenario-article-widget-data">
-                <p className="scenario-article-widget-data-views">
-                  <i className="fa fa-eye">
-                  </i>
-                  <Counter
-                    scope="scenarios"
-                    className="scenario-article-views"
-                    id={this.props.scenario.uuid} />  views
-                  </p>
-                  <p className="scenario-article-widget-data-comments">
-                    <i className="fa fa-comment-o">
-                    </i>
-                    <Comments
-                      scope="scenarios"
-                      className="scenario-article-comments"
-                      id={this.props.scenario.uuid} />  comments
-                    </p>
-                    <p className="scenario-article-widget-data-evaluations">
-                      <i className="fa fa-circle">
-                      </i>
-                      <Evaluations
-                        scope="scenarios"
-                        className="scenario-article-evaluations"
-                        id={this.props.scenario.uuid} />  evaluations
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-lg-2">
-                    <div className={sector_colour_marker}>
-                      <span className="scenario-article-score">
-                        <Score
-                          scope="scenarios"
-                          className="scenario-article-score"
-                          id={this.props.scenario.uuid} />
-                      </span>
-                    </div>
-                  </div>
-                </header>
+          </div>
+          <div className="col-lg-2"><div className={sector_colour_marker}><span className="scenario-article-score"><Score scope="scenarios" className="scenario-article-score" id={this.props.scenario.uuid} /></span></div></div>
+        </header>
 
-                <div className="scenario-article-section">
-                  <div className={article_image_overlay}>
-                    {image}
-                  </div>
-                  {copyright}
-                  <div className="scenario-article-meta">
-                    <div className="col-md-4">
-                      <div className="scenario-ast-wrapper">
-                        <span className="scenario-ast">Actors:</span>
-                        <span className="scenario-ast-items">
-                          {this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}
-                        </span>
-                        <br>
-                        </br>
-                      </div>
+        <div className="scenario-article-section">
+          <div className={article_image_overlay}>
+            {image}
+          </div>
+          {copyright}
+          <div className="scenario-article-meta">
+            <div className="col-md-4">
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Actors:</span>
+                <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
+              </div>
 
-                    </div>
-                    <div className="col-md-4">
-                      <div className="scenario-ast-wrapper">
-                        <span className="scenario-ast">Sectors:</span>
-                        <span className="scenario-ast-items">
-                          {this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}
-                        </span>
-                        <br>
-                        </br>
-                      </div>
-                    </div>
-                    <div className="col-md-4">
-                      <div className="scenario-ast-wrapper">
-                        <span className="scenario-ast">Tools:</span>
-                        <span className="scenario-ast-items">
-                          {this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}
-                        </span>
-                        <br>
-                        </br>
-                      </div>
-                    </div>
-                    {credit}
-                  </div>
-                </div>
-                <footer className="scenario-article-footer">
-                </footer>
-              </div>
-              <div className="scenario-article-narrative-wrapper">
-                <span className="col-md-1">Narrative</span>
-                <div className="scenario-article-narrative col-md-11">
-                  {this.props.scenario.narrative}
-                </div>
-              </div>
-              <div className="col-md-3">
-              </div>
-              <div className="col-md-2">
-              </div>
-              <div className="col-md-2">
-                <ScenarioEvalButton scenario={this.props.scenario}/>
-              </div>
-              <div className="col-md-2">
-                <button
-                  className="oc-button-submit"
-                  onClick={this.handleEval}>
-                  Animate Eval
-                </button>
-              </div>
-              <div className="col-md-3">
-              </div>
-              <div
-                className="col-lg-12"
-                id="scenario-article-view-eval-container">
+            </div>
+            <div className="col-md-4">
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Sectors:</span>
+                <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
               </div>
             </div>
-          );
-        }
-      });
+            <div className="col-md-4">
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Tools:</span>
+                <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
+              </div>
+            </div>
+            {credit}
+          </div>
 
-      export default ScenarioTableView;
+
+        </div>
+
+        <footer className="scenario-article-footer">
+
+        </footer>
+
+      </div>
+
+      <div className="scenario-article-narrative-wrapper">
+          <span className="col-md-1">Narrative</span>
+          <div className="scenario-article-narrative col-md-11">
+            {this.props.scenario.narrative}
+          </div>
+      </div>
+
+
+
+      <div className="col-md-3"></div>
+      <div className="col-md-2"></div>
+      <div className="col-md-2">
+        <ScenarioEvalButton scenario={this.props.scenario}/>
+      </div>
+      <div className="col-md-2"></div>
+      <div className="col-md-3"></div>
+    </div>
+    );
+  }
+});
+
+export default ScenarioTableView;
