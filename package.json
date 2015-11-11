@@ -1,7 +1,12 @@
 {
-  "name": "node-authentication",
-  "main": "server.js",
+  "name": "organicity-sceanrios",
   "version": "0.1.0",
+  "main": "server.js",
+  "license": "TODO",
+  "repository": {
+    "type": "git",
+    "url": "https://git.itm.uni-luebeck.de/organicity/node-scenario-tool"
+  },
   "devDependencies": {
     "babel-eslint": "~4.0.5",
     "babelify": "^6.1.3",
