@@ -18,7 +18,7 @@ var ScenarioTableView = React.createClass({
       return null;
     }
 
-    console.log('Scenario', this.props.scenario)
+    //console.log('Scenario', this.props.scenario)
 
     var image = this.props.scenario.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {

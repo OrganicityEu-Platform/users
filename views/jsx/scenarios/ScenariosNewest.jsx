@@ -25,7 +25,7 @@ var ScenariosNewest = React.createClass({
       limit : this.props.limit
     };
 
-    console.log('Options', options);
+    //console.log('Options', options);
 
     var url = api.reverse('scenario_list', options);
 

@@ -61,7 +61,7 @@ module.exports = function(router, passport) {
     });
   });
 
-  var evaluationUpdateFields = ['scenario','submitted','answers','comment'];
+  var evaluationUpdateFields = ['scenario', 'submitted', 'answers', 'comment'];
   var forbiddenUpdateFields = ['uuid', 'user', 'timestamp'];
 
   router.post(api.route('evaluations_list'), function(req, res) {

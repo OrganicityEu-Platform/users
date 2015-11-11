@@ -24,14 +24,14 @@ var Score = React.createClass({
     });
 
     this.loading();
-    console.log(url);
+    //console.log(url);
     $.ajax(url, {
       dataType: 'json',
       error: (xhr) => {
         this.loaded();
       },
       success : (res) => {
-        console.log(res);
+        //console.log(res);
         this.loaded({score: parseFloat(res.tech) + parseFloat(res.noTech)});
       }
     });

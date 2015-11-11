@@ -23,7 +23,7 @@ var ScenarioView = React.createClass({
       url: url,
       success: (scenario) => {
         if (this.isMounted()) {
-          console.log('Scenario', scenario);
+          //console.log('Scenario', scenario);
           this.setState(scenario);
         }
       },

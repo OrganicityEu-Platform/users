@@ -24,7 +24,7 @@ var Comments = React.createClass({
     });
 
     this.loading();
-    console.log(url);
+    //console.log(url);
     $.ajax(url, {
       dataType: 'json',
       error: (xhr) => {
@@ -32,7 +32,7 @@ var Comments = React.createClass({
       },
       success : (res) => {
         if (res) {
-          console.log(res);
+          //console.log(res);
           this.loaded({comments: res.comments });
         } else {
           this.loaded({comments: 0 });
