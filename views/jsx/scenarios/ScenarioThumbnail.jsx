@@ -60,7 +60,7 @@ var ScenarioThumbnail = React.createClass({
               </span>
             </header>
             <p className="scenario-thumbnail-summary">
-              aaaa {summary}
+              {summary}
             </p>
             <span className="scenario-thumbnail-sat-wrapper">
               <span>Sectors: {sectors}</span>
