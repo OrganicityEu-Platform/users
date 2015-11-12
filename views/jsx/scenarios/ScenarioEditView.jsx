@@ -7,6 +7,7 @@ import ui                   from '../../../ui_routes.js';
 import Router               from 'react-router';
 import ScenarioCheck        from './ScenarioCheck.jsx'
 import ScenarioTableView    from './ScenarioTableView.jsx';
+import SectorSelector       from '../SectorSelector.jsx';
 
 // Input validation
 import validation           from 'react-validation-mixin';
@@ -378,6 +379,7 @@ var ScenarioEditView = React.createClass({
               </label>
               <div className="col-sm-9">
                 <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
+                <SectorSelector/>
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-actors">

@@ -25,36 +25,28 @@ var SectorSelector = React.createClass({
   render: function () {
     return (
       <div>
-        <div className="public-sector-item-wrapper">
-          <img className="public-sector-item" onClick={this.handleClick} src={ui.asset('static/img/noun_110491_cc.svg')}/>
+        <div className="public-sector-item sector-item" onClick={this.handleClick}>
           <span>public</span>
         </div>
-        <div className="transport-sector-item-wrapper">
-          <img className="transport-sector-item" onClick={this.handleClick} src={ui.asset('static/img/transport_sector_icon.svg')}/>
+        <div className="transport-sector-item sector-item" onClick={this.handleClick}>
           <span>transport</span>
         </div>
-        <div className="agriculture-sector-item-wrapper">
-          <img className="agriculture-sector-item" onClick={this.handleClick} src={ui.asset('static/img/agriculture_sector_icon.svg')}/>
+        <div className="agriculture-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>agriculture</span>
         </div>
-        <div className="energy-sector-item-wrapper">
-          <img className="energy-sector-item" onClick={this.handleClick} src={ui.asset('static/img/energy_sector_icon.svg')}/>
+        <div className="energy-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>energy</span>
         </div>
-        <div className="retail-sector-item-wrapper">
-          <img className="retail-sector-item" onClick={this.handleClick} src={ui.asset('static/img/retail_sector_icon.svg')}/>
+        <div className="retail-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>retail</span>
         </div>
-        <div className="healthcare-sector-item-wrapper">
-          <img className="healthcare-sector-item" onClick={this.handleClick} src={ui.asset('static/img/healthcare_sector_icon.svg')}/>
+        <div className="healthcare-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>healthcare</span>
         </div>
-        <div className="cultural-sector-item-wrapper">
-          <img className="cultural-sector-item" onClick={this.handleClick} src={ui.asset('static/img/cultural_sector_icon.svg')}/>
+        <div className="cultural-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>cultural</span>
         </div>
-        <div className="environment-sector-item-wrapper">
-          <img className="environment-sector-item" onClick={this.handleClick} src={ui.asset('static/img/environment_sector_icon.svg')}/>
+        <div className="environment-sector-item-wrapper sector-item" onClick={this.handleClick}>
           <span>environment</span>
         </div>
       </div>
