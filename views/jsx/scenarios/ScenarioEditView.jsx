@@ -21,6 +21,11 @@ import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
 
 var ScenarioEditView = React.createClass({
+  predefinedSectors: [
+    'public', 'transport', 'agriculture',
+    'energy', 'retail', 'healthcare',
+    'cultural', 'environment'
+  ],
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
   getSteps: function() {
@@ -58,7 +63,8 @@ var ScenarioEditView = React.createClass({
       title : '',
       summary : '',
       narrative : '',
-      sectors : [],
+      newSectors : [],
+      selectedSectors : [],
       actors : [],
       devices : [],
       step : 1,
@@ -90,8 +96,18 @@ var ScenarioEditView = React.createClass({
       var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
       $.getJSON(url, (scenario) => {
         if (this.isMounted()) {
-          this.setState(scenario);
-          this.props.validate();
+
+          for (var i = 0; i < scenario.sectors.length; i++) {
+            if (this.predefinedSectors.indexOf(scenario.sectors[i]) >= 0) {
+              this.state.selectedSectors.push(scenario.sectors[i]);
+            } else {
+              this.state.newSectors.push(scenario.sectors[i]);
+            }
+          }
+
+          this.setState(scenario, () => {
+            //this.props.validate();
+          });
         }
       });
     } else {
@@ -142,10 +158,31 @@ var ScenarioEditView = React.createClass({
       }
     });
   },
-  handleChangedSectors : function(sectors) {
-    this.setState({sectors: sectors}, () => {
+  handleNewSector: function(newSectors) {
+    var sectors = [];
+    Array.prototype.push.apply(sectors, this.state.selectedSectors);
+    Array.prototype.push.apply(sectors, newSectors);
+
+    this.setState({sectors: sectors, newSectors: newSectors}, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('selectedSectors');
+      }
+    });
+  },
+  handleSectorSelector: function(selectedSectors) {
+    var sectors = [];
+    Array.prototype.push.apply(sectors, selectedSectors);
+    Array.prototype.push.apply(sectors, this.state.newSectors);
+
+    console.log('selectedSectors', selectedSectors);
+
+    this.setState({selectedSectors: selectedSectors, sectors: sectors}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }else {
+        this.props.validate('selectedSectors');
       }
     });
   },
@@ -231,16 +268,16 @@ var ScenarioEditView = React.createClass({
     this.validatorTypes = ScenarioJoi.edit;
     this.getValidatorData = function() {
       return {
-        title     : this.state.title.trim(),
-        summary   : this.state.summary.trim(),
-        narrative : this.state.narrative.trim(),
-        sectors   : this.state.sectors,
-        actors    : this.state.actors,
-        devices   : this.state.devices,
-        thumbnail : this.state.thumbnail,
-        image     : this.state.image,
-        credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
-        copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
+        title           : this.state.title.trim(),
+        summary         : this.state.summary.trim(),
+        narrative       : this.state.narrative.trim(),
+        selectedSectors : this.state.selectedSectors,
+        actors          : this.state.actors,
+        devices         : this.state.devices,
+        thumbnail       : this.state.thumbnail,
+        image           : this.state.image,
+        credit          : this.state.credit ? this.state.credit.trim() : this.state.credit,
+        copyright       : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
       };
     };
     //this.props.validate();
@@ -310,6 +347,8 @@ var ScenarioEditView = React.createClass({
   },
   form : function() {
 
+    // return (<SectorEdit onChange={this.handleChangedSectors} sectors={this.state.sectors}/>);
+
     //console.log('state', this.state);
     //console.log('title', this.props.isValid('title'));
     //console.log('summary', this.props.isValid('summary'));
@@ -318,12 +357,14 @@ var ScenarioEditView = React.createClass({
     var errorMessageTitle = null;
     var errorMessageSummary = null;
     var errorMessageNarrative = null;
+    var errorMessageSelectedSectors = null;
 
     // Just show the error messages, if the button was clicked once
     if (this.state.btnClickedOnce) {
       errorMessageTitle = (<Message type="danger" messages={this.props.getValidationMessages('title')} />);
       errorMessageSummary = (<Message type="danger" messages={this.props.getValidationMessages('summary')} />);
       errorMessageNarrative = (<Message type="danger" messages={this.props.getValidationMessages('narrative')} />);
+      errorMessageSelectedSectors = (<Message type="danger" messages={this.props.getValidationMessages('selectedSectors')} />);
     }
 
     return (
@@ -373,13 +414,21 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-sectors">
-              <label className="control-label col-sm-3" htmlFor="sectors">Sectors
+              <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ScenarioCheck isvalid={this.props.isValid('selectedSectors')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
               </label>
               <div className="col-sm-9">
-                <TagField tags={this.state.sectors} onChange={this.handleChangedSectors} />
-                <SectorSelector/>
+                <SectorSelector
+                  onChange={this.handleSectorSelector}
+                  sectors={this.predefinedSectors}
+                  selected={this.state.selectedSectors}
+                />
+                {errorMessageSelectedSectors}
+                <div>
+                  Suggest new sectors:
+                  <TagField tags={this.state.newSectors} onChange={this.handleNewSector} />
+                </div>
               </div>
             </div>
             <div className="form-group oc-create-edit oc-create-edit-actors">

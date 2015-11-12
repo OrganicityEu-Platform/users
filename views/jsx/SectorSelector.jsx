@@ -1,54 +1,65 @@
-import React  from 'react';
-import ui     from '../../ui_routes.js';
+import React    from 'react';
+import TagField from './form-components/TagField.jsx';
 
-var selectedSectors = [];
 var SectorSelector = React.createClass({
-  handleClick: function (event) {
+  getInitialState: function() {
+    return {
+      selectedSectors: []
+    };
+  },
+  componentWillReceiveProps : function(props) {
+    this.setState({selectedSectors: props.selected});
+  },
+  handleNewSector: function(newSectors) {
+    //console.log('newSectors:', newSectors);
+    this.setState({newSectors: newSectors}, this.handleSectors);
+  },
+  handleClick: function(event) {
     var itemClass     = event.currentTarget.className.toString();
-    var selectedItem  = ' selected';
-    var re = new RegExp(selectedItem, 'g');
-    if (itemClass.indexOf(selectedItem) > -1) {
-      console.log('deselected it');
-      var toRemove = selectedSectors.indexOf(itemClass.split('-')[0]);
+    var selectedSectors = this.state.selectedSectors;
+    var sector = event.currentTarget.dataset.sector;
+    //console.log(sector);
+
+    if (itemClass.indexOf('sector-item-selected') >= 0) {
+      //console.log('deselected it');
+      var toRemove = selectedSectors.indexOf(sector);
       if (toRemove > -1) {
         selectedSectors.splice(toRemove, 1);
       }
-      event.currentTarget.className = itemClass.replace(re, '');
+    } else {
+      //console.log('selected it!');
+      selectedSectors.push(sector);
     }
-    if (itemClass.indexOf(selectedItem) == -1) {
-      console.log('selected it!');
-      event.currentTarget.className = itemClass.concat(selectedItem);
-      selectedSectors.push(event.currentTarget.className.split('-')[0]);
-      console.log(selectedSectors);
-    }
+
+    //console.log('selectedSectors:', selectedSectors);
+    this.setState({selectedSectors: selectedSectors}, () => {
+      if (this.props.onChange) {
+        this.props.onChange(selectedSectors);
+      }
+    });
   },
-  render: function () {
+  render: function() {
+
+    //console.log('SectorSelector.render', this.state.selectedSectors);
+
+    var sectorSelctors = [];
+    for (var i = 0; i < this.props.sectors.length; i++) {
+
+      var className = 'sector-item'
+      if(this.state.selectedSectors.indexOf(this.props.sectors[i]) >= 0) {
+        className = 'sector-item sector-item-selected';
+      }
+
+      sectorSelctors.push(
+        <div className={className} data-sector={this.props.sectors[i]} onClick={this.handleClick}>
+          <span>{this.props.sectors[i]}</span>
+        </div>
+      );
+    }
+
     return (
       <div>
-        <div className="public-sector-item sector-item" onClick={this.handleClick}>
-          <span>public</span>
-        </div>
-        <div className="transport-sector-item sector-item" onClick={this.handleClick}>
-          <span>transport</span>
-        </div>
-        <div className="agriculture-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>agriculture</span>
-        </div>
-        <div className="energy-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>energy</span>
-        </div>
-        <div className="retail-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>retail</span>
-        </div>
-        <div className="healthcare-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>healthcare</span>
-        </div>
-        <div className="cultural-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>cultural</span>
-        </div>
-        <div className="environment-sector-item-wrapper sector-item" onClick={this.handleClick}>
-          <span>environment</span>
-        </div>
+        {sectorSelctors}
       </div>
     );
   }

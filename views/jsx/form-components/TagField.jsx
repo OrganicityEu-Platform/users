@@ -5,7 +5,15 @@ var TagField = React.createClass({
     return {
       tags : this.props.tags ? this.props.tags : [],
       tagsString : this.props.tags ? this.props.tags.join(', ') : ''
-    };
+    }
+  },
+  componentWillReceiveProps : function(props) {
+    if(this.state.tagsString === '') {
+      this.setState({
+        tags : props.tags ? props.tags : [],
+        tagsString : props.tags ? props.tags.join(', ') : ''
+      });
+    }
   },
   handleChange : function(evt) {
     if (this.isMounted()) {
