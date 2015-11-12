@@ -32,7 +32,8 @@ var Score = React.createClass({
       },
       success : (res) => {
         //console.log(res);
-        this.loaded({score: parseFloat(res.tech) + parseFloat(res.noTech)});
+        var sc=((parseFloat(res.tech) + parseFloat(res.noTech))/2).toFixed(1);
+        this.loaded({score: sc});
       }
     });
 
