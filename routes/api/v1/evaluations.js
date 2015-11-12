@@ -144,7 +144,7 @@ module.exports = function(router, passport) {
 
   router.get(api.route('evaluation_score'),  function(req, res) {
     if (req.params.uuid === undefined) {
-      return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
+      return res.status(HttpStatus.BAD_REQUEST).send({error: 'query parameter requires scenario_uuid'});
     }
     var scenarioUuid = req.params.uuid;
     var filter = {};
@@ -169,12 +169,11 @@ module.exports = function(router, passport) {
         scenarios[0].save(function(err) {
           if (err) {
             console.log(err);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({error: err.message});
           }
-          return;
+          return res.status(HttpStatus.OK).send(score);
         });
       });
-      return res.status(HttpStatus.OK).send(score);
     });
   });
 
@@ -291,7 +290,7 @@ function processEvaluations(evaluations) {
     numOfEvaluations: numOfTechEvaluations + numOfNonTechEvaluations
   };
 
-  console.log(JSON.stringify(scores));
+  //console.log(JSON.stringify(scores));
   return scores;
 }
 
