@@ -106,7 +106,7 @@ var ScenarioEditView = React.createClass({
           }
 
           this.setState(scenario, () => {
-            //this.props.validate();
+            this.props.validate();
           });
         }
       });
@@ -265,7 +265,7 @@ var ScenarioEditView = React.createClass({
 
   },
   prepareValidationPreview : function() {
-    this.validatorTypes = ScenarioJoi.edit;
+    this.validatorTypes = ScenarioJoi.preview;
     this.getValidatorData = function() {
       return {
         title           : this.state.title.trim(),
@@ -284,7 +284,7 @@ var ScenarioEditView = React.createClass({
   },
   clickedSubmit : function() {
 
-    this.validatorTypes = ScenarioJoi.preview;
+    this.validatorTypes = ScenarioJoi.submit;
     this.getValidatorData = function() {
       return {
         title     : this.state.title.trim(),

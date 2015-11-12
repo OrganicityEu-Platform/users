@@ -23,7 +23,7 @@ scenario.image = {
   )
 };
 
-scenario.edit = {
+scenario.preview = {
   title           : joiTitle,
   summary         : joiSummary,
   narrative       : joiNarrative,
@@ -32,22 +32,7 @@ scenario.edit = {
   selectedSectors : Joi.array().min(1).label('Sectors').items(Joi.string()),
 };
 
-scenario.preview = {
-  title       : joiTitle,
-  summary     : joiSummary,
-  narrative   : joiNarrative,
-  actors      : Joi.array().label('Actors').items(Joi.string()),
-  sectors     : Joi.array().label('Sectors').items(Joi.string()),
-  devices     : Joi.array().label('Devices').items(Joi.string()),
-  credit      : Joi.string().trim().min(1).label('Credit').optional(),
-  copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
-  dataSources : Joi.array().label('Data Sources').items(Joi.string()),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
-  image       : Joi.string().regex(/^uploads\/|^tmp\//)
-};
-
-// Same as step6, but without thmbnail!
-scenario.server = {
+scenario.submit = {
   title       : joiTitle,
   summary     : joiSummary,
   narrative   : joiNarrative,
@@ -65,7 +50,7 @@ scenario.createOrUpdate = {
   options : {
     allowUnknownBody: false
   },
-  body: scenario.server
+  body: scenario.submit
 };
 
 module.exports = scenario;
