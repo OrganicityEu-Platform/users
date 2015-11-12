@@ -80,7 +80,7 @@ var ScenarioEditView = React.createClass({
         params : this.getParams(),
         query : this.props.query
       };
-      //sessionStorage.setItem('url', JSON.stringify(src));
+      sessionStorage.setItem('url', JSON.stringify(src));
       this.transitionTo('login');
       return;
     }
