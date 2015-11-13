@@ -7,7 +7,7 @@ module.exports = function(str, maxLen) {
   // Length > maxLen
 
   // Reduce to 160 character
-  var shorten = str.substring(0, 160);
+  var shorten = str.substring(0, maxLen);
 
   // Find the last space
   var pos = shorten.lastIndexOf(' ');
