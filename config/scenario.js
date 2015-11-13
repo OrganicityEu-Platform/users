@@ -1,7 +1,7 @@
 module.exports = {
   max : {
-    title: 50,
-    summary: 240,
+    title: 75,
+    summary: 300,
     narrative: 5000
   }
 };

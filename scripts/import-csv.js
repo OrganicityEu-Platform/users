@@ -28,7 +28,7 @@ mongoose.connect(configDB.url);
 
 var cleanTags = function(tags) {
   return tags.split(',').map(function(s) {
-    return s.trim();
+    return s.trim().toLowerCase();
   });
 };
 

@@ -64,7 +64,7 @@ var Scaffold = React.createClass({
         onLogout={this.onLogout}
         currentUser={this.state.currentUser} />);
     } else {
-      console.log('Render initial scaffold');
+      //console.log('Render initial scaffold');
     }
 
     var linksLeft = [];

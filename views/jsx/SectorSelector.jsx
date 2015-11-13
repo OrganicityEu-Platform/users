@@ -6,7 +6,7 @@ import ui     from '../../ui_routes.js';
 var SectorSelector = React.createClass({
   getInitialState: function() {
     return {
-      selectedSectors: []
+      selectedSectors: this.props.selected
     };
   },
   componentWillReceiveProps : function(props) {
@@ -45,17 +45,22 @@ var SectorSelector = React.createClass({
     //console.log('SectorSelector.render', this.state.selectedSectors);
 
     var sectorSelctors = [];
+
     for (var i = 0; i < this.props.sectors.length; i++) {
 
       var className = 'sector-item'
-      if(this.state.selectedSectors.indexOf(this.props.sectors[i]) >= 0) {
+
+      // Force lower case
+      var s = this.props.sectors[i].toLowerCase();
+
+      if(this.state.selectedSectors.indexOf(s) >= 0) {
         className = 'sector-item sector-item-selected';
       }
 
       sectorSelctors.push(
-        <div className={className} data-sector={this.props.sectors[i]} onClick={this.handleClick}>
-          <img className="sector-icon" src={ui.asset('static/img/'.concat(this.props.sectors[i].concat('_icon.svg')))}/>
-          <span className="sector-item-text">{this.props.sectors[i]}</span>
+        <div className={className} data-sector={s} onClick={this.handleClick}>
+          <img className="sector-icon" src={ui.asset('static/img/'.concat(s.concat('_icon.svg')))}/>
+          <span className="sector-item-text">{s}</span>
         </div>
       );
     }

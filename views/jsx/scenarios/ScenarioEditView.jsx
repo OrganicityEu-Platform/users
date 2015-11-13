@@ -109,10 +109,11 @@ var ScenarioEditView = React.createClass({
         if (this.isMounted()) {
 
           for (var i = 0; i < scenario.sectors.length; i++) {
-            if (this.predefinedSectors.indexOf(scenario.sectors[i]) >= 0) {
-              this.state.selectedSectors.push(scenario.sectors[i]);
+            var s = scenario.sectors[i].toLowerCase();
+            if (this.predefinedSectors.indexOf(s) >= 0) {
+              this.state.selectedSectors.push(s);
             } else {
-              this.state.newSectors.push(scenario.sectors[i]);
+              this.state.newSectors.push(s);
             }
           }
 
