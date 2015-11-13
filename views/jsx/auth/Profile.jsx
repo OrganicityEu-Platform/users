@@ -341,7 +341,7 @@ var Profile = React.createClass({
           </form>
           <div className="container">
             <h3>Scenarios created</h3>
-            <ScenariosNewest creator={this.state.profile.uuid} />
+            <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
           </div>
         </div>
     );

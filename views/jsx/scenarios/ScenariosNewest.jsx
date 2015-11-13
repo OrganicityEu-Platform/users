@@ -2,7 +2,7 @@ import $                  from 'jquery';
 import React              from 'react';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
-import ScenarioThumbnail  from '../scenarios/ScenarioThumbnail.jsx';
+import ScenarioThumbnails from '../scenarios/ScenarioThumbnails.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -46,12 +46,10 @@ var ScenariosNewest = React.createClass({
     if (this.state.loading) {
       return <div>Loading User Scenarios...</div>;
     }
+
     return (
-      <div className="scenario-thumbnails">
-      {
-        this.state.scenarios.map((scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario}
-          onChange={this.reload}/>)
-      }
+      <div>
+        <ScenarioThumbnails scenarios={this.state.scenarios} counter={this.props.counter} />
       </div>
     );
   }

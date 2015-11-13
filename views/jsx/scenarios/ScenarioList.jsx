@@ -4,6 +4,7 @@ import FlashQueue         from '../FlashQueue.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import ScenarioListItem   from './ScenarioListItem.jsx';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
+import ScenarioThumbnails from './ScenarioThumbnails.jsx';
 import Router             from 'react-router';
 import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
@@ -105,6 +106,11 @@ var ScenarioList = React.createClass({
     return (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
         <div className="row">
+          <div className="col-md-12">
+            Here you can explore {this.state.scenarios.length} scenarios!
+          </div>
+        </div>
+        <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
 
@@ -125,13 +131,13 @@ var ScenarioList = React.createClass({
               <Accordion>
                 <Panel header="filters" eventKey="1" className="oc-filters-panel">
                   <div className="oc-sector-tags-wrapper">
-                      <Tags suggestions={["public", "energy", "transport", "cultural", "environment", "healthcare", "retail", "agriculture"]} text="public"/>
+                      <Tags suggestions={['public', 'energy', 'transport', 'cultural', 'environment', 'healthcare', 'retail', 'agriculture']} text="public"/>
                   </div>
                   <div className="oc-actor-tags-wrapper">
-                    <Tags suggestions={["designer", "researcher", "rapper", "citizen"]} text="citizen"/>
+                    <Tags suggestions={['designer', 'researcher', 'rapper', 'citizen']} text="citizen"/>
                   </div>
                   <div className="oc-tools-tags-wrapper">
-                    <Tags suggestions={["wearables", "ultra sonic sensors", "IR sensors", "Holograms", "Augmented reality"]} text="mobile"/>
+                    <Tags suggestions={['wearables', 'ultra sonic sensors', 'IR sensors', 'Holograms', 'Augmented reality']} text="mobile"/>
                   </div>
                   <div className="form-group">
                     <TagField
@@ -163,12 +169,7 @@ var ScenarioList = React.createClass({
 
           </div>
         </div>
-        <div className="row scenario-thumbnails">
-              {
-                this.state.scenarios.map((scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario}
-                  onChange={this.reload}/>)
-              }
-        </div>
+        <ScenarioThumbnails scenarios={this.state.scenarios} counter={false} />
       </div>
     );
   }

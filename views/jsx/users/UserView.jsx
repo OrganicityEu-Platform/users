@@ -89,8 +89,8 @@ var UserAvatar = React.createClass({
             </div>
           </div>
           <div className="user-view-thumbnails-wrapper">
-              <h3>Published scenarios</h3>
-            <ScenariosNewest creator={this.props.params.uuid} />
+            <h3>Published scenarios</h3>
+            <ScenariosNewest creator={this.props.params.uuid} counter={true} />
           </div>
         </div>
       </div>
