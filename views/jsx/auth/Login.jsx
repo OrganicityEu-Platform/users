@@ -114,8 +114,10 @@ var LocalLogin = React.createClass({
           {
             /*classname="login-help"*/
           }
-          <p className="login-help">Need an account? <Link to="signup" >Signup</Link></p>
-          <p className="login-help"><Link to="forgot-password" >Forgot password?</Link></p>
+          <div className="oc-login-help-wrapper">
+            <span className="login-help">Need an account? <Link to="signup" >Signup</Link></span>
+            <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>
+          </div>
       </div>
       </div>
       </form>
