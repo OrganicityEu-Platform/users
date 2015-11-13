@@ -7,7 +7,7 @@ var Link = Router.Link;
 var HomeViewFooter = React.createClass({
   mixins: [Router.Navigation],
   clickHander: function() {
-    this.transitionTo('scenarioList');
+    window.location = 'http://organicity.eu/';
   },
   render: function() {
     return (
