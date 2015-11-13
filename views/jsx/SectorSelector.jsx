@@ -1,6 +1,8 @@
 import React    from 'react';
 import TagField from './form-components/TagField.jsx';
 
+import ui     from '../../ui_routes.js';
+
 var SectorSelector = React.createClass({
   getInitialState: function() {
     return {
@@ -50,13 +52,9 @@ var SectorSelector = React.createClass({
         className = 'sector-item sector-item-selected';
       }
 
-
-
       sectorSelctors.push(
         <div className={className} data-sector={this.props.sectors[i]} onClick={this.handleClick}>
-          <div id="sector-icon-wrapper" className={this.props.sectors[i].concat('_colour')}>
-            <i className={this.props.sectorIcons[i]}></i>
-          </div>
+          <img className="sector-icon" src={ui.asset('static/img/'.concat(this.props.sectors[i].concat('_icon.svg')))}/>
           <span className="sector-item-text">{this.props.sectors[i]}</span>
         </div>
       );

@@ -8,6 +8,7 @@ import Router               from 'react-router';
 import ScenarioCheck        from './ScenarioCheck.jsx'
 import ScenarioTableView    from './ScenarioTableView.jsx';
 import SectorSelector       from '../SectorSelector.jsx';
+import { Button, ButtonToolbar, OverlayTrigger, Popover } from 'react-bootstrap';
 
 // Input validation
 import validation           from 'react-validation-mixin';
@@ -391,7 +392,7 @@ var ScenarioEditView = React.createClass({
                 </span>
               </label>
               <div className="col-sm-9">
-                <input maxLength={ScenarioConfig.max.title} type="text" className="form-control" name="title" id="title" value={this.state.title}
+                <input maxLength={ScenarioConfig.max.title} type="text" className="form-control scenario-create-edit-input" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
                 {errorMessageTitle}
@@ -404,7 +405,7 @@ var ScenarioEditView = React.createClass({
                 </span>
               </label>
               <div className="col-sm-9">
-                <textarea maxLength={ScenarioConfig.max.summary} type="text" className="form-control" name="summary" id="summary" value={this.state.summary}
+                <textarea maxLength={ScenarioConfig.max.summary} type="text" className="form-control scenario-create-edit-summary" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
                 {errorMessageSummary}
@@ -417,7 +418,7 @@ var ScenarioEditView = React.createClass({
                 </span>
               </label>
               <div className="col-sm-9">
-                <textarea maxLength={ScenarioConfig.max.narrative} className="form-control" name="narrative" id="narrative" value={this.state.narrative}
+                <textarea maxLength={ScenarioConfig.max.narrative} className="form-control scenario-create-edit-narrative" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
                 {errorMessageNarrative}
@@ -438,7 +439,7 @@ var ScenarioEditView = React.createClass({
                 {errorMessageSelectedSectors}
                 <div className="new-sector-suggest">
                   Suggest new sectors:
-                  <TagField tags={this.state.newSectors} onChange={this.handleNewSector} />
+                  <TagField id="scenario-create-edit-sector-suggestion" tags={this.state.newSectors} onChange={this.handleNewSector} />
                 </div>
               </div>
             </div>
