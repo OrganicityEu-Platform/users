@@ -271,18 +271,39 @@ input[type="radio"]:checked + label:before {
 }
 
 .sector-item {
-  height: 40px;
-  width: 100px;
   display: inline-block;
-  background-color: red;
+  background-color: @oc-white;
+  border: 1px solid @oc-dark-grey;
   text-align: center;
-  padding-top: 10px;
-  margin-right: 2px;
-  margin-top: 2px;
+  padding: 3px 12px 3px 3px;
+  margin-right: 4px;
   cursor: pointer;
-  color: white;
+  color: @oc-dark-grey;
+  border-radius: 2em;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .sector-item-selected {
-  background-color: green;
+  background-color: @oc-dark-grey;
+  color: @oc-white;
+}
+
+#sector-icon-wrapper {
+  padding: 10px;
+  float: left;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  height: 35px;
+  width: 35px;
+}
+
+.sector-item-text {
+  display: inline-block;
+  margin-top: 8px
+}
+
+.new-sector-suggest {
+  margin-top: 20px;
 }

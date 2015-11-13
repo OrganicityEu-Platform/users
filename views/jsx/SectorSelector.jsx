@@ -50,9 +50,14 @@ var SectorSelector = React.createClass({
         className = 'sector-item sector-item-selected';
       }
 
+
+
       sectorSelctors.push(
         <div className={className} data-sector={this.props.sectors[i]} onClick={this.handleClick}>
-          <span>{this.props.sectors[i]}</span>
+          <div id="sector-icon-wrapper" className={this.props.sectors[i].concat('_colour')}>
+            <i className={this.props.sectorIcons[i]}></i>
+          </div>
+          <span className="sector-item-text">{this.props.sectors[i]}</span>
         </div>
       );
     }

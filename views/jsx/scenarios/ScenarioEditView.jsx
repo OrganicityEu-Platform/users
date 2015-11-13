@@ -26,6 +26,16 @@ var ScenarioEditView = React.createClass({
     'energy', 'retail', 'healthcare',
     'cultural', 'environment'
   ],
+  sectorIcons: [
+    'fa fa-users public_colour sector-icon',
+    'fa fa-bus transport_colour sector-icon',
+    'fa fa-leaf agriculture_colour sector-icon',
+    'fa fa-lightbulb-o energy_colour sector-icon',
+    'fa fa-tags retail_colour sector-icon',
+    'fa fa-medkit healthcare_colour sector-icon',
+    'fa fa-university cultural_colour sector-icon',
+    'fa fa-tree environment_colour sector-icon',
+  ],
   mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
   getSteps: function() {
@@ -422,10 +432,11 @@ var ScenarioEditView = React.createClass({
                 <SectorSelector
                   onChange={this.handleSectorSelector}
                   sectors={this.predefinedSectors}
+                  sectorIcons={this.sectorIcons}
                   selected={this.state.selectedSectors}
                 />
                 {errorMessageSelectedSectors}
-                <div>
+                <div className="new-sector-suggest">
                   Suggest new sectors:
                   <TagField tags={this.state.newSectors} onChange={this.handleNewSector} />
                 </div>
