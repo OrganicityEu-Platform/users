@@ -512,19 +512,29 @@ var ScenarioEditView = React.createClass({
   preview : function() {
 
     return (
-      <div className="row" key="scenarioEditStep5">
-        <h2>Create your scenario <small>preview</small></h2>
-        <h3>Here's your story!</h3>
-        <p>
-          Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor
-          fringilla.
-        </p>
+      <div>
+        <div className="row">
+          <div className="col-md-12">
+            <h2>Create your scenario <small>preview</small></h2>
+            <h3>Here's your story!</h3>
+            <p>
+              Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor
+              fringilla.
+            </p>
+          </div>
+        </div>
         <ScenarioTableView scenario={this.state} />
         <Message type="danger" messages={this.props.getValidationMessages()} />
-        <p>
-          <button type="button" className="btn btn-default" onClick={this.clickedPrevious}>Edit</button>
-          <button type="button" className="btn btn-default" onClick={this.clickedSubmit}>Submit</button>
-        </p>
+        <div className="row">
+          <div className="form-group">
+            <div className="col-md-2 col-md-offset-4">
+              <button type="button" className="oc-button-submit" onClick={this.clickedPrevious}>Edit</button>
+            </div>
+            <div className="col-md-2">
+              <button type="button" className="oc-button-submit" onClick={this.clickedSubmit}>Submit</button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   },

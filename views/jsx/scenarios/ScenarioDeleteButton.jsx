@@ -30,7 +30,7 @@ var ScenarioDeleteButton = React.createClass({
   render: function() {
     if (this.userHasRole('admin') || this.userIsCreator(this.props.scenario)) {
       return (
-        <button className="scenarioDeleteButton"
+        <button className="oc-button-submit"
           disabled={this.isLoading() ? 'loading' : ''}
           onClick={this.handleClick}>DELETE</button>
       );

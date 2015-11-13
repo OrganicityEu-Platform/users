@@ -4,9 +4,11 @@ import Router               from 'react-router';
 import ReactDisqusThread    from 'react-disqus-thread';
 
 import ScenarioTableView    from './ScenarioTableView.jsx';
+
 import ScenarioEditButton   from './ScenarioEditButton.jsx';
 import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
+
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
 
@@ -34,9 +36,6 @@ var ScenarioView = React.createClass({
       }
     });
   },
-  clickedEvaluate: function() {
-    this.transitionTo('scenarioEvalView', { uuid : this.props.params.uuid }, { version : this.state.version });
-  },
   render: function() {
     if (this.state === null) {
       return null;
@@ -53,9 +52,12 @@ var ScenarioView = React.createClass({
           <ScenarioTableView scenario={this.state} />
         </div>
         <div className="row">
-          <div className="oc-scenario-controls">
-            <ScenarioEditButton scenario={this.state}/>
-            <ScenarioDeleteButton scenario={this.state}/>
+          <div className="form-group">
+            <div className="col-md-2 col-md-offset-5">
+              <ScenarioEvalButton scenario={this.state}/>
+              <ScenarioEditButton scenario={this.state}/>
+              <ScenarioDeleteButton scenario={this.state}/>
+            </div>
           </div>
         </div>
         <div className="col-lg-8 col-lg-offset-2">
