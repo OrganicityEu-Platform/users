@@ -1,11 +1,15 @@
-import $                   from 'jquery';
-import React               from 'react';
-import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx'
-import FlashQueue          from '../FlashQueue.jsx';
-import LoadingMixin        from '../LoadingMixin.jsx';
-import api                 from '../../../api_routes.js';
-import ui                  from '../../../ui_routes.js';
-import SocialmediaLogin    from './SocialmediaLogin.jsx';
+import $                    from 'jquery';
+import React                from 'react';
+import Router               from 'react-router';
+
+import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx'
+import FlashQueue           from '../FlashQueue.jsx';
+import LoadingMixin         from '../LoadingMixin.jsx';
+import api                  from '../../../api_routes.js';
+import ui                   from '../../../ui_routes.js';
+import SocialmediaLogin     from './SocialmediaLogin.jsx';
+
+import config               from '../../../config/config.js';
 
 // Input validation
 import validation   from 'react-validation-mixin';
@@ -13,7 +17,6 @@ import strategy     from 'joi-validation-strategy';
 import UserJoi      from '../../../models/joi/user.js';
 import Message      from '../Message.jsx';
 
-var Router = require('react-router');
 var Link = Router.Link;
 
 var LocalLogin = React.createClass({
@@ -22,7 +25,6 @@ var LocalLogin = React.createClass({
     return {
       email : '',
       password : '',
-      error : null,
       btnClickedOnce : false
     };
   },
@@ -45,19 +47,25 @@ var LocalLogin = React.createClass({
     evt.preventDefault();
 
     this.setState({
-      error: undefined,
       btnClickedOnce: true
     }, () => {
       this.props.validate((error) => {
-        if (!error) {
+        if (error) {
+          this.flash('danger', 'Some fields are not valid.');
+        } else {
           this.loading();
-          $.ajax(api.reverse('local-login'), {
+          var url = api.reverse('local-login');
+          $.ajax(url, {
             error: (xhr, textStatus, errorThrown) => {
               this.loaded();
-              if (xhr.status === 422) {
-                this.setState({error: 'Error logging in: username and/or password unknown'});
+              if (xhr.status === 400) {
+                this.flash('danger', 'Bad request: The server does not accpets your input.');
+              } else if (xhr.status === 422) {
+                this.flash('danger', xhr.responseJSON.error);
+              } else if (!config.dev) {
+                this.flash('danger', 'Error during login');
               } else {
-                this.flashOnAjaxError(xhr, textStatus, errorThrown);
+                this.flashOnAjaxError(url, 'Error during login')(xhr, textStatus, errorThrown);
               }
             },
             success: (currentUser) => {
@@ -84,7 +92,6 @@ var LocalLogin = React.createClass({
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>
-              <Message type="danger" message={this.state.error} />
               <div className="form-group">
                 <input type="text"
                   className="oc-input"

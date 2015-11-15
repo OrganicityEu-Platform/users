@@ -21,13 +21,13 @@ var UserListView = React.createClass({
     };
   },
   componentDidMount: function() {
-    $.ajax(api.reverse('users'), {
+    var utl = api.reverse('users');
+    $.ajax(url, {
       dataType: 'json',
       error : (jqXHR, textStatus, errorThrown) => {
         this.state.loading = false;
         this.setState(this.state);
-        var f = this.flashOnAjaxError(api.reverse('users'), 'Error retrieving users');
-        f(jqXHR, textStatus, errorThrown);
+        this.flashOnAjaxError(url, 'Error retrieving users')(jqXHR, textStatus, errorThrown);
       },
       success: (users) => {
         this.state.loading = false;

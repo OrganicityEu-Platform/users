@@ -6,6 +6,8 @@ import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
 import SocialmediaLogin from './SocialmediaLogin.jsx';
 
+import config           from '../../../config/config.js';
+
 // Input validation
 import validation       from 'react-validation-mixin';
 import strategy         from 'joi-validation-strategy';
@@ -23,7 +25,6 @@ var Signup = React.createClass({
       email : '',
       password : '',
       password_repeat : '',
-      error : null,
       btnClickedOnce : false
     };
   },
@@ -52,37 +53,39 @@ var Signup = React.createClass({
     evt.preventDefault();
 
     this.setState({
-      error: undefined,
       btnClickedOnce: true
     }, () => {
       this.props.validate((error) => {
-        if (!error) {
-          if (this.props.isValid()) {
-            this.loading();
-            var url = api.reverse('signup');
-            $.ajax(url, {
-              error: (xhr, textStatus, errorThrown) => {
-                this.loaded();
-                var error = JSON.parse(xhr.responseText);
-                if (xhr.status === 422) {
-                  this.state.error = error.message;
-                  this.setState(this.state);
-                } else {
-                  this.flashOnAjaxError(xhr, textStatus, errorThrown);
-                }
-              },
-              success: (currentUser) => {
-                this.loaded();
-                this.props.onLogin(currentUser);
-                this.transitionTo(ui.route('profile'));
-              },
-              method: 'POST',
-              data: {
-                email: this.state.email,
-                password: this.state.password
+        if (error) {
+          this.flash('danger', 'Some fields are not valid.');
+        } else {
+          this.loading();
+          var url = api.reverse('signup');
+          $.ajax(url, {
+            error: (xhr, textStatus, errorThrown) => {
+              this.loaded();
+              if (xhr.status === 400) {
+                this.flash('danger', 'Bad request: The server does not accpets your input.');
+              } else if (xhr.status === 422) {
+                this.flash('danger', xhr.responseJSON.error);
+              } else if (!config.dev) {
+                this.flash('danger', 'Error during signup');
+              } else {
+                this.flashOnAjaxError(url, 'Error during signup')(xhr, textStatus, errorThrown);
               }
-            });
-          }
+            },
+            success: (currentUser) => {
+              this.flash('success', 'New account created.');
+              this.loaded();
+              this.props.onLogin(currentUser);
+              this.transitionTo(ui.route('profile'));
+            },
+            method: 'POST',
+            data: {
+              email: this.state.email,
+              password: this.state.password
+            }
+          });
         }
       });
     });
@@ -96,7 +99,6 @@ var Signup = React.createClass({
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>
-            <Message type="danger" message={this.state.error} />
             <div className="form-group">
               <input type="text"
                 className="oc-input"
@@ -119,7 +121,7 @@ var Signup = React.createClass({
             </div>
             <div className="form-group">
               <input type="password"
-                className="form-control oc-signup-password"
+                className="oc-input"
                 placeholder="repeat password"
                 name="password_repeat"
                 disabled={this.isLoading() ? 'disabled' : ''}

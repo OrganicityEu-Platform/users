@@ -4,6 +4,8 @@ import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioThumbnails from '../scenarios/ScenarioThumbnails.jsx';
 
+import config             from '../../../config/config.js';
+
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -25,15 +27,17 @@ var ScenariosNewest = React.createClass({
       limit : this.props.limit
     };
 
-    //console.log('Options', options);
-
     var url = api.reverse('scenario_list', options);
 
     $.ajax(url, {
       dataType : 'json',
-      error : (jqXHR, textStatus, errorThrown) => {
+      error : (xhr, textStatus, errorThrown) => {
         this.loaded();
-        this.flashOnAjaxError(url, 'Error loading user info')(jqXHR, textStatus, errorThrown);
+        if (config.dev) {
+          this.flashOnAjaxError(url, 'Error loading newest scenarios')(xhr, textStatus, errorThrown);
+        } else {
+          this.flash('danger', 'Error loading newest scenarios');
+        }
       },
       success : (scenarios) => {
         this.state.scenarios = scenarios;

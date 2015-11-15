@@ -1,9 +1,12 @@
-import React from 'react';
-import $ from 'jquery';
-import FlashQueue from '../FlashQueue.jsx';
-import api from '../../../api_routes.js';
+import $            from 'jquery';
+import React        from 'react';
+import Router       from 'react-router';
 
-var Router = require('react-router');
+import config       from '../../../config/config.js';
+
+import FlashQueue   from '../FlashQueue.jsx';
+import api          from '../../../api_routes.js';
+
 var Navigation = Router.Navigation;
 var Link = Router.Link;
 
@@ -15,21 +18,23 @@ var Logout = React.createClass({
     };
   },
   componentDidMount : function() {
-    // timeout allows for load animations etc.
-    window.setTimeout(() => {
-      $.ajax(api.reverse('logout'), {
-        error : this.flashOnAjaxError(api.reverse('logout'), 'Error while logging out'),
-        success : () => {
-          this.setState({ loggedOut : true });
-          this.props.onLogout(); // Scaffold.onLogout
-
-          // timeout allows to display message
-          window.setTimeout(() => {
-            this.transitionTo('home');
-          }, 1);
+    var url = api.reverse('logout');
+    $.ajax(url, {
+      error: (xhr, textStatus, errorThrown) => {
+        if (!config.dev) {
+          this.flash('danger', 'Error during logout');
+        } else {
+          this.flashOnAjaxError(url, 'Error during logout')(xhr, textStatus, errorThrown);
         }
-      });
-    }, 1);
+      },
+      success : () => {
+        this.setState({ loggedOut : true });
+        this.props.onLogout(); // Scaffold.onLogout
+
+        this.flash('success', 'Logout successful!');
+        this.transitionTo('home');
+      }
+    });
   },
   render : function() {
     if (!this.state.loggedOut) {

@@ -20,7 +20,7 @@ var Queue = React.createClass({
     this.state.messages = this.state.messages.filter((message) => message.id !== id);
     this.setState(this.state);
   },
-  flash: function(type, text, opts) {
+  flash: function(type, text) {
     var id = ++this.state.id;
     this.state.messages.push({
       type: type,
@@ -29,7 +29,7 @@ var Queue = React.createClass({
       dismissable: true
     });
     this.setState(this.state);
-    setTimeout(() => this.dismissMessage(id), 15 * 1e3);
+    setTimeout(() => this.dismissMessage(id), 5000);
   },
   render: function() {
     return (
@@ -63,12 +63,12 @@ var Message = React.createClass({
 
 var Mixin = {
   allowedTypes : ['success', 'info', 'warning', 'danger', ''],
-  flash: function(type, text, opts) {
+  flash: function(type, text) {
     if (!this.allowedTypes.some((t) => t === type)) {
       console.log(`Wrong flash type "${type}". Use one of ${JSON.stringify(this.allowedTypes)}`);
       return;
     }
-    mountedInstance.flash(type, text, opts);
+    mountedInstance.flash(type, text);
   },
   flashOnAjaxError: function(url, message) {
     return function(jqXHR, textStatus, errorThrown) {

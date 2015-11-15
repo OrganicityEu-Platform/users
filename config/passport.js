@@ -90,13 +90,13 @@ module.exports = function(passport) {
             return done(err);
           }
 
-          // if no user is found, return the message
+          // if no user is found, return the error
           if (!user) {
-            return done(null, false, {message: 'User with email "' + email + '" not found!'});
+            return done(null, false, {error: 'User with email "' + email + '" not found!'});
           }
 
           if (!user.validPassword(password)) {
-            return done(null, false, {message: 'Wrong password for user with email ' + email});
+            return done(null, false, {error: 'Wrong password for user with email ' + email});
           } else {
             // all is well, return user
             return done(null, user);
@@ -136,7 +136,7 @@ module.exports = function(passport) {
 
             // check to see if theres already a user with that email
             if (user) {
-              return done(null, false, { message: 'That email is already taken.'});
+              return done(null, false, { error: 'That email is already taken.'});
             } else {
 
               // create the user
@@ -165,7 +165,7 @@ module.exports = function(passport) {
             }
 
             if (user) {
-              return done(null, false, { message: 'That email is already taken.'});
+              return done(null, false, { error: 'That email is already taken.'});
               // Using 'loginMessage instead of signupMessage because it's used by /connect/local'
             } else {
               user = req.user;

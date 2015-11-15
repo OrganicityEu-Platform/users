@@ -37,13 +37,13 @@ module.exports = function(router, passport) {
         }
 
         if (!user) {
-          if (!info || !info.message) {
-            return res.status(500).json({message: 'Local login failed due to an unknown error'});
+          if (!info || !info.error) {
+            return res.status(500).json({error: 'Local login failed due to an unknown error'});
           }
           // Here we log the `real` error
           console.log('Login failure: ', info);
           // Here we return a `generic` errior
-          return res.status(422).json({message: 'Email address and/or password unknown'});
+          return res.status(422).json({error: 'Email address and/or password unknown'});
         }
 
         req.logIn(user, function(err) {
@@ -64,8 +64,8 @@ module.exports = function(router, passport) {
         }
 
         if (!user) {
-          if (!info || !info.message) {
-            return res.status(500).json({message: 'Signup failed due to an unknown error'});
+          if (!info || !info.error) {
+            return res.status(500).json({error: 'Signup failed due to an unknown error'});
           }
           return res.status(422).json(info);
 

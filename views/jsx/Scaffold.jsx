@@ -44,15 +44,15 @@ var Scaffold = React.createClass({
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
     this.setState({
-        currentUser: currentUser,
-        initialAjax: true
+      currentUser: currentUser,
+      initialAjax: true
     });
   },
   onLogout: function() {
     window.currentUser = undefined;
     this.setState({
-        currentUser: undefined,
-        initialAjax: true
+      currentUser: undefined,
+      initialAjax: true
     });
   },
   render : function() {
