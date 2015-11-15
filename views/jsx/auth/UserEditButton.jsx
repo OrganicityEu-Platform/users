@@ -11,7 +11,7 @@ var UserEditButton = React.createClass({
   },
   render: function() {
     return (
-      <button className="userEditButton" onClick={this.handleClick}>EDIT</button>
+      <button className="oc-button" onClick={this.handleClick}>EDIT</button>
     );
     return null;
   }

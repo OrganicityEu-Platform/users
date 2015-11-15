@@ -22,6 +22,7 @@ import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
 
 var ScenarioEditView = React.createClass({
+  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   predefinedSectors: [
     'public', 'transport', 'agriculture',
     'energy', 'retail', 'healthcare',
@@ -37,7 +38,6 @@ var ScenarioEditView = React.createClass({
     'fa fa-university cultural_colour sector-icon',
     'fa fa-tree environment_colour sector-icon',
   ],
-  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
   firstStep : 1,
   getSteps: function() {
     return [this.form, this.preview];
@@ -386,46 +386,46 @@ var ScenarioEditView = React.createClass({
             <h1>{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
           </div>
           <form className="form-horizontal">
-            <div className="form-group oc-create-edit oc-create-edit-title">
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </span>
               </label>
               <div className="col-sm-9">
-                <input maxLength={ScenarioConfig.max.title} type="text" className="form-control scenario-create-edit-input" name="title" id="title" value={this.state.title}
+                <input maxLength={ScenarioConfig.max.title} type="text" className="oc-input" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
                 {errorMessageTitle}
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-summary">
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </span>
               </label>
               <div className="col-sm-9">
-                <textarea maxLength={ScenarioConfig.max.summary} type="text" className="form-control scenario-create-edit-summary" name="summary" id="summary" value={this.state.summary}
+                <textarea maxLength={ScenarioConfig.max.summary} type="text" className="oc-input scenario-create-edit-summary" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
                 {errorMessageSummary}
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-narrative">
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </span>
               </label>
               <div className="col-sm-9">
-                <textarea maxLength={ScenarioConfig.max.narrative} className="form-control scenario-create-edit-narrative" name="narrative" id="narrative" value={this.state.narrative}
+                <textarea maxLength={ScenarioConfig.max.narrative} className="oc-input scenario-create-edit-narrative" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
                 <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
                 {errorMessageNarrative}
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-sectors">
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ScenarioCheck isvalid={this.props.isValid('selectedSectors')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
@@ -444,7 +444,7 @@ var ScenarioEditView = React.createClass({
                 </div>
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-actors">
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Actors
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
@@ -453,7 +453,8 @@ var ScenarioEditView = React.createClass({
                 <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-tools">
+
+            <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Tools
                 <span className="scenario-create-edit-view-field-info">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
@@ -462,13 +463,14 @@ var ScenarioEditView = React.createClass({
                 <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-image">
-              <div className="col-sm-2"></div>
-              <div className="col-sm-10">
-                Please upload an image. File type must be JPEG or PNG with a width of at least width 1140 px<br/>
-              </div>
-              <label className="control-label col-sm-2" htmlFor="title">Cover Image</label>
-              <div className="col-sm-10">
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3">Image
+                <span className="scenario-create-edit-view-field-info">
+                  Please upload an image. File type must be JPEG or PNG with a width of at least width 1140 px
+                </span>
+              </label>
+              <div className="col-sm-9">
                 <UploadImage
                   url={api.reverse('upload_thumbnail')}
                   joi={ScenarioJoi.image}
@@ -478,26 +480,34 @@ var ScenarioEditView = React.createClass({
                 />
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-image-copyright">
-              <label className="control-label col-sm-2" htmlFor="sectors">Image copyright</label>
-              <div className="col-sm-10">
-                <input type="text" className="form-control" name="credit" id="credit" value={this.state.copyright}
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="copyright">Image copyright
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
+                <input type="text" className="oc-input" name="copyright" id="copyright" value={this.state.copyright}
                   onChange={this.handleChangedCopyright} />
               </div>
             </div>
-            <div className="form-group oc-create-edit oc-create-edit-image-credit">
-              <label className="control-label col-sm-2" htmlFor="sectors">Credit</label>
-              <div className="col-sm-10">
-                <input type="text" className="form-control" name="credit" id="credit" value={this.state.credit}
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="sectors">Credit
+                <span className="scenario-create-edit-view-field-info">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+              </label>
+              <div className="col-sm-9">
+                <input type="text" className="oc-input" name="credit" id="credit" value={this.state.credit}
                   onChange={this.handleChangedCredit} />
               </div>
             </div>
-            <div className="form-group">
 
+            <div className="form-group">
               <div className="col-md-2 col-md-offset-5">
                 <button
                   type="button"
-                  className="oc-button-submit"
+                  className="oc-button"
                   onClick={this.clickedPreview}
                   disabled={this.loading ? 'disabled' : ''}
                 >Preview</button>
@@ -528,10 +538,10 @@ var ScenarioEditView = React.createClass({
         <div className="row">
           <div className="form-group">
             <div className="col-md-2 col-md-offset-4">
-              <button type="button" className="oc-button-submit" onClick={this.clickedPrevious}>Edit</button>
+              <button type="button" className="oc-button" onClick={this.clickedPrevious}>Edit</button>
             </div>
             <div className="col-md-2">
-              <button type="button" className="oc-button-submit" onClick={this.clickedSubmit}>Submit</button>
+              <button type="button" className="oc-button" onClick={this.clickedSubmit}>Submit</button>
             </div>
           </div>
         </div>

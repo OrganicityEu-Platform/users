@@ -7,6 +7,9 @@ import LoadingMixin     from '../LoadingMixin.jsx';
 import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
 
+import Message          from '../Message.jsx';
+
+
 var Navigation = Router.Navigation;
 
 var ScenarioEvalView = React.createClass({
@@ -81,9 +84,7 @@ var ScenarioEvalView = React.createClass({
 
     if (this.state.submitted) {
       return (
-        <div className="col-lg-8 col-lg-offset-2">
-          Thank you!
-        </div>
+        <Message type="success" message="Thank you!" />
       );
     }
 
@@ -127,7 +128,8 @@ var ScenarioEvalView = React.createClass({
                           className="form-control"
                           name={"question_"+qIdx}
                           id={"question_"+qIdx+"_answer_"+aIdx}
-                          onClick={this.selectedAnswer(qIdx, aIdx)} />
+                          onClick={this.selectedAnswer(qIdx, aIdx)}
+                        />
                         <label className="radio-label" htmlFor={"question_"+qIdx+"_answer_"+aIdx}><span className="oc-evaluation-answer-radio-num">{a.value}</span></label>
                       </div>
                     ))}
@@ -137,7 +139,13 @@ var ScenarioEvalView = React.createClass({
             </div>
           </div>
           <div className="oc-evaluation-sendbutton-div">
-            <button type="button" className="btn btn-primary" onClick={this.sendEvaluation}>Send Evaluation</button>
+            <button
+              type="button"
+              className="oc-button"
+              onClick={this.sendEvaluation}
+            >
+                Send Evaluation
+            </button>
           </div>
         </form>
       </div>

@@ -139,7 +139,7 @@ var UploadImage = React.createClass({
     var thumbnail;
     var inputFile = (<input
                         type="file"
-                        className="form-control"
+                        className="oc-input"
                         onChange={this.handleChangedFile}
                         accept="image/jpeg, image/png"/>
                     );

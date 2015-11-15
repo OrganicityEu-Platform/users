@@ -178,18 +178,23 @@ var Profile = React.createClass({
     }, () => {
       this.props.validate((error) => {
         if (!error) {
-          this.loading();
-          var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
-          $.ajax(url, {
-            type : 'PATCH',
-            data : JSON.stringify(this.getProfile()),
-            contentType : 'application/json',
-            error : this.loadingError(url, 'Error updating user profile'),
-            success : () => {
-              this.loaded({ dirty : false, btnClickedOnce: false});
-              this.flash('success', 'Profile succesfully updated!');
-            }
-          });
+          if(this.state.dirty) {
+            this.loading();
+            var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
+            $.ajax(url, {
+              type : 'PATCH',
+              data : JSON.stringify(this.getProfile()),
+              contentType : 'application/json',
+              error : this.loadingError(url, 'Error updating user profile'),
+              success : () => {
+                this.loaded({ dirty : false, btnClickedOnce: false});
+                this.flash('success', 'Profile succesfully updated!');
+              }
+            });
+          } else {
+            this.loaded({ dirty : false, btnClickedOnce: false});
+            this.flash('success', 'Nothing changed!');
+          }
         }
       });
     });
@@ -268,13 +273,14 @@ var Profile = React.createClass({
             <div className="form-group">
               <div className="">
                 <label className="" htmlFor="profile-name">Name</label>
-                <input  type="text"
-                        className="form-control"
-                        id="profile-name"
-                        disabled={this.isLoading() ? 'disabled' : ''}
-                        placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
-                        value={this.state.profile.name}
-                        onChange={this.handleChangedName} />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="profile-name"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
+                  value={this.state.profile.name}
+                  onChange={this.handleChangedName} />
                 <Message type="danger" messages={this.props.getValidationMessages('name')} />
               </div>
             </div>
@@ -285,6 +291,7 @@ var Profile = React.createClass({
                 <UploadImage
                   url={api.reverse('user_thumbnail', {uuid: this.state.profile.uuid})}
                   joi={UserJoi.image}
+                  disabled={this.isLoading() ? 'disabled' : ''}
                   callback={this.onThumbnail}
                   thumbnail={this.state.profile.avatar}
                   thumbnail_width="64px"
@@ -329,13 +336,12 @@ var Profile = React.createClass({
             {localAccount}
 
             <div className="form-group">
-              <div className="col-sm-2"></div>
-              <div className="col-sm-10">
+              <div className="col-sm-2">
                 <button id="profile-submit"
-                        type="submit"
-                        disabled={(this.props.isValid() && this.state.dirty) ? '' : 'disabled'}
-                        className="btn btn-default"
-                        onClick={this.handleSubmit}>Save Profile</button>
+                  type="submit"
+                  className="oc-button"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  onClick={this.handleSubmit}>Save Profile</button>
               </div>
             </div>
           </form>

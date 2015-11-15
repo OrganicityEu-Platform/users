@@ -91,33 +91,33 @@ var Signup = React.createClass({
 
     return (
       <form>
-      <div className="row oc-signup-wrapper">
-        <div className="col-sm-6 col-sm-offset-3">
-          <div className="social-logins-wrapper">
-            <SocialmediaLogin/>
-          </div>
-          <Message type="danger" message={this.state.error} />
-          <div className="form-group">
+        <div className="row oc-signup-wrapper">
+          <div className="col-sm-6 col-sm-offset-3">
+            <div className="social-logins-wrapper">
+              <SocialmediaLogin/>
+            </div>
+            <Message type="danger" message={this.state.error} />
+            <div className="form-group">
               <input type="text"
-                className="form-control oc-signup-email"
+                className="oc-input"
                 placeholder="email"
                 name="email"
                 value={this.state.email}
                 disabled={this.isLoading() ? 'disabled' : ''}
                 onChange={this.handleChangedEmail} />
               <Message type="danger" messages={this.props.getValidationMessages('email')} />
-          </div>
-          <div className="form-group">
+            </div>
+            <div className="form-group">
               <input type="password"
-                className="form-control oc-signup-password"
+                className="oc-input"
                 placeholder="password with at least at least 6 characters"
                 name="password"
                 value={this.state.password}
                 disabled={this.isLoading() ? 'disabled' : ''}
                 onChange={this.handleChangedPassword} />
               <Message type="danger" messages={this.props.getValidationMessages('password')} />
-          </div>
-          <div className="form-group">
+            </div>
+            <div className="form-group">
               <input type="password"
                 className="form-control oc-signup-password"
                 placeholder="repeat password"
@@ -126,16 +126,16 @@ var Signup = React.createClass({
                 value={this.state.password_repeat}
                 onChange={this.handleChangedPasswordRepeat} />
               <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
-          </div>
-          <button type="submit"
-            className="signup-btn"
-            disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
-            onClick={this.handleSubmit}>Signup</button>
-          <div className="oc-signup-help-wrapper">
-            <span className="signup-help">Already have an account? <Link to="login">Login</Link></span>
+            </div>
+            <button type="submit"
+              className="oc-button"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              onClick={this.handleSubmit}>Signup</button>
+            <div className="oc-signup-help-wrapper">
+              <span className="signup-help">Already have an account? <Link to="login">Login</Link></span>
+            </div>
           </div>
         </div>
-      </div>
       </form>
     );
   },

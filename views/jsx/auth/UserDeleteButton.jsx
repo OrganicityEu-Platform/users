@@ -27,7 +27,7 @@ var UserDeleteButton = React.createClass({
   },
   render: function() {
     return (
-      <button className="userDeleteButton"
+      <button className="oc-button"
         disabled={this.isLoading() ? 'disabled' : ''}
         onClick={this.handleClick}>DELETE</button>
     );

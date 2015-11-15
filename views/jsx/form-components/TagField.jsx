@@ -28,7 +28,7 @@ var TagField = React.createClass({
       <div>
         <input type="text"
           id={this.props.id ? this.props.id : ''}
-          className="form-control"
+          className="oc-input"
           value={this.state.tagsString}
           placeholder={this.props.placeholder ? this.props.placeholder : ''}
           disabled={this.props.loading || this.props.disabled ? 'disabled' : ''}

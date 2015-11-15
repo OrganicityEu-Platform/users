@@ -18,7 +18,6 @@ var ForgotPassword = React.createClass({
   mixins: [LoadingMixin],
   getInitialState : function() {
     return {
-      initialized: false,
       btnClickedOnce: false
     };
   },
@@ -46,7 +45,6 @@ var ForgotPassword = React.createClass({
   handleChangedEmail : function(evt) {
     this.setState({
       email : evt.target.value,
-      initialized : true
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
@@ -56,7 +54,6 @@ var ForgotPassword = React.createClass({
   handleChangedPassword : function(evt) {
     this.setState({
       password : evt.target.value,
-      initialized : true
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
@@ -66,7 +63,6 @@ var ForgotPassword = React.createClass({
   handleChangedPasswordRepeat : function(evt) {
     this.setState({
       password_repeat : evt.target.value,
-      initialized : true
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
@@ -77,76 +73,48 @@ var ForgotPassword = React.createClass({
     console.log('Go back');
     this.setState({send: false});
   },
-  handleSubmit : function(evt) {
-
-    evt.preventDefault();
-
+  doPost : function(url, data) {
     this.setState({
       btnClickedOnce: true
     }, () => {
       this.props.validate((error) => {
         if (!error) {
           this.loading();
-          var url = api.reverse('forgot-password');
           $.ajax(url, {
             error: (xhr, textStatus, errorThrown) => {
-              this.loaded();
-              this.setState({send: false});
-              if (xhr.responseJSON.error) {
-                this.setState({error: xhr.responseJSON.error});
-              }
+              this.loaded({
+                error: xhr.responseJSON.error,
+                send: false
+              });
             },
-            success: (currentUser) => {
-              this.loaded();
-              this.setState({send: true});
+            success: () => {
+              this.loaded({send: true});
             },
             method: 'POST',
-            data: {
-              email: this.state.email
-            }
+            data: data
           });
         }
       });
     });
   },
-  handleSubmitPassword : function(evt) {
-
+  handleSubmit : function(evt) {
     evt.preventDefault();
-
-    this.setState({
-      btnClickedOnce: true
-    }, () => {
-      this.props.validate((error) => {
-        if (!error) {
-          this.loading();
-          var url = api.reverse('update-password');
-          $.ajax(url, {
-            error: (xhr, textStatus, errorThrown) => {
-              this.loaded();
-              this.setState({send: false});
-              if (xhr.responseJSON.error) {
-                this.setState({error: xhr.responseJSON.error});
-              }
-            },
-            success: (currentUser) => {
-              this.loaded();
-              this.setState({send: true});
-            },
-            method: 'POST',
-            data: {
-              id: this.state.id,
-              password: this.state.password
-            }
-          });
-
-        }
-      });
+    this.doPost(api.reverse('forgot-password'), {
+      email: this.state.email
+    });
+  },
+  handleSubmitPassword : function(evt) {
+    evt.preventDefault();
+    this.doPost(api.reverse('update-password'), {
+      id: this.state.id,
+      password: this.state.password
     });
   },
   render() {
 
+    var errorMessage = null;
     if (this.state.error) {
-      return (<Message type="danger" message={this.state.error}/>);
+      errorMessage = (<Message type="danger" message={this.state.error}/>);
     }
 
     if (this.state.id) {
@@ -157,11 +125,12 @@ var ForgotPassword = React.createClass({
 
       return (
         <form>
-        <div className="row">
-          <div className="col-sm-6">
+          <div className="row">
+            <div className="col-sm-6 col-sm-offset-3">
+              {errorMessage}
               <div className="form-group">
                 <input type="password"
-                  className="form-control oc-signup-password"
+                  className="oc-input"
                   placeholder="password"
                   value={this.state.password}
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -170,18 +139,22 @@ var ForgotPassword = React.createClass({
               </div>
               <div className="form-group">
                 <input type="password"
-                  className="form-control oc-signup-password"
+                  className="oc-input"
                   placeholder="repeat password"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   value={this.state.password_repeat}
                   onChange={this.handleChangedPasswordRepeat} />
                 <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
+              </div>
+              <div className="form-group">
+                <button
+                  type="submit"
+                  className = "oc-button"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  onClick={this.handleSubmitPassword}>Update password</button>
+              </div>
             </div>
-            <button type="submit"
-              disabled={(this.props.isValid() && this.state.initialized && !this.isLoading()) ? '' : 'disabled'}
-              onClick={this.handleSubmitPassword}>Update password</button>
           </div>
-        </div>
         </form>
       );
     } else {
@@ -191,34 +164,39 @@ var ForgotPassword = React.createClass({
             <h1>Password request sent!</h1>
             We've emailed you instructions on how to reset your password.
             Don't forget to check your spam folder.
-            <br/><br/>
-            <button type="submit" onClick={this.handleGoBack}>Still didn't get it? Go back.</button>
           </span>
         );
 
-        return (<Message type="danger" message={message} type="success"/>);
+        return (
+          <div>
+            <Message type="danger" message={message} type="success"/>
+            <button type="submit" className="oc-button" onClick={this.handleGoBack}>Still didn't get the mail? Go back.</button>
+          </div>
+        );
       }
 
       return (
         <form>
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="form-group">
+          <div className="row">
+            <div className="col-sm-6 col-sm-offset-3">
+              {errorMessage}
+              <div className="form-group">
                 <input type="text"
-                  className="form-control"
+                  className="oc-input"
                   placeholder="email"
                   onChange={this.handleChangedEmail}
                   value={this.state.email}/>
                 <Message type="danger" messages={this.props.getValidationMessages('email')} />
+              </div>
+              <div className="form-group">
+                <button type="submit" className="oc-button"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  onClick={this.handleSubmit}>Send mail</button>
+              </div>
             </div>
-            <button type="submit"
-              disabled={(this.props.isValid() && this.state.initialized && !this.isLoading()) ? '' : 'disabled'}
-              onClick={this.handleSubmit}>Send mail</button>
           </div>
-        </div>
         </form>
       );
-
     }
 
   }

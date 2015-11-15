@@ -79,47 +79,45 @@ var LocalLogin = React.createClass({
 
     return (
       <form>
-      <div className="row oc-login-wrapper">
-      <div className="col-sm-6 col-sm-offset-3">
-        <div className="social-logins-wrapper">
-          <SocialmediaLogin/>
+        <div className="row oc-login-wrapper">
+          <div className="col-sm-6 col-sm-offset-3">
+            <div className="social-logins-wrapper">
+              <SocialmediaLogin/>
+            </div>
+              <Message type="danger" message={this.state.error} />
+              <div className="form-group">
+                <input type="text"
+                  className="oc-input"
+                  placeholder="email"
+                  name="email"
+                  id="email"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  value={this.state.email}
+                  onChange={this.handleChangedEmail} />
+              </div>
+              <Message type="danger" messages={this.props.getValidationMessages('email')} />
+              <div className="form-group">
+                <input type="password"
+                  className="oc-input"
+                  placeholder="password"
+                  name="password"
+                  id="password"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  value={this.state.password}
+                  onChange={this.handleChangedPassword} />
+              </div>
+              <Message type="danger" messages={this.props.getValidationMessages('password')} />
+              <button
+                type="submit"
+                className="oc-button"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onClick={this.handleSubmit}>Login</button>
+              <div className="oc-login-help-wrapper">
+                <span className="login-help">Need an account? <Link to="signup" >Signup</Link></span>
+                <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>
+              </div>
+          </div>
         </div>
-          <Message type="danger" message={this.state.error} />
-          <div className="form-group">
-              <input type="text"
-                className="form-control oc-login-email"
-                placeholder="email"
-                name="email"
-                id="email"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                value={this.state.email}
-                onChange={this.handleChangedEmail} />
-          </div>
-          <Message type="danger" messages={this.props.getValidationMessages('email')} />
-          <div className="form-group">
-              <input type="password"
-                className="form-control oc-login-password"
-                placeholder="password"
-                name="password"
-                id="password"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                value={this.state.password}
-                onChange={this.handleChangedPassword} />
-          </div>
-          <Message type="danger" messages={this.props.getValidationMessages('password')} />
-          <button type="submit"
-            className="login-btn"
-            disabled={(this.props.isValid() && !this.isLoading()) ? '' : 'disabled'}
-            onClick={this.handleSubmit}>Login</button>
-          {
-            /*classname="login-help"*/
-          }
-          <div className="oc-login-help-wrapper">
-            <span className="login-help">Need an account? <Link to="signup" >Signup</Link></span>
-            <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>
-          </div>
-      </div>
-      </div>
       </form>
     );
   },

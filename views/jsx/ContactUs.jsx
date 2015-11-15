@@ -8,12 +8,14 @@ import Joi from 'joi';
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import ContactUsValidation from '../../models/joi/contactUs.js';
-import loggedIn from './UserIsLoggedInMixin.jsx';
 import Contact from '../../models/contact.js';
 import User from '../../logic/user.js';
 
+import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
+import LoadingMixin from './LoadingMixin.jsx';
+
 var myContactForm = React.createClass({
-  mixins: [loggedIn],
+  mixins: [UserIsLoggedInMixin, LoadingMixin],
 
   getInitialState: function() {
     return {
@@ -21,7 +23,8 @@ var myContactForm = React.createClass({
       addressIsSetByUser: false,
       message: '',
       error: null,
-      success: false
+      success: false,
+      btnClickedOnce: false
     };
   },
 
@@ -29,14 +32,18 @@ var myContactForm = React.createClass({
     this.setState({
       address: event.target.value,
       addressIsSetByUser: true
-    }, state => {
-      this.props.validate('address');
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
     });
   },
 
   messageChanged: function(event) {
-    this.setState({message: event.target.value}, state => {
-      this.props.validate('message');
+    this.setState({message: event.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
     });
   },
 
@@ -53,33 +60,32 @@ var myContactForm = React.createClass({
 
   validatorTypes: ContactUsValidation.form.body,
 
-  submitForm: function() {
+  submitForm: function(evt) {
     this.props.validate(error => {
-      if (error) {
-        return;
+      this.setState({btnClickedOnce: true});
+      if (!error) {
+        this.loading();
+        $.ajax(api.reverse('contactUs'), {
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(this.getContactRecord()),
+          method: 'POST',
+          success: this.showSuccessMessage,
+          error: this.showErrorMessage
+        });
       }
-
-      var contactUrl = api.reverse('contactUs');
-      $.ajax(contactUrl, {
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(this.getContactRecord()),
-        method: 'POST',
-        success: this.showSuccessMessage,
-        error: this.showErrorMessage
-      });
     });
   },
 
   showSuccessMessage: function(data, textStatus, jqXHR) {
-    this.setState({
+   this.loaded({
       error: null,
       success: true
     });
   },
 
   showErrorMessage: function(jqXHR, textStatus, errorThrown) {
-    this.setState({
+     this.loaded({
       error: jqXHR.responseText,
       success: false
     });
@@ -119,22 +125,18 @@ var myContactForm = React.createClass({
         </div>);
     }
 
+    var errorMessage = null;
     if (this.isSubmitted())
     {
-      if (this.hasErrors())
-      {
+      if (this.hasErrors()) {
+        errorMessage = (<Message type="danger" message={this.state.error} />);
+      } else {
         return (
-          <div onClick={this.resetForm}>
-            <Message type="danger" message={this.state.error} />
-          </div>
-        );
-      }
-
-      return (
           <div onClick={this.resetForm}>
             <Message type="success" message="Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible." />
           </div>
         );
+      }
     }
 
     var canSubmit = this.props.isValid();
@@ -143,18 +145,31 @@ var myContactForm = React.createClass({
       <div>
         <h4>Contact Us</h4>
         <form className="form-horizontal">
+          {errorMessage}
           <div className="form-group">
-            <input type="text" className="form-control" name="address"
-              placeholder="Your Email Address" value={this.getMailAddress()}
-              id="address" onChange={this.addressChanged} />
+            <input
+              type="text"
+              className="form-control"
+              name="address"
+              placeholder="Your Email Address"
+              value={this.getMailAddress()}
+              id="address"
+              onChange={this.addressChanged}
+              disabled={this.isLoading() ? 'disabled' : ''}
+            />
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
 
           <div className="form-group">
-            <textarea className="form-control" name="message" id="message"
+            <textarea
+              className="form-control"
+              name="message"
+              id="message"
               placeholder="Your Message"
-              onChange={this.messageChanged} />
+              onChange={this.messageChanged}
+              disabled={this.isLoading() ? 'disabled' : ''}
+            />
             <Message type="danger"
               messages={this.props.getValidationMessages('message')} />
           </div>
@@ -162,9 +177,10 @@ var myContactForm = React.createClass({
           <div className="form-group">
             <button type="button" className="btn btn-default"
               onClick={this.submitForm}
-              disabled={canSubmit ? '' : 'disabled'}>
-            Submit
-          </button>
+              disabled={this.isLoading() ? 'disabled' : ''}
+            >
+              Submit
+            </button>
         </div>
 
         </form>

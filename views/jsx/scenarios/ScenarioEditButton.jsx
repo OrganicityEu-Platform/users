@@ -14,7 +14,7 @@ var ScenarioEditButton = React.createClass({
   render: function() {
     if (this.userHasRole('admin') || this.userIsCreator(this.props.scenario)) {
       return (
-        <button className="oc-button-submit" onClick={this.handleClick}>EDIT</button>
+        <button className="oc-button" onClick={this.handleClick}>EDIT</button>
       );
     }
     return null;
