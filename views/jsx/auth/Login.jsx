@@ -55,7 +55,7 @@ var LocalLogin = React.createClass({
           this.loading();
           var url = api.reverse('local-login');
           $.ajax(url, {
-            error: this.loadingError(url, 'Login error'),
+            error: this.loadingError(url, 'Login failed'),
             success: (currentUser) => {
               this.loaded();
               this.props.onLogin(currentUser);

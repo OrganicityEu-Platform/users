@@ -61,7 +61,7 @@ var Signup = React.createClass({
           this.loading();
           var url = api.reverse('signup');
           $.ajax(url, {
-            error: this.loadingError(url, 'Signup error'),
+            error: this.loadingError(url, 'Signup failed'),
             success: (currentUser) => {
               this.loadingSuccess('New account created.');
               this.props.onLogin(currentUser);

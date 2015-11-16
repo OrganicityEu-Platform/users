@@ -48,17 +48,17 @@ var SectorSelector = React.createClass({
 
     for (var i = 0; i < this.props.sectors.length; i++) {
 
-      var className = 'sector-item'
+      var className = 'sector-item';
 
       // Force lower case
       var s = this.props.sectors[i].toLowerCase();
 
-      if(this.state.selectedSectors.indexOf(s) >= 0) {
+      if (this.state.selectedSectors.indexOf(s) >= 0) {
         className = 'sector-item sector-item-selected';
       }
 
       sectorSelctors.push(
-        <div className={className} data-sector={s} onClick={this.handleClick}>
+        <div key={s} className={className} data-sector={s} onClick={this.handleClick}>
           <img className="sector-icon" src={ui.asset('static/img/'.concat(s.concat('_icon.svg')))}/>
           <span className="sector-item-text">{s}</span>
         </div>

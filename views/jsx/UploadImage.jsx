@@ -113,6 +113,7 @@ var UploadImage = React.createClass({
                     contentType: false,
                     type: 'POST',
                     success: (e) => {
+                      this.loaded();
                       reset(e);
                     },
                     error : (xhr, textStatus, errorThrown) => {

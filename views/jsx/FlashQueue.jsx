@@ -54,9 +54,19 @@ var Queue = React.createClass({
 var Message = React.createClass({
   render: function() {
     var classes = ['alert', 'flash-message', 'alert-' + this.props.type];
+
+    var preText = 'ERROR';
+    if (this.props.type === 'success') {
+      preText = 'SUCCESS';
+    } else if (this.props.type === 'warning') {
+      preText = 'WARNING';
+    } else if (this.props.type === 'info') {
+      preText = 'NOTICE';
+    }
+
     return (
       <div className={classes.join(' ')}>
-        {this.props.text}
+        <span className="bold">{preText}:</span> {this.props.text}
         <i className="flash-delete" onClick={() => this.props.dismissMessage(this.props.key)}>&times;</i>
       </div>
     );
@@ -64,7 +74,7 @@ var Message = React.createClass({
 });
 
 var Mixin = {
-  allowedTypes : ['success', 'info', 'warning', 'danger', ''],
+  allowedTypes : ['success', 'info', 'warning', 'danger'],
   flash: function(type, text) {
     if (!this.allowedTypes.some((t) => t === type)) {
       console.log(`Wrong flash type "${type}". Use one of ${JSON.stringify(this.allowedTypes)}`);

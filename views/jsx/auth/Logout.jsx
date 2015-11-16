@@ -18,7 +18,7 @@ var Logout = React.createClass({
     var url = api.reverse('logout');
     this.loading();
     $.ajax(url, {
-      error: this.loadingError(url, 'Logout error'),
+      error: this.loadingError(url, 'Logout failed'),
       success : () => {
         this.props.onLogout(); // Scaffold.onLogout
         this.loadingSuccess('Logout successful!');
