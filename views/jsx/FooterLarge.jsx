@@ -15,7 +15,7 @@ var FooterLarge = React.createClass({
   render: function() {
     return (
         <div className="row oc-footer-large">
-          <span className="oc-footer-large-follow-link">Follow us</span>
+          <h1 className="oc-home-view-title">Follow us</h1>
           <div className="oc-footer-large-social-links">
             <a href={twitter}><span className="fa fa-twitter"></span></a>
             <a href={facebook}><span className="fa fa-facebook-official"></span></a>
