@@ -33,10 +33,20 @@ var LoadingMixin = {
     if (!msg) {
       msg = 'Error while loading';
     }
-    return (function(jqXHR, textStatus, errorThrown) {
+    return (xhr, textStatus, errorThrown) => {
       this.loaded();
-      FlashQueue.Mixin.flashOnAjaxError(url, msg)(jqXHR, textStatus, errorThrown);
-    }).bind(this);
+
+      // Append server side error message
+      if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
+        msg += ': ' + xhr.responseJSON.error;
+      }
+
+      FlashQueue.Mixin.flashOnAjaxError(url, msg)(xhr, textStatus, errorThrown);
+    };
+  },
+  loadingSuccess : function(msg, o) {
+    this.loaded(o);
+    FlashQueue.Mixin.flash('success', msg);
   },
   loaded : function(extendState) {
     if (this.isMounted()) {

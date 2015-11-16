@@ -1,7 +1,8 @@
 import $                  from 'jquery';
 import React              from 'react';
-import FlashQueue         from '../FlashQueue.jsx';
+
 import LoadingMixin       from '../LoadingMixin.jsx';
+
 import ScenarioListItem   from './ScenarioListItem.jsx';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 import ScenarioThumbnails from './ScenarioThumbnails.jsx';
@@ -9,13 +10,13 @@ import Router             from 'react-router';
 import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
-import Tags from '../Tags.jsx';
+import Tags               from '../Tags.jsx';
 import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
 
 var ScenarioList = React.createClass({
-  mixins: [FlashQueue.Mixin, Router.Navigation, LoadingMixin],
+  mixins: [Router.Navigation, LoadingMixin],
   getInitialState: function() {
     return {
       refresh : false,

@@ -1,6 +1,7 @@
 import $            from 'jquery';
 import React        from 'react';
 import api          from '../../../api_routes.js';
+
 import LoadingMixin from '../LoadingMixin.jsx';
 
 var UserDeleteButton = React.createClass({
@@ -17,7 +18,7 @@ var UserDeleteButton = React.createClass({
         method: 'DELETE',
         error: this.loadingError(url, 'Error deleting user'),
         success: () => {
-          this.loaded();
+          this.loadingSuccess('User `' + this.props.user.name + '` deleted');
           if (typeof this.props.onDelete == 'function') {
             this.props.onDelete(this.props.user);
           }

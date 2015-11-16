@@ -4,11 +4,11 @@ import ReactMixin       from 'react-mixin';
 import Router           from 'react-router';
 
 import LoadingMixin     from '../LoadingMixin.jsx';
+
 import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
 
 import Message          from '../Message.jsx';
-
 
 var Navigation = Router.Navigation;
 
@@ -120,17 +120,19 @@ var ScenarioEvalView = React.createClass({
 
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
-                  <div key={"question_"+qIdx+"_radios"}>
+                  <div key={'question_' + qIdx + '_radios'}>
                     <div className="oc-evaluation-question col-lg-6">{q.text}</div>
-                    {q.values.map((a,aIdx) => (
+                    {q.values.map((a, aIdx) => (
                       <div className="oc-evaluation-answer-radio col-lg-1">
                         <input type="radio"
                           className="form-control"
-                          name={"question_"+qIdx}
-                          id={"question_"+qIdx+"_answer_"+aIdx}
+                          name={'question_' + qIdx}
+                          id={'question_' + qIdx + '_answer_' + aIdx}
                           onClick={this.selectedAnswer(qIdx, aIdx)}
                         />
-                        <label className="radio-label" htmlFor={"question_"+qIdx+"_answer_"+aIdx}><span className="oc-evaluation-answer-radio-num">{a.value}</span></label>
+                        <label className="radio-label" htmlFor={'question_' + qIdx + '_answer_' + aIdx}>
+                          <span className="oc-evaluation-answer-radio-num">{a.value}</span>
+                        </label>
                       </div>
                     ))}
                   </div>

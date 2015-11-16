@@ -1,6 +1,5 @@
 import $                  from 'jquery';
 import React              from 'react';
-import FlashQueue         from '../FlashQueue.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
@@ -16,7 +15,7 @@ var Link = Router.Link;
 var bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien rutrum erat sagittis ultricies a eu arcu. Pellentesque ut sem vel nunc eleifend dapibus eu eget nunc. Quisque ac mattis elit. Nunc tristique aliquet rutrum. Vestibulum ultrices eros tellus, vitae bibendum nibh pulvinar a. Integer rutrum faucibus est, a dignissim tellus pulvinar vitae. Integer elementum dictum mi non ultricies.';
 
 var UserAvatar = React.createClass({
-  mixins: [FlashQueue.Mixin, LoadingMixin],
+  mixins: [LoadingMixin],
   getInitialState: function() {
     return {
       loading: true,

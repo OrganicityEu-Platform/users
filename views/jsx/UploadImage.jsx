@@ -1,6 +1,8 @@
 import $            from 'jquery';
 import React        from 'react';
-import FlashQueue   from './FlashQueue.jsx';
+
+import LoadingMixin from './LoadingMixin.jsx';
+
 import api          from '../../api_routes.js';
 import Message      from './Message.jsx';
 import ui           from '../../ui_routes.js';
@@ -24,7 +26,7 @@ import strategy     from 'joi-validation-strategy';
  * <UploadImage url={...} joi={...} callback={...}/>
  */
 var UploadImage = React.createClass({
-  mixins : [FlashQueue.Mixin],
+  mixins : [LoadingMixin],
   getInitialState: function() {
     return {
       info : undefined,
@@ -61,15 +63,10 @@ var UploadImage = React.createClass({
 
       file : undefined,
       thumbnail : undefined,
-
-      status : 'Image upload in progress',
-      loading : true
     });
 
     var reset = (state) => {
       this.props.callback(state);
-      state.status = undefined;
-      state.loading = false;
       this.setState(state);
     };
 
@@ -108,6 +105,7 @@ var UploadImage = React.createClass({
                   var formData = new FormData();
                   formData.append('file', blob);
 
+                  this.loading();
                   $.ajax({
                     url: this.props.url,
                     data: formData,
@@ -117,8 +115,8 @@ var UploadImage = React.createClass({
                     success: (e) => {
                       reset(e);
                     },
-                    error : () => {
-                      this.flashOnAjaxError(this.props.url, 'Error while uploading an image'),
+                    error : (xhr, textStatus, errorThrown) => {
+                      this.loadingError(this.props.url, 'Error while uploading an image')(xhr, textStatus, errorThrown),
                       reset({});
                     }
                   });
@@ -144,8 +142,8 @@ var UploadImage = React.createClass({
                         accept="image/jpeg, image/png"/>
                     );
 
-    if (this.state.status) {
-      thumbnail = (<div>{this.state.status}</div>);
+    if (this.isLoading()) {
+      thumbnail = (<div>Image upload in progress</div>);
       inputFile = undefined;
     } else if (this.state.thumbnail) {
       thumbnail = (<img src={ui.asset(this.state.thumbnail)} width={this.props.thumbnail_width}/>);

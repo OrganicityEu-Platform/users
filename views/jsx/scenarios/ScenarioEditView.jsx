@@ -1,6 +1,5 @@
 import $                    from 'jquery';
 import React                from 'react';
-import FlashQueue           from '../FlashQueue.jsx';
 import TagField             from '../form-components/TagField.jsx';
 import api                  from '../../../api_routes.js';
 import ui                   from '../../../ui_routes.js';
@@ -9,6 +8,8 @@ import ScenarioCheck        from './ScenarioCheck.jsx'
 import ScenarioTableView    from './ScenarioTableView.jsx';
 import SectorSelector       from '../SectorSelector.jsx';
 import { Button, ButtonToolbar, OverlayTrigger, Popover } from 'react-bootstrap';
+
+import LoadingMixin         from '../LoadingMixin.jsx';
 
 // Input validation
 import validation           from 'react-validation-mixin';
@@ -22,7 +23,7 @@ import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
 
 var ScenarioEditView = React.createClass({
-  mixins : [Router.Navigation, Router.State, FlashQueue.Mixin, UserIsLoggedInMixin],
+  mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin],
   predefinedSectors: [
     'public', 'transport', 'agriculture',
     'energy', 'retail', 'healthcare',
@@ -105,9 +106,10 @@ var ScenarioEditView = React.createClass({
     if (this.editMode()) {
 
       var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
-      $.getJSON(url, (scenario) => {
-        if (this.isMounted()) {
-
+      $.ajax(url, {
+        dataType : 'json',
+        error : this.loadingError(url, 'Error loading newest scenarios'),
+        success : (scenario) => {
           for (var i = 0; i < scenario.sectors.length; i++) {
             var s = scenario.sectors[i].toLowerCase();
             if (this.predefinedSectors.indexOf(s) >= 0) {
@@ -122,6 +124,7 @@ var ScenarioEditView = React.createClass({
           });
         }
       });
+
     } else {
       // Generate intial validation
       setTimeout(() => {
@@ -316,19 +319,22 @@ var ScenarioEditView = React.createClass({
       var method = this.editMode() ? 'PUT' : 'POST';
       var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
         : api.reverse('scenario_list');
+      var successMessage = this.editMode() ? 'Sceanrios updated successfully.' : 'Sceanrio created successfully';
+      var errorMessage = this.editMode() ? 'Error while updating a scenario.' : 'Error while creating a scenario';
 
+      this.loading();
       $.ajax(url, {
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(this.getValidatorData()),
         method: method,
-        error: this.flashOnAjaxError(api.reverse('scenario_list'), 'Error while submitting scenario'),
+        error: this.loadingError(url, errorMessage),
         success: (scenario) => {
           //this.clearState();
+          this.loadingSuccess(successMessage);
           this.transitionTo('scenarioView', { uuid : scenario.uuid });
         }
-      }
-      );
+      });
     });
 
   },
@@ -509,7 +515,6 @@ var ScenarioEditView = React.createClass({
                   type="button"
                   className="oc-button"
                   onClick={this.clickedPreview}
-                  disabled={this.loading ? 'disabled' : ''}
                 >Preview</button>
               </div>
 

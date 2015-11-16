@@ -3,10 +3,10 @@ import React            from 'react';
 import ReactMixin       from 'react-mixin';
 import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
 import api              from '../../../api_routes.js';
-import FlashQueue       from '../FlashQueue.jsx';
-import LoadingMixin     from '../LoadingMixin.jsx';
 import TagField         from '../form-components/TagField.jsx';
 import UploadImage      from '../UploadImage.jsx';
+
+import LoadingMixin     from '../LoadingMixin.jsx';
 
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
 
@@ -22,7 +22,7 @@ import Message          from '../Message.jsx';
 import ScenariosNewest  from '../scenarios/ScenariosNewest.jsx';
 
 var Profile = React.createClass({
-  mixins: [Router.Navigation, Router.State, FlashQueue.Mixin, UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {};
   },
@@ -55,11 +55,11 @@ var Profile = React.createClass({
     this.loading();
     $.ajax(url, {
       dataType: 'json',
-      error: (xhr) => {
+      error: (xhr, textStatus, errorThrown) => {
         if (xhr.status === 401 || xhr.status === 403) {
           this.loaded();
         } else {
-          this.loadingError(url, 'Error retrieving current user');
+          this.loadingError(url, 'Error retrieving current user')(xhr, textStatus, errorThrown);
         }
       },
       success : (profile) => {
@@ -178,7 +178,7 @@ var Profile = React.createClass({
     }, () => {
       this.props.validate((error) => {
         if (!error) {
-          if(this.state.dirty) {
+          if (this.state.dirty) {
             this.loading();
             var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
             $.ajax(url, {
@@ -187,13 +187,17 @@ var Profile = React.createClass({
               contentType : 'application/json',
               error : this.loadingError(url, 'Error updating user profile'),
               success : () => {
-                this.loaded({ dirty : false, btnClickedOnce: false});
-                this.flash('success', 'Profile succesfully updated!');
+                this.loadingSuccess('Profile succesfully updated!', {
+                  dirty : false,
+                  btnClickedOnce: false
+                });
               }
             });
           } else {
-            this.loaded({ dirty : false, btnClickedOnce: false});
-            this.flash('success', 'Nothing changed!');
+            this.loadingSuccess('Nothing changed!', {
+              dirty : false,
+              btnClickedOnce: false
+            });
           }
         }
       });

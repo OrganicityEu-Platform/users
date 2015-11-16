@@ -18,7 +18,7 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Scaffold = React.createClass({
-  mixins : [UserIsLoggedInMixin, FlashQueue.Mixin, UserHasRoleMixin],
+  mixins : [UserIsLoggedInMixin, UserHasRoleMixin],
   getInitialState: function() {
     return {
       currentUser : undefined,
@@ -26,17 +26,15 @@ var Scaffold = React.createClass({
     };
   },
   componentDidMount: function() {
-    $.ajax(api.reverse('currentUser'), {
+    var url = api.reverse('currentUser');
+    $.ajax(url, {
       dataType: 'json',
       success : this.onLogin,
       error : (xhr, textStatus, errorThrown) => {
         if (xhr.status === 401) {
           this.onLogout();
         } else {
-          this.flashOnAjaxError(
-            api.reverse('currentUser'),
-            'Error retrieving current user'
-          )(xhr, textStatus, errorThrown);
+          this.flashOnAjaxError(url, 'Error retrieving current user')(xhr, textStatus, errorThrown);
         }
       }
     });
@@ -117,7 +115,7 @@ var Scaffold = React.createClass({
       );
     }
     return (
-      <div className="container oc-page-wrapper">
+      <div className="container oc-page-wrapper" id="top">
         <div className="row">
           <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
             <CollapsibleNav eventKey={0}>

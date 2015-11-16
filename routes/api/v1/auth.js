@@ -43,7 +43,7 @@ module.exports = function(router, passport) {
           // Here we log the `real` error
           console.log('Login failure: ', info);
           // Here we return a `generic` errior
-          return res.status(422).json({error: 'Email address and/or password unknown'});
+          return res.status(422).json({error: 'Email address unknown and/or password wrong'});
         }
 
         req.logIn(user, function(err) {

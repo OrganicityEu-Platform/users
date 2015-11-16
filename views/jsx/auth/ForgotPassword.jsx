@@ -1,7 +1,6 @@
 import $            from 'jquery';
 import React        from 'react';
 
-import FlashQueue   from '../FlashQueue.jsx';
 import LoadingMixin from '../LoadingMixin.jsx';
 
 import api          from '../../../api_routes.js';

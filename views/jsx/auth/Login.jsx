@@ -3,13 +3,12 @@ import React                from 'react';
 import Router               from 'react-router';
 
 import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx'
-import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
+import FlashQueue           from '../FlashQueue.jsx';
+
 import api                  from '../../../api_routes.js';
 import ui                   from '../../../ui_routes.js';
 import SocialmediaLogin     from './SocialmediaLogin.jsx';
-
-import config               from '../../../config/config.js';
 
 // Input validation
 import validation   from 'react-validation-mixin';
@@ -56,18 +55,7 @@ var LocalLogin = React.createClass({
           this.loading();
           var url = api.reverse('local-login');
           $.ajax(url, {
-            error: (xhr, textStatus, errorThrown) => {
-              this.loaded();
-              if (xhr.status === 400) {
-                this.flash('danger', 'Bad request: The server does not accpets your input.');
-              } else if (xhr.status === 422) {
-                this.flash('danger', xhr.responseJSON.error);
-              } else if (!config.dev) {
-                this.flash('danger', 'Error during login');
-              } else {
-                this.flashOnAjaxError(url, 'Error during login')(xhr, textStatus, errorThrown);
-              }
-            },
+            error: this.loadingError(url, 'Login error'),
             success: (currentUser) => {
               this.loaded();
               this.props.onLogin(currentUser);

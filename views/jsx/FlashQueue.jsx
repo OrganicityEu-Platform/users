@@ -3,6 +3,8 @@ import $ from 'jquery';
 import React from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
+import config from '../../config/config.js';
+
 // used for singleton pattern
 var mountedInstance;
 
@@ -72,17 +74,22 @@ var Mixin = {
   },
   flashOnAjaxError: function(url, message) {
     return function(jqXHR, textStatus, errorThrown) {
-      var content = (
-      <div>
-        <b>Error doing AJAX request to {url}:</b> {message}<br/>
-        <b>jqXHR</b><br/>
-        <pre>{JSON.stringify(jqXHR, null, '  ')}</pre>
-        <b>textStatus</b><br/>
-        <pre>{textStatus}</pre>
-        <b>errorThrown</b>
-        <pre>{errorThrown}</pre>
-      </div>);
-      mountedInstance.flash('danger', content);
+      if (config.dev) {
+        var content = (
+          <div>
+            <b>Error doing AJAX request to {url}:</b> {message}<br/>
+            <b>jqXHR</b><br/>
+            <pre>{JSON.stringify(jqXHR, null, '  ')}</pre>
+            <b>textStatus</b><br/>
+            <pre>{textStatus}</pre>
+            <b>errorThrown</b>
+            <pre>{errorThrown}</pre>
+          </div>
+        );
+        mountedInstance.flash('danger', content);
+      } else {
+        mountedInstance.flash('danger', message);
+      }
     };
   }
 };

@@ -1,12 +1,11 @@
 import $                from 'jquery';
 import React            from 'react';
-import FlashQueue       from '../FlashQueue.jsx';
-import LoadingMixin     from '../LoadingMixin.jsx';
 import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
 import SocialmediaLogin from './SocialmediaLogin.jsx';
 
-import config           from '../../../config/config.js';
+import FlashQueue       from '../FlashQueue.jsx';
+import LoadingMixin     from '../LoadingMixin.jsx';
 
 // Input validation
 import validation       from 'react-validation-mixin';
@@ -62,21 +61,9 @@ var Signup = React.createClass({
           this.loading();
           var url = api.reverse('signup');
           $.ajax(url, {
-            error: (xhr, textStatus, errorThrown) => {
-              this.loaded();
-              if (xhr.status === 400) {
-                this.flash('danger', 'Bad request: The server does not accpets your input.');
-              } else if (xhr.status === 422) {
-                this.flash('danger', xhr.responseJSON.error);
-              } else if (!config.dev) {
-                this.flash('danger', 'Error during signup');
-              } else {
-                this.flashOnAjaxError(url, 'Error during signup')(xhr, textStatus, errorThrown);
-              }
-            },
+            error: this.loadingError(url, 'Signup error'),
             success: (currentUser) => {
-              this.flash('success', 'New account created.');
-              this.loaded();
+              this.loadingSuccess('New account created.');
               this.props.onLogin(currentUser);
               this.transitionTo(ui.route('profile'));
             },

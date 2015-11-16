@@ -1,15 +1,17 @@
 import $                  from 'jquery';
 import React              from 'react';
-import UserHasRoleMixin   from '../UserHasRoleMixin.jsx';
-import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
-import LoadingMixin       from '../LoadingMixin.jsx';
+
 import api                from '../../../api_routes.js';
 
+import UserHasRoleMixin   from '../UserHasRoleMixin.jsx';
+import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
+
+import LoadingMixin       from '../LoadingMixin.jsx';
+
 var Router = require('react-router');
-var Navigation = Router.Navigation;
 
 var ScenarioDeleteButton = React.createClass({
-  mixins: [Navigation, UserHasRoleMixin, UserIsCreatorMixin, LoadingMixin],
+  mixins: [UserHasRoleMixin, UserIsCreatorMixin, LoadingMixin],
   handleClick: function() {
     var sure = window.confirm('Are you sure you want to delete this version of the scenario?');
     if (sure) {

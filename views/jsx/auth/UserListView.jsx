@@ -2,8 +2,10 @@ import $                 from 'jquery';
 import React             from 'react';
 import ReactMixin        from 'react-mixin';
 import UserHasRoleMixin  from '../UserHasRoleMixin.jsx';
+
+import LoadingMixin      from '../LoadingMixin.jsx';
+
 import api               from '../../../api_routes.js';
-import FlashQueue        from '../FlashQueue.jsx';
 import TagField          from '../form-components/TagField.jsx';
 import UserAccountsTable from './UserAccountsTable.jsx';
 import UserEditButton    from './UserEditButton.jsx';
@@ -13,26 +15,22 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var UserListView = React.createClass({
-  mixins: [FlashQueue.Mixin, UserHasRoleMixin],
+  mixins: [UserHasRoleMixin, LoadingMixin],
   getInitialState: function() {
     return {
-      loading: true,
-      users : null
+      users : []
     };
   },
   componentDidMount: function() {
-    var utl = api.reverse('users');
+    var url = api.reverse('users');
+    this.loading();
     $.ajax(url, {
       dataType: 'json',
-      error : (jqXHR, textStatus, errorThrown) => {
-        this.state.loading = false;
-        this.setState(this.state);
-        this.flashOnAjaxError(url, 'Error retrieving users')(jqXHR, textStatus, errorThrown);
-      },
+      error : this.loadingError(url, 'Error retrieving users'),
       success: (users) => {
-        this.state.loading = false;
-        this.state.users = users;
-        this.setState(this.state);
+        this.loaded({
+          users: users
+        });
       },
     });
   },
@@ -40,14 +38,17 @@ var UserListView = React.createClass({
     console.log(evt);
   },
   handleUserDeleted: function(deletedUser) {
-    this.flash(
-      'success',
-      `User account of "${deletedUser.name}" (UUID: "${deletedUser.uuid}") was successful`
-    );
-    this.state.users = this.state.users.filter((user) => user.uuid !== deletedUser.uuid);
-    this.setState(this.state);
+    // Remove deleted user from the list
+    this.setState({
+      users: this.state.users.filter((user) => user.uuid !== deletedUser.uuid)
+    });
   },
   render: function() {
+
+    if (this.isLoading()) {
+      return (<div>Loading users</div>);
+    }
+
     return (
       <div className="row">
         <h1>Users</h1>
@@ -63,13 +64,6 @@ var UserListView = React.createClass({
           </thead>
           <tbody>
             {(() => {
-              if (this.state.users === null) {
-                return (
-                  <tr>
-                    <td colSpan="5">Loading...</td>
-                  </tr>
-                );
-              }
               return this.state.users.map((user) => {
                 return (
                   <tr key={user.uuid}>

@@ -4,7 +4,9 @@ var api = require('../../../api_routes.js');
 module.exports = function(router, passport) {
 
   var error = function(req, res) {
-    res.status(500).send('Interacting with this resource always results in an error!');
+    res.status(500).send({
+      error: 'Interacting with this resource always results in an error!'
+    });
   };
 
   router.get(api.route('error'), error);

@@ -3,8 +3,9 @@ import React             from 'react';
 import ReactMixin        from 'react-mixin';
 import UserHasRoleMixin  from '../UserHasRoleMixin.jsx';
 import api               from '../../../api_routes.js';
-import LoadingMixin      from '../LoadingMixin.jsx';
 import TagField          from '../form-components/TagField.jsx';
+
+import LoadingMixin      from '../LoadingMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
