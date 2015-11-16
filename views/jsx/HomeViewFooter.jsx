@@ -6,9 +6,6 @@ var Link = Router.Link;
 
 var HomeViewFooter = React.createClass({
   mixins: [Router.Navigation],
-  clickHander: function() {
-    window.location = 'http://organicity.eu/';
-  },
   render: function() {
     return (
       <div className="col-lg-8 col-lg-offset-2">
@@ -72,8 +69,10 @@ var HomeViewFooter = React.createClass({
             <div id="oc-home-view-section-read-more-btn-wrapper">
               <div className="col-md-4"></div>
               <div className="col-md-4">
-                <Button id="oc-home-view-section-read-more-btn" onClick={this.clickHander}>READ MORE ABOUT ORGANICITY</Button>
-                </div>
+                <a href="http://organicity.eu" target="_blank">
+                  <Button id="oc-home-view-section-read-more-btn">READ MORE ABOUT ORGANICITY</Button>
+                </a>
+              </div>
               <div className="col-md-4"></div>
             </div>
           </div>

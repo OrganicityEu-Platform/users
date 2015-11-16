@@ -7,9 +7,6 @@ var Link = Router.Link;
 
 var HomeViewSection = React.createClass({
   mixins: [Router.Navigation],
-  clickHander: function() {
-    this.transitionTo('scenarioList');
-  },
   render: function() {
     return (
       <div>
@@ -22,7 +19,9 @@ var HomeViewSection = React.createClass({
             <div id="oc-home-view-section-explore-all-scenarios-btn-wrapper">
               <div className="col-md-4"></div>
               <div className="col-md-4">
-                <Button id="oc-home-view-section-explore-all-scenarios-btn" onClick={this.clickHander}>EXPLORE ALL SCENARIOS</Button>
+                <Link to="scenarioList">
+                  <Button id="oc-home-view-section-explore-all-scenarios-btn">EXPLORE ALL SCENARIOS</Button>
+                </Link>
               </div>
               <div className="col-md-4"></div>
             </div>
