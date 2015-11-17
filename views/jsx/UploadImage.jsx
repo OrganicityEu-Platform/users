@@ -118,12 +118,18 @@ var UploadImage = React.createClass({
                     },
                     error : (xhr, textStatus, errorThrown) => {
                       this.loadingError(this.props.url, 'Error while uploading an image')(xhr, textStatus, errorThrown),
-                      reset({});
+                      reset({
+                        image : '',
+                        thumbnail : ''
+                      });
                     }
                   });
                 };
               } else {
-                reset({});
+                reset({
+                  image : '',
+                  thumbnail : ''
+                });
               }
             });
 

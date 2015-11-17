@@ -6,6 +6,8 @@ import api              from '../../../api_routes.js';
 import TagField         from '../form-components/TagField.jsx';
 import UploadImage      from '../UploadImage.jsx';
 
+import ScenarioCheck    from '../scenarios/ScenarioCheck.jsx'
+
 import LoadingMixin     from '../LoadingMixin.jsx';
 
 import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
@@ -73,8 +75,11 @@ var Profile = React.createClass({
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
         e.dirty = false;
-        this.loaded({profile: e});
-        //this.props.validate();
+        this.loaded({profile: e}, () => {
+          // Initial validate to show validation indicators
+          this.props.validate();
+        });
+
       }
     });
   },
@@ -92,6 +97,8 @@ var Profile = React.createClass({
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('name');
       }
     });
   },
@@ -104,6 +111,8 @@ var Profile = React.createClass({
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('gender');
       }
     });
   },
@@ -116,30 +125,40 @@ var Profile = React.createClass({
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('roles');
       }
     });
   },
   handleChangedPassword : function(evt) {
+
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        password : evt.target.value
+        password : (evt.target.value === '') ? null : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('local.password');
+        this.props.validate('local.password_repeat');
       }
     });
   },
   handleChangedPasswordRepeat : function(evt) {
+
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        password_repeat : evt.target.value
+        password_repeat : (evt.target.value === '') ? null : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
+      } else {
+        this.props.validate('local.password');
+        this.props.validate('local.password_repeat');
       }
     });
   },
@@ -158,14 +177,17 @@ var Profile = React.createClass({
       profile.local.password = this.state.profile.password;
     }
 
-    if (this.state.avatar) {
-      profile.avatar = this.state.avatar;
+    if (this.state.profile.avatar !== undefined) {
+      profile.avatar = this.state.profile.avatar;
     }
 
     // patch would be forbidden if we try to change roles and we're not admin
     if (this.userHasRole('admin') && this.state.profile.roles) {
       profile.roles = this.state.profile.roles;
     }
+
+    console.log('STATE: ', this.state);
+    console.log('PROFILE: ', profile);
 
     return profile;
   },
@@ -204,12 +226,210 @@ var Profile = React.createClass({
     });
   },
   onThumbnail: function(data) {
+    console.log('NEW AVATAR: ', data);
+
     this.setState({
-      dirty: true,
-      avatar: data.image
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        avatar: data.image
+      })
     }, () => {
-      this.props.validate();
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('avatar');
+      }
     });
+
+  },
+  renderNew : function() {
+    var errorMessageName = null;
+    var errorMessageGender = null;
+    var errorMessageRoles = null;
+    var errorMessagePassword = null;
+    var errorMessagePasswordRepeat = null;
+    if (this.state.btnClickedOnce) {
+      errorMessageName = (<Message type="danger" messages={this.props.getValidationMessages('name')} />);
+      errorMessageGender = (<Message type="danger" messages={this.props.getValidationMessages('gender')} />);
+      errorMessageRoles = (<Message type="danger" messages={this.props.getValidationMessages('roles')} />);
+      errorMessagePassword = (<Message type="danger" messages={this.props.getValidationMessages('local.password')} />);
+      errorMessagePasswordRepeat = (<Message type="danger" messages={this.props.getValidationMessages('local.password_repeat')} />);
+    }
+
+    var localAccount = null;
+
+    if (this.state.profile.local) {
+
+      localAccount = (
+        <div>
+          <h4>Local account</h4>
+
+          <div className="form-group oc-create-edit">
+            <label className="control-label col-sm-3" htmlFor="email">E-Mail
+              <span className="scenario-create-edit-view-field-info">
+                Your E-Mail
+              </span>
+            </label>
+            <div className="col-sm-9">
+              <input type="text"
+                className="oc-input"
+                name="email"
+                disabled="disabled"
+                value={this.state.profile.local.email} />
+            </div>
+          </div>
+
+          <div className="form-group oc-create-edit">
+            <label className="control-label col-sm-3" htmlFor="password">Password <ScenarioCheck isvalid={this.props.isValid('local.password')}/>
+              <span className="scenario-create-edit-view-field-info">
+                Select a new passwort for your local login. The passwort must have at least 6 characters.
+              </span>
+            </label>
+            <div className="col-sm-9">
+               <input type="password"
+                className="oc-input"
+                name="password"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPassword} />
+              {errorMessagePassword}
+            </div>
+          </div>
+
+          <div className="form-group oc-create-edit">
+            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ScenarioCheck isvalid={this.props.isValid('local.password_repeat')}/>
+              <span className="scenario-create-edit-view-field-info">
+                If you selected a new passwort, please repeat it here.
+              </span>
+            </label>
+            <div className="col-sm-9">
+              <input type="password"
+                className="oc-input"
+                name="password_repeat"
+                disabled={this.isLoading() ? 'disabled' : ''}
+                onChange={this.handleChangedPasswordRepeat} />
+              {errorMessagePasswordRepeat}
+            </div>
+          </div>
+        </div>
+
+      );
+    }
+
+    var checkRole = null;
+    if (this.userHasRole('admin')) {
+      checkRole = (<ScenarioCheck isvalid={this.props.isValid('roles')}/>);
+    }
+
+    return (
+      <div className="container oc-create-edit-view">
+        <div className="row">
+          <div className="scenario-create-edit-view-title-wrapper">
+            <h1>Profile</h1>
+          </div>
+          <form className="form-horizontal">
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="name">Name <ScenarioCheck isvalid={this.props.isValid('name')}/>
+                <span className="scenario-create-edit-view-field-info">
+                  Please tell us your real name or nick name.
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <input
+                  type="text"
+                  className="oc-input"
+                  id="name"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
+                  value={this.state.profile.name}
+                  onChange={this.handleChangedName} />
+                {errorMessageName}
+              </div>
+            </div>
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ScenarioCheck isvalid={this.props.isValid('avatar')}/>
+                <span className="scenario-create-edit-view-field-info">
+                  Upload an avatar. The image must be at least 64x64px and can be a PNG or a JPG.
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <UploadImage
+                  url={api.reverse('user_thumbnail', {uuid: this.state.profile.uuid})}
+                  joi={UserJoi.image}
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  callback={this.onThumbnail}
+                  thumbnail={this.state.profile.avatar}
+                  thumbnail_width="64px"
+                />
+              </div>
+            </div>
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="gender">Gender <ScenarioCheck isvalid={this.props.isValid('gender')}/>
+                <span className="scenario-create-edit-view-field-info">
+                  Please tell us your gender.
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <input type="radio"
+                  name="gender"
+                  id="profile-gender-f"
+                  value="f"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  checked={this.state.profile.gender === 'f'}
+                  onChange={this.handleChangedGender} /> Female<br/>
+                <input type="radio"
+                  name="gender"
+                  id="profile-gender-m"
+                  value="m"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  checked={this.state.profile.gender === 'm'}
+                  onChange={this.handleChangedGender} /> Male
+                {errorMessageGender}
+              </div>
+            </div>
+
+            <div className="form-group oc-create-edit">
+              <label className="control-label col-sm-3" htmlFor="name">Roles {checkRole}
+                <span className="scenario-create-edit-view-field-info">
+                  Your assigned roles.
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <TagField
+                  disabled={this.userHasRole('admin') ? false : true}
+                  key={this.state.profile.uuid + '_roles'}
+                  tags={this.state.profile.roles}
+                  loading={this.isLoading()}
+                  onChange={this.handleChangedRoles} />
+                {errorMessageRoles}
+              </div>
+            </div>
+
+            {localAccount}
+
+            <div className="form-group">
+              <div className="col-md-2 col-md-offset-5">
+                <button
+                  type="button"
+                  className="oc-button"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  onClick={this.handleSubmit}
+                >Save Profile</button>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <h3>Scenarios created</h3>
+              <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    );
+
   },
   render: function() {
 
@@ -230,6 +450,8 @@ var Profile = React.createClass({
         </div>
       );
     }
+
+    return this.renderNew();
 
     var localAccount = '';
     if (this.state.profile.local) {

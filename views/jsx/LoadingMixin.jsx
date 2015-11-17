@@ -48,12 +48,12 @@ var LoadingMixin = {
     this.loaded(o);
     FlashQueue.Mixin.flash('success', msg);
   },
-  loaded : function(extendState) {
+  loaded : function(extendState, callback) {
     if (this.isMounted()) {
       if (extendState) {
-        this.setState($.extend({}, extendState, { loading : false }));
+        this.setState($.extend({}, extendState, { loading : false }), callback);
       } else {
-        this.setState({ loading : false });
+        this.setState({ loading : false }, callback);
       }
     } else {
       window.setTimeout(() => this.loaded(extendState), 10);

@@ -76,7 +76,7 @@ user.profile = {
   roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
     { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
   ),
-  avatar : Joi.string().label('Avatar'),
+  avatar : Joi.string().min(1).label('Avatar'),
   local : {
     password: joiPassword.optional().allow('')
   }
