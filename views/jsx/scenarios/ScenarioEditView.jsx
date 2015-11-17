@@ -388,54 +388,52 @@ var ScenarioEditView = React.createClass({
     }
 
     return (
-      <div className="container oc-create-edit-view">
+      <div className="container oc-form-group-view">
         <div className="row">
-          <div className="scenario-create-edit-view-title-wrapper">
-            <h1>{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
-          </div>
+          <h1 className="oc-pink">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
           <form className="form-horizontal">
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="title">Title <ValidationIndicator isvalid={this.props.isValid('title')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.titleInfo}
                 </span>
               </label>
               <div className="col-sm-9">
                 <input maxLength={ScenarioConfig.max.title} type="text" className="oc-input" name="title" id="title" value={this.state.title}
                   onChange={this.handleChangedTitle} />
-                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
+                <span className="oc-char-remain">{ScenarioConfig.max.title - this.state.title.length} characters remaining</span>
                 {errorMessageTitle}
               </div>
             </div>
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="summary">Summary <ValidationIndicator isvalid={this.props.isValid('summary')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.summaryInfo}
                 </span>
               </label>
               <div className="col-sm-9">
                 <textarea maxLength={ScenarioConfig.max.summary} type="text" className="oc-input scenario-create-edit-summary" name="summary" id="summary" value={this.state.summary}
                   onChange={this.handleChangedSummary} />
-                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
+                <span className="oc-char-remain">{ScenarioConfig.max.summary - this.state.summary.length} characters remaining</span>
                 {errorMessageSummary}
               </div>
             </div>
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ValidationIndicator isvalid={this.props.isValid('narrative')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.narrativeInfo}
                 </span>
               </label>
               <div className="col-sm-9">
                 <textarea maxLength={ScenarioConfig.max.narrative} className="oc-input scenario-create-edit-narrative" name="narrative" id="narrative" value={this.state.narrative}
                   onChange={this.handleChangedNarrative} />
-                <span className="scenario-create-edit-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
+                <span className="oc-char-remain">{ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining</span>
                 {errorMessageNarrative}
               </div>
             </div>
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ValidationIndicator isvalid={this.props.isValid('selectedSectors')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.sectorsInfo}</span>
               </label>
               <div className="col-sm-9">
@@ -452,9 +450,9 @@ var ScenarioEditView = React.createClass({
                 </div>
               </div>
             </div>
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="sectors">Actors
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.actorsInfo}</span>
               </label>
               <div className="col-sm-9">
@@ -462,9 +460,9 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="sectors">Tools
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.toolsInfo}
                 </span>
               </label>
@@ -473,9 +471,9 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3">Image
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.imageuploadInfo}
                 </span>
               </label>
@@ -490,9 +488,9 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="copyright">Image copyright
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.imageCopyrightInfo}
                 </span>
               </label>
@@ -502,9 +500,9 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="sectors">Credit
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   {lang.ScenarioEditView.creditInfo}
                 </span>
               </label>
@@ -535,11 +533,10 @@ var ScenarioEditView = React.createClass({
       <div>
         <div className="row">
           <div className="col-md-12">
-            <h2>Create your scenario <small>preview</small></h2>
-            <h3>Here's your story!</h3>
+            <h1 className="oc-pink">Create your scenario <small>preview</small></h1>
+            <h2 className="oc-pink">Here's your story!</h2>
             <p>
-              Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor
-              fringilla.
+              Please review your scenario. If everything is fine, please submit it.
             </p>
           </div>
         </div>

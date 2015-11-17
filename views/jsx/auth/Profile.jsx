@@ -278,11 +278,11 @@ var Profile = React.createClass({
 
       localAccount = (
         <div>
-          <h4>Local account</h4>
+          <h2 className="oc-pink">Local account</h2>
 
-          <div className="form-group oc-create-edit">
+          <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="email">E-Mail
-              <span className="scenario-create-edit-view-field-info">
+              <span className="oc-form-group-info">
                 Your E-Mail
               </span>
             </label>
@@ -295,9 +295,9 @@ var Profile = React.createClass({
             </div>
           </div>
 
-          <div className="form-group oc-create-edit">
+          <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator isvalid={this.props.isValid('local.password')}/>
-              <span className="scenario-create-edit-view-field-info">
+              <span className="oc-form-group-info">
                 Select a new passwort for your local login. The passwort must have at least 6 characters.
               </span>
             </label>
@@ -311,9 +311,9 @@ var Profile = React.createClass({
             </div>
           </div>
 
-          <div className="form-group oc-create-edit">
+          <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator isvalid={this.props.isValid('local.password_repeat')}/>
-              <span className="scenario-create-edit-view-field-info">
+              <span className="oc-form-group-info">
                 If you selected a new passwort, please repeat it here.
               </span>
             </label>
@@ -337,16 +337,14 @@ var Profile = React.createClass({
     }
 
     return (
-      <div className="container oc-create-edit-view">
+      <div className="container oc-form-group-view">
         <div className="row">
-          <div className="scenario-create-edit-view-title-wrapper">
-            <h1>Profile</h1>
-          </div>
+          <h1 className="oc-pink">Profile</h1>
           <form className="form-horizontal">
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator isvalid={this.props.isValid('name')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   Please tell us your real name or nick name.
                 </span>
               </label>
@@ -363,9 +361,9 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator isvalid={this.props.isValid('avatar')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   Upload an avatar. The image must be at least 64x64px and can be a PNG or a JPG.
                 </span>
               </label>
@@ -381,9 +379,9 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator isvalid={this.props.isValid('gender')}/>
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   Please tell us your gender.
                 </span>
               </label>
@@ -406,9 +404,9 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-create-edit">
+            <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
-                <span className="scenario-create-edit-view-field-info">
+                <span className="oc-form-group-info">
                   Your assigned roles.
                 </span>
               </label>
@@ -437,7 +435,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group">
-              <h3>Scenarios created</h3>
+              <h2 className="oc-pink">Scenarios created</h2>
               <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
             </div>
 
