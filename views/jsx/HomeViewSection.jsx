@@ -13,7 +13,7 @@ var HomeViewSection = React.createClass({
         <div className="oc-home-view-section-wrapper col-lg-8 col-lg-offset-2">
           <div className="oc-home-view-section">
             <h1 className="oc-home-view-title">Latest scenarios</h1>
-            <ScenariosNewest limit="8" counter={false}/>
+            <ScenariosNewest limit="9" counter={false}/>
             <div className="col-md-4 col-md-offset-4 oc-home-scenarioList">
               <Link to="scenarioList">
                 <Button className="oc-button">EXPLORE ALL SCENARIOS</Button>
