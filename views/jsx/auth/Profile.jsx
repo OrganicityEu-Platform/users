@@ -240,12 +240,30 @@ var Profile = React.createClass({
     });
 
   },
-  renderNew : function() {
+  render: function() {
+
+    if (!this.userIsLoggedIn()) {
+      return (
+        <div>
+          You are not logged in!
+        </div>
+      );
+    }
+
+    if (!this.state.profile) {
+      return (
+        <div>
+          Loading!
+        </div>
+      );
+    }
+
     var errorMessageName = null;
     var errorMessageGender = null;
     var errorMessageRoles = null;
     var errorMessagePassword = null;
     var errorMessagePasswordRepeat = null;
+
     if (this.state.btnClickedOnce) {
       errorMessageName = (<Message type="danger" messages={this.props.getValidationMessages('name')} />);
       errorMessageGender = (<Message type="danger" messages={this.props.getValidationMessages('gender')} />);
@@ -313,9 +331,9 @@ var Profile = React.createClass({
       );
     }
 
-    var checkRole = null;
+    var roleIndicator = null;
     if (this.userHasRole('admin')) {
-      checkRole = (<ValidationIndicator isvalid={this.props.isValid('roles')}/>);
+      roleIndicator = (<ValidationIndicator isvalid={this.props.isValid('roles')}/>);
     }
 
     return (
@@ -389,7 +407,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-create-edit">
-              <label className="control-label col-sm-3" htmlFor="name">Roles {checkRole}
+              <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
                 <span className="scenario-create-edit-view-field-info">
                   Your assigned roles.
                 </span>
@@ -428,153 +446,6 @@ var Profile = React.createClass({
       </div>
     );
 
-  },
-  render: function() {
-
-    //console.log("Render Profile with state ", this.state);
-
-    if (!this.userIsLoggedIn()) {
-      return (
-        <div>
-          You are not logged in!
-        </div>
-      );
-    }
-
-    if (!this.state.profile) {
-      return (
-        <div>
-          Loading!
-        </div>
-      );
-    }
-
-    return this.renderNew();
-
-    var localAccount = '';
-    if (this.state.profile.local) {
-      localAccount = (
-        <div>
-          <h4>Local account</h4>
-          <div className="form-group">
-            <div className="">
-              <label className="control-label" htmlFor="email">Email</label>
-               <input type="text"
-                className="form-control"
-                name="email"
-                disabled="disabled"
-                value={this.state.profile.local.email} />
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="">
-              <label className="" htmlFor="password">Password</label>
-               <input type="password"
-                className="form-control"
-                name="password"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPassword} />
-              <Message type="danger" messages={this.props.getValidationMessages('local.password')} />
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="">
-              <label className="" htmlFor="password_repeat">Repeat Password</label>
-              <input type="password"
-                className="form-control"
-                name="password_repeat"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPasswordRepeat} />
-              <Message type="danger" messages={this.props.getValidationMessages('local.password_repeat')} />
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return (
-        <div className="row">
-          <form className="form-horizontal container">
-            <div className="form-group">
-              <div className="">
-                <label className="" htmlFor="profile-name">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="profile-name"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
-                  value={this.state.profile.name}
-                  onChange={this.handleChangedName} />
-                <Message type="danger" messages={this.props.getValidationMessages('name')} />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="">
-                <label className="control-label" htmlFor="email">Avatar</label>
-                <UploadImage
-                  url={api.reverse('user_thumbnail', {uuid: this.state.profile.uuid})}
-                  joi={UserJoi.image}
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  callback={this.onThumbnail}
-                  thumbnail={this.state.profile.avatar}
-                  thumbnail_width="64px"
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="">
-                <label className="" htmlFor="profile-gender">Gender</label>
-                <input type="radio"
-                  name="gender"
-                  id="profile-gender-f"
-                  value="f"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'f'}
-                  onChange={this.handleChangedGender} /> Female<br/>
-                <input type="radio"
-                  name="gender"
-                  id="profile-gender-m"
-                  value="m"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'm'}
-                  onChange={this.handleChangedGender} /> Male
-                <Message type="danger" messages={this.props.getValidationMessages('gender')} />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <div className="">
-                <label className="" htmlFor="profile-roles">Roles</label>
-                <TagField
-                  disabled={this.userHasRole('admin') ? false : true}
-                  key={this.state.profile.uuid + '_roles'}
-                  tags={this.state.profile.roles}
-                  loading={this.isLoading()}
-                  onChange={this.handleChangedRoles} />
-                <Message type="danger" messages={this.props.getValidationMessages('roles')} />
-              </div>
-            </div>
-
-            {localAccount}
-
-            <div className="form-group">
-              <div className="col-sm-2">
-                <button id="profile-submit"
-                  type="submit"
-                  className="oc-button"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  onClick={this.handleSubmit}>Save Profile</button>
-              </div>
-            </div>
-          </form>
-          <div className="container">
-            <h3>Scenarios created</h3>
-            <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
-          </div>
-        </div>
-    );
   },
   getValidatorData: function() {
     var profile = this.getProfile();
