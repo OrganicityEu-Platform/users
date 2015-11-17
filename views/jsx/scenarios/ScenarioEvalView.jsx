@@ -93,12 +93,12 @@ var ScenarioEvalView = React.createClass({
         <div className="col-lg-8 col-lg-offset-2">
           Are you a...<br/>
           <button type="button"
-            className="btn btn-default"
+            className="oc-button"
             onClick={this.clickedTech(true)}>
             Technical Person
           </button>
           <button type="button"
-            className="btn btn-default"
+            className="oc-button"
             onClick={this.clickedTech(false)}>
             Non-Technical Person
           </button>
