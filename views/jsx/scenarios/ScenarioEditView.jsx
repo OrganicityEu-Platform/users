@@ -22,6 +22,13 @@ import Message              from '../Message.jsx';
 import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
 
+const titleInfo     = 'No author would publish without a good title. Keep it short and sweet.';
+const summaryInfo   = 'If you could summarize in a tweet, how would it be?';
+const narrativeInfo = 'Narrative is the core of your scenario. While it may be tempting to write an epic, you are limited to 2500 characters, about the length of a highschool essay. Keep it focused.';
+const sectorsInfo   = 'Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".';
+const actorsInfo    = 'Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.';
+const toolsInfo     = 'Tools are instruments you would need to implement your scenario.';
+
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin],
   predefinedSectors: [
@@ -395,7 +402,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="title">Title <ScenarioCheck isvalid={this.props.isValid('title')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {titleInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -408,7 +415,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="summary">Summary <ScenarioCheck isvalid={this.props.isValid('summary')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {summaryInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -421,7 +428,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ScenarioCheck isvalid={this.props.isValid('narrative')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {narrativeInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -434,7 +441,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ScenarioCheck isvalid={this.props.isValid('selectedSectors')}/>
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                  {sectorsInfo}</span>
               </label>
               <div className="col-sm-9">
                 <SectorSelector
@@ -453,7 +460,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Actors
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                  {actorsInfo}</span>
               </label>
               <div className="col-sm-9">
                 <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
@@ -463,7 +470,7 @@ var ScenarioEditView = React.createClass({
             <div className="form-group oc-create-edit">
               <label className="control-label col-sm-3" htmlFor="sectors">Tools
                 <span className="scenario-create-edit-view-field-info">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+                  {toolsInfo}</span>
               </label>
               <div className="col-sm-9">
                 <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
