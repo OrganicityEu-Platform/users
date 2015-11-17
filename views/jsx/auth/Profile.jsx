@@ -1,19 +1,17 @@
 import $                from 'jquery';
 import React            from 'react';
-import ReactMixin       from 'react-mixin';
-import UserHasRoleMixin from '../UserHasRoleMixin.jsx';
+import Router           from 'react-router';
+
 import api              from '../../../api_routes.js';
 import TagField         from '../form-components/TagField.jsx';
 import UploadImage      from '../UploadImage.jsx';
 
-import ScenarioCheck    from '../scenarios/ScenarioCheck.jsx'
+import ValidationIndicator  from '../ValidationIndicator.jsx'
 
-import LoadingMixin     from '../LoadingMixin.jsx';
-
-import UserIsLoggedInMixin from '../UserIsLoggedInMixin.jsx';
-
-var Router = require('react-router');
-var Link = Router.Link;
+// Mixings
+import LoadingMixin         from '../LoadingMixin.jsx';
+import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
+import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 
 // Input validation
 import validation       from 'react-validation-mixin';
@@ -280,7 +278,7 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-create-edit">
-            <label className="control-label col-sm-3" htmlFor="password">Password <ScenarioCheck isvalid={this.props.isValid('local.password')}/>
+            <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator isvalid={this.props.isValid('local.password')}/>
               <span className="scenario-create-edit-view-field-info">
                 Select a new passwort for your local login. The passwort must have at least 6 characters.
               </span>
@@ -296,7 +294,7 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-create-edit">
-            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ScenarioCheck isvalid={this.props.isValid('local.password_repeat')}/>
+            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator isvalid={this.props.isValid('local.password_repeat')}/>
               <span className="scenario-create-edit-view-field-info">
                 If you selected a new passwort, please repeat it here.
               </span>
@@ -317,7 +315,7 @@ var Profile = React.createClass({
 
     var checkRole = null;
     if (this.userHasRole('admin')) {
-      checkRole = (<ScenarioCheck isvalid={this.props.isValid('roles')}/>);
+      checkRole = (<ValidationIndicator isvalid={this.props.isValid('roles')}/>);
     }
 
     return (
@@ -329,7 +327,7 @@ var Profile = React.createClass({
           <form className="form-horizontal">
 
             <div className="form-group oc-create-edit">
-              <label className="control-label col-sm-3" htmlFor="name">Name <ScenarioCheck isvalid={this.props.isValid('name')}/>
+              <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator isvalid={this.props.isValid('name')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Please tell us your real name or nick name.
                 </span>
@@ -348,7 +346,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-create-edit">
-              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ScenarioCheck isvalid={this.props.isValid('avatar')}/>
+              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator isvalid={this.props.isValid('avatar')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Upload an avatar. The image must be at least 64x64px and can be a PNG or a JPG.
                 </span>
@@ -366,7 +364,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-create-edit">
-              <label className="control-label col-sm-3" htmlFor="gender">Gender <ScenarioCheck isvalid={this.props.isValid('gender')}/>
+              <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator isvalid={this.props.isValid('gender')}/>
                 <span className="scenario-create-edit-view-field-info">
                   Please tell us your gender.
                 </span>
