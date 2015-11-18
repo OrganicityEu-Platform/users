@@ -70,6 +70,7 @@ var Scaffold = React.createClass({
 
     linksLeft.push(
       <NavItemLink
+        key="scenarioList"
         to="scenarioList"
         className="navbar-explore-btn">EXPLORE</NavItemLink>
     );
@@ -82,13 +83,19 @@ var Scaffold = React.createClass({
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
         linksRight.push(
-          <NavItemLink to="admin_userList">Users</NavItemLink>
+          <NavItemLink
+            key="users"
+            to="admin_userList">Users</NavItemLink>
         );
         linksRight.push(
-          <NavItemLink to="admin_questionnaire">Questionnaire</NavItemLink>
+          <NavItemLink
+            key="questionnaire"
+            to="admin_questionnaire">Questionnaire</NavItemLink>
         );
         linksRight.push(
-          <NavItemLink to="sysinfo" data-about>About</NavItemLink>
+          <NavItemLink
+            key="sysinfo"
+            to="sysinfo" data-about>About</NavItemLink>
         );
       }
       linksRight.push(
