@@ -61,7 +61,15 @@ var ScenarioTableView = React.createClass({
       <div className="col-lg-8 col-lg-offset-2">
       <div className="scenario-article">
         <header className="scenario-article-header row">
-          <div className="col-lg-7">
+          <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
+            <div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.scenario.score} /></span></div>
+              <div className="scenario-article-widget-data">
+                <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
+                <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
+                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{this.props.scenario.score.numOfEvaluations} evaluations</p>
+              </div>
+          </div>
+          <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
             <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
               <div>
                 <span className="scenario-article-publisher">
@@ -73,20 +81,12 @@ var ScenarioTableView = React.createClass({
                     : '' }
                 </span>
               </div>
-              <div className="">
+              <div className="scenario-article-summary-wrapper">
                 <p className="scenario-article-summary">
                   {this.props.scenario.summary}
                 </p>
               </div>
           </div>
-          <div className="col-lg-3">
-            <div className="scenario-article-widget-data">
-              <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
-              <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
-              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{this.props.scenario.score.numOfEvaluations} evaluations</p>
-            </div>
-          </div>
-          <div className="col-lg-2"><div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.scenario.score} /></span></div></div>
         </header>
 
         <div className="scenario-article-section">
