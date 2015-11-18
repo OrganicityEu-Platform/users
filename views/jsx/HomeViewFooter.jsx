@@ -12,7 +12,7 @@ var HomeViewFooter = React.createClass({
         <div className="oc-home-view-footer-wrapper">
           <div className="oc-home-view-footer">
             <h1 className="oc-home-view-title">Co-creating cities of the future</h1>
-            <div className="col-md-6">
+            <div className="col-md-8 col-md-offset-2">
               <p>As the OrganiCity smart platform is being built, to meet the vision set through citizen discussions, constant input and feedback is required and encouraged. What data do you need? What devices do you wish to connect? How should OrganiCity call for experiments? How can we make that experimentation easier? Together, the city, businesses, researchers and citizens can create a better, more inclusive, more accessible smart city.</p>
             </div>
             {/*
