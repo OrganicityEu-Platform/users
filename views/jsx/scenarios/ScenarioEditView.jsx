@@ -89,7 +89,10 @@ var ScenarioEditView = React.createClass({
       image : undefined,      // Here, the path will be stored
       credit : undefined,
       copyright : undefined,
-      btnClickedOnce : false
+      btnClickedOnce : false,
+      score : {
+        numOfEvaluations : 0
+      }
     };
   },
   componentDidMount() {
