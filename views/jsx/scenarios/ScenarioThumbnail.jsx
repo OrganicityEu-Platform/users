@@ -39,7 +39,7 @@ var ScenarioThumbnail = React.createClass({
             <div>
               <div className={sector_colour_marker}>
                 <span className="scenario-thumbnail-marker-score">
-                  <Score scope="scenarios" className="scenario-article-score-thumbnail" id={this.props.scenario.uuid} />
+                  <Score className="scenario-article-score-thumbnail" score={this.props.scenario.score} />
                 </span>
               </div>
             </div>

@@ -92,11 +92,14 @@ module.exports = function(router, passport) {
         .send('You have to complete all questions of the evaluations.');
     }
     evaluation.save(function(err) {
+
+      console.log('Saved evaluation: ', evaluation);
+
       if (err) {
         console.log(err);
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
       }
-      calculateScore(evaluation.uuid);
+      calculateScore(evaluation.scenario.uuid);
       Evaluation.findOne({ uuid : evaluation.uuid }, function(err, retrieved) {
         if (err) {
           console.log(err);
@@ -142,61 +145,6 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.get(api.route('evaluation_score'),  function(req, res) {
-    if (req.params.uuid === undefined) {
-      return res.status(HttpStatus.BAD_REQUEST).send({error: 'query parameter requires scenario_uuid'});
-    }
-    var scenarioUuid = req.params.uuid;
-    var filter = {};
-    if (scenarioUuid) {
-      filter['scenario.uuid'] = scenarioUuid;
-    }
-    var query = Evaluation.find(filter);
-    query.exec(function(err, evaluations) {
-      if (err) {
-        console.log(err);
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-      }
-      var score = processEvaluations(evaluations);
-      Scenario.find({ uuid : scenarioUuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
-        if (err) {
-          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-        }
-        if (!scenarios || scenarios.length === 0) {
-          return res.status(HttpStatus.NOT_FOUND).send();
-        }
-        scenarios[0].score = score;
-        scenarios[0].save(function(err) {
-          if (err) {
-            console.log(err);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({error: err.message});
-          }
-          return res.status(HttpStatus.OK).send(score);
-        });
-      });
-    });
-  });
-
-  router.get(api.route('evaluations_count'), function(req, res) {
-    if (req.params.uuid === undefined) {
-      return res.status(HttpStatus.BAD_REQUEST).send('query parameter requires scenario_uuid');
-    }
-    var scenarioUuid = req.params.uuid;
-    var filter = {};
-    if (scenarioUuid) {
-      filter['scenario.uuid'] = scenarioUuid;
-    }
-    var query = Evaluation.find(filter);
-    query.exec(function(err, evaluations) {
-      if (err) {
-        console.log(err);
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-      }
-      var count = evaluations.length;
-      return res.status(HttpStatus.OK).send({count : count});
-    });
-  });
-
   return router;
 };
 /*
@@ -209,6 +157,9 @@ module.exports = function(router, passport) {
  * @returns {integer}
  */
 function calculateScore(uuid) {
+
+  console.log('calculateScore: ', uuid);
+
   if (uuid === undefined) {
     return -1.0;
   }
@@ -219,11 +170,17 @@ function calculateScore(uuid) {
   }
   var query = Evaluation.find(filter);
   query.exec(function(err, evaluations) {
+
+    console.log('evaluations', evaluations);
+
     if (err) {
       console.log(err);
       return -1.0;
     }
     var score = processEvaluations(evaluations);
+
+    console.log('score: ', score);
+
     Scenario.find({ uuid : scenarioUuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
       if (err) {
         console.log(err);

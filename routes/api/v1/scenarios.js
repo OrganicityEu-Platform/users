@@ -35,7 +35,8 @@ var scenarioProjection = {
   thumbnail   : 1,
   copyright   : 1,
   image       : 1,
-  credit      : 1
+  credit      : 1,
+  score       : 1
 };
 
 var fieldsInUpdate = [
@@ -111,6 +112,7 @@ module.exports = function(router, passport) {
         'copyright'   : { '$first' : '$thumbnail'   },
         'image'       : { '$first' : 'image'        },
         'credit'      : { '$first' : '$credit'      },
+        'score'       : { '$first' : '$score'       },
         'dataSources' : { '$first' : '$dataSources' }
       }
     };

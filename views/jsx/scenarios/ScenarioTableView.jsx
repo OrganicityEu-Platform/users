@@ -5,7 +5,6 @@ import UserAvatar from '../users/UserAvatar.jsx';
 import Counter    from '../Counter.jsx';
 import Score    from '../Score.jsx';
 import Comments    from '../Comments.jsx';
-import Evaluations    from '../Evaluations.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                  from '../../../api_routes.js';
 
@@ -84,10 +83,10 @@ var ScenarioTableView = React.createClass({
             <div className="scenario-article-widget-data">
               <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
               <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
-              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i><Evaluations scope="scenarios" className="scenario-article-evaluations" id={this.props.scenario.uuid} />  evaluations</p>
+              <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{this.props.scenario.score.numOfEvaluations} evaluations</p>
             </div>
           </div>
-          <div className="col-lg-2"><div className={sector_colour_marker}><span className="scenario-article-score"><Score scope="scenarios" className="scenario-article-score" id={this.props.scenario.uuid} /></span></div></div>
+          <div className="col-lg-2"><div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.scenario.score} /></span></div></div>
         </header>
 
         <div className="scenario-article-section">

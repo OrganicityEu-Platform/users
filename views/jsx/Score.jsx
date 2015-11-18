@@ -7,44 +7,15 @@ import Loading      from './Loading.jsx';
 var Router = require('react-router');
 
 var Score = React.createClass({
-  mixins: [LoadingMixin],
   getInitialState: function() {
-    return {
-      score: 0,
-      key: null
-    };
+    return {};
   },
   componentDidMount: function() {
-
-    if (!this.props.scope || !this.props.id) {
-      return;
-    }
-
-    var url = api.reverse('evaluation_score', {
-      uuid : this.props.id
-    });
-
-    this.loading();
-    //console.log(url);
-    $.ajax(url, {
-      dataType: 'json',
-      error: (xhr) => {
-        this.loaded();
-      },
-      success : (res) => {
-        //console.log(res);
-        var sc = ((parseFloat(res.tech) + parseFloat(res.noTech)) / 2).toFixed(1);
-        this.loaded({score: sc});
-      }
-    });
-
   },
   render: function() {
-    if (this.state.loading) {
-      return (<Loading/>);
-    }
-
-    return (<span>{this.state.score}</span>);
+    var score = this.props.score;
+    var sc = ((parseFloat(score.tech) + parseFloat(score.noTech)) / 2).toFixed(1);
+    return (<span>{sc}</span>);
   }
 });
 
