@@ -111,19 +111,19 @@ var ScenarioList = React.createClass({
   },
   render: function() {
 
-    if(this.isLoading()) {
-      return (<Loading message="Loading scenarios. Please wait."/>)
+    if (this.isLoading()) {
+      return (<Loading message="Loading scenarios. Please wait." size="2"/>);
     }
 
     var counter = null;
-    if(this.state.search.q) {
+    if (this.state.search.q) {
       counter = (
         <span>Your search yields to {this.state.scenarios.length} scenarios!</span>
-      )
+      );
     } else {
       counter = (
         <span>Here you can explore {this.state.scenarioCounter} scenarios!</span>
-      )
+      );
     }
 
     return (

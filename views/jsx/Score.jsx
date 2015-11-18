@@ -2,6 +2,7 @@ import $            from 'jquery';
 import React        from 'react';
 import LoadingMixin from './LoadingMixin.jsx';
 import api          from '../../api_routes.js';
+import Loading      from './Loading.jsx';
 
 var Router = require('react-router');
 
@@ -32,7 +33,7 @@ var Score = React.createClass({
       },
       success : (res) => {
         //console.log(res);
-        var sc=((parseFloat(res.tech) + parseFloat(res.noTech))/2).toFixed(1);
+        var sc = ((parseFloat(res.tech) + parseFloat(res.noTech)) / 2).toFixed(1);
         this.loaded({score: sc});
       }
     });
@@ -40,7 +41,7 @@ var Score = React.createClass({
   },
   render: function() {
     if (this.state.loading) {
-      return <span>Loading...</span>;
+      return (<Loading/>);
     }
 
     return (<span>{this.state.score}</span>);

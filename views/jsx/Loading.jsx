@@ -5,7 +5,13 @@ var Loading = React.createClass({
     var s = {
       textAlign: 'center'
     };
-    return (<div style={s}><i className="fa fa-spinner fa-spin fa-2x"></i><br/>{this.props.message}</div>);
+
+    var classNames = 'fa fa-spinner fa-spin';
+    if (this.props.size) {
+      classNames += ' fa-' + this.props.size + 'x';
+    }
+
+    return (<div style={s}><i className={classNames}></i><br/>{this.props.message}</div>);
   }
 });
 
