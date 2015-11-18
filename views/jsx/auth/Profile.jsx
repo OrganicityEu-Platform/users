@@ -1,10 +1,10 @@
-import $                from 'jquery';
-import React            from 'react';
-import Router           from 'react-router';
+import $                    from 'jquery';
+import React                from 'react';
+import Router               from 'react-router';
 
-import api              from '../../../api_routes.js';
-import TagField         from '../form-components/TagField.jsx';
-import UploadImage      from '../UploadImage.jsx';
+import api                  from '../../../api_routes.js';
+import TagField             from '../form-components/TagField.jsx';
+import UploadImage          from '../UploadImage.jsx';
 
 import ValidationIndicator  from '../ValidationIndicator.jsx'
 
@@ -14,12 +14,14 @@ import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 
 // Input validation
-import validation       from 'react-validation-mixin';
-import strategy         from 'joi-validation-strategy';
-import UserJoi          from '../../../models/joi/user.js';
-import Message          from '../Message.jsx';
+import validation           from 'react-validation-mixin';
+import strategy             from 'joi-validation-strategy';
+import UserJoi              from '../../../models/joi/user.js';
+import Message              from '../Message.jsx';
 
-import ScenariosNewest  from '../scenarios/ScenariosNewest.jsx';
+import ScenariosNewest      from '../scenarios/ScenariosNewest.jsx';
+
+import lang                 from '../../../lang/en.js'
 
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
@@ -39,7 +41,7 @@ var Profile = React.createClass({
 
     if (sessionStorage.getItem('url')) {
       var o = JSON.parse(sessionStorage.getItem('url'));
-      console.log('Go to ', o.to);
+      //console.log('Go to ', o.to);
       sessionStorage.removeItem('url');
       if (o.to !== this.routeName()) {
         this.transitionTo(o.to, o.params, o.query);
@@ -184,9 +186,6 @@ var Profile = React.createClass({
       profile.roles = this.state.profile.roles;
     }
 
-    console.log('STATE: ', this.state);
-    console.log('PROFILE: ', profile);
-
     return profile;
   },
   handleSubmit: function(evt) {
@@ -224,8 +223,6 @@ var Profile = React.createClass({
     });
   },
   onThumbnail: function(data) {
-    console.log('NEW AVATAR: ', data);
-
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
@@ -283,7 +280,7 @@ var Profile = React.createClass({
           <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="email">E-Mail
               <span className="oc-form-group-info">
-                Your E-Mail
+                {lang.Profile.emailInfo}
               </span>
             </label>
             <div className="col-sm-9">
@@ -298,7 +295,7 @@ var Profile = React.createClass({
           <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator isvalid={this.props.isValid('local.password')}/>
               <span className="oc-form-group-info">
-                Select a new passwort for your local login. The passwort must have at least 6 characters.
+                {lang.Profile.passwordInfo}
               </span>
             </label>
             <div className="col-sm-9">
@@ -314,7 +311,7 @@ var Profile = React.createClass({
           <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator isvalid={this.props.isValid('local.password_repeat')}/>
               <span className="oc-form-group-info">
-                If you selected a new passwort, please repeat it here.
+                {lang.Profile.passwordRepeatInfo}
               </span>
             </label>
             <div className="col-sm-9">
@@ -345,7 +342,7 @@ var Profile = React.createClass({
             <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator isvalid={this.props.isValid('name')}/>
                 <span className="oc-form-group-info">
-                  Please tell us your real name or nick name.
+                  {lang.Profile.nameInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -364,7 +361,7 @@ var Profile = React.createClass({
             <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator isvalid={this.props.isValid('avatar')}/>
                 <span className="oc-form-group-info">
-                  Upload an avatar. The image must be at least 64x64px and can be a PNG or a JPG.
+                  {lang.Profile.avatarInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -382,7 +379,7 @@ var Profile = React.createClass({
             <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator isvalid={this.props.isValid('gender')}/>
                 <span className="oc-form-group-info">
-                  Please tell us your gender.
+                  {lang.Profile.genderInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -407,7 +404,7 @@ var Profile = React.createClass({
             <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
                 <span className="oc-form-group-info">
-                  Your assigned roles.
+                  {lang.Profile.rolesInfo}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -434,10 +431,8 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group">
-              <h2 className="oc-pink">Scenarios created</h2>
-              <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
-            </div>
+            <h2 className="oc-pink">Scenarios created</h2>
+            <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
 
           </form>
         </div>

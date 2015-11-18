@@ -6,8 +6,17 @@ module.exports = {
     sectorsInfo : 'Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".',
     actorsInfo : 'Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.',
     toolsInfo : 'Tools are instruments you would need to implement your scenario.',
-    imageuploadInfo : 'Please upload an image. File type must be JPEG or PNG with a width of at least width 1140 px',
+    imageuploadInfo : 'Please upload an image. The file type must be JPEG or PNG with a width of at least width 1140 px.',
     //imageCopyrightInfo : '...',
     //creditInfo : '...'
+  },
+  Profile : {
+    passwordInfo : 'Select a new passwort for your local login. The passwort must have at least 6 characters.',
+    passwordRepeatInfo : 'If you selected a new passwort, please repeat it here.',
+    emailInfo : 'Your E-Mail',
+    nameInfo : 'Please tell us your real name or nick name.',
+    avatarInfo : 'Please upload an avatar. The file type must be JPEG or PNG with a size of 64x64px.',
+    genderInfo : 'Please tell us your gender.',
+    rolesInfo : 'Your assigned roles.'
   }
 };

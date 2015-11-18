@@ -159,7 +159,7 @@ var UploadImage = React.createClass({
     return (
       <div>
         {inputFile}
-        <div>{thumbnail}</div>
+        <div className="avatar">{thumbnail}</div>
         <Message type="danger" messages={this.props.getValidationMessages('type')} />
         <Message type="danger" messages={this.props.getValidationMessages('width')} />
         <Message type="danger" messages={this.props.getValidationMessages('height')} />
