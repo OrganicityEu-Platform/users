@@ -11,8 +11,8 @@ module.exports = {
     //creditInfo : '...'
   },
   Profile : {
-    passwordInfo : 'Select a new passwort for your local login. The passwort must have at least 6 characters.',
-    passwordRepeatInfo : 'If you selected a new passwort, please repeat it here.',
+    passwordInfo : 'Select a new password for your local login. The password must have at least 6 characters.',
+    passwordRepeatInfo : 'If you selected a new password, please repeat it here.',
     emailInfo : 'Your E-Mail',
     nameInfo : 'Please tell us your real name or nick name.',
     avatarInfo : 'Please upload an avatar. The file type must be JPEG or PNG with a size of 64x64px.',
