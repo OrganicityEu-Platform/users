@@ -39,7 +39,7 @@ var UserAvatar = React.createClass({
   render: function() {
 
     if (this.state.loading) {
-      return <div>Loading...</div>;
+      return <span>Loading...</span>;
     }
 
     var userText = this.props.uuid;
