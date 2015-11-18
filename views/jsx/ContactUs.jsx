@@ -139,8 +139,6 @@ var myContactForm = React.createClass({
       }
     }
 
-    var canSubmit = this.props.isValid();
-
     return (
       <div>
         <h4>Contact Us</h4>

@@ -393,7 +393,7 @@ var ScenarioEditView = React.createClass({
           <h1 className="oc-pink">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
           <form className="form-horizontal">
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="title">Title <ValidationIndicator isvalid={this.props.isValid('title')}/>
+              <label className="control-label col-sm-3" htmlFor="title">Title <ValidationIndicator valid={this.props.isValid('title')}/>
                 <span className="oc-form-group-info">
                   {lang.ScenarioEditView.titleInfo}
                 </span>
@@ -406,7 +406,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="summary">Summary <ValidationIndicator isvalid={this.props.isValid('summary')}/>
+              <label className="control-label col-sm-3" htmlFor="summary">Summary <ValidationIndicator valid={this.props.isValid('summary')}/>
                 <span className="oc-form-group-info">
                   {lang.ScenarioEditView.summaryInfo}
                 </span>
@@ -419,7 +419,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ValidationIndicator isvalid={this.props.isValid('narrative')}/>
+              <label className="control-label col-sm-3" htmlFor="narrative">Narrative <ValidationIndicator valid={this.props.isValid('narrative')}/>
                 <span className="oc-form-group-info">
                   {lang.ScenarioEditView.narrativeInfo}
                 </span>
@@ -432,7 +432,7 @@ var ScenarioEditView = React.createClass({
               </div>
             </div>
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ValidationIndicator isvalid={this.props.isValid('selectedSectors')}/>
+              <label className="control-label col-sm-3" htmlFor="sectors">Sectors <ValidationIndicator valid={this.props.isValid('selectedSectors')}/>
                 <span className="oc-form-group-info">
                   {lang.ScenarioEditView.sectorsInfo}</span>
               </label>

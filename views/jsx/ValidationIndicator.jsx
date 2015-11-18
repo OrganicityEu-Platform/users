@@ -4,7 +4,7 @@ import Router from 'react-router';
 var ScenarioCheck = React.createClass({
   render: function() {
 
-    if (this.props.isvalid) {
+    if (this.props.valid) {
       return (
         <i className="scenario-article-check-icon fa fa-check"></i>
       );

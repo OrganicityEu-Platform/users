@@ -293,7 +293,7 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-form-group">
-            <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator isvalid={this.props.isValid('local.password')}/>
+            <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator valid={this.props.isValid('local.password')}/>
               <span className="oc-form-group-info">
                 {lang.Profile.passwordInfo}
               </span>
@@ -309,7 +309,7 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-form-group">
-            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator isvalid={this.props.isValid('local.password_repeat')}/>
+            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
               <span className="oc-form-group-info">
                 {lang.Profile.passwordRepeatInfo}
               </span>
@@ -330,7 +330,7 @@ var Profile = React.createClass({
 
     var roleIndicator = null;
     if (this.userHasRole('admin')) {
-      roleIndicator = (<ValidationIndicator isvalid={this.props.isValid('roles')}/>);
+      roleIndicator = (<ValidationIndicator valid={this.props.isValid('roles')}/>);
     }
 
     return (
@@ -340,7 +340,7 @@ var Profile = React.createClass({
           <form className="form-horizontal">
 
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator isvalid={this.props.isValid('name')}/>
+              <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator valid={this.props.isValid('name')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.nameInfo}
                 </span>
@@ -359,7 +359,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator isvalid={this.props.isValid('avatar')}/>
+              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator valid={this.props.isValid('avatar')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.avatarInfo}
                 </span>
@@ -377,7 +377,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator isvalid={this.props.isValid('gender')}/>
+              <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator valid={this.props.isValid('gender')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.genderInfo}
                 </span>

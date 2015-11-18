@@ -65,7 +65,11 @@ var ScenarioList = React.createClass({
       error : this.loadingError(url, 'Error querying scenario list'),
       success: (scenarios) => {
         if (this.isMounted()) {
-          this.loaded({ scenarios : scenarios, refresh : false });
+          this.loaded({
+            scenarios : scenarios,
+            refresh : false,
+            scenarioCounter : scenarios.length
+          });
         }
       }
     });
@@ -104,13 +108,24 @@ var ScenarioList = React.createClass({
     this.reload(true);
   },
   render: function() {
+
+    if(this.isLoading()) {
+      return (<div>Loading scenarios. Please wait</div>);
+    }
+
+    var counter = null;
+    if(this.state.search.q) {
+      counter = (
+        <span>Your search yields to {this.state.scenarios.length} scenarios!</span>
+      )
+    } else {
+      counter = (
+        <span>Here you can explore {this.state.scenarioCounter} scenarios!</span>
+      )
+    }
+
     return (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
-        <div className="row">
-          <div className="col-md-12">
-            Here you can explore {this.state.scenarios.length} scenarios!
-          </div>
-        </div>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
@@ -132,7 +147,7 @@ var ScenarioList = React.createClass({
               <Accordion>
                 <Panel header="filters" eventKey="1" className="oc-filters-panel">
                   <div className="oc-sector-tags-wrapper">
-    
+
                   </div>
                   <div className="oc-actor-tags-wrapper">
 
@@ -168,6 +183,11 @@ var ScenarioList = React.createClass({
               </Accordion>
             </form>
 
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            {counter}
           </div>
         </div>
         <ScenarioThumbnails scenarios={this.state.scenarios} counter={false} />
