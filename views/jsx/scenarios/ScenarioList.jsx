@@ -11,6 +11,8 @@ import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
 import Tags               from '../Tags.jsx';
+import Loading            from '../Loading.jsx';
+
 import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
@@ -110,7 +112,7 @@ var ScenarioList = React.createClass({
   render: function() {
 
     if(this.isLoading()) {
-      return (<div>Loading scenarios. Please wait</div>);
+      return (<Loading message="Loading scenarios. Please wait."/>)
     }
 
     var counter = null;
