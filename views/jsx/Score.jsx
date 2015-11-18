@@ -14,11 +14,11 @@ var Score = React.createClass({
   },
   render: function() {
     var score = this.props.score;
-    if (score.numOfEvaluations === 0) {
-      return (<span>0</span>);
+    if (score && score.numOfEvaluations) {
+      var s = ((parseFloat(score.tech) + parseFloat(score.noTech)) / 2).toFixed(1);
+      return (<span>{s}</span>);
     }
-    var s = ((parseFloat(score.tech) + parseFloat(score.noTech)) / 2).toFixed(1);
-    return (<span>{s}</span>);
+    return (<span>0</span>);
   }
 });
 

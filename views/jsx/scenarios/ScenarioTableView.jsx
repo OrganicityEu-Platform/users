@@ -57,6 +57,11 @@ var ScenarioTableView = React.createClass({
       );
     }
 
+    var evaluationsCnt = 0;
+    if (this.props.scenario.score && this.props.scenario.score.numOfEvaluations) {
+      evaluationsCnt = this.props.scenario.score.numOfEvaluations;
+    }
+
     return (
       <div className="col-lg-8 col-lg-offset-2">
       <div className="scenario-article">
@@ -66,7 +71,7 @@ var ScenarioTableView = React.createClass({
               <div className="scenario-article-widget-data">
                 <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
                 <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
-                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{this.props.scenario.score.numOfEvaluations} evaluations</p>
+                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{evaluationsCnt} evaluations</p>
               </div>
           </div>
           <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">

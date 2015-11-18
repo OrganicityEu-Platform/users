@@ -90,9 +90,6 @@ var ScenarioEditView = React.createClass({
       credit : undefined,
       copyright : undefined,
       btnClickedOnce : false,
-      score : {
-        numOfEvaluations : 0
-      }
     };
   },
   componentDidMount() {
