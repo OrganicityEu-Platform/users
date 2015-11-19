@@ -9,7 +9,7 @@ var HomeViewHeader = React.createClass({
         <div className="oc-home-view-header-wrapper">
           <div className="oc-home-view-header container">
             <h1 className="oc-home-view-title">Welcome to OrganiCity Scenarios</h1>
-            <p className="col-md-8 col-md-offset-2">Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Etiam porta sem malesuada magna mollis euismod. Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Nulla vitae elit libero, a pharetra augue.</p>
+            <p className="col-md-8 col-md-offset-2">The scenario tool is made for making ideas come to life, and foster co-creation among citizens. The tool presents a broad range of different scenarios (prose based stories), which you can browse and evaluate. If you register as a user, you will be able to create your own scenario as well as comment and discuss existing ones.</p>
           </div>
         </div>
       </div>

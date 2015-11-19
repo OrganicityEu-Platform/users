@@ -529,11 +529,13 @@ var ScenarioEditView = React.createClass({
   },
   preview : function() {
 
+    var btnText = this.editMode() ? 'Submit updated scenario' : 'Submit new scenario';
+
     return (
       <div>
         <div className="row">
           <div className="col-md-12">
-            <h1 className="oc-pink">Create your scenario <small>preview</small></h1>
+            <h1 className="oc-pink">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'} <small>preview</small></h1>
             <h2 className="oc-pink">Here's your story!</h2>
             <p>
               Please review your scenario. If everything is fine, please submit it.
@@ -548,7 +550,7 @@ var ScenarioEditView = React.createClass({
               <button type="button" className="oc-button" onClick={this.clickedPrevious}>Edit</button>
             </div>
             <div className="col-md-2">
-              <button type="button" className="oc-button" onClick={this.clickedSubmit}>Submit</button>
+              <button type="button" className="oc-button" onClick={this.clickedSubmit}>{btnText}</button>
             </div>
           </div>
         </div>
