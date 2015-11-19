@@ -13,7 +13,7 @@ var ui_routes = {
   'scenarioCreate'         : '/scenarios/new/?',
   'scenarioEdit'           : '/scenarios/edit/:uuid/?',
   'scenarioView'           : '/scenarios/:uuid/?',
-  'scenarioEvalView'       : '/scenarios/evaluate/:uuid?',
+  'scenarioEvalView'       : '/scenarios/evaluate/:uuid/?',
 
   // User routes
   'userView'               : '/users/:uuid/?',

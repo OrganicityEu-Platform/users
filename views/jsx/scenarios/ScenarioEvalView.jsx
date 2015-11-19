@@ -10,10 +10,8 @@ import ui               from '../../../ui_routes.js';
 
 import Message          from '../Message.jsx';
 
-var Navigation = Router.Navigation;
-
 var ScenarioEvalView = React.createClass({
-  mixins: [LoadingMixin, Navigation],
+  mixins: [LoadingMixin, Router.Navigation],
   // scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
   getInitialState: function() {
     return {
@@ -48,9 +46,15 @@ var ScenarioEvalView = React.createClass({
     });
   },
   clickedTech: function(tech) {
+
     return () => {
-      var params = { uuid : this.props.params.uuid };
-      var query  = { version : this.props.query.version, tech : tech };
+      var params = {
+        uuid : this.props.params.uuid
+      };
+      var query  = {
+        version : this.props.query.version,
+        tech : tech
+      };
       this.transitionTo(ui.reverse('scenarioEvalView', params, query));
     };
   },
@@ -74,6 +78,11 @@ var ScenarioEvalView = React.createClass({
       }
     });
   },
+  handleGoBack : function(evt) {
+    this.transitionTo('scenarioView', {
+      uuid : this.props.params.uuid
+    });
+  },
   render: function() {
 
     if (this.isLoading()) {
@@ -84,7 +93,12 @@ var ScenarioEvalView = React.createClass({
 
     if (this.state.submitted) {
       return (
-        <Message type="success" message="Thank you!" />
+        <div className="col-lg-8 col-lg-offset-2">
+          <Message type="success" message="Thank you!" />
+          <button type="submit" className="oc-button" onClick={this.handleGoBack}>
+            Back to the scenario
+          </button>
+        </div>
       );
     }
 
