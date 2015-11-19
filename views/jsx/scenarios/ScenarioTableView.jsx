@@ -39,8 +39,8 @@ var ScenarioTableView = React.createClass({
     var credit;
     if (this.props.scenario.credit) {
       credit = (
-        <div className="col-md-12">
-          <div className="scenario-article-ast-wrapper">
+        <div className="col-md-3">
+          <div className="scenario-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
             <span className="scenario-ast-items">{this.props.scenario.credit}</span><br></br>
           </div>
@@ -100,37 +100,30 @@ var ScenarioTableView = React.createClass({
           </div>
           {copyright}
           <div className="scenario-article-meta">
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Actors:</span>
                 <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
               </div>
 
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Sectors:</span>
                 <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Tools:</span>
                 <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
               </div>
             </div>
-            {credit}
+                {credit}
           </div>
-
-
         </div>
-
-        <footer className="scenario-article-footer">
-
-        </footer>
-
+        <footer className="scenario-article-footer"></footer>
       </div>
-
       <div className="scenario-article-narrative-wrapper">
           <span className="col-md-1">Narrative</span>
           <div className="scenario-article-narrative col-md-11">
