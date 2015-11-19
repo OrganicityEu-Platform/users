@@ -8,8 +8,7 @@ var HomeViewFooter = React.createClass({
   mixins: [Router.Navigation],
   render: function() {
     return (
-      <div className="col-lg-8 col-lg-offset-2">
-        <div className="oc-home-view-footer-wrapper">
+      <div className="col-lg-8 col-lg-offset-2 oc-home-view-footer-wrapper">
           <div className="oc-home-view-footer">
             <h1 className="oc-home-view-title">Co-creating cities of the future</h1>
             <div className="col-md-8 col-md-offset-2">
@@ -67,7 +66,6 @@ var HomeViewFooter = React.createClass({
               </a>
             </div>
           </div>
-        </div>
       </div>
 
     );
