@@ -267,3 +267,43 @@ input[type="submit"] {
 .oc-home-view-footer {
   text-align: center;
 }
+
+
+.withLoader {
+  position: relative;
+  min-height: 180px;
+
+  .loadingFrame {
+    text-align: center;
+    background: @oc-white;
+    horizontal-align: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border: 4rem solid @oc-grey;
+
+    height: 180px;
+    width: 100%;
+
+    z-index: 9001;
+
+    padding: 2rem 4rem;
+    /* margin: 4rem 0; */
+
+    &.loaded {
+      opacity: 0.01;
+      transition: opacity 200ms ease-in;
+    }
+
+    i {
+      color: @oc-meta-grey;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .loadingContent {
+    visibility: hidden;
+  }
+}

@@ -64,7 +64,7 @@ var startServer = function(done) {
     app.use(function(req, res, next) {
       timers.setTimeout(function() {
         next();
-      }, 100);
+      }, 500);
     });
   }
 
