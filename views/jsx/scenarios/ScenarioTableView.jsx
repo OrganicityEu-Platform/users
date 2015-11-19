@@ -102,20 +102,20 @@ var ScenarioTableView = React.createClass({
           <div className="scenario-article-meta">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">Actors:</span>
+                <span className="scenario-ast">Actor:</span>
                 <span className="scenario-ast-items">{this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}</span><br></br>
               </div>
 
             </div>
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">Sectors:</span>
+                <span className="scenario-ast">Sector:</span>
                 <span className="scenario-ast-items">{this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}</span><br></br>
               </div>
             </div>
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">Tools:</span>
+                <span className="scenario-ast">Tool:</span>
                 <span className="scenario-ast-items">{this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}</span><br></br>
               </div>
             </div>
