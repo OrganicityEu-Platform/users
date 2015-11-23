@@ -9,7 +9,7 @@ var HomeViewHeader = React.createClass({
         <div className="oc-home-view-header-wrapper">
           <div className="oc-home-view-header container">
             <h1 className="oc-home-view-header-text">Welcome to OrganiCity Scenarios</h1>
-            <span className="col-md-8 col-md-offset-2">Making cities better</span>
+            <h2 className="col-md-8 col-md-offset-2 oc-home-view-header-sub-text">Making cities better</h2>
           </div>
         </div>
       </div>
