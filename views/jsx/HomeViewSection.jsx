@@ -1,6 +1,6 @@
 import React              from 'react';
 import { Button }         from 'react-bootstrap';
-import ScenariosNewest    from './scenarios/ScenariosNewest.jsx';
+import ui                 from '../../ui_routes.js';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -9,20 +9,28 @@ var HomeViewSection = React.createClass({
   mixins: [Router.Navigation],
   render: function() {
     return (
-      <div>
-        <div className="oc-home-view-section-wrapper col-lg-8 col-lg-offset-2">
-          <div className="oc-home-view-section">
-            <h1 className="oc-home-view-title">Latest scenarios</h1>
-            <ScenariosNewest limit="9" counter={false}/>
-            <div className="col-md-4 col-md-offset-4 oc-home-scenarioList">
-              <Link to="scenarioList">
-                <Button className="oc-button">EXPLORE ALL SCENARIOS</Button>
-              </Link>
-            </div>
+      <div className="oc-home-view-section-wrapper">
+        <div className="row oc-home-view-section-icons-wrapper">
+          <div className="col-lg-2"></div>
+          <div className="oc-home-view-section-icon-wrapper col-lg-2">
+            <img className="oc-home-view-section-icon" src={ui.asset('static/img/discussion_icon.svg')}/>
           </div>
+          <span className="oc-home-view-section-plus col-lg-1">+</span>
+          <div className="oc-home-view-section-icon-wrapper col-lg-2">
+            <img className="oc-home-view-section-icon" src={ui.asset('static/img/creation_icon.svg')}/>
+          </div>
+          <span className="oc-home-view-section-plus col-lg-1">+</span>
+          <div className="oc-home-view-section-icon-wrapper col-lg-2">
+            <img className="oc-home-view-section-icon" src={ui.asset('static/img/experimentation_icon.svg')}/>
+          </div>
+          <div className="col-lg-2"></div>
+        </div>
+        <div className="row oc-home-view-section-signup-wrapper">
+            <Button className="oc-ghost-white">
+              <div>Sign me up!  <i className="fa fa-chevron-right"></i></div>
+            </Button>
         </div>
       </div>
-
     );
   }
 });
