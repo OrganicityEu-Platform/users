@@ -12,16 +12,25 @@ var HomeViewSection = React.createClass({
       <div className="oc-home-view-section-wrapper">
         <div className="row oc-home-view-section-icons-wrapper">
           <div className="col-lg-2"></div>
-          <div className="oc-home-view-section-icon-wrapper col-lg-2">
-            <img className="oc-home-view-section-icon" src={ui.asset('static/img/discussion_icon.svg')}/>
+          <div className="col-lg-2">
+            <div className="oc-home-view-section-icon-wrapper">
+              <img className="oc-home-view-section-icon" src={ui.asset('static/img/discussion_icon.svg')}/>
+              <p>Discussion</p>
+            </div>
           </div>
           <span className="oc-home-view-section-plus col-lg-1">+</span>
-          <div className="oc-home-view-section-icon-wrapper col-lg-2">
-            <img className="oc-home-view-section-icon" src={ui.asset('static/img/creation_icon.svg')}/>
+          <div className="col-lg-2">
+            <div className="oc-home-view-section-icon-wrapper">
+                <img className="oc-home-view-section-icon" src={ui.asset('static/img/creation_icon.svg')}/>
+                <p>Co-creation</p>
+            </div>
           </div>
           <span className="oc-home-view-section-plus col-lg-1">+</span>
-          <div className="oc-home-view-section-icon-wrapper col-lg-2">
-            <img className="oc-home-view-section-icon" src={ui.asset('static/img/experimentation_icon.svg')}/>
+          <div className="col-lg-2">
+            <div className="oc-home-view-section-icon-wrapper">
+              <img className="oc-home-view-section-icon" src={ui.asset('static/img/experimentation_icon.svg')}/>
+              <p>Experimentation</p>
+            </div>
           </div>
           <div className="col-lg-2"></div>
         </div>
