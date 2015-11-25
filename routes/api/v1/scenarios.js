@@ -7,6 +7,7 @@ var mongodb      = require('mongodb');
 var HttpStatus   = require('http-status');
 var RestClient   = require('node-rest-client').Client;
 var Scenario     = require('../../../models/schema/scenario.js');
+var User         = require('../../../models/schema/user.js');
 var uuid         = require('node-uuid');
 var handleUpload = require('../../../util/handleUpload');
 
@@ -60,19 +61,39 @@ var scenarioFields = Object
   .keys(scenarioProjection)
   .filter(function(key) { return scenarioProjection[key] === 1; });
 
+
+var getUsernames = function() {
+  return User.find({}).select('uuid name').exec();
+}
+
+
+var annotateUsernames = function(results) {
+  var scenarios = results[0];
+  var users = results[1];
+
+  var annotatedScenarios = scenarios.map(function(scenario) {
+    if (scenario.creator) {
+      for(var i = 0; i < users.length; i++) {
+        if (users[i].uuid === scenario.creator) {
+          scenario.creatorName = users[i].name;
+          break;
+        }
+      }
+    }
+
+    return scenario;
+  });
+
+  return annotatedScenarios;
+};
+
+
 module.exports = function(router, passport) {
 
   var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
-  var scenarioListQueryCallback = function(res, multipleResults) {
-    return function(err, scenarios) {
-
-      if (err) {
-        console.log(err);
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
-        return;
-      }
-
+  var sendScenarios = function(res, multipleResults) {
+    return function(scenarios) {
       if (multipleResults) {
         res.status(HttpStatus.OK).send(scenarios);
         return;
@@ -87,10 +108,14 @@ module.exports = function(router, passport) {
     };
   };
 
+  var reportError = function(res) {
+    return function(error) {
+      console.log('ERROR: ', error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+    };
+  };
+
   var executeScenarioLatestVersionQuery = function(params, res, multipleResults) {
-
-    // console.log('executeScenarioLatestVersionQuery');
-
     var sortByVersionDescending = {
       '$sort' : { 'uuid' : 1, 'version' : -1 }
     };
@@ -121,6 +146,7 @@ module.exports = function(router, passport) {
       '$project' : scenarioProjection
     };
 
+    // https://docs.mongodb.org/manual/core/aggregation-pipeline/
     var pipeline = [];
 
     if (params.filter && !isEmptyObject(params.filter)) {
@@ -143,20 +169,29 @@ module.exports = function(router, passport) {
       pipeline.push({ '$limit' : params.limit  });
     }
 
-    // console.log('query aggregation pipeline', pipeline);
+    var scenarios = Scenario.
+      aggregate(pipeline).
+      exec();
+    var users = getUsernames();
 
-    return Scenario.aggregate(pipeline, scenarioListQueryCallback(res, multipleResults));
+    return Promise.all([scenarios, users]).
+      then(annotateUsernames).
+      then(sendScenarios(res, multipleResults)).
+      catch(reportError(res));
   };
 
   /**
    * Executes a query against the scenarios collection
    */
   var executeScenarioListQuery = function(params, res, multipleResults) {
-    return Scenario
-      .find(params.filter, scenarioProjection)
-      .sort(params.sort)
-      .limit(params.limit)
-      .exec(scenarioListQueryCallback(res, multipleResults));
+    return Promise.resolve(
+      Scenario
+        .find(params.filter, scenarioProjection)
+        .sort(params.sort)
+        .limit(params.limit)
+        .exec())
+      .then(sendScenarios(res, multipleResults))
+      .catch(reportError(res));
   };
 
   var validateAndGetBaseParams = function(req, res) {

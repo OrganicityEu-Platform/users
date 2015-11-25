@@ -11,15 +11,23 @@ var UserAvatar = React.createClass({
   getInitialState: function() {
     return {
       loading: true,
-      user: null
+      userName: null
     };
   },
   componentDidMount: function() {
 
-    if (!this.props.uuid) {
+    if (!this.props.uuid && !this.props.name) {
       this.loaded();
       return;
     }
+
+    if (this.props.name) {
+      this.state.userName = this.props.name;
+      this.loaded();
+      return;
+    }
+
+    console.log("did not get username. reloading...");
 
     this.loading();
     var url = api.reverse('user_info', { uuid : this.props.uuid });
@@ -30,9 +38,9 @@ var UserAvatar = React.createClass({
         this.loaded();
       },
       success : (user) => {
-        this.state.user = user;
-        this.setState(this.state);
-        this.loaded();
+        this.setState({userName: user.name}, function() {
+          this.loaded();
+        });
       }
     });
   },
@@ -42,12 +50,9 @@ var UserAvatar = React.createClass({
       return <span>Loading...</span>;
     }
 
-    var userText = this.props.uuid;
-    if (!this.state.user) {
-      userText = 'Deleted user';
-    } else if (this.state.user.name && this.state.user.name !== '') {
-      userText = this.state.user.name;
-    }
+    var userText = this.state.userName
+      ? this.state.userName
+      : 'Unknown user';
 
     if (!this.props.uuid) {
       return (<span><i>{userText}</i></span>);
