@@ -61,11 +61,9 @@ var scenarioFields = Object
   .keys(scenarioProjection)
   .filter(function(key) { return scenarioProjection[key] === 1; });
 
-
 var getUsernames = function() {
   return User.find({}).select('uuid name').exec();
-}
-
+};
 
 var annotateUsernames = function(results) {
   var scenarios = results[0];
@@ -73,7 +71,7 @@ var annotateUsernames = function(results) {
 
   var annotatedScenarios = scenarios.map(function(scenario) {
     if (scenario.creator) {
-      for(var i = 0; i < users.length; i++) {
+      for (var i = 0; i < users.length; i++) {
         if (users[i].uuid === scenario.creator) {
           scenario.creatorName = users[i].name;
           break;
@@ -86,7 +84,6 @@ var annotateUsernames = function(results) {
 
   return annotatedScenarios;
 };
-
 
 module.exports = function(router, passport) {
 
