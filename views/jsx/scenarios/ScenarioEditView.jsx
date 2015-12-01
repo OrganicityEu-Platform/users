@@ -7,6 +7,7 @@ import Router               from 'react-router';
 import ValidationIndicator  from '../ValidationIndicator.jsx'
 import ScenarioTableView    from './ScenarioTableView.jsx';
 import SectorSelector       from '../SectorSelector.jsx';
+
 import { Button, ButtonToolbar, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import LoadingMixin         from '../LoadingMixin.jsx';
@@ -390,7 +391,7 @@ var ScenarioEditView = React.createClass({
     return (
       <div className="container oc-form-group-view">
         <div className="row">
-          <h1 className="oc-pink">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
+          <h1 className="oc-white">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
           <form className="form-horizontal">
             <div className="form-group oc-form-group">
               <label className="control-label col-sm-3" htmlFor="title">Title <ValidationIndicator valid={this.props.isValid('title')}/>
@@ -533,11 +534,11 @@ var ScenarioEditView = React.createClass({
 
     return (
       <div>
-        <div className="row">
+        <div className="container">
           <div className="col-md-12">
-            <h1 className="oc-pink">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'} <small>preview</small></h1>
-            <h2 className="oc-pink">Here's your story!</h2>
-            <p>
+            <h1 className="oc-white">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'} <small className="white">preview</small></h1>
+            <h2 className="oc-white">Here's your story!</h2>
+            <p className="white">
               Please review your scenario. If everything is fine, please submit it.
             </p>
           </div>
