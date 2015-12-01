@@ -119,7 +119,7 @@ var ForgotPassword = React.createClass({
     if (this.state.id) {
 
       if (this.state.send) {
-        return (<Message type="danger" message="Password update successful sent!" type="success"/>);
+        return (<Message message="Password update successful sent!" type="success"/>);
       }
 
       return (
@@ -168,7 +168,7 @@ var ForgotPassword = React.createClass({
 
         return (
           <div>
-            <Message type="danger" message={message} type="success"/>
+            <Message message={message} type="success"/>
             <button type="submit" className="oc-button" onClick={this.handleGoBack}>Still didn't get the mail? Go back.</button>
           </div>
         );
