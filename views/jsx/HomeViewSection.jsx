@@ -11,34 +11,40 @@ var HomeViewSection = React.createClass({
     return (
       <div className="oc-home-view-section-wrapper">
         <div className="row oc-home-view-section-icons-wrapper">
-          <div className="col-lg-2"></div>
-          <div className="col-lg-2">
+        <div className="col-lg-8 col-lg-offset-2">
             <div className="oc-home-view-section-icon-wrapper">
               <img className="oc-home-view-section-icon" src={ui.asset('static/img/discussion_icon.svg')}/>
               <p>Discussion</p>
-            </div>
+
           </div>
-          <span className="oc-home-view-section-plus col-lg-1">+</span>
-          <div className="col-lg-2">
+
+          <span className="oc-home-view-section-plus">+</span>
+
+
             <div className="oc-home-view-section-icon-wrapper">
                 <img className="oc-home-view-section-icon" src={ui.asset('static/img/creation_icon.svg')}/>
                 <p>Co-creation</p>
             </div>
-          </div>
-          <span className="oc-home-view-section-plus col-lg-1">+</span>
-          <div className="col-lg-2">
+
+          <span className="oc-home-view-section-plus">+</span>
+
+
             <div className="oc-home-view-section-icon-wrapper">
               <img className="oc-home-view-section-icon" src={ui.asset('static/img/experimentation_icon.svg')}/>
               <p>Experimentation</p>
             </div>
-          </div>
-          <div className="col-lg-2"></div>
+
+    </div>
         </div>
         <div className="row oc-home-view-section-signup-wrapper">
             <Button className="oc-ghost-white">
               <div>Sign me up!  <i className="fa fa-chevron-right"></i></div>
             </Button>
         </div>
+        <div className="col-lg-12 oc-divider-wrapper">
+          <img id="oc-divider" src={ui.asset('static/img/image-divider.svg')}></img>
+        </div>
+
       </div>
     );
   }
