@@ -25,6 +25,7 @@
 
 // import always last
 @import "oc_desktop.less";
+@import "oc_mobile.less";
 
 body {
   background-color: @oc-grey;
@@ -274,15 +275,15 @@ input[type="submit"] {
 .oc-home-view-section-icon-wrapper {
   display: inline-block;
   text-align: center;
-  height: 230px;
-  width: 230px;
+  height: 195px;
+  width: 195px;
   background-color: white;
   border-radius: 100%;
 }
 
 .oc-home-view-section-icon {
-  height: 185px;
-  width: 140px;
+  height: 145px;
+  width: 120px;
 }
 
 .oc-home-view-section-wrapper {
@@ -292,13 +293,14 @@ input[type="submit"] {
 .oc-home-view-section-plus {
   color: @oc-white;
   font-weight: bold;
-  font-size: 98px;
+  font-size: 78px;
   padding-top: 45px;
 }
 
 .oc-home-view-header-text {
   color: @oc-white;
   font-weight: bold;
+  margin-top: 0;
 }
 
 .oc-home-view-section-signup-wrapper {
@@ -330,5 +332,17 @@ and (max-width : 1400px) {
   .oc-home-view-footer-wrapper {
     .make-md-column(10);
     .make-md-column-offset(1);
+  }
+  .scenario-article-widget-data {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media only screen
+and (max-width : 1400px)
+and (min-width : 740px) {
+  .oc-home-view-section-plus {
+    padding-right: 0;
   }
 }
