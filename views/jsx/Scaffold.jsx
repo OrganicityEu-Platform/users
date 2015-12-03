@@ -124,7 +124,7 @@ var Scaffold = React.createClass({
     return (
       <div className="container oc-page-wrapper" id="top">
         <div className="row">
-          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
+          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>} toggleNavKey={0}>
             <CollapsibleNav eventKey={0}>
               <span className="oc-left-links-wrapper">
                 <Nav navbar>
@@ -143,7 +143,7 @@ var Scaffold = React.createClass({
             <img id="oc-divider" src={ui.asset('static/img/image-divider.svg')}></img>
           </div>
          {router}
-         
+
         <div className="oc-footers">
           <FooterLarge/>
           <FooterSmall currentUser={this.state.currentUser} />
