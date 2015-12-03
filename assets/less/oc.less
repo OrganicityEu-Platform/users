@@ -60,6 +60,7 @@ a:hover {
   background-image: url('../../static/img/oc-img-top-2.png');
   background-repeat: no-repeat;
   background-size: 100%;
+  background-position: 0px 70px;
 }
 
 .ocTable {
@@ -275,15 +276,17 @@ input[type="submit"] {
 .oc-home-view-section-icon-wrapper {
   display: inline-block;
   text-align: center;
-  height: 195px;
-  width: 195px;
+  height: 155px;
+  width: 155px;
   background-color: white;
   border-radius: 100%;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
 .oc-home-view-section-icon {
-  height: 145px;
-  width: 120px;
+  height: 110px;
+  width: 90px;
 }
 
 .oc-home-view-section-wrapper {
@@ -292,9 +295,8 @@ input[type="submit"] {
 
 .oc-home-view-section-plus {
   color: @oc-white;
-  font-weight: bold;
+  font-family: 'Cooper Hewitt Semibold';
   font-size: 78px;
-  padding-top: 45px;
 }
 
 .oc-home-view-header-text {
@@ -357,7 +359,23 @@ and (min-width : 740px) {
 }
 
 #oc-divider {
-  margin-right: -55px;
-  margin-left: -55px;
-  margin-top: -185px;
+  margin-right: -45px;
+  margin-left: -85px;
+  margin-top: 510px;
+  position: absolute;
+}
+
+.oc-home-view-section-icon-text {
+  font-size: 13px;
+  font-family: 'Cooper Hewitt Semibold';
+}
+
+.oc-home-view-section-signup-wrapper > i {
+  display: block;
+  margin-top: 145px;
+  margin-bottom: 450px;
+}
+
+#oc-home-view-footer-explore-btn-wrapper {
+  padding: 0 !important;
 }

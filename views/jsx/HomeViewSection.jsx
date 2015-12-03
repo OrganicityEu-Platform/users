@@ -14,7 +14,7 @@ var HomeViewSection = React.createClass({
         <div className="col-lg-8 col-lg-offset-2">
             <div className="oc-home-view-section-icon-wrapper">
               <img className="oc-home-view-section-icon" src={ui.asset('static/img/discussion_icon.svg')}/>
-              <p>Discussion</p>
+              <p className="oc-home-view-section-icon-text">Discussion</p>
 
           </div>
 
@@ -23,7 +23,7 @@ var HomeViewSection = React.createClass({
 
             <div className="oc-home-view-section-icon-wrapper">
                 <img className="oc-home-view-section-icon" src={ui.asset('static/img/creation_icon.svg')}/>
-                <p>Co-creation</p>
+                <p className="oc-home-view-section-icon-text">Co-creation</p>
             </div>
 
           <span className="oc-home-view-section-plus">+</span>
@@ -31,7 +31,7 @@ var HomeViewSection = React.createClass({
 
             <div className="oc-home-view-section-icon-wrapper">
               <img className="oc-home-view-section-icon" src={ui.asset('static/img/experimentation_icon.svg')}/>
-              <p>Experimentation</p>
+              <p className="oc-home-view-section-icon-text">Experimentation</p>
             </div>
 
     </div>
@@ -40,9 +40,7 @@ var HomeViewSection = React.createClass({
             <Button className="oc-ghost-white">
               <div>Sign me up!  <i className="fa fa-chevron-right"></i></div>
             </Button>
-        </div>
-        <div className="col-lg-12 oc-divider-wrapper">
-          <img id="oc-divider" src={ui.asset('static/img/image-divider.svg')}></img>
+            <i className="fa fa-angle-double-down white"></i>
         </div>
 
       </div>

@@ -139,7 +139,11 @@ var Scaffold = React.createClass({
           </Navbar>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
+          <div className="col-lg-12 oc-divider-wrapper">
+            <img id="oc-divider" src={ui.asset('static/img/image-divider.svg')}></img>
+          </div>
          {router}
+         
         <div className="oc-footers">
           <FooterLarge/>
           <FooterSmall currentUser={this.state.currentUser} />
