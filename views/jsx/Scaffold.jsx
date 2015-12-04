@@ -38,6 +38,18 @@ var Scaffold = React.createClass({
         }
       }
     });
+    $(document).ready(function() {
+      var movementStrength = 11;
+      var height = movementStrength / $(window).height();
+      var width = movementStrength / $(window).width();
+      $("#top").mousemove(function(e){
+          var pageX = e.pageX - ($(window).width() / 2);
+          var pageY = e.pageY - ($(window).height() / 2);
+          var newvalueX = width * pageX * -1 - 25;
+          var newvalueY = height * pageY * -1 - 50;
+          $('#top').css("background-position", newvalueX+"px     "+newvalueY+"px");
+        });
+      });
   },
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
