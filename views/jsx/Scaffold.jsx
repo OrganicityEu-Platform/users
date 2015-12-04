@@ -100,7 +100,9 @@ var Scaffold = React.createClass({
         );
         linksRight.push(
           <DropdownButton title="administer">
-            {adminLinks}
+            <NavItemLink
+              key="questionnaire"
+              to="admin_questionnaire">Questionnaire</NavItemLink>
           </DropdownButton>
         );
       }
@@ -137,11 +139,9 @@ var Scaffold = React.createClass({
                   {linksLeft}
                 </Nav>
               </span>
-
               <Nav navbar right>
                 {linksRight}
               </Nav>
-
             </CollapsibleNav>
           </Navbar>
         </div>
