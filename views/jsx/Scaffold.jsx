@@ -93,21 +93,19 @@ var Scaffold = React.createClass({
             key="questionnaire"
             to="admin_questionnaire">Questionnaire</NavItemLink>
         );
-        adminlinks.push(
+        adminLinks.push(
           <NavItemLink
             key="sysinfo"
             to="sysinfo" data-about>About</NavItemLink>
         );
         linksRight.push(
           <DropdownButton title="administer">
-            <NavItemLink
-              key="questionnaire"
-              to="admin_questionnaire">Questionnaire</NavItemLink>
+            {adminLinks}
           </DropdownButton>
         );
       }
       linksRight.push(
-        <NavItemLink key="profile" to="profile">Profile</NavItemLink>
+        <NavItemLink key="profile" to="profile">profile</NavItemLink>
       );
       linksRight.push(
         <NavItemLink
@@ -139,6 +137,7 @@ var Scaffold = React.createClass({
                   {linksLeft}
                 </Nav>
               </span>
+
               <Nav navbar right>
                 {linksRight}
               </Nav>
@@ -152,7 +151,6 @@ var Scaffold = React.createClass({
          {router}
 
         <div className="oc-footers">
-          <div id="test"></div>
           <FooterLarge currentUser={this.state.currentUser}/>
         </div>
       </div>
