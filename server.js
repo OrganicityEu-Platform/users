@@ -59,15 +59,6 @@ var startServer = function(done) {
   app.use(passport.session()); // persistent login sessions
   app.use(flash()); // use connect-flash for flash messages stored in session
 
-  // simulates network latency in development mode
-  if (app.get('env') === 'development') {
-    app.use(function(req, res, next) {
-      timers.setTimeout(function() {
-        next();
-      }, 100);
-    });
-  }
-
   // routes =====================================================================
   var routes_scenarios     = require('./routes/api/v1/scenarios.js')(router, passport);
   var routes_auth          = require('./routes/api/v1/auth.js')(router, passport);
@@ -159,7 +150,6 @@ var startServer = function(done) {
   server = app.listen(port, function() {
 
     if (app.get('env') !== 'test') {
-      expressListRoutes({ prefix: '' }, 'Server REST API:', router);
       console.log('Server started on ' + config.host + ':' + port + config.contextPath);
     }
 
