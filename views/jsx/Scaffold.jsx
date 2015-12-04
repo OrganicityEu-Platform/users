@@ -83,20 +83,25 @@ var Scaffold = React.createClass({
     );
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
-        linksRight.push(
+        adminLinks.push(
           <NavItemLink
             key="users"
             to="admin_userList">Users</NavItemLink>
         );
-        linksRight.push(
+        adminLinks.push(
           <NavItemLink
             key="questionnaire"
             to="admin_questionnaire">Questionnaire</NavItemLink>
         );
-        linksRight.push(
+        adminlinks.push(
           <NavItemLink
             key="sysinfo"
             to="sysinfo" data-about>About</NavItemLink>
+        );
+        linksRight.push(
+          <DropdownButton title="administer">
+            {adminLinks}
+          </DropdownButton>
         );
       }
       linksRight.push(
@@ -135,8 +140,6 @@ var Scaffold = React.createClass({
 
               <Nav navbar right>
                 {linksRight}
-    
-
               </Nav>
 
             </CollapsibleNav>
@@ -149,6 +152,7 @@ var Scaffold = React.createClass({
          {router}
 
         <div className="oc-footers">
+          <div id="test"></div>
           <FooterLarge currentUser={this.state.currentUser}/>
         </div>
       </div>
