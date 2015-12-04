@@ -118,8 +118,7 @@ var myContactForm = React.createClass({
     if (typeof this.props.currentUser == 'undefined')
     {
       return (<div>
-          <h4>Contact Us</h4>
-          <a href={'mailto:' + Contact.mailAddress}>
+          <a className="white" href={'mailto:' + Contact.mailAddress}>
             {Contact.mailAddress}
           </a>
         </div>);
@@ -141,13 +140,12 @@ var myContactForm = React.createClass({
 
     return (
       <div>
-        <h4>Contact Us</h4>
-        <form className="form-horizontal">
+        <form className="form">
           {errorMessage}
           <div className="form-group">
             <input
               type="text"
-              className="form-control"
+              className="form-control oc-input"
               name="address"
               placeholder="Your Email Address"
               value={this.getMailAddress()}
@@ -161,7 +159,7 @@ var myContactForm = React.createClass({
 
           <div className="form-group">
             <textarea
-              className="form-control"
+              className="form-control oc-input"
               name="message"
               id="message"
               placeholder="Your Message"
@@ -173,12 +171,15 @@ var myContactForm = React.createClass({
           </div>
 
           <div className="form-group">
-            <button type="button" className="btn btn-default"
-              onClick={this.submitForm}
-              disabled={this.isLoading() ? 'disabled' : ''}
-            >
-              Submit
-            </button>
+            <div className="col-lg-5 oc-contact-submit-btn-wrapper">
+              <button type="button" className="oc-button btn-default"
+                onClick={this.submitForm}
+                disabled={this.isLoading() ? 'disabled' : ''}
+              >
+                Submit
+              </button>
+            </div>
+            <div className="col-lg-7"></div>
         </div>
 
         </form>
@@ -188,4 +189,3 @@ var myContactForm = React.createClass({
 });
 
 export default validation(strategy)(myContactForm);
-

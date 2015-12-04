@@ -145,8 +145,7 @@ var Scaffold = React.createClass({
          {router}
 
         <div className="oc-footers">
-          <FooterLarge/>
-          <FooterSmall currentUser={this.state.currentUser} />
+          <FooterLarge currentUser={this.state.currentUser}/>
         </div>
       </div>
     );
