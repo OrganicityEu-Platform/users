@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
-import { Nav, Navbar, NavItem, DropdownButton, MenuItem, CollapsibleNav } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, DropdownButton, NavDropdown, MenuItem, CollapsibleNav } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin          from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
@@ -67,6 +67,7 @@ var Scaffold = React.createClass({
 
     var linksLeft = [];
     var linksRight = [];
+    var adminLinks = [];
 
     linksLeft.push(
       <NavItemLink
@@ -134,7 +135,10 @@ var Scaffold = React.createClass({
 
               <Nav navbar right>
                 {linksRight}
+    
+
               </Nav>
+
             </CollapsibleNav>
           </Navbar>
         </div>
