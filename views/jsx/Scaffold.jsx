@@ -140,7 +140,7 @@ var Scaffold = React.createClass({
       );
     }
     return (
-      <div className="container oc-page-wrapper" id="top">
+      <div className="container oc-page-wrapper" id="">
         <div className="row">
           <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>} toggleNavKey={0}>
             <CollapsibleNav eventKey={0}>
