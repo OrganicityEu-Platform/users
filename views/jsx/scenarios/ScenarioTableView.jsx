@@ -125,7 +125,7 @@ var ScenarioTableView = React.createClass({
         <footer className="scenario-article-footer"></footer>
       </div>
       <div className="scenario-article-narrative-wrapper">
-          <span className="col-md-1">Narrative</span>
+          <span className="col-md-1 scenario-article-narrative-title">Narrative</span>
           <div className="scenario-article-narrative col-md-11">
             {this.props.scenario.narrative}
           </div>

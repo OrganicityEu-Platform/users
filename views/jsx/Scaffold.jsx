@@ -11,7 +11,8 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
-import Signup from './auth/Signup.jsx';
+import Signup              from './auth/Signup.jsx';
+import CookiePrompt        from './CookiePrompt.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -157,11 +158,11 @@ var Scaffold = React.createClass({
           </Navbar>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-          <div className="col-lg-12 oc-divider-wrapper">
-            <img id="oc-divider" src={ui.asset('static/img/image-divider.svg')}></img>
+          <div className="row oc-divider-wrapper">
+            <img id="oc-divider" src={ui.asset('static/img/image-divider-cropped-2.svg')}></img>
           </div>
          {router}
-
+         <CookiePrompt />
         <div className="oc-footers">
           <FooterLarge currentUser={this.state.currentUser}/>
         </div>
