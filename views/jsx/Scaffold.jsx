@@ -158,9 +158,6 @@ var Scaffold = React.createClass({
           </Navbar>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-          <div className="row oc-divider-wrapper">
-            <img id="oc-divider" src={ui.asset('static/img/image-divider-cropped-2.svg')}></img>
-          </div>
          {router}
          <CookiePrompt />
         <div className="oc-footers">
