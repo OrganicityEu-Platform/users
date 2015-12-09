@@ -33,7 +33,7 @@ var FooterLarge = React.createClass({
                 src={ui.asset('static/img/logo_eu.png')} />
             </div>
             <span className="oc-logo-text">
-              This project has recieved funding from the European Union's Horizon 2020 research and innovation program under the grant agreement No. 645198.
+              This project has received funding from the European Union's Horizon 2020 research and innovation program under the grant agreement No. 645198.
             </span>
 
           </div>

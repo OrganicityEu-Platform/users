@@ -9,6 +9,9 @@ import ScenarioEditView      from './scenarios/ScenarioEditView.jsx';
 import ScenarioView          from './scenarios/ScenarioView.jsx';
 import ScenarioEvalView      from './scenarios/ScenarioEvalView.jsx';
 
+import ReportList            from './reports/ReportList.jsx';
+import ReportView            from './reports/ReportView.jsx';
+
 import UserView              from './users/UserView.jsx';
 
 import Logout                from './auth/Logout.jsx';
@@ -33,6 +36,8 @@ var routes = (
     <Route name="scenarioCreate"      path={ui.route('scenarioCreate')}      handler={ScenarioEditView}      />
     <Route name="scenarioEdit"        path={ui.route('scenarioEdit')}        handler={ScenarioEditView}      />
     <Route name="scenarioView"        path={ui.route('scenarioView')}        handler={ScenarioView}          />
+    <Route name="reportList"          path={ui.route('reportList')}          handler={ReportList}            />
+    <Route name="reportView"          path={ui.route('reportView')}          handler={ReportView}            />
     <Route name="userView"            path={ui.route('userView')}            handler={UserView}              />
     <Route name="scenarioEvalView"    path={ui.route('scenarioEvalView')}    handler={ScenarioEvalView}      />
     <Route name="login"               path={ui.route('login')}               handler={Login}                 />
@@ -43,8 +48,8 @@ var routes = (
     <Route name="admin_userList"      path={ui.route('admin_userList')}      handler={UserListView}          />
     <Route name="admin_userEdit"      path={ui.route('admin_userEdit')}      handler={UserEditView}          />
     <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />
-    <Route name="forgot-password"     path={ui.route('forgot-password')}     handler={ForgotPassword} />
-    <Route name="contactUs"           path={ui.route('contactUs')}           handler={ContactUs} />
+    <Route name="forgot-password"     path={ui.route('forgot-password')}     handler={ForgotPassword}        />
+    <Route name="contactUs"           path={ui.route('contactUs')}           handler={ContactUs}             />
   </Route>
 );
 

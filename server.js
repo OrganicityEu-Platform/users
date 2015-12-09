@@ -61,6 +61,7 @@ var startServer = function(done) {
 
   // routes =====================================================================
   var routes_scenarios     = require('./routes/api/v1/scenarios.js')(router, passport);
+  var routes_reports       = require('./routes/api/v1/reports.js')(router, passport);
   var routes_auth          = require('./routes/api/v1/auth.js')(router, passport);
   var routes_users         = require('./routes/api/v1/users.js')(router, passport);
   var routes_error         = require('./routes/api/v1/error.js')(router, passport);
@@ -69,9 +70,10 @@ var startServer = function(done) {
   var routes_evaluations   = require('./routes/api/v1/evaluations.js')(router, passport);
   var routes_counter       = require('./routes/api/v1/counter.js')(router, passport);
   var routes_upload        = require('./routes/api/v1/upload.js')(router, passport);
-  var routes_contactUs = require('./routes/api/v1/contact.js')(router, passport);
+  var routes_contactUs     = require('./routes/api/v1/contact.js')(router, passport);
 
   app.use(routes_scenarios);
+  app.use(routes_reports);
   app.use(routes_auth);
   app.use(routes_users);
   app.use(routes_error);

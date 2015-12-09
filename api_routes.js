@@ -8,13 +8,14 @@ var prefixes = {
   'actors'         : '/api/v1/actors',
   'sectors'        : '/api/v1/sectors',
   'devices'        : '/api/v1/devices',
+  'reports'        : '/api/v1/reports',
   'error'          : '/api/v1/error',
   'sysinfo'        : '/api/v1/sysinfo',
   'questionnaire'  : '/api/v1/questionnaire',
   'evaluations'    : '/api/v1/evaluations',
   'counter'        : '/api/v1/counter',
   'upload'         : '/api/v1/upload',
-  'contactUs' : '/api/v1/contactUs'
+  'contactUs'      : '/api/v1/contactUs'
 };
 
 var api_routes = {
@@ -58,6 +59,10 @@ var api_routes = {
 
   //
   'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',
+
+  // reports routes
+  'report_list'                : prefixes.reports + '/?',
+  'report_by_uuid'             : prefixes.reports + '/:uuid/?',
 
   // scenario routes
   'scenario_list'              : prefixes.scenarios + '/?',

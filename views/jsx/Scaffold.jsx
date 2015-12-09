@@ -94,6 +94,12 @@ var Scaffold = React.createClass({
         to="scenarioCreate"
         className="navbar-create-btn">CREATE</NavItemLink>
     );
+    linksLeft.push(
+      <NavItemLink
+        key="reportList"
+        to="reportList"
+        className="navbar-reports-btn">REPORTS</NavItemLink>
+    );
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
         adminLinks.push(
