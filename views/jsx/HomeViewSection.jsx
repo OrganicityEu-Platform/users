@@ -37,7 +37,7 @@ var HomeViewSection = React.createClass({
     </div>
         </div>
         <div className="row oc-home-view-section-signup-wrapper">
-            <Button className="oc-ghost-white">
+            <Button className="oc-ghost-white" id="oc-home-view-signup-btn">
               <div>Sign me up!  <i className="fa fa-chevron-right"></i></div>
             </Button>
             <i className="fa fa-angle-double-down white"></i>

@@ -36,6 +36,20 @@ body {
   font-family: 'Cooper Hewitt Book';
 }
 
+
+body:before {
+  content: "";
+  position: fixed;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  z-index: 100;
+  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+  box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+}
+
 html {
   height: 100%;
 }
@@ -57,7 +71,7 @@ a:hover {
   height: 100%;
   table-layout: fixed;
   width: 100%;
-  background-image: url('../../static/img/oc-img-top-7.png');
+  background-image: url('../../static/img/oc-hero-img.png');
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: 0px -40px;
@@ -282,6 +296,7 @@ input[type="submit"] {
   border-radius: 100%;
   margin-left: 25px;
   margin-right: 25px;
+  box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.25);
 }
 
 .oc-home-view-section-icon {
@@ -349,6 +364,33 @@ and (max-width : 1400px) {
   }
 }
 
+
+@media only screen
+and (max-width : 1200px) {
+  #oc-home-view-signup-btn {
+    background-color: @oc-dark-grey;
+    color: @oc-white;
+    border: 0;
+  }
+  .fa-angle-double-down {
+    color: @oc-dark-grey;
+  }
+}
+
+@media only screen
+and (max-width : 750px) {
+  .oc-home-view-section-plus {
+    display: inherit;
+    color: @oc-dark-grey;
+  }
+  .oc-home-view-section-signup-wrapper > i {
+    margin-bottom: 10px !important;
+  }
+  .oc-home-view-section-signup-wrapper  {
+    margin-bottom: 80px !important;
+  }
+}
+
 @media only screen
 and (max-width : 1400px)
 and (min-width : 740px) {
@@ -400,7 +442,7 @@ and (min-width : 800px) {
 .oc-home-view-section-signup-wrapper > i {
   display: block;
   margin-top: 145px;
-  margin-bottom: 450px;
+  margin-bottom: 150px;
 }
 
 #oc-home-view-footer-explore-btn-wrapper {
