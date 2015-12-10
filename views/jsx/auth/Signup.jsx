@@ -81,8 +81,9 @@ var Signup = React.createClass({
 
     return (
       <form>
-        <div className="row oc-signup-wrapper">
-          <div className="col-sm-6 col-sm-offset-3">
+        <div className="row">
+          <div className="oc-signup-wrapper col-sm-4 col-sm-offset-4">
+            <h1 className="oc-pink oc-login-signup-title">Signup</h1>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>

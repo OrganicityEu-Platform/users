@@ -4,9 +4,17 @@
 @import "oc_buttons.less";
 
 .oc-signup-wrapper,
-.oc-login-wrapper {
+.oc-login-wrapper,
+.oc-forgot-password-wrapper,
+.oc-forgot-password-msg-wrapper {
   background-color: @oc-white;
+  padding: 25px;
 }
+
+.oc-forgot-password-wrapper > p {
+  color: @oc-dark-grey;
+}
+
 
 .social-logins-wrapper {
   text-align: center;
@@ -16,7 +24,6 @@
 .social-logins {
   display: inline-block;
   font-size: 20px;
-  margin-top: 45px;
 }
 
 .login-help,
@@ -30,12 +37,14 @@
 
 .oc-login-help-wrapper {
   margin-top: 8px;
-  padding-bottom: 100px;
+}
+
+.oc-login-signup-title {
+  margin-bottom: 20px;
 }
 
 .oc-signup-help-wrapper {
   margin-top: 8px;
-  padding-bottom: 50px;
 }
 
 .social-logins > a {
