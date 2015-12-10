@@ -21,7 +21,7 @@ var CookiePrompt = React.createClass ({
               </div>
               <div className="col-lg-8">
                 <p className="oc-cookie-text">
-                  OrganiCity Scenarios uses cookies to give you and enhanced experience.
+                  OrganiCity Scenarios uses cookies to give you an enhanced experience.
                 </p>
                 <span>
                   Read more about it in our

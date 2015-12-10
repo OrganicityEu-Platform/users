@@ -1,6 +1,13 @@
 @import "oc_colors.less";
 @import "oc_fonts.less";
 
+.oc-ghost {
+  background: none;
+  font-family: 'Cooper Hewitt Semibold';
+  border-radius: 1px;
+  border: 1px solid;
+}
+
 .oc-button-default {
   border-radius: 2px;
   border: 0;
@@ -27,11 +34,13 @@
 }
 
 .oc-ghost-white {
-  border: 1px solid @oc-white;
-  border-radius: 1px;
-  background: none;
-  font-family: 'Cooper Hewitt Semibold';
+  .oc-ghost;
   color: @oc-white;
+}
+
+.oc-ghost-pink {
+  .oc-ghost;
+  color: @oc-magenta;
 }
 
 .oc-ghost-white:hover {

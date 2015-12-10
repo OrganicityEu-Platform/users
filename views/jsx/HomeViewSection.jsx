@@ -40,6 +40,7 @@ var HomeViewSection = React.createClass({
             <Button className="oc-ghost-white" id="oc-home-view-signup-btn">
               <div>Sign me up!  <i className="fa fa-chevron-right"></i></div>
             </Button>
+            <p>see the latest scenarios</p>
             <i className="fa fa-angle-double-down white"></i>
         </div>
 

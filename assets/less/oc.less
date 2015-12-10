@@ -343,6 +343,11 @@ input[type="submit"] {
   font-weight: bold;
 }
 
+@media (max-width : 950px) {
+  #oc-home-view-signup-btn {
+    .oc-ghost-pink;
+  }
+}
 
 @media only screen
 and (max-width : 1400px) {
@@ -367,13 +372,11 @@ and (max-width : 1400px) {
 
 @media only screen
 and (max-width : 1200px) {
-  #oc-home-view-signup-btn {
-    background-color: @oc-dark-grey;
-    color: @oc-white;
-    border: 0;
-  }
   .fa-angle-double-down {
-    color: @oc-dark-grey;
+    color: @oc-magenta;
+  }
+  .oc-home-view-section-signup-wrapper > p {
+    color: @oc-magenta !important;
   }
 }
 
@@ -381,13 +384,7 @@ and (max-width : 1200px) {
 and (max-width : 750px) {
   .oc-home-view-section-plus {
     display: inherit;
-    color: @oc-dark-grey;
-  }
-  .oc-home-view-section-signup-wrapper > i {
-    margin-bottom: 10px !important;
-  }
-  .oc-home-view-section-signup-wrapper  {
-    margin-bottom: 80px !important;
+    color: @oc-magenta;
   }
 }
 
@@ -396,9 +393,6 @@ and (max-width : 1400px)
 and (min-width : 740px) {
   .oc-home-view-section-plus {
     padding-right: 0;
-  }
-  #oc-divider {
-    margin-top: 360px !important;
   }
   .oc-home-view-section-icon {
     height: 65px !important;
@@ -439,10 +433,10 @@ and (min-width : 800px) {
   font-family: 'Cooper Hewitt Semibold';
 }
 
-.oc-home-view-section-signup-wrapper > i {
+.oc-home-view-section-signup-wrapper > p {
   display: block;
-  margin-top: 145px;
-  margin-bottom: 150px;
+  margin-top: 105px;
+  color: @oc-white;
 }
 
 #oc-home-view-footer-explore-btn-wrapper {
@@ -473,4 +467,13 @@ and (min-width : 800px) {
 
 .adminUsersTable {
   position: relative;
+}
+
+.dropdown-menu {
+
+}
+
+.dropdown-toggle {
+  background-color: @oc-magenta !important;
+  color: @oc-white !important;
 }

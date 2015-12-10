@@ -3,6 +3,17 @@
 @import "../../node_modules/bootstrap/less/bootstrap.less";
 @import "oc_colors.less";
 
+
+@media (min-width: 1400px) {
+  .oc-home-view-section-signup-wrapper > i {
+    margin-bottom: 180px;
+  }
+  .oc-home-view-section-signup-wrapper > p {
+    margin-top: 180px !important;
+  }
+}
+
+
 @media (min-width: 768px) {
   ul.nav.navbar-nav {
     float: none;
@@ -12,11 +23,9 @@
   .oc-form-group {
     padding-right: 45px !important;
   }
-
   .oc-form-group > label {
     font-size: 20px;
   }
-
   .scenario-article-widget {
     float: right;
     margin-right: 100px;
@@ -112,5 +121,11 @@
   .oc-cookie-prompt-wrapper {
     .make-lg-column(6);
     .make-lg-column-offset(3);
+  }
+  .navbar-default .navbar-nav > .active > a,
+  .navbar-default .navbar-nav > .active > a:hover,
+  .navbar-default .navbar-nav > .active > a:focus {
+    border-bottom: 1px solid @oc-white;
+    padding-bottom: 0px;
   }
 }

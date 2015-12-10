@@ -43,6 +43,7 @@ var ScenariosNewest = React.createClass({
 
     return (
       <div>
+        <h1 className="oc-pink">Latest scenarios</h1>
         <ScenarioThumbnails scenarios={this.state.scenarios} counter={this.props.counter} />
       </div>
     );
