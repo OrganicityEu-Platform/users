@@ -99,7 +99,7 @@ var ScenarioTableView = React.createClass({
             {image}
           </div>
           {copyright}
-          <div className="scenario-article-meta">
+          <div className="col-lg-12 scenario-article-meta">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Actor(s):</span>
