@@ -125,7 +125,6 @@ var ScenarioEvalView = React.createClass({
 
     return (
       <div className="col-lg-8 col-lg-offset-2 oc-evaluation-div">
-        <h1 className="oc-pink">Scenario Title</h1>
         <form>
           <div className="oc-evaluation-description-div col-lg-12">
             {this.state.questionnaire.description}
@@ -134,8 +133,8 @@ var ScenarioEvalView = React.createClass({
             <div className="row oc-radios-wrapper">
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
-                  <div className="col-lg-12" key={'question_' + qIdx + '_radios'}>
-                    <div className="oc-evaluation-question"><i className={'oc-eval-question-check_' + qIdx + ' fa fa-question-circle'}></i>
+                  <div className="oc-eval-question col-lg-12" key={'question_' + qIdx + '_radios'}>
+                    <div className="oc-evaluation-question"><i className="fa fa-question-circle"></i>
                     {q.text}</div>
                     <div className="oc-eval-answers-wrapper col-lg-12">
                     {q.values.map((a, aIdx) => (
