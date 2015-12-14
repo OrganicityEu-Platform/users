@@ -95,7 +95,7 @@ var Scaffold = React.createClass({
         className="navbar-create-btn">CREATE</NavItemLink>
     );
     if (this.userIsLoggedIn()) {
-      if (!this.userHasRole('admin')) {
+      if (this.userHasRole('admin')) {
         adminLinks.push(
           <NavItemLink
             key="users"

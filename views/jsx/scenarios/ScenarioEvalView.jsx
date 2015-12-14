@@ -125,30 +125,34 @@ var ScenarioEvalView = React.createClass({
 
     return (
       <div className="col-lg-8 col-lg-offset-2 oc-evaluation-div">
+        <h1 className="oc-pink">Scenario Title</h1>
         <form>
           <div className="oc-evaluation-description-div col-lg-12">
             {this.state.questionnaire.description}
           </div>
           <div className="oc-evaluation-table-div">
             <div className="row oc-radios-wrapper">
-
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
-                  <div key={'question_' + qIdx + '_radios'}>
-                    <div className="oc-evaluation-question col-lg-6">{q.text}</div>
+                  <div className="col-lg-12" key={'question_' + qIdx + '_radios'}>
+                    <div className="oc-evaluation-question"><i className={'oc-eval-question-check_' + qIdx + ' fa fa-question-circle'}></i>
+                    {q.text}</div>
+                    <div className="oc-eval-answers-wrapper col-lg-12">
                     {q.values.map((a, aIdx) => (
-                      <div className="oc-evaluation-answer-radio col-lg-1">
+                      <div className="oc-evaluation-answer-radio">
                         <input type="radio"
                           className="form-control"
                           name={'question_' + qIdx}
                           id={'question_' + qIdx + '_answer_' + aIdx}
                           onClick={this.selectedAnswer(qIdx, aIdx)}
                         />
-                        <label className="radio-label" htmlFor={'question_' + qIdx + '_answer_' + aIdx}>
+                      <label className="radio-label" htmlFor={'question_' + qIdx + '_answer_' + aIdx}>
                           <span className="oc-evaluation-answer-radio-num">{a.value}</span>
                         </label>
                       </div>
+
                     ))}
+                    </div>
                   </div>
                 ]
               )}

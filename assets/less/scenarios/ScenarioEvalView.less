@@ -1,10 +1,13 @@
 /* EVANLUATION */
 
 @import "../oc_colors.less";
+@import "../../../node_modules/bootstrap/less/bootstrap.less";
 
 .oc-evaluation-div {
-  background-color: @oc-dark-grey;
+  background-color: @oc-white;
   color: @oc-white;
+  padding-bottom: 25px;
+  padding-top: 15px;
 }
 
 .oc-evaluation-div input[type="radio"] {
@@ -37,6 +40,7 @@
 
 .oc-evaluation-answer-radio {
   display: inline-block;
+  margin-right: 15px;
 }
 
 .oc-evaluation-answer-radio-num {
@@ -54,12 +58,30 @@
 }
 
 .oc-evaluation-question {
+  background-color: @oc-white;
+  color: @oc-dark-grey;
+  padding: 8px;
+}
 
+.oc-evaluation-question > i {
+  font-size: 18px;
+  margin-right: 12px;
+  color: @oc-magenta !important;
 }
 
 .oc-evaluation-description-div {
   background-color: rgb(94, 94, 94);
   padding: 15px;
   margin-bottom: 20px;
-  margin-top: 15px;
+}
+
+.oc-eval-answers-wrapper {
+  background-color: @oc-white;
+  margin-bottom: 25px;
+  padding: 15px;
+}
+
+.oc-evaluation-sendbutton-div {
+  .make-sm-column(4);
+  .make-sm-column-offset(4);
 }
