@@ -2,6 +2,7 @@
 
 @import "../oc_colors.less";
 @import "../oc_buttons.less";
+@import "../../../node_modules/bootstrap/less/bootstrap.less";
 
 .scenario-article-score {
   font-weight: bold;
@@ -84,6 +85,7 @@
 .scenario-article-narrative {
   font-size: 17px;
   color: #444;
+  .make-md-column(10.8);
 }
 
 .scenario-article-narrative-wrapper {
@@ -94,6 +96,7 @@
   padding-left: 10px;
   background-color: @oc-white;
   display: inline-block;
+  margin-bottom: 20px;
 }
 
 .scenario-article-header {
@@ -158,4 +161,16 @@
 .scenario-article-copyright {
   color: rgb(153, 153, 153);
   padding-top: 5px;
+}
+
+.oc-create-edit-preview-btn-wrapper {
+  .make-sm-column(4);
+  .make-sm-column-offset(4);
+  .make-xs-column(8);
+  .make-xs-column-offset(2);
+}
+
+.scenario-article-narrative-title {
+  font-size: 18px;
+  .make-md-column(1.2);
 }

@@ -182,7 +182,11 @@ input[type="submit"] {
   #oc-search-btn {
     margin-left: 8px;
   }
-
+  .oc-contact-submit-btn-wrapper > {
+    max-width: 150px;
+    min-width: 150px;
+    float: right;
+  }
 }
 
 @media (max-width: @screen-xs-min) {
@@ -354,6 +358,18 @@ input[type="submit"] {
   .oc-eval-answers-wrapper {
     text-align: center;
   }
+  .nav-login-btn:hover,
+  .nav-logout-btn:hover,
+  .nav-signup-btn:hover,
+  .nav-profile-btn:hover,
+  .navbar-create-btn:hover,
+  .navbar-explore-btn:hover {
+    background-color: @oc-white !important;
+  }
+  .oc-left-links-wrapper {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }
 
 @media only screen
@@ -452,6 +468,10 @@ and (min-width : 800px) {
 #oc-home-view-footer-explore-btn-wrapper {
   padding: 0 !important;
   margin-top: 35px;
+  .make-sm-column(4);
+  .make-sm-column-offset(4);
+  .make-xs-column(10);
+  .make-xs-column-offset(1);
 }
 
 .navbar-header {
@@ -464,10 +484,8 @@ and (min-width : 800px) {
 
 .navbar-right {
   .make-lg-column(4);
-}
-
-.oc-contact-submit-btn-wrapper {
   padding-left: 0;
+  padding-right: 0;
 }
 
 #top {
@@ -486,4 +504,8 @@ and (min-width : 800px) {
 .dropdown-toggle {
   background-color: @oc-magenta !important;
   color: @oc-white !important;
+}
+
+.oc-disqus-wrapper {
+  margin-top: 75px;
 }
