@@ -24,10 +24,14 @@ var ReportList = React.createClass({
       refresh : false,
       reports: [],
       search: {
-        q       : this.props.query.q
-        // actors  : this.props.query.actors ? this.props.query.actors.split(',') : null,
-        // sectors : this.props.query.sectors ? this.props.query.sectors.split(',') : null,
-        // devices : this.props.query.devices ? this.props.query.devices.split(',') : null
+        q       : this.props.query.q,
+        // areas : this.props.query.areas ? this.props.query.areas.split(',') : null
+        // domains : this.props.query.domains ? this.props.query.domains.split(',') : null,
+        // organizations : this.props.query.organizations ? this.props.query.organizations.split(',') : null,
+        // orgtypes : this.props.query.orgtypes ? this.props.query.orgtypes.split(',') : null,
+        // types : this.props.query.types ? this.props.query.types.split(',') : null,
+        // approaches : this.props.query.approaches ? this.props.query.approaches.split(',') : null,
+        // tags : this.props.query.tags ? this.props.query.tags.split(',') : null
       },
       sortBy : this.props.query.sortBy,
       sortDir : this.props.query.sortDir
@@ -42,18 +46,30 @@ var ReportList = React.createClass({
     if (this.state.search.q) {
       query = $.extend(query, { q : this.state.search.q });
     }
-    // if (this.state.search.actors) {
-    //   query = $.extend(query, { actors : this.state.search.actors.join(',') });
-    // }
-    // if (this.state.search.sectors) {
-    //   query = $.extend(query, { sectors : this.state.search.sectors.join(',') });
-    // }
-    // if (this.state.search.devices) {
-    //   query = $.extend(query, { devices : this.state.search.devices.join(',') });
-    // }
-    if (this.state.sortBy) {
-      query = $.extend(query, { sortBy : this.state.sortBy, sortDir : this.state.sortDir });
+    if (this.state.search.areas) {
+      query = $.extend(query, { areas : this.state.search.areas.join(',') });
     }
+    // if (this.state.search.domains) {
+    //   query = $.extend(query, { domains : this.state.search.domains.join(',') });
+    // }
+    // if (this.state.search.organizations) {
+    //   query = $.extend(query, { organizations : this.state.search.organizations.join(',') });
+    // }
+    // if (this.state.search.orgtypes) {
+    //   query = $.extend(query, { orgtypes : this.state.search.orgtypes.join(',') });
+    // }
+    // if (this.state.search.types) {
+    //   query = $.extend(query, { types : this.state.search.types.join(',') });
+    // }
+    // if (this.state.search.approaches) {
+    //   query = $.extend(query, { approaches : this.state.search.approaches.join(',') });
+    // }
+    // if (this.state.search.tags) {
+    //   query = $.extend(query, { tags : this.state.search.tags.join(',') });
+    // }
+    // if (this.state.sortBy) {
+    //   query = $.extend(query, { sortBy : this.state.sortBy, sortDir : this.state.sortDir });
+    // }
     return api.reverse('report_list', {}, query);
   },
   reload: function(refresh) {
@@ -76,18 +92,36 @@ var ReportList = React.createClass({
       }
     });
   },
-  // handleUpdatedActors: function(actors) {
-  //   this.state.search.actors = actors;
+
+  handleUpdatedAreas: function(areas) {
+    this.state.search.areas = areas;
+    this.setState(this.state);
+  },
+  // handleUpdatedDomains: function(domains) {
+  //   this.state.search.domains = domains;
   //   this.setState(this.state);
   // },
-  // handleUpdatedSectors: function(sectors) {
-  //   this.state.search.sectors = sectors;
+  // handleUpdatedOrganizations: function(organizations) {
+  //   this.state.search.organizations = organizations;
   //   this.setState(this.state);
   // },
-  // handleUpdatedDevices: function(devices) {
-  //   this.state.search.devices = devices;
+  // handleUpdatedOrgtypes: function(orgtypes) {
+  //   this.state.search.orgtypes = orgtypes;
   //   this.setState(this.state);
   // },
+  // handleUpdatedTypes: function(types) {
+  //   this.state.search.types = types;
+  //   this.setState(this.state);
+  // },
+  // handleUpdatedApproaches: function(approaches) {
+  //   this.state.search.approaches = approaches;
+  //   this.setState(this.state);
+  // },
+  // handleUpdatedTags: function(tags) {
+  //   this.state.search.tags = tags;
+  //   this.setState(this.state);
+  // },
+
   handleUpdatedSearchTerm: function(evt) {
     this.state.search.q = evt.target.value;
     this.setState(this.state);
@@ -98,9 +132,13 @@ var ReportList = React.createClass({
     console.log(this.state.search);
     this.transitionTo('reportList', {}, {
       q : this.state.search.q,
-      // actors : this.state.search.actors   ? this.state.search.actors.join(',')  : null,
-      // sectors : this.state.search.sectors ? this.state.search.sectors.join(',') : null,
-      // devices : this.state.search.devices ? this.state.search.devices.join(',') : null
+      areas : this.state.search.areas   ? this.state.search.areas.join(',')  : null,
+      // domains : this.state.search.domains ? this.state.search.domains.join(',') : null,
+      // organizations : this.state.search.organizations ? this.state.search.organizations.join(',') : null,
+      // orgtypes : this.state.search.orgtypes   ? this.state.search.orgtypes.join(',')  : null,
+      // types : this.state.search.types ? this.state.search.types.join(',') : null,
+      // approaches : this.state.search.approaches ? this.state.search.approaches.join(',') : null,
+      // tags : this.state.search.tags ? this.state.search.tags.join(',') : null
     });
   },
   componentWillReceiveProps: function(nextProps) {

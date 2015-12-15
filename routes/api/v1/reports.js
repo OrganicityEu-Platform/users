@@ -34,12 +34,13 @@ var reportProjection = {
   thumbnail   : 1,
   copyright   : 1,
   credit      : 1,
-  domain      : 1,
-  organization: 1,
-  orgtype     : 1,
-  type        : 1,
-  approach    : 1,
-  tags        : 1
+  areas        : 1,
+  domains      : 1,
+  organizations: 1,
+  orgtypes     : 1,
+  types        : 1,
+  approaches   : 1,
+  tags         : 1
 };
 
 var fieldsInUpdate = [
@@ -49,11 +50,12 @@ var fieldsInUpdate = [
   'image',
   'copyright',
   'credit',
-  'domain',
-  'organization',
-  'orgtype',
-  'type',
-  'approach',
+  'areas',
+  'domains',
+  'organizations',
+  'orgtypes',
+  'types',
+  'approaches',
   'tags'
 ];
 
@@ -129,19 +131,19 @@ module.exports = function(router, passport) {
         'title'       : { '$first' : '$title'       },
         'abstract'    : { '$first' : '$abstract'    },
         'year'        : { '$first' : 'year'         },
-        'area'        : { '$first' : 'area'         },
         'creator'     : { '$first' : '$creator'     },
         'timestamp'   : { '$first' : '$timestamp'   },
         'image'       : { '$first' : 'image'        },
         'thumbnail'   : { '$first' : '$thumbnail'   },
         'copyright'   : { '$first' : '$thumbnail'   },
         'credit'      : { '$first' : '$credit'      },
-        'domain'      : { '$first' : '$domain'      },
-        'organization': { '$first' : '$organization'},
-        'orgtype'     : { '$first' : '$orgtype'     },
-        'type'        : { '$first' : '$type'        },
-        'approach'    : { '$first' : '$approach'    },
-        'tags'        : { '$first' : '$tags'        }
+        'areas'        : { '$first' : '$areas'        },
+        'domains'      : { '$first' : '$domains'      },
+        'organizations': { '$first' : '$organizations'},
+        'orgtypes'     : { '$first' : '$orgtypes'     },
+        'types'        : { '$first' : '$types'        },
+        'approaches'   : { '$first' : '$approaches'   },
+        'tags'         : { '$first' : '$tags'         }
       }
     };
 

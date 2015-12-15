@@ -14,10 +14,15 @@ var ReportThumbnail = React.createClass({
   mixins: [Router.Navigation],
 
   render: function() {
-    // var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
-    // var actors = this.props.scenario.actors.slice(0, 3).join(', ');
-    // var tools = this.props.scenario.devices.slice(0, 3).join(', ');
     var summary = ellipsis(this.props.report.abstract, 160);
+    var areas = this.props.report.areas.slice(0, 3).join(', ');
+    var domains = this.props.report.domains.slice(0, 3).join(', ');
+    var organizations = this.props.report.organizations.slice(0, 3).join(', ');
+    var orgtypes = this.props.report.orgtypes.slice(0, 3).join(', ');
+    var types = this.props.report.types.slice(0, 3).join(', ');
+    var approaches = this.props.report.approaches.slice(0, 3).join(', ');
+    var tags = this.props.report.tags.slice(0, 3).join(', ');
+
     // var sector_colour = this.props.scenario.sectors[0];
     // var sector_colour_marker;
     // var sector_colour_overlay;
@@ -68,9 +73,13 @@ var ReportThumbnail = React.createClass({
               {summary}
             </p>
             <span className="scenario-thumbnail-sat-wrapper">
-              <span>Sectors: ...</span>
-              <span>Actors: ...</span>
-              <span>Tools: ...</span>
+              <span>Areas: {areas}</span>
+              <span>Domains: {domains}</span>
+              <span>Organizations: {organizations}</span>
+              <span>Organization Types: {orgtypes}</span>
+              <span>Types of report: {types}</span>
+              <span>Approach: {approaches}</span>
+              <span>Tags: {tags}</span>
             </span>
             <div className={sector_colour_overlay}>
               {thumbnail}

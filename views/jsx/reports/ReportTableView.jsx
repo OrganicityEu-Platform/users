@@ -99,6 +99,12 @@ var ReportTableView = React.createClass({
           </div>
           {copyright}
           <div className="scenario-article-meta">
+            <div className="col-md-3">
+              <div className="scenario-ast-wrapper">
+                <span className="scenario-ast">Area(s):</span>
+                <span className="scenario-ast-items">{this.props.report.tags ? this.props.report.tags.join(', ') : ''}</span><br></br>
+              </div>
+            </div>
           {/* TODO
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
