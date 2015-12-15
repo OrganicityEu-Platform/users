@@ -26,20 +26,14 @@ var file = process.argv[3];
 
 mongoose.connect(configDB.url);
 
-function stringStartsWith(string, prefix) {
-  return string.slice(0, prefix.length) == prefix;
-}
-
 var cleanTags = function(tags) {
   if (!tags) {
     return null;
   }
   return tags.split(',').map(function(s) {
-    var str = s.trim().toLowerCase();
-    if (str && stringStartsWith(str, 'focus on: ')) {
-      str = str.slice('focus on: '.length);
-    }
-    return str;
+    var focusOn = /focus on.*\:\s*/i;
+    s = s.replace(focusOn, '');
+    return s.trim();
   });
 };
 
