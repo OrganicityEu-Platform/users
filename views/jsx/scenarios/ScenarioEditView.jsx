@@ -514,14 +514,13 @@ var ScenarioEditView = React.createClass({
             </div>
 
             <div className="form-group">
-              <div className="col-md-2 col-md-offset-5">
+              <div className="oc-create-edit-preview-btn-wrapper">
                 <button
                   type="button"
                   className="oc-button"
                   onClick={this.clickedPreview}
                 >Preview</button>
               </div>
-
             </div>
           </form>
         </div>
@@ -547,10 +546,10 @@ var ScenarioEditView = React.createClass({
         <Message type="danger" messages={this.props.getValidationMessages()} />
         <div className="row">
           <div className="form-group">
-            <div className="col-md-2 col-md-offset-4">
+            <div className="col-sm-3 col-sm-offset-3">
               <button type="button" className="oc-button" onClick={this.clickedPrevious}>Edit</button>
             </div>
-            <div className="col-md-2">
+            <div className="col-sm-3">
               <button type="button" className="oc-button" onClick={this.clickedSubmit}>{btnText}</button>
             </div>
           </div>

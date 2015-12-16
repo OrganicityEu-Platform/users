@@ -95,7 +95,7 @@ var Scaffold = React.createClass({
         className="navbar-create-btn">CREATE</NavItemLink>
     );
     if (this.userIsLoggedIn()) {
-      if (!this.userHasRole('admin')) {
+      if (this.userHasRole('admin')) {
         adminLinks.push(
           <NavItemLink
             key="users"
@@ -115,13 +115,16 @@ var Scaffold = React.createClass({
             to="sysinfo" data-about>About</NavItemLink>
         );
         linksRight.push(
-          <DropdownButton title="admin">
+          <DropdownButton className="oc-admin-links" title="admin">
             {adminLinks}
           </DropdownButton>
         );
       }
       linksRight.push(
-        <NavItemLink key="profile" to="profile">profile</NavItemLink>
+        <NavItemLink
+          key="profile"
+          className="nav-profile-btn"
+          to="profile">profile</NavItemLink>
       );
       linksRight.push(
         <NavItemLink

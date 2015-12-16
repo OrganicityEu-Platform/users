@@ -171,7 +171,7 @@ var myContactForm = React.createClass({
           </div>
 
           <div className="form-group">
-            <div className="col-lg-5 oc-contact-submit-btn-wrapper">
+            <div className="oc-contact-submit-btn-wrapper">
               <button type="button" className="oc-button btn-default"
                 onClick={this.submitForm}
                 disabled={this.isLoading() ? 'disabled' : ''}
@@ -179,7 +179,6 @@ var myContactForm = React.createClass({
                 Submit
               </button>
             </div>
-            <div className="col-lg-7"></div>
         </div>
 
         </form>

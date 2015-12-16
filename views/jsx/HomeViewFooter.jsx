@@ -13,7 +13,7 @@ var HomeViewFooter = React.createClass({
           <div className="oc-home-view-footer">
             <ScenariosNewest limit="6" counter={false}/>
           </div>
-          <div id="oc-home-view-footer-explore-btn-wrapper" className="col-lg-4 col-lg-offset-4">
+          <div id="oc-home-view-footer-explore-btn-wrapper">
             <Link to="scenarioList">
               <Button className="oc-button">EXPLORE ALL SCENARIOS</Button>
             </Link>

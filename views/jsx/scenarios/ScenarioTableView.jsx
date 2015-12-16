@@ -51,7 +51,7 @@ var ScenarioTableView = React.createClass({
     var copyright;
     if (this.props.scenario.copyright) {
       copyright = (
-        <div className="col-md-12 scenario-article-copyright">
+        <div className="col-lg-12 scenario-article-copyright">
           &copy; {this.props.scenario.copyright}
         </div>
       );
@@ -63,7 +63,7 @@ var ScenarioTableView = React.createClass({
     }
 
     return (
-      <div className="col-lg-8 col-lg-offset-2">
+      <div className="container">
       <div className="scenario-article">
         <header className="scenario-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
@@ -99,7 +99,7 @@ var ScenarioTableView = React.createClass({
             {image}
           </div>
           {copyright}
-          <div className="scenario-article-meta">
+          <div className="col-lg-12 scenario-article-meta">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Actor(s):</span>
@@ -125,8 +125,8 @@ var ScenarioTableView = React.createClass({
         <footer className="scenario-article-footer"></footer>
       </div>
       <div className="scenario-article-narrative-wrapper">
-          <span className="col-md-1 scenario-article-narrative-title">Narrative</span>
-          <div className="scenario-article-narrative col-md-11">
+          <span className="scenario-article-narrative-title">Narrative</span>
+          <div className="scenario-article-narrative">
             {this.props.scenario.narrative}
           </div>
       </div>
