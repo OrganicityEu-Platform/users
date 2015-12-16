@@ -13,26 +13,38 @@ var ReportThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
 
+  /* Transforms eg. "Economy & Finance" to "Economy" */
+  cleanUpColor: function(color) {
+    if (!color) {
+      return null;
+    }
+    return color.split(/\s+/, 1)[0];
+  },
+
+  /* Get first 3 elements of array, as comma separated string. Null safe */
+  _3: function(values) {
+    return values ? values.slice(0, 3).join(', ') : null;
+  },
+
   render: function() {
     var summary = ellipsis(this.props.report.abstract, 160);
-    var areas = this.props.report.areas.slice(0, 3).join(', ');
-    var domains = this.props.report.domains.slice(0, 3).join(', ');
-    var organizations = this.props.report.organizations.slice(0, 3).join(', ');
-    var orgtypes = this.props.report.orgtypes.slice(0, 3).join(', ');
-    var types = this.props.report.types.slice(0, 3).join(', ');
-    var approaches = this.props.report.approaches.slice(0, 3).join(', ');
-    var tags = this.props.report.tags.slice(0, 3).join(', ');
+    var areas = this._3(this.props.report.areas);
+    var domains = this._3(this.props.report.domains);
+    var organizations = this._3(this.props.report.organizations);
+    var orgtypes = this._3(this.props.report.orgtypes);
+    var types = this._3(this.props.report.types);
+    var approaches = this._3(this.props.report.approaches);
+    var tags = this._3(this.props.report.tags);
 
-    // var sector_colour = this.props.scenario.sectors[0];
-    // var sector_colour_marker;
-    // var sector_colour_overlay;
+    var sector_colour = this.props.report.domains ? this.props.report.domains[0] : null;
+    var sector_colour_marker;
+    var sector_colour_overlay;
 
-    // if (sector_colour) {
-    //   sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
-    //   sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
-    // }
-    var sector_colour_marker = 'public_colour scenario-thumbnail-marker'; // TODO ...
-    var sector_colour_overlay = 'public_colour scenario-thumbnail-image-wrapper';  // TODO ...
+    sector_colour = this.cleanUpColor(sector_colour);
+    if (sector_colour) {
+      sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
+      sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
+    }
 
     var thumbnail;
     if (this.props.report.thumbnail) {

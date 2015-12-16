@@ -30,6 +30,11 @@ var cleanTags = function(tags) {
   if (!tags) {
     return null;
   }
+  if (65533 === tags.codePointAt(0)) {
+    console.log('***  Filter crazy tags value: ' + tags);
+    return null;
+  }
+
   return tags.split(',').map(function(s) {
     var focusOn = /focus on.*\:\s*/i;
     s = s.replace(focusOn, '');
