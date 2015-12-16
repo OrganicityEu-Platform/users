@@ -55,6 +55,7 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.title = data[i][1];
     s.creator = creator_uuid;
     s.credit = data[i][2];
+    s.organizations = cleanTags(data[i][2]);
     s.orgtypes = cleanTags(data[i][3]);
     s.types = cleanTags(data[i][4]);
     s.year = data[i][5];
@@ -62,7 +63,6 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.domains = cleanTags(data[i][7]);
     s.approaches = data[i][8];
     s.tags = cleanTags(data[i][9]);
-    // TODO s.organizations = cleanTags(data[i][x]);
     s.abstract = ellipsis(data[i][10], ReportConfig.max.abstract - 5);
 
     var report = new Report(s);
