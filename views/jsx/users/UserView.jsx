@@ -41,7 +41,7 @@ var UserAvatar = React.createClass({
   render: function() {
 
     if (this.state.loading) {
-      return <div>Loading...</div>;
+      return this.renderLoading();
     }
 
     if (this.state.error) {

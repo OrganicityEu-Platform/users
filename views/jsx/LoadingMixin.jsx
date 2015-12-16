@@ -101,6 +101,12 @@ var LoadingMixin = {
 
     var contentClasses = this.showLoader() ? "loadingContent": "";
 
+    var innerContentWrapper = innerContent
+      ? (<div className={contentClasses}>
+         {innerContent}
+         </div>)
+      : (<div></div>);
+
     return (
       <div className="withLoader">
         <div className={loaderClasses}>
@@ -109,9 +115,7 @@ var LoadingMixin = {
             {this.props.loadingMessage}
           </div>
         </div>
-        <div className={contentClasses}>
-        {innerContent}
-        </div>
+        {innerContentWrapper}
       </div>
     );
   }

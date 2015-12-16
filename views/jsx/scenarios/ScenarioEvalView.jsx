@@ -84,11 +84,8 @@ var ScenarioEvalView = React.createClass({
     });
   },
   render: function() {
-
     if (this.isLoading()) {
-      return (
-        <div>Loading...</div>
-      );
+      return this.renderLoading();
     }
 
     if (this.state.submitted) {

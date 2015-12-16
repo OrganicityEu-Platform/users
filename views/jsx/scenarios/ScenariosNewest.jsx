@@ -37,8 +37,8 @@ var ScenariosNewest = React.createClass({
     });
   },
   render: function() {
-    if (this.state.loading) {
-      return <div>Loading Scenarios...</div>;
+    if (this.isLoading()) {
+      return this.renderLoading();
     }
 
     return (

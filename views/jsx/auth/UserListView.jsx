@@ -46,7 +46,7 @@ var UserListView = React.createClass({
   render: function() {
 
     if (this.isLoading()) {
-      return (<div>Loading users</div>);
+      return this.renderLoading();
     }
 
     return (

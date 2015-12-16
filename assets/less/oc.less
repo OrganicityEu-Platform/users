@@ -520,18 +520,17 @@ and (min-width : 800px) {
     left: 0;
 
     border: 4rem solid @oc-grey;
-
     height: 180px;
     width: 100%;
+    padding: 2rem 4rem;
 
     z-index: 9001;
 
-    padding: 2rem 4rem;
-    /* margin: 4rem 0; */
-
     &.loaded {
       opacity: 0.01;
-      transition: opacity 200ms ease-in;
+      transition: opacity 200ms ease-in,
+      z-index 0s linear 250ms;
+      z-index: -1;
     }
 
     i {
