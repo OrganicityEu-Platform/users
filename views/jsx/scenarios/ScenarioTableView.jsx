@@ -1,5 +1,6 @@
 import React              from 'react';
 import TimeAgo            from 'react-timeago';
+import startsWithPolyfill from 'string.prototype.startswith';
 import ui                 from '../../../ui_routes.js';
 import UserAvatar         from '../users/UserAvatar.jsx';
 import Counter            from '../Counter.jsx';

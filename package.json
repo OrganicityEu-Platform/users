@@ -109,6 +109,7 @@
     "react-tag-input": "^1.0.3",
     "react-timeago": "^2.2.1",
     "react-validation-mixin": "5.3.1",
+    "string.prototype.startswith": "^0.2.0",
     "unirest": "~0.4.2",
     "url-assembler": "^1.2.4"
   },

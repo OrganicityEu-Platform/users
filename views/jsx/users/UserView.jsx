@@ -1,5 +1,6 @@
 import $                  from 'jquery';
 import React              from 'react';
+import startsWithPolyfill from 'string.prototype.startswith';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
