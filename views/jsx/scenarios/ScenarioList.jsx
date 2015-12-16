@@ -11,7 +11,6 @@ import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
 import Tags               from '../Tags.jsx';
-import Loading            from '../Loading.jsx';
 
 import { Accordion, Panel } from 'react-bootstrap';
 
@@ -111,10 +110,6 @@ var ScenarioList = React.createClass({
   },
   render: function() {
 
-    if (this.isLoading()) {
-      return (<Loading message="Loading scenarios. Please wait." size="2"/>);
-    }
-
     var counter = null;
     if (this.state.search.q) {
       counter = (
@@ -126,7 +121,7 @@ var ScenarioList = React.createClass({
       );
     }
 
-    return (
+    var scenarios = (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
@@ -195,6 +190,8 @@ var ScenarioList = React.createClass({
         <ScenarioThumbnails scenarios={this.state.scenarios} counter={false} />
       </div>
     );
+
+    return this.renderLoading(scenarios);
   }
 });
 
