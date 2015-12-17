@@ -91,7 +91,7 @@ var api_routes = {
   'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
   'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?',
 
-  'contactUs' : prefixes.contactUs + '/?'
+  'contactUs'                  : prefixes.contactUs + '/?'
 };
 
 module.exports = {
