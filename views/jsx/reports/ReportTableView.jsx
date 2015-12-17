@@ -7,6 +7,7 @@ import Score              from '../Score.jsx';
 import Comments           from '../Comments.jsx';
 // import ScenarioEvalButton from './ScenarioEvalButton.jsx'; TODO
 import api                from '../../../api_routes.js';
+import ReportThumbnail    from './ReportThumbnail.jsx';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
 
@@ -24,8 +25,8 @@ var ReportTableView = React.createClass({
       image = undefined;
     }
 
-    // var sector_colour = this.props.report.sectors[0]; TODO
-    var sector_colour = null;
+    var sector_colour = this.props.report.domains ? this.props.report.domains[0] : null;
+    sector_colour = ReportThumbnail.cleanUpColor(sector_colour);
     var sector_colour_marker;
     var article_image_overlay;
     if (sector_colour) {

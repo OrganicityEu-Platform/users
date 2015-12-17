@@ -1,3 +1,9 @@
+// Browser:
+// view-source:http://localhost:8080/organicity-scenario-tool/api/v1/auth/currentUser
+// Shell:
+// cd organicity/node-scenario-tool/scripts/101reports
+// node import-reports-csv.js <uuid> reports.csv
+
 var fs              = require('fs');
 var parse           = require('csv-parse');
 
@@ -69,6 +75,18 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.approaches = data[i][8];
     s.tags = cleanTags(data[i][9]);
     s.abstract = ellipsis(data[i][10], ReportConfig.max.abstract - 5);
+
+    // Import test images
+    if (i % 3 === 0) {
+      s.thumbnail = 'tmp/101reports/test1.600.jpg';
+      s.image = 'tmp/101reports/test1.1120.jpg';
+    } else if (i % 3 === 1) {
+      s.thumbnail = 'tmp/101reports/test2.600.jpg';
+      s.image = 'tmp/101reports/test2.1120.jpg';
+    } else {
+      s.thumbnail = 'tmp/101reports/test3.600.jpg';
+      s.image = 'tmp/101reports/test3.1120.jpg';
+    }
 
     var report = new Report(s);
     report.save(function(err) {

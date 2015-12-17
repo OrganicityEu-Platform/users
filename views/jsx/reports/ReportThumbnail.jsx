@@ -13,12 +13,14 @@ var ReportThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
 
-  /* Transforms eg. "Economy & Finance" to "Economy" */
-  cleanUpColor: function(color) {
-    if (!color) {
-      return null;
+  statics: {
+    /* Transforms eg. "Economy & Finance" to "Economy" */
+    cleanUpColor: function(color) {
+      if (!color) {
+        return null;
+      }
+      return color.split(/\s+/, 1)[0];
     }
-    return color.split(/\s+/, 1)[0];
   },
 
   /* Get first 3 elements of array, as comma separated string. Null safe */
@@ -40,7 +42,7 @@ var ReportThumbnail = React.createClass({
     var sector_colour_marker;
     var sector_colour_overlay;
 
-    sector_colour = this.cleanUpColor(sector_colour);
+    sector_colour = ReportThumbnail.cleanUpColor(sector_colour);
     if (sector_colour) {
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
       sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
