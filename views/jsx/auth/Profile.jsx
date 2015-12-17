@@ -421,7 +421,7 @@ var Profile = React.createClass({
             {localAccount}
 
             <div className="form-group">
-              <div className="col-md-2 col-md-offset-5">
+              <div className="oc-save-profile-btn-wrapper">
                 <button
                   type="button"
                   className="oc-button"
