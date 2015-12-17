@@ -93,9 +93,9 @@ var ScenarioList = React.createClass({
     this.setState(this.state);
   },
   handleSearch : function(evt) {
-    console.log('handleSearch');
+    // console.log('handleSearch');
     evt.preventDefault();
-    console.log(this.state.search);
+    // console.log(this.state.search);
     this.transitionTo('scenarioList', {}, {
       q : this.state.search.q,
       actors : this.state.search.actors   ? this.state.search.actors.join(',')  : null,

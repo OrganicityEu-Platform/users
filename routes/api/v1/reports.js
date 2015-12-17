@@ -312,29 +312,47 @@ module.exports = function(router, passport) {
       params.filter.creator = req.query.creator;
     }
 
-    // if (req.query.sectors) {
-    //   params.filter.sectors = {
-    //     $all : req.query.sectors.split(',').map(trimString)
-    //   };
-    // }
+    if (req.query.areas) {
+      params.filter.areas = {
+        $all : req.query.areas.split(',').map(trimString)
+      };
+    }
 
-    // if (req.query.actors) {
-    //   params.filter.actors = {
-    //     $all : req.query.actors.split(',').map(trimString)
-    //   };
-    // }
+    if (req.query.domains) {
+      params.filter.domains = {
+        $all : req.query.domains.split(',').map(trimString)
+      };
+    }
 
-    // if (req.query.devices) {
-    //   params.filter.devices = {
-    //     $all: req.query.devices.split(',').map(trimString)
-    //   };
-    // }
+    if (req.query.organizations) {
+      params.filter.organizations = {
+        $all : req.query.organizations.split(',').map(trimString)
+      };
+    }
 
-    // if (req.query.dataSources) {
-    //   params.filter.dataSources = {
-    //     $all: req.query.dataSources.split(',').map(trimString)
-    //   };
-    // }
+    if (req.query.orgtypes) {
+      params.filter.orgtypes = {
+        $all : req.query.orgtypes.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.types) {
+      params.filter.types = {
+        $all : req.query.types.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.approaches) {
+      params.filter.approaches = {
+        $all : req.query.approaches.split(',').map(trimString)
+      };
+    }
+
+    if (req.query.tags) {
+      params.filter.tags = {
+        $all : req.query.tags.split(',').map(trimString)
+      };
+    }
 
     return executeReportLatestVersionQuery(params, res, true);
   });
