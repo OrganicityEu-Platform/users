@@ -52,7 +52,7 @@ var ScenarioTableView = React.createClass({
     var copyright;
     if (this.props.scenario.copyright) {
       copyright = (
-        <div className="col-lg-12 scenario-article-copyright">
+        <div className="scenario-article-copyright">
           &copy; {this.props.scenario.copyright}
         </div>
       );
@@ -100,7 +100,7 @@ var ScenarioTableView = React.createClass({
             {image}
           </div>
           {copyright}
-          <div className="col-lg-12 scenario-article-meta">
+          <div className="scenario-article-meta">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">Actor(s):</span>

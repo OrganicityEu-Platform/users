@@ -144,8 +144,12 @@
 .scenario-article-timestamp { margin-left: 40px;}
 
 .scenario-article-meta {
-  padding-top: 25px;
-  padding-bottom: 15px;
+  .container-fluid();
+  background-color: @oc-white;
+}
+
+.scenario-article-meta > div {
+  padding-bottom: 20px;
   background-color: @oc-white;
 }
 
@@ -155,12 +159,15 @@
 
 .scenario-ast-wrapper {
   border-top: 1px solid @oc-meta-grey;
-  padding-top: 5px;
+  padding-top: 8px;
+  margin-top: 25px;
 }
 
 .scenario-article-copyright {
   color: rgb(153, 153, 153);
   padding-top: 5px;
+  padding-bottom: 5px;
+  .make-lg-column(12);
 }
 
 .oc-create-edit-preview-btn-wrapper {
