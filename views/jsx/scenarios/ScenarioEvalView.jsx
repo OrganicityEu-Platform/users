@@ -131,7 +131,7 @@ var ScenarioEvalView = React.createClass({
               {this.state.questionnaire.questions.map((q, qIdx) =>
                 q.tech !== (this.props.query.tech === 'true') ? [] : [
                   <div className="oc-eval-question col-lg-12" key={'question_' + qIdx + '_radios'}>
-                    <div className="oc-evaluation-question"><i className="fa fa-question-circle"></i>
+                    <div className="oc-evaluation-question">
                     {q.text}</div>
                     <div className="oc-eval-answers-wrapper col-lg-12">
                     {q.values.map((a, aIdx) => (

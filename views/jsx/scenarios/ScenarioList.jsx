@@ -16,6 +16,8 @@ import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
 
+var sectorSuggestions = ["public", "energy", "transport", "transve", "cultural", "environment", "healthcare", "retail", "agriculture"];
+
 var ScenarioList = React.createClass({
   mixins: [Router.Navigation, LoadingMixin],
   getInitialState: function() {
@@ -113,11 +115,15 @@ var ScenarioList = React.createClass({
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <span>Your search yields to {this.state.scenarios.length} scenarios!</span>
+        <span>
+          Your search yields to {this.state.scenarios.length} scenarios!
+        </span>
       );
     } else {
       counter = (
-        <span>Here you can explore {this.state.scenarioCounter} scenarios!</span>
+        <span>
+          Here you can explore {this.state.scenarioCounter} scenarios!
+        </span>
       );
     }
 
@@ -125,32 +131,54 @@ var ScenarioList = React.createClass({
       <div className="scenario-list col-lg-8 col-lg-offset-2">
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
-            <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
+            <form
+              className="scenario-list-search-form"
+              onSubmit={this.handleSearch}>
 
               <div className="form-group" id="oc-search-form">
                 <div className="input-group">
-                 <input type="text" className="form-control oc-search-field" id="scenarioListSearchFormQ" placeholder="search scenarios..." name="q" disabled={this.isLoading() ? 'disabled' : ''}
-                 value={this.state.search.q}
-                 onChange={this.handleUpdatedSearchTerm}/>
-                 <span className="input-group-btn">
-                   <button type="submit"
-                     value="Search"
-                     disabled={this.isLoading() ? 'disabled' : ''}
-                     className="btn btn-primary" id="oc-search-btn"><span className="fa fa-search"></span></button>
-                 </span>
+                  <input
+                    type="text"
+                    className="form-control oc-search-field"
+                    id="scenarioListSearchFormQ"
+                    placeholder="search scenarios..."
+                    name="q"
+                    disabled={this.isLoading() ? 'disabled' : ''}
+                    value={this.state.search.q}
+                    onChange={this.handleUpdatedSearchTerm}/>
+                  <span className="input-group-btn">
+                    <button
+                      type="submit"
+                      value="Search"
+                      disabled={this.isLoading() ? 'disabled' : ''}
+                      className="btn btn-primary"
+                      id="oc-search-btn">
+                      <span className="fa fa-search">
+                      </span>
+                    </button>
+                  </span>
                 </div>
 
-                </div>
+              </div>
               <Accordion>
-                <Panel header="filters" eventKey="1" className="oc-filters-panel">
+                <Panel
+                  header="filters"
+                  eventKey="1"
+                  className="oc-filters-panel">
                   <div className="oc-sector-tags-wrapper">
-
+                    <Tags
+                      suggestions={sectorSuggestions}
+                      text="public"/>
                   </div>
                   <div className="oc-actor-tags-wrapper">
-
+                    <Tags
+                      suggestions={["designer", "researcher", "rapper", "citizen"]}
+                      text="citizen"/>
                   </div>
                   <div className="oc-tools-tags-wrapper">
-
+                    <Tags
+                      suggestions={["wearables", "ultra sonic sensors", "IR sensors", "Holograms", "Augmented reality"]}
+                      text="mobile"/>
                   </div>
                   <div className="form-group">
                     <TagField
@@ -187,7 +215,9 @@ var ScenarioList = React.createClass({
             {counter}
           </div>
         </div>
-        <ScenarioThumbnails scenarios={this.state.scenarios} counter={false} />
+        <ScenarioThumbnails
+          scenarios={this.state.scenarios}
+          counter={false} />
       </div>
     );
 

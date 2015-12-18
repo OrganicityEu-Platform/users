@@ -14,12 +14,15 @@
 @import "oc_navigation.less";
 @import "oc_login_signup.less";
 
+@import "tags.less";
+
 @import "oc_HomeViewHeader.less";
 @import "oc_HomeViewFooter.less";
 
 @import "./scenarios/ScenarioThumbnail.less";
 @import "./scenarios/ScenarioTableView.less";
 @import "./scenarios/ScenarioEvalView.less";
+@import "./scenarios/ScenarioEditView.less";
 
 @import "./users/UserView.less";
 @import "./users/UserAvatar.less";
@@ -210,64 +213,9 @@ input[type="submit"] {
   display: inline-block;
 }
 
-.example-appear {
-  opacity: 0.01;
-  transition: opacity 0.5s ease-in;
-}
 
-.example-appear.example-appear-active {
-  opacity: 1;
-}
 
-.sector-item {
-  display: inline-block;
-  background-color: @oc-white;
-  border: 1px solid @oc-dark-grey;
-  text-align: center;
-  padding: 3px 12px 3px 3px;
-  margin-right: 4px;
-  cursor: pointer;
-  color: @oc-dark-grey;
-  border-radius: 2em;
-  margin-top: 3px;
-  margin-bottom: 3px;
-}
 
-.sector-item-selected {
-  background-color: @oc-dark-grey;
-  color: @oc-white;
-}
-
-.sector-icon {
-  height: 35px;
-  float: left;
-  margin-right: 15px;
-}
-
-.sector-item-text {
-  display: inline-block;
-  margin-top: 8px
-}
-
-.new-sector-suggest {
-  margin-top: 40px;
-}
-
-.scenario-create-edit-input {
-
-}
-
-.scenario-create-edit-summary {
-  min-height: 130px;
-}
-
-.scenario-create-edit-narrative {
-  min-height: 245px;
-}
-
-#scenario-create-edit-sector-suggestion {
-  margin-top: 6px;
-}
 
 .avatar {
   margin-top: 5px;
@@ -553,4 +501,14 @@ and (min-width : 800px) {
   .make-sm-column-offset(4);
   .make-xs-column(8);
   .make-xs-column-offset(2);
+}
+
+.transport_icon {
+  background-image: url('../../static/img/transport_icon.svg');
+  background-repeat: no-repeat;
+}
+
+.oc-filters-panel {
+  background: @oc-dark-grey;
+  border: none;
 }

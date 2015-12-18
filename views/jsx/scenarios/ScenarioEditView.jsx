@@ -33,14 +33,14 @@ var ScenarioEditView = React.createClass({
     'cultural', 'environment'
   ],
   sectorIcons: [
-    'fa fa-users public_colour sector-icon',
-    'fa fa-bus transport_colour sector-icon',
-    'fa fa-leaf agriculture_colour sector-icon',
-    'fa fa-lightbulb-o energy_colour sector-icon',
-    'fa fa-tags retail_colour sector-icon',
-    'fa fa-medkit healthcare_colour sector-icon',
-    'fa fa-university cultural_colour sector-icon',
-    'fa fa-tree environment_colour sector-icon',
+    'fa fa-users public_colour oc-tag-icon',
+    'fa fa-bus transport_colour oc-tag-icon',
+    'fa fa-leaf agriculture_colour oc-tag-icon',
+    'fa fa-lightbulb-o energy_colour oc-tag-icon',
+    'fa fa-tags retail_colour oc-tag-icon',
+    'fa fa-medkit healthcare_colour oc-tag-icon',
+    'fa fa-university cultural_colour oc-tag-icon',
+    'fa fa-tree environment_colour oc-tag-icon',
   ],
   firstStep : 1,
   getSteps: function() {
