@@ -28,11 +28,9 @@ var ReportTableView = React.createClass({
     var sector_colour = this.props.report.domains ? this.props.report.domains[0] : null;
     sector_colour = ReportThumbnail.cleanUpColor(sector_colour);
     var sector_colour_marker;
-    var article_image_overlay;
     if (sector_colour) {
-      article_image_overlay = sector_colour.toLowerCase().concat('_colour scenario-article-image');
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-article-marker');
-    }else {
+    } else {
       sector_colour_marker = 'scenario-article-marker';
     }
 
@@ -65,7 +63,7 @@ var ReportTableView = React.createClass({
     return (
       <div className="col-lg-8 col-lg-offset-2">
       <div className="scenario-article">
-        <header className="scenario-article-header row">
+        <header className="report-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
             <div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.report.score} /></span></div>
               <div className="scenario-article-widget-data">
@@ -95,7 +93,7 @@ var ReportTableView = React.createClass({
         </header>
 
         <div className="scenario-article-section">
-          <div className={article_image_overlay}>
+          <div id="scenario-article-image">
             {image}
           </div>
           {copyright}
