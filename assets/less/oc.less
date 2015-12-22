@@ -27,6 +27,8 @@
 @import "./users/UserView.less";
 @import "./users/UserAvatar.less";
 
+@import "oc_icons.less";
+
 // import always last
 @import "oc_desktop.less";
 @import "oc_mobile.less";
@@ -503,12 +505,12 @@ and (min-width : 800px) {
   .make-xs-column-offset(2);
 }
 
-.transport_icon {
-  background-image: url('../../static/img/transport_icon.svg');
-  background-repeat: no-repeat;
+.oc-filters-panel {
+  border: none;
 }
 
-.oc-filters-panel {
-  background: @oc-dark-grey;
-  border: none;
+#scenarioListSearchFormActors,
+#scenarioListSearchFormSectors,
+#scenarioListSearchFormDevices {
+  display: none;
 }

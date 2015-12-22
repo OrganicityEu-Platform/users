@@ -165,21 +165,9 @@ var ScenarioList = React.createClass({
                   header="filters"
                   eventKey="1"
                   className="oc-filters-panel">
-                  <div className="oc-sector-tags-wrapper">
-                    <Tags
-                      suggestions={sectorSuggestions}
-                      text="public"/>
-                  </div>
-                  <div className="oc-actor-tags-wrapper">
-                    <Tags
-                      suggestions={["designer", "researcher", "rapper", "citizen"]}
-                      text="citizen"/>
-                  </div>
-                  <div className="oc-tools-tags-wrapper">
-                    <Tags
-                      suggestions={["wearables", "ultra sonic sensors", "IR sensors", "Holograms", "Augmented reality"]}
-                      text="mobile"/>
-                  </div>
+
+
+
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormActors"
