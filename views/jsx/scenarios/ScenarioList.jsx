@@ -16,8 +16,6 @@ import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
 
-var sectorSuggestions = ["public", "energy", "transport", "transve", "cultural", "environment", "healthcare", "retail", "agriculture"];
-
 var ScenarioList = React.createClass({
   mixins: [Router.Navigation, LoadingMixin],
   getInitialState: function() {
@@ -115,20 +113,29 @@ var ScenarioList = React.createClass({
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <span>
+        <h2 className="oc-white">
           Your search yields to {this.state.scenarios.length} scenarios!
-        </span>
+        </h2>
       );
     } else {
       counter = (
-        <span>
+        <h2 className="oc-white">
           Here you can explore {this.state.scenarioCounter} scenarios!
-        </span>
+        </h2>
       );
     }
 
     var scenarios = (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
+        <h1 className="oc-white">Explore scenarios</h1>
+        { /*
+        <div className="row">
+          <div className="col-md-12">
+            {counter}
+          </div>
+        </div>
+         */
+        }
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form
@@ -139,8 +146,8 @@ var ScenarioList = React.createClass({
                 <div className="input-group">
                   <input
                     type="text"
-                    className="form-control oc-search-field"
                     id="scenarioListSearchFormQ"
+                    className="oc-input-extra"
                     placeholder="search scenarios..."
                     name="q"
                     disabled={this.isLoading() ? 'disabled' : ''}
@@ -162,12 +169,9 @@ var ScenarioList = React.createClass({
               </div>
               <Accordion>
                 <Panel
-                  header="filters"
+                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
                   eventKey="1"
                   className="oc-filters-panel">
-
-
-
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormActors"
@@ -196,11 +200,6 @@ var ScenarioList = React.createClass({
               </Accordion>
             </form>
 
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            {counter}
           </div>
         </div>
         <ScenarioThumbnails

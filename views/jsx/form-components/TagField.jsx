@@ -6,8 +6,8 @@ var TagField = React.createClass({
       tags : this.props.tags ? this.props.tags : [],
       tagsString : this.props.tags ? this.props.tags.join(', ') : '',
       sectorsArray : ['transport', 'energy', 'retail', 'public', 'environment', 'agriculture', 'healthcare', 'cultural'],
-      actorsArray : ['private', 'lawyer', 'researcher', 'designer', 'developer'],
-      devicesArray : ['mobile', 'cloud', 'wearable sensors', 'smartphone', 'gas sensor', 'rfid'],
+      actorsArray : ['tourist', 'business', 'government', 'policy', 'developer', 'researcher'],
+      devicesArray : ['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors'],
       suggestions : [],
       reset : null
     };
@@ -24,7 +24,7 @@ var TagField = React.createClass({
     if(evt.charCode ===  32) {
       this.state.tags.push(evt.target.value);
       this.props.onChange(this.state.tags);
-      this.state.reset = '';
+      //this.state.reset = ''; // fixme 
     }else {
       this.state.reset = null;
     }
@@ -34,7 +34,9 @@ var TagField = React.createClass({
       return <div
         className="oc-tag-item"
         onClick={this.addTag.bind(this, i)}>
-        <div className={'oc-tag-icon ' + suggest + '_icon'}>
+        <div
+          className={'oc-tag-icon ' + suggest + '_icon'}
+          id={this.props.id ? this.props.id + '_tag' : ''}>
         </div>
         <span className="oc-tag-item-text" >
           {suggest}
@@ -65,7 +67,7 @@ var TagField = React.createClass({
     if (evt.target.value !== '' && this.props.id === 'scenarioListSearchFormSectors') {
       this.handleGym(evt.target.value, this.state.sectorsArray);
     }
-    if (this.props.id === 'scenarioListSearchFormDevices') {
+    if (evt.target.value !== '' && this.props.id === 'scenarioListSearchFormDevices') {
       this.handleGym(evt.target.value, this.state.devicesArray);
     }
   },
@@ -79,7 +81,6 @@ var TagField = React.createClass({
       this.state.tags = this.state.tagsString.split(' ').map((s) => s.trim()).filter((s) => s.length > 0);
       this.setState(this.state);
       this.props.onChange(this.state.tags);
-
     }
   },
   render : function() {
@@ -91,7 +92,8 @@ var TagField = React.createClass({
               <div
                 className="oc-tag-item"
                 key={i}>
-                <div className={"oc-tag-icon " + tag + "_icon"}>
+                <div className={"oc-tag-icon " + tag + "_icon"}
+                  id={this.props.id ? this.props.id + '_tag' : ''}>
                 </div>
                 <span className="oc-tag-item-text">
                   {tag}
@@ -105,14 +107,16 @@ var TagField = React.createClass({
             );
           }, this)}
         </div>
-        <input
-          type="text"
-          className="oc-input-extra"
-          placeholder={this.props.placeholder ? this.props.placeholder : ''}
-          onKeyPress={this.handleKey}
-          value={this.state.reset}
-          onChange={this.handleSuggest}
-          />
+        <div>
+          <input
+            type="text"
+            className="oc-input-extra"
+            placeholder={this.props.placeholder ? this.props.placeholder : ''}
+            onKeyPress={this.handleKey}
+            value={this.state.reset}
+            onChange={this.handleSuggest}
+            />
+        </div>
         <div className="oc-tag-suggestions-wrapper">
           <span>
             {

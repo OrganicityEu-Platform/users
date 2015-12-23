@@ -447,7 +447,7 @@ var ScenarioEditView = React.createClass({
                 {errorMessageSelectedSectors}
                 <div className="new-sector-suggest">
                   Suggest new sectors:
-                  <TagField id="scenario-create-edit-sector-suggestion" tags={this.state.newSectors} onChange={this.handleNewSector} />
+                  <TagField id="scenarioListSearchFormSectors" placeholder="Add sector tags" tags={this.state.newSectors} onChange={this.handleNewSector} />
                 </div>
               </div>
             </div>
@@ -457,7 +457,7 @@ var ScenarioEditView = React.createClass({
                   {lang.ScenarioEditView.actorsInfo}</span>
               </label>
               <div className="col-sm-9">
-                <TagField tags={this.state.actors} onChange={this.handleChangedActors} />
+                <TagField id="scenarioListSearchFormActors" placeholder="Add actor tags" tags={this.state.actors} onChange={this.handleChangedActors} />
               </div>
             </div>
 
@@ -468,7 +468,7 @@ var ScenarioEditView = React.createClass({
                 </span>
               </label>
               <div className="col-sm-9">
-                <TagField tags={this.state.devices} onChange={this.handleChangedDevices} />
+                <TagField id="scenarioListSearchFormDevices" placeholder="Add devices tags" tags={this.state.devices} onChange={this.handleChangedDevices} />
               </div>
             </div>
 
