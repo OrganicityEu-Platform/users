@@ -30,15 +30,18 @@
   background-repeat: no-repeat;
 }
 
-#scenarioListSearchFormActors_tag {
+#scenarioListSearchFormActors_tag,
+#createEditSearchFormActors_tag {
   background-image: url('../../static/img/generic_actor_icon.svg');
 }
 
-#scenarioListSearchFormSectors_tag {
+#scenarioListSearchFormSectors_tag,
+#createEditSearchFormSectors_tag {
   background-image: url('../../static/img/generic_sector_icon.svg');
 }
 
-#scenarioListSearchFormDevices_tag {
+#scenarioListSearchFormDevices_tag,
+#createEditSearchFormDevices_tag {
   background-image: url('../../static/img/generic_tool_icon.svg');
 }
 
@@ -55,27 +58,9 @@
   font-family: 'Cooper Hewitt Semibold';
 }
 
-.ReactTags__tag {
-  background-color: @oc-dark-grey;
-  border: 2px solid @oc-white;
-}
-
-.ReactTags__tag > span {
-  .oc-tag-item-text;
-}
-
 .oc-tag-close {
   margin-left: 15px;
   font-size: 16px;
-}
-
-.ReactTags__selected .ReactTags__tag {
-  color: @oc-white;
-}
-
-.ReactTags__tagInput > input {
-  .oc-input-extra;
-  background-color: @oc-dark-grey;
 }
 
 .oc-search-box {

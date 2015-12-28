@@ -64,7 +64,7 @@ var ScenarioTableView = React.createClass({
     }
 
     return (
-      <div className="container">
+      <div className="scenario-article-wrapper">
       <div className="scenario-article">
         <header className="scenario-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">

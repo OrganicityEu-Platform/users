@@ -1,15 +1,15 @@
 import React from 'react';
+import $     from 'jquery';
 
 var TagField = React.createClass({
   getInitialState : function() {
     return {
       tags : this.props.tags ? this.props.tags : [],
       tagsString : this.props.tags ? this.props.tags.join(', ') : '',
-      sectorsArray : ['transport', 'energy', 'retail', 'public', 'environment', 'agriculture', 'healthcare', 'cultural'],
-      actorsArray : ['tourist', 'business', 'government', 'policy', 'developer', 'researcher'],
-      devicesArray : ['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors'],
+      data : this.props.data ? this.props.data : [],
       suggestions : [],
-      reset : null
+      reset : null,
+      inputLabel : ''
     };
   },
   componentWillReceiveProps : function(props) {
@@ -20,19 +20,40 @@ var TagField = React.createClass({
       });
     }
   },
+  checkTags: function (tag, tagsArray) {
+    var i;
+    for (i = 0; i < tagsArray.length; i++) {
+      if (tags[i] === tag) {
+        console.log('true');
+        return true;
+      }
+      return false;
+    }
+  },
   handleKey: function (evt) {
-    if(evt.charCode ===  32) {
-      this.state.tags.push(evt.target.value);
-      this.props.onChange(this.state.tags);
-      //this.state.reset = ''; // fixme 
-    }else {
-      this.state.reset = null;
+    if(evt.charCode ===  32 || evt.charCode === 44) {
+      this.state.inputLabel = '';
+      if (evt.target.value !== ' ' && evt.target.value !== ',')  {
+        var e;
+        var check = true;
+        for(e = 0; e < this.state.tags.length; e++) {
+          if (this.state.tags[e] === evt.target.value.trim()) {
+            check = false;
+          }
+        }
+        if (check) {
+          this.state.tags.push(evt.target.value);
+          this.props.onChange(this.state.tags);
+        }
+      }
+      evt.target.value = '';
     }
   },
   getSuggestions: function () {
     return this.state.suggestions.map(function(suggest, i){
       return <div
         className="oc-tag-item"
+        id={this.props.id ? this.props.id + '_suggest_tag_item' : ''}
         onClick={this.addTag.bind(this, i)}>
         <div
           className={'oc-tag-icon ' + suggest + '_icon'}
@@ -46,8 +67,11 @@ var TagField = React.createClass({
   },
   addTag: function (i) {
     this.state.tags.push(this.state.suggestions[i]);
+    this.state.suggestions.splice(i, 1);
     this.props.onChange(this.state.tags);
     this.setState(this.state);
+    $('#' + this.props.id).val('');
+    this.state.inputLabel = '';
   },
   handleGym: function (value, inputArray) {
     var results = [];
@@ -56,19 +80,29 @@ var TagField = React.createClass({
         results.push(inputArray[i]);
       }
     }
+    var y;
+    var e;
+    for (y = 0; y < this.state.tags.length; y++) {
+      for(e = 0; e < results.length; e++) {
+        if(this.state.tags[y] == results[e]) {
+          results.splice(e, 1);
+        }
+      }
+    }
     this.state.suggestions = results;
     this.setState(this.state);
   },
   handleSuggest: function (evt) {
-
-    if (evt.target.value !== '' && this.props.id === 'scenarioListSearchFormActors') {
-      this.handleGym(evt.target.value, this.state.actorsArray);
+    if (evt.charCode === 32) {
+      evt.preventDefault();
     }
-    if (evt.target.value !== '' && this.props.id === 'scenarioListSearchFormSectors') {
-      this.handleGym(evt.target.value, this.state.sectorsArray);
-    }
-    if (evt.target.value !== '' && this.props.id === 'scenarioListSearchFormDevices') {
-      this.handleGym(evt.target.value, this.state.devicesArray);
+    if (evt.target.value !== '') {
+      this.handleGym(evt.target.value, this.state.data);
+      this.state.inputLabel = this.props.placeholder;
+      this.handleKey(evt);
+    }else{
+      this.state.inputLabel = '';
+      this.setState(this.state);
     }
   },
   handleClick: function (i) {
@@ -83,14 +117,20 @@ var TagField = React.createClass({
       this.props.onChange(this.state.tags);
     }
   },
+  clearTags : function () {
+    this.state.tags = [];
+    this.setState(this.state);
+    this.props.onChange(this.state.tags);
+  },
   render : function() {
     return (
-      <div>
-        <div>
+      <div id={this.props.id + '_wrapper'}>
+        <div className="oc-tags-wrapper">
           {this.state.tags.map(function(tag, i) {
             return (
               <div
                 className="oc-tag-item"
+                id={this.props.id ? this.props.id + '_tag_item' : ''}
                 key={i}>
                 <div className={"oc-tag-icon " + tag + "_icon"}
                   id={this.props.id ? this.props.id + '_tag' : ''}>
@@ -108,16 +148,21 @@ var TagField = React.createClass({
           }, this)}
         </div>
         <div>
+          <span className="oc-tag-field-label">{this.state.inputLabel}</span>
+          <span onClick={this.clearTags} className="oc-tag-field-clear-tags"><i className="fa fa-times"></i>clear tags</span>
           <input
             type="text"
-            className="oc-input-extra"
+            className="oc-input-extra oc-tag-input"
             placeholder={this.props.placeholder ? this.props.placeholder : ''}
-            onKeyPress={this.handleKey}
+            onKeyPress={this.handleSuggest}
             value={this.state.reset}
+            id={this.props.id}
+            autoComplete="off"
             onChange={this.handleSuggest}
             />
         </div>
         <div className="oc-tag-suggestions-wrapper">
+          {this.props.suggestionsLabel ? <span className="oc-sug">{this.props.suggestionsLabel}</span> : null}
           <span>
             {
               this.getSuggestions()
@@ -127,7 +172,7 @@ var TagField = React.createClass({
         <input
           type="text"
           id={this.props.id ? this.props.id : ''}
-          className="oc-input"
+          className="oc-input oc-tag-string-input"
           value={this.state.tagsString}
           placeholder={this.props.placeholder ? this.props.placeholder : ''}
           disabled={this.props.loading || this.props.disabled ? 'disabled' : ''}

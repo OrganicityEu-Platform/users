@@ -124,18 +124,9 @@ var ScenarioList = React.createClass({
         </h2>
       );
     }
-
     var scenarios = (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
         <h1 className="oc-white">Explore scenarios</h1>
-        { /*
-        <div className="row">
-          <div className="col-md-12">
-            {counter}
-          </div>
-        </div>
-         */
-        }
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form
@@ -148,7 +139,7 @@ var ScenarioList = React.createClass({
                     type="text"
                     id="scenarioListSearchFormQ"
                     className="oc-input-extra"
-                    placeholder="search scenarios..."
+                    placeholder="Search all scenarios"
                     name="q"
                     disabled={this.isLoading() ? 'disabled' : ''}
                     value={this.state.search.q}
@@ -172,34 +163,50 @@ var ScenarioList = React.createClass({
                   header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
                   eventKey="1"
                   className="oc-filters-panel">
+                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormActors"
                       tags={this.state.search.actors}
-                      placeholder="actor tags"
-                      onChange={this.handleUpdatedActors} />
+                      placeholder="Add actor tags"
+                      onChange={this.handleUpdatedActors}
+                      data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormSectors"
                       tags={this.state.search.sectors}
-                      placeholder="sectors tags"
-                      onChange={this.handleUpdatedSectors} />
+                      placeholder="Add sector tags"
+                      onChange={this.handleUpdatedSectors}
+                      data={['transport', 'energy', 'retail', 'public', 'environment', 'eniro', 'engo', 'enva', 'enda', 'endta', 'enga', 'enja', 'agriculture', 'healthcare', 'cultural']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
                   <div className="form-group" id="oc-devices-form">
                     <TagField
                       id="scenarioListSearchFormDevices"
                       tags={this.state.search.devices}
-                      placeholder="device tags"
-                      onChange={this.handleUpdatedDevices} />
+                      placeholder="Add devices tags"
+                      onChange={this.handleUpdatedDevices}
+                      data={['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
                 </Panel>
               </Accordion>
             </form>
 
+          </div>
+
+          <div className="row">
+            <div className="col-md-12">
+              {counter}
+            </div>
           </div>
         </div>
         <ScenarioThumbnails
