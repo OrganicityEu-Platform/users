@@ -181,7 +181,7 @@ var ScenarioList = React.createClass({
                       tags={this.state.search.sectors}
                       placeholder="Add sector tags"
                       onChange={this.handleUpdatedSectors}
-                      data={['transport', 'energy', 'retail', 'public', 'environment', 'eniro', 'engo', 'enva', 'enda', 'endta', 'enga', 'enja', 'agriculture', 'healthcare', 'cultural']}
+                      data={['transport', 'energy', 'retail', 'public', 'environment', 'agriculture', 'healthcare', 'cultural']}
                       suggestionsLabel="suggestions"
                       />
                   </div>
