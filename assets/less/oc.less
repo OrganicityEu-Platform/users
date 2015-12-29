@@ -504,6 +504,8 @@ and (min-width : 800px) {
 
 .oc-filters-panel {
   border: none;
+  padding-left: 3px;
+  padding-left: 3px;
 }
 
 .oc-filters-panel.panel-default {
@@ -518,13 +520,15 @@ and (min-width : 800px) {
 
 .oc-filters-panel .panel-heading {
   background: none !important;
+  margin-bottom: 25px;
 }
 
 .oc-filters-panel .panel-body {
   //background: rgba(63,63,63,0.2);
   background: @oc-white;
   padding: 0;
-  padding-bottom: 25px;
+  padding-bottom: 60px;
+  border-radius: 2px;
 }
 
 .oc-tag-string-input {
@@ -571,6 +575,8 @@ and (min-width : 800px) {
   padding: 8px;
   padding-left: 15px;
   margin-bottom: 25px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 
 .oc-filters-info > i {
@@ -653,6 +659,11 @@ and (min-width : 800px) {
   color: @oc-meta-grey;
 }
 
+.oc-tag-suggestions-wrapper {
+  margin-bottom: 20px;
+}
+
+
 .oc-input-extra::-webkit-input-placeholder {color:#3f3f3f;font-size: 16px;}
 #scenarioListSearchFormActors:focus::-webkit-input-placeholder {color:#fefefa;}
 #scenarioListSearchFormSectors:focus::-webkit-input-placeholder {color:#fefefa;}
@@ -664,10 +675,10 @@ and (min-width : 800px) {
 #scenarioListSearchFormDevices:focus::-moz-placeholder {color:#fefefa;}
 
 .oc-input-extra::-ms-placeholder {color:#3f3f3f;font-size: 16px;}
-#scenarioListSearchFormActors:focus::-ms-placeholder {color:#fefefa;}
-#scenarioListSearchFormSectors:focus::-ms-placeholder {color:#fefefa;}
-#scenarioListSearchFormDevices:focus::-ms-placeholder {color:#fefefa;}
+#scenarioListSearchFormActors:focus:-ms-placeholder {color:#fefefa;}
+#scenarioListSearchFormSectors:focus:-ms-placeholder {color:#fefefa;}
+#scenarioListSearchFormDevices:focus:-ms-placeholder {color:#fefefa;}
 
 #scenarioListSearchFormQ::-webkit-input-placeholder {color:#fefefa;font-size: 16px;}
 #scenarioListSearchFormQ::-moz-placeholder {color:#fefefa;font-size: 16px;}
-#scenarioListSearchFormQ::-ms-input-placeholder {color:#fefefa;font-size: 16px;}
+#scenarioListSearchFormQ:-ms-input-placeholder {color:#fefefa;font-size: 16px;}

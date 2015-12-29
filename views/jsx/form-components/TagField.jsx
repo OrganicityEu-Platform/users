@@ -20,16 +20,6 @@ var TagField = React.createClass({
       });
     }
   },
-  checkTags: function (tag, tagsArray) {
-    var i;
-    for (i = 0; i < tagsArray.length; i++) {
-      if (tags[i] === tag) {
-        console.log('true');
-        return true;
-      }
-      return false;
-    }
-  },
   handleKey: function (evt) {
     if(evt.charCode ===  32 || evt.charCode === 44) {
       this.state.inputLabel = '';
@@ -93,7 +83,7 @@ var TagField = React.createClass({
     this.setState(this.state);
   },
   handleSuggest: function (evt) {
-    if (evt.charCode === 32) {
+    if (evt.charCode === 32 || evt.charCode === 44) {
       evt.preventDefault();
     }
     if (evt.target.value !== '') {
@@ -121,6 +111,11 @@ var TagField = React.createClass({
     this.state.tags = [];
     this.setState(this.state);
     this.props.onChange(this.state.tags);
+  },
+  getLabel : function () {
+    if (this.state.suggestions.length > 0) {
+      return <span className="oc-sug">suggestions</span>;
+    }
   },
   render : function() {
     return (
@@ -162,7 +157,7 @@ var TagField = React.createClass({
             />
         </div>
         <div className="oc-tag-suggestions-wrapper">
-          {this.props.suggestionsLabel ? <span className="oc-sug">{this.props.suggestionsLabel}</span> : null}
+          {this.getLabel()}
           <span>
             {
               this.getSuggestions()
