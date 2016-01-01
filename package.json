@@ -100,6 +100,7 @@
     "promise": "^7.0.4",
     "react": "^0.13.3",
     "react-bootstrap": "^0.24.2",
+    "react-cookie": "^0.4.3",
     "react-disqus-thread": "^0.2.2",
     "react-mixin": "^1.7.0",
     "react-native": "^0.8.0",
