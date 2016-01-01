@@ -1,12 +1,17 @@
 import React from 'react';
+import cookie from 'react-cookie';
 
 var CookiePrompt = React.createClass ({
   getInitialState: function () {
-    {/* CHECK FOR SAVED COOKIE HERE*/}
-    return { show : true };
+    if (cookie.load('showPrompt') === false) {
+      return { show : false };
+    }else {
+      return { show : true };
+    }
   },
   clickHandler: function () {
     this.setState( { show : false } );
+    cookie.save('showPrompt', false);
   },
   render: function () {
     return (
@@ -38,7 +43,6 @@ var CookiePrompt = React.createClass ({
           : null
         }
       </div>
-
     );
   }
 });
