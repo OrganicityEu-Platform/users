@@ -37,7 +37,7 @@ var cleanTags = function(tags) {
     return null;
   }
   if (65533 === tags.codePointAt(0)) {
-    console.log('***  Filter crazy tags value: ' + tags);
+    // filter out this value
     return null;
   }
 
@@ -76,17 +76,12 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.tags = cleanTags(data[i][9]);
     s.abstract = ellipsis(data[i][10], ReportConfig.max.abstract - 5);
 
+    // Import thumbnail
+    s.thumbnail = 'tmp/600px/' + i + '_600px.jpg';
+
     // Import test images
-    if (i % 3 === 0) {
-      s.thumbnail = 'tmp/101reports/test1.600.jpg';
-      s.image = 'tmp/101reports/test1.1120.jpg';
-    } else if (i % 3 === 1) {
-      s.thumbnail = 'tmp/101reports/test2.600.jpg';
-      s.image = 'tmp/101reports/test2.1120.jpg';
-    } else {
-      s.thumbnail = 'tmp/101reports/test3.600.jpg';
-      s.image = 'tmp/101reports/test3.1120.jpg';
-    }
+    var idx = (i % 8) + 1;
+    s.image = 'tmp/101reports/1140_' + idx + '.jpg';
 
     var report = new Report(s);
     report.save(function(err) {
