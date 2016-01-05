@@ -21,7 +21,7 @@ var TagField = React.createClass({
     }
   },
   handleKey: function (evt) {
-    if(evt.charCode ===  32 || evt.charCode === 44) {
+    if(evt.charCode ===  32 || evt.charCode === 44 || evt.charCode === 13) {
       this.state.inputLabel = '';
       if (evt.target.value !== ' ' && evt.target.value !== ',')  {
         var e;
@@ -83,7 +83,7 @@ var TagField = React.createClass({
     this.setState(this.state);
   },
   handleSuggest: function (evt) {
-    if (evt.charCode === 32 || evt.charCode === 44) {
+    if (evt.charCode === 32 || evt.charCode === 44 || evt.charCode === 13) {
       evt.preventDefault();
     }
     if (evt.target.value !== '') {
@@ -98,6 +98,7 @@ var TagField = React.createClass({
   handleClick: function (i) {
     this.state.tags.splice(i, 1);
     this.setState(this.state);
+    this.props.onChange(this.state.tags);
   },
   handleChange : function(evt) {
     if (this.isMounted()) {

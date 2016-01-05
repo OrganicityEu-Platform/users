@@ -33,7 +33,7 @@ var ScenarioList = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.loading();
+    //this.loading();
     this.reload();
   },
   buildQueryUrl: function() {
@@ -59,7 +59,7 @@ var ScenarioList = React.createClass({
     if (refresh) {
       this.setState({ refresh : true });
     }
-    this.loading();
+    //this.loading();
     var url = this.buildQueryUrl();
     $.ajax(url, {
       dataType: 'json',
@@ -78,18 +78,22 @@ var ScenarioList = React.createClass({
   handleUpdatedActors: function(actors) {
     this.state.search.actors = actors;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedSectors: function(sectors) {
     this.state.search.sectors = sectors;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedDevices: function(devices) {
     this.state.search.devices = devices;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedSearchTerm: function(evt) {
     this.state.search.q = evt.target.value;
     this.setState(this.state);
+    this.reload(true);
   },
   handleSearch : function(evt) {
     console.log('handleSearch');
@@ -103,25 +107,26 @@ var ScenarioList = React.createClass({
     });
   },
   componentWillReceiveProps: function(nextProps) {
+
     this.state.sortBy = nextProps.query.sortBy;
     this.state.sortDir = nextProps.query.sortDir;
     this.setState(this.state);
-    this.reload(true);
+    //this.reload(true);
   },
   render: function() {
 
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <h2 className="oc-white">
+        <span className="oc-white">
           Your search yields to {this.state.scenarios.length} scenarios!
-        </h2>
+        </span>
       );
     } else {
       counter = (
-        <h2 className="oc-white">
+        <span className="oc-white">
           Here you can explore {this.state.scenarioCounter} scenarios!
-        </h2>
+        </span>
       );
     }
     var scenarios = (
@@ -155,12 +160,14 @@ var ScenarioList = React.createClass({
                       </span>
                     </button>
                   </span>
+
+
                 </div>
 
               </div>
               <Accordion>
                 <Panel
-                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  header={<span>  <div className="white">{counter}</div><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
                   eventKey="1"
                   className="oc-filters-panel">
                   <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
@@ -173,6 +180,7 @@ var ScenarioList = React.createClass({
                       data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
                       suggestionsLabel="suggestions"
                       />
+
                   </div>
                   &nbsp;
                   <div className="form-group">
@@ -203,11 +211,10 @@ var ScenarioList = React.createClass({
 
           </div>
 
-          <div className="row">
-            <div className="col-md-12">
-              {counter}
-            </div>
-          </div>
+
+
+
+
         </div>
         <ScenarioThumbnails
           scenarios={this.state.scenarios}
@@ -215,7 +222,7 @@ var ScenarioList = React.createClass({
       </div>
     );
 
-    return this.renderLoading(scenarios);
+    return scenarios;
   }
 });
 
