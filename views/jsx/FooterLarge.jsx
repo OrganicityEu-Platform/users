@@ -40,15 +40,6 @@ var FooterLarge = React.createClass({
           <div className="col-lg-4 white oc-footer-col">
             <p className="oc-footer-title">Resouces</p>
             <span>OrganiCity.eu</span>
-            <span>Partners</span>
-            <span>
-              Site map
-            </span>
-            <span>
-              Privacy policy
-            </span>
-            <span>Press</span>
-            <span>Blog</span>
             <span>
               Sign up for updates
             </span>

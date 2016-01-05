@@ -137,13 +137,13 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="login"
           to="login"
-          className="nav-login-btn">login</NavItemLink>
+          className="nav-login-btn">log in</NavItemLink>
       );
       linksRight.push(
         <NavItemLink
           key="signup"
           to="signup"
-          className="nav-signup-btn">signup</NavItemLink>
+          className="nav-signup-btn">register</NavItemLink>
       );
     }
     return (
