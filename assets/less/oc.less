@@ -10,6 +10,7 @@
 @import "oc_input.less";
 @import "oc_footers.less";
 @import "oc_cookie_prompt.less";
+@import "oc_hero.less";
 
 @import "oc_navigation.less";
 @import "oc_login_signup.less";
@@ -79,7 +80,7 @@ a:hover {
   background-image: url('../../static/img/oc-hero-img.png');
   background-repeat: no-repeat;
   background-size: 100%;
-  background-position: 0px -40px;
+  background-position: center top;
 }
 
 .ocTable {
@@ -269,15 +270,12 @@ input[type="submit"] {
 
 .oc-home-view-section-signup-wrapper {
   text-align: center;
+  margin-bottom: 140px;
 }
 
 .oc-home-view-section-icons-wrapper {
   margin-top: 100px;
   margin-bottom: 100px;
-}
-
-.oc-home-view-section-signup-wrapper {
-  margin-bottom: 140px;
 }
 
 .oc-home-view-header-sub-text {
@@ -291,13 +289,6 @@ input[type="submit"] {
 }
 
 @media (max-width : 950px) {
-  #oc-home-view-signup-btn {
-    .oc-ghost-pink;
-  }
-  #oc-home-view-signup-btn:hover {
-    background-color: @oc-magenta;
-    color: @oc-white;
-  }
   .oc-eval-answers-wrapper {
     text-align: center;
   }
@@ -333,27 +324,12 @@ and (max-width : 1400px) {
     .make-lg-column(10);
     .make-lg-column-offset(1);
   }
-  .oc-home-view-section-signup-wrapper {
-    margin-bottom: 105px !important;
-  }
-}
-
-
-@media only screen
-and (max-width : 1200px) {
-  .fa-angle-double-down {
-    color: @oc-magenta;
-  }
-  .oc-home-view-section-signup-wrapper > p {
-    color: @oc-magenta !important;
-  }
 }
 
 @media only screen
 and (max-width : 750px) {
   .oc-home-view-section-plus {
     display: inherit;
-    color: @oc-magenta;
   }
   .oc-filters-panel .panel-heading > h4 {
     padding-top: 20px !important;
