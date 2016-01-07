@@ -389,8 +389,8 @@ var ScenarioEditView = React.createClass({
     }
 
     return (
-      <div className="container oc-form-group-view">
-        <div className="row">
+      <div className="row oc-form-group-view">
+        <div className="oc-macro-content">
           <h1 className="oc-white">{this.editMode() ? 'Edit your scenario' : 'Create your scenario'}</h1>
           <form className="form-horizontal">
             <div className="form-group oc-form-group">

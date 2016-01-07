@@ -34,6 +34,10 @@
 @import "oc_desktop.less";
 @import "oc_mobile.less";
 
+a:focus {
+  outline: none;
+}
+
 body {
   background-color: @oc-grey;
   height: 100%;
@@ -306,12 +310,17 @@ input[type="submit"] {
   }
 }
 
+.scenario-list {
+  .make-lg-column(8);
+  .make-lg-column-offset(2);
+}
+
 @media only screen
 and (max-width : 1400px) {
   .oc-home-view-footer-wrapper,
   .scenario-list {
-    .make-md-column(10);
-    .make-md-column-offset(1);
+    //.make-md-column(10);
+    //.make-md-column-offset(1);
   }
   .scenario-article-widget-data {
     padding-left: 0;
@@ -368,8 +377,8 @@ and (min-width : 800px) {
 
 .navbar .container {
   width: 100% !important;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #oc-divider {
@@ -636,6 +645,20 @@ and (min-width : 800px) {
 
 .oc-tag-clear {
   padding-right: 3px;
+}
+
+.oc-navbar-wrapper {
+  background: @oc-magenta;
+}
+
+.oc-form-group {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.oc-macro-content {
+  .make-lg-column(8);
+  .make-lg-column-offset(2);
 }
 
 .oc-input-extra::-webkit-input-placeholder {color:#3f3f3f;font-size: 16px;}

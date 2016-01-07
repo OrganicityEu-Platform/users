@@ -16,8 +16,8 @@ var FooterLarge = React.createClass({
   render: function() {
     return (
       <div className="row oc-footer-large">
-        <div className="col-md-10 col-md-offset-1">
-          <div className="col-lg-3 white oc-footer-col">
+        <div className="oc-macro-content oc-footer-inner-wrapper">
+          <div className="col-lg-3 white oc-footer-col" id="follow-col">
             <p className="oc-footer-title">Follow us</p>
             <span className="oc-social-links-wrapper">
               <a href={twitter}>
@@ -37,7 +37,7 @@ var FooterLarge = React.createClass({
             </span>
 
           </div>
-          <div className="col-lg-4 white oc-footer-col">
+          <div className="col-lg-4 white oc-footer-col" id="resources-col">
             <p className="oc-footer-title">Resouces</p>
             <span>OrganiCity.eu</span>
             <span>

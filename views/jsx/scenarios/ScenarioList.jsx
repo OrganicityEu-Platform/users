@@ -130,7 +130,7 @@ var ScenarioList = React.createClass({
       );
     }
     var scenarios = (
-      <div className="scenario-list col-lg-8 col-lg-offset-2">
+      <div className="scenario-list">
         <h1 className="oc-white">Explore scenarios</h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">

@@ -334,8 +334,8 @@ var Profile = React.createClass({
     }
 
     return (
-      <div className="container oc-form-group-view">
-        <div className="row">
+      <div className="row oc-form-group-view">
+        <div className="oc-macro-content">
           <h1 className="oc-white">Profile</h1>
           <form className="form-horizontal">
 

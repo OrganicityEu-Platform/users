@@ -51,33 +51,35 @@ var UserListView = React.createClass({
 
     return (
       <div className="row">
-        <h1>Users</h1>
-        <table className="adminUsersTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Roles</th>
-              <th>Accounts</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {(() => {
-              return this.state.users.map((user) => {
-                return (
-                  <tr key={user.uuid}>
-                    <td>{user.name}</td>
-                    <td>{user.roles.join(', ')}</td>
-                    <td><UserAccountsTable user={user} /></td>
-                    <td><UserEditButton user={user} /></td>
-                    <td><UserDeleteButton user={user} onDelete={this.handleUserDeleted} /></td>
-                  </tr>
-                );
-              });
-            })()}
-          </tbody>
-        </table>
+        <div className="oc-macro-content">
+          <h1>Users</h1>
+          <table className="adminUsersTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Roles</th>
+                <th>Accounts</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {(() => {
+                return this.state.users.map((user) => {
+                  return (
+                    <tr key={user.uuid}>
+                      <td>{user.name}</td>
+                      <td>{user.roles.join(', ')}</td>
+                      <td><UserAccountsTable user={user} /></td>
+                      <td><UserEditButton user={user} /></td>
+                      <td><UserDeleteButton user={user} onDelete={this.handleUserDeleted} /></td>
+                    </tr>
+                  );
+                });
+              })()}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }

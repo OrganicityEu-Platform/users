@@ -147,21 +147,31 @@ var Scaffold = React.createClass({
       );
     }
     return (
-      <div className="container oc-page-wrapper" id="">
-        <div className="row">
-          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>} toggleNavKey={0}>
-            <CollapsibleNav eventKey={0}>
-              <span className="oc-left-links-wrapper">
-                <Nav navbar>
-                  {linksLeft}
-                </Nav>
-              </span>
+      <div className="container oc-page-wrapper">
+        <div className="row oc-navbar-wrapper">
+        <div className="col-lg-8 col-lg-offset-2">
 
-              <Nav navbar right>
-                {linksRight}
-              </Nav>
-            </CollapsibleNav>
+
+
+          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>} toggleNavKey={0}>
+
+              <CollapsibleNav eventKey={0}>
+                <span className="oc-left-links-wrapper">
+                  <Nav navbar>
+                    {linksLeft}
+                  </Nav>
+                </span>
+
+                <Nav navbar right>
+                  {linksRight}
+                </Nav>
+              </CollapsibleNav>
+
           </Navbar>
+
+
+
+        </div>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
          {router}
