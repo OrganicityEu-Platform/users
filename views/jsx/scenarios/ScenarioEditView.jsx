@@ -479,8 +479,8 @@ var ScenarioEditView = React.createClass({
               </label>
               <div className="col-sm-9">
                 <TagField
-                  id="createEditSearchFormDevices" 
-                  placeholder="Add devices tags"
+                  id="createEditSearchFormDevices"
+                  placeholder="Add tool tags"
                   tags={this.state.devices}
                   onChange={this.handleChangedDevices} />
               </div>

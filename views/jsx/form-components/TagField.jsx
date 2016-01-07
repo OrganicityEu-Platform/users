@@ -145,7 +145,7 @@ var TagField = React.createClass({
         </div>
         <div>
           <span className="oc-tag-field-label">{this.state.inputLabel}</span>
-          <span onClick={this.clearTags} className="oc-tag-field-clear-tags"><i className="fa fa-times"></i>clear tags</span>
+          <span onClick={this.clearTags} className="oc-tag-field-clear-tags"><i className="fa fa-times oc-tag-clear"></i>clear tags</span>
           <input
             type="text"
             className="oc-input-extra oc-tag-input"

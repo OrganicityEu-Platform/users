@@ -118,15 +118,15 @@ var ScenarioList = React.createClass({
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <span className="oc-white">
+        <h2 className="oc-white">
           Your search yields to {this.state.scenarios.length} scenarios!
-        </span>
+        </h2>
       );
     } else {
       counter = (
-        <span className="oc-white">
+        <h2 className="oc-white">
           Here you can explore {this.state.scenarioCounter} scenarios!
-        </span>
+        </h2>
       );
     }
     var scenarios = (
@@ -167,7 +167,7 @@ var ScenarioList = React.createClass({
               </div>
               <Accordion>
                 <Panel
-                  header={<span>  <div className="white">{counter}</div><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
                   eventKey="1"
                   className="oc-filters-panel">
                   <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
@@ -198,7 +198,7 @@ var ScenarioList = React.createClass({
                     <TagField
                       id="scenarioListSearchFormDevices"
                       tags={this.state.search.devices}
-                      placeholder="Add devices tags"
+                      placeholder="Add tool tags"
                       onChange={this.handleUpdatedDevices}
                       data={['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors']}
                       suggestionsLabel="suggestions"
@@ -212,7 +212,7 @@ var ScenarioList = React.createClass({
           </div>
 
 
-
+          {counter}
 
 
         </div>

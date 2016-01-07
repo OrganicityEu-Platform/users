@@ -512,14 +512,21 @@ and (min-width : 800px) {
 #scenarioListSearchFormSectors:focus,
 #scenarioListSearchFormDevices:focus,
 #scenarioListSearchFormActors:focus {
-  background: #5e5e5e;
+  background: @oc-dark-grey;
+  color: @oc-white;
 }
 
 #scenarioListSearchFormQ {
   margin-top: 0px;
   margin-bottom: 0px;
-  border-bottom: 2px solid #FEFEFA;
+  border-bottom: 2px solid @oc-white;
   background: 0;
+}
+
+#scenarioListSearchFormQ:focus {
+  border-bottom: 2px solid @oc-white !important;
+  color: @oc-white;
+  font-size: 16px;
 }
 
 #scenarioListSearchFormActors_tag_item,
@@ -619,10 +626,16 @@ and (min-width : 800px) {
 .oc-tag-field-clear-tags {
   float: right;
   color: @oc-meta-grey;
+  cursor: pointer;
+  cursor: hand;
 }
 
 .oc-tag-suggestions-wrapper {
   margin-bottom: 20px;
+}
+
+.oc-tag-clear {
+  padding-right: 3px;
 }
 
 .oc-input-extra::-webkit-input-placeholder {color:#3f3f3f;font-size: 16px;}
