@@ -53,14 +53,14 @@ var ScenarioView = React.createClass({
         </div>
         <div className="row">
           <div className="form-group">
-            <div className="container">
+            <div className="oc-macro-content">
               <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
               <div className="col-sm-4"><ScenarioEvalButton scenario={this.state}/></div>
               <div className="col-sm-4"><ScenarioDeleteButton scenario={this.state}/></div>
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread
               categoryId="3957189"
