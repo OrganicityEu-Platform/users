@@ -34,6 +34,7 @@ var TagField = React.createClass({
         if (check) {
           this.state.tags.push(evt.target.value);
           this.props.onChange(this.state.tags);
+          this.state.suggestions = [];
         }
       }
       evt.target.value = '';
