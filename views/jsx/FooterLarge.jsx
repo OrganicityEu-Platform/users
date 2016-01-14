@@ -12,7 +12,12 @@ var flickr = "https://www.flickr.com/photos/alexandra_instituttet/"; // fa fa-fl
 var slideshare = "http://www.slideshare.net/AlexandraInstituttet"; // fa fa-slideshare
 var youtube = "https://www.youtube.com/user/alexandrainstituttet"; // fa fa-youtube-play
 
+var organicityLink = "http://organicity.eu/";
+
 var FooterLarge = React.createClass({
+  clickHandler: function () {
+    this.transitionTo('signup');
+  },
   render: function() {
     return (
       <div className="row oc-footer-large">
@@ -39,8 +44,8 @@ var FooterLarge = React.createClass({
           </div>
           <div className="col-lg-4 white oc-footer-col" id="resources-col">
             <p className="oc-footer-title">Resouces</p>
-            <span>OrganiCity.eu</span>
-            <span>
+            <span><a className="white" href={organicityLink}>OrganiCity.eu</a></span>
+            <span onClick={this.clickHandler} className="oc-link">
               Sign up for updates
             </span>
           </div>
