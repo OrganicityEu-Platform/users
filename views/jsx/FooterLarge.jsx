@@ -15,6 +15,7 @@ var youtube = "https://www.youtube.com/user/alexandrainstituttet"; // fa fa-yout
 var organicityLink = "http://organicity.eu/";
 
 var FooterLarge = React.createClass({
+  mixins: [Router.Navigation],
   clickHandler: function () {
     this.transitionTo('signup');
   },
