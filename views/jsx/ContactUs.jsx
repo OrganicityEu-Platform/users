@@ -143,25 +143,19 @@ var myContactForm = React.createClass({
         <form className="form">
           {errorMessage}
           <div className="form-group">
-            <input
-              type="text"
-              className="form-control oc-input"
-              name="address"
-              placeholder="Your Email Address"
-              value={this.getMailAddress()}
-              id="address"
-              onChange={this.addressChanged}
-              disabled={this.isLoading() ? 'disabled' : ''}
-            />
+            <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just send us a message below.</span>
+            <p>You can also reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>
+                {Contact.mailAddress}
+              </a></p>
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
 
           <div className="form-group">
             <textarea
-              className="form-control oc-input"
+              className="form-control oc-input-extra"
               name="message"
-              id="message"
+              id="oc-contact-message"
               placeholder="Your Message"
               onChange={this.messageChanged}
               disabled={this.isLoading() ? 'disabled' : ''}
@@ -176,7 +170,7 @@ var myContactForm = React.createClass({
                 onClick={this.submitForm}
                 disabled={this.isLoading() ? 'disabled' : ''}
               >
-                Submit
+                SEND
               </button>
             </div>
         </div>
