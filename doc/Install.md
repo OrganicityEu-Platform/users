@@ -4,7 +4,9 @@ The first version of this application is based on:
 
 * https://github.com/scotch-io/easy-node-authentication
 
-## Prepare Ubuntu 14.04
+## Ubuntu 14.04
+
+### Prepare
 
 ```
 sudo apt-get install curl libcurl4-openssl-dev
@@ -13,7 +15,7 @@ sudo apt-get install imagemagick
 sudo apt-get install graphicsmagick
 ```
 
-## Install nodejs (last stable)
+### Install nodejs (last stable)
 
 ```
 curl -sL https://deb.nodesource.com/setup | sudo bash -
@@ -21,22 +23,66 @@ sudo apt-get install nodejs
 node --version                 ## v0.10.40
 ```
 
-## Install MongoDB 2.6
+### Install MongoDB 2.6
 
 ```
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
 sudo apt-get update
 sudo apt-get install mongodb-org
+```
 
-mongod --version		## v2.6.10
+## CentOS 6.7
 
+### Prepare
+
+```
+yum install -y git
+yum install -y curl
+yum install -y mongodb-org
+yum install -y ImageMagick-devel
+yum install -y openssl-devel
+yum install -y gcc-c++ make
+```
+
+###  Install nodejs (last stable)
+
+```
+curl --silent --location https://rpm.nodesource.com/setup | bash -
+yum -y install nodejs
+node --version #v0.10.41
+```
+
+### Install gulp and update npm
+
+```
+sudo npm install npm -g
+sudo npm install gulp -g
+npm --version #3.5.3
+```
+
+### MongoDB 3.0
+
+Add `mongodb-org-3.0.repo`
+
+```
+sudo yum install -y mongodb-org
+/var/log/mongodb/mongod.log
+```
+
+### Install GraphicsMagick
+
+See: https://gist.github.com/boldt/c1dde964399ce4b45e1f
+
+## MongoDB configuration
+
+```
 sudo mkdir /opt/mongodb
 chmod 755 /opt/mongodb/
 chown mongodb:mongodb /opt/mongodb
 ```
 
-Replace `/etc/mongodb.conf` with
+Add `smallFiles: true` as below, or replace `/etc/mongodb.conf`:
 
 ```
 systemLog:
@@ -58,6 +104,8 @@ Restart:
 sudo service mongod stop
 sudo service mongod start
 sudo service mongod status
+mongod --version # v2.6.10 (Ubuntu)
+mongod --version # v3.0.7 (CentOS)
 ```
 
 ## Get, install and run project
@@ -95,11 +143,13 @@ Create API keys and edit `config/auth.js`
 
 https://developers.facebook.com/apps
 
+Callback: {SERVER}/auth/facebook/callback
+
 #### Twitter
 
 https://apps.twitter.com/app
 
-Callback: {SERVER}/auth/twitter/callbacl
+Callback: {SERVER}/auth/twitter/callback
 
 #### Google+
 
@@ -134,8 +184,11 @@ gulp
 ### Production mode
 
 ```
+npm install forever -g
 gulp build
-forever restart server.js
+forever start app.js
+forever restart app.js
+forever stop app.js
 ```
 
 ## Code Style
