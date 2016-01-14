@@ -1,9 +1,22 @@
 @import "oc_colors.less";
 @import "oc_fonts.less";
 
+.white {
+  color: @oc-white;
+}
+
+.pink {
+  color: @oc-magenta;
+}
+
 .pink-title {
   font-family: 'Cooper Hewitt Semibold';
   color: @oc-magenta;
+}
+
+.white-title {
+  font-family: 'Cooper Hewitt Semibold';
+  .white;
 }
 
 h1.oc-pink {
@@ -32,10 +45,13 @@ h5.oc-pink {
   font-size: 12px;
 }
 
-
 h1.oc-white {
-  font-family: 'Cooper Hewitt Semibold';
+  .white-title;
   font-size: 36px;
-  color: @oc-white;
+  text-align: center;
 }
 
+h2.oc-white {
+  .white-title;
+  font-size: 30px;
+}

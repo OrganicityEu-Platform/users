@@ -275,7 +275,7 @@ var Profile = React.createClass({
 
       localAccount = (
         <div>
-          <h2 className="oc-pink">Local account</h2>
+          <h2 className="oc-white">Local account</h2>
 
           <div className="form-group oc-form-group">
             <label className="control-label col-sm-3" htmlFor="email">E-Mail
@@ -334,9 +334,9 @@ var Profile = React.createClass({
     }
 
     return (
-      <div className="container oc-form-group-view">
-        <div className="row">
-          <h1 className="oc-pink">Profile</h1>
+      <div className="row oc-form-group-view">
+        <div className="oc-macro-content">
+          <h1 className="oc-white">Profile</h1>
           <form className="form-horizontal">
 
             <div className="form-group oc-form-group">
@@ -421,7 +421,7 @@ var Profile = React.createClass({
             {localAccount}
 
             <div className="form-group">
-              <div className="col-md-2 col-md-offset-5">
+              <div className="oc-save-profile-btn-wrapper">
                 <button
                   type="button"
                   className="oc-button"
@@ -431,7 +431,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <h2 className="oc-pink">Scenarios created</h2>
+            <h2 className="oc-white">Scenarios created</h2>
             <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
 
           </form>

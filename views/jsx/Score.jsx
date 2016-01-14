@@ -2,7 +2,6 @@ import $            from 'jquery';
 import React        from 'react';
 import LoadingMixin from './LoadingMixin.jsx';
 import api          from '../../api_routes.js';
-import Loading      from './Loading.jsx';
 
 var Router = require('react-router');
 

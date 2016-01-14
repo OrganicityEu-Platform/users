@@ -1,14 +1,38 @@
 /* Footers */
 
+@import "../../node_modules/bootstrap/less/bootstrap.less";
+
 @import "oc_colors.less";
+@import "oc_fonts.less";
 
 .oc-footer-large {
   text-align: center;
-  background-color: @oc-white;
+  background-color: @oc-dark-grey;
+  position: relative;
+  padding-top: 15px;
+  margin-top: 155px;
 }
+
+
 
 .oc-footer-large-social-links {
   font-size: 30px;
+}
+
+.oc-footer-copy-right-wrapper {
+  .make-lg-column(12);
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 8px;
+}
+
+.oc-logo-text {
+  font-size: 13;
+  font-family: 'Cooper Hewitt Book';
+}
+
+.oc-footer-title {
+  font-family: 'Cooper Hewitt Semibold';
 }
 
 .oc-footer-large-social-links > span {
@@ -21,13 +45,60 @@
 }
 
 .oc-footer-large-eu-logo {
-  margin: 75px 0px 38px 0px;
-  width: 172px;
-  height: 119px;
+  max-width: 100%;
+}
+
+.oc-footer-large-eu-logo-wrapper {
+  padding: 15px;
+  background-color: @oc-white;
+  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 .oc-footer-large-social-links {
   margin-top: 25px;
+}
+
+.oc-footer-col {
+  text-align: left;
+}
+
+#follow-col {
+
+}
+
+#resources-col {
+
+}
+
+#oc-footer-contact-col {
+
+}
+
+.oc-footer-inner-wrapper {
+  padding: 0 !important;
+}
+
+.oc-footer-col > p {
+  border-bottom: 1px solid @oc-white;
+}
+
+.oc-footer-col > span {
+  display: block;
+}
+
+.oc-social-links-wrapper {
+  display: inline-block;
+}
+
+.oc-footer-social-link {
+  font-size: 25px;
+  color: @oc-white !important;
+  padding-right: 35px;
+}
+
+.oc-footer-social-link:hover {
+  color: @oc-magenta !important;
 }
 
 .oc-footers {
@@ -41,7 +112,7 @@
   background-color: @oc-magenta;
   line-height: 64px;
   color: @oc-grey;
-
+  position: relative;
   a {
     color: @oc-white;
 

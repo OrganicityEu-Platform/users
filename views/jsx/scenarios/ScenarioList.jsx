@@ -11,7 +11,6 @@ import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
 import Tags               from '../Tags.jsx';
-import Loading            from '../Loading.jsx';
 
 import { Accordion, Panel } from 'react-bootstrap';
 
@@ -34,7 +33,7 @@ var ScenarioList = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.loading();
+    //this.loading();
     this.reload();
   },
   buildQueryUrl: function() {
@@ -60,7 +59,7 @@ var ScenarioList = React.createClass({
     if (refresh) {
       this.setState({ refresh : true });
     }
-    this.loading();
+    //this.loading();
     var url = this.buildQueryUrl();
     $.ajax(url, {
       dataType: 'json',
@@ -79,18 +78,22 @@ var ScenarioList = React.createClass({
   handleUpdatedActors: function(actors) {
     this.state.search.actors = actors;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedSectors: function(sectors) {
     this.state.search.sectors = sectors;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedDevices: function(devices) {
     this.state.search.devices = devices;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedSearchTerm: function(evt) {
     this.state.search.q = evt.target.value;
     this.setState(this.state);
+    this.reload(true);
   },
   handleSearch : function(evt) {
     console.log('handleSearch');
@@ -104,81 +107,102 @@ var ScenarioList = React.createClass({
     });
   },
   componentWillReceiveProps: function(nextProps) {
+
     this.state.sortBy = nextProps.query.sortBy;
     this.state.sortDir = nextProps.query.sortDir;
     this.setState(this.state);
-    this.reload(true);
+    //this.reload(true);
   },
   render: function() {
-
-    if (this.isLoading()) {
-      return (<Loading message="Loading scenarios. Please wait." size="2"/>);
-    }
 
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <span>Your search yields to {this.state.scenarios.length} scenarios!</span>
+        <h2 className="oc-white">
+          Your search yields to {this.state.scenarios.length} scenarios!
+        </h2>
       );
     } else {
       counter = (
-        <span>Here you can explore {this.state.scenarioCounter} scenarios!</span>
+        <h2 className="oc-white">
+          Here you can explore {this.state.scenarioCounter} scenarios!
+        </h2>
       );
     }
-
-    return (
-      <div className="scenario-list col-lg-8 col-lg-offset-2">
+    var scenarios = (
+      <div className="scenario-list">
+        <h1 className="oc-white">Explore scenarios</h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
-            <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
+            <form
+              className="scenario-list-search-form"
+              onSubmit={this.handleSearch}>
 
               <div className="form-group" id="oc-search-form">
                 <div className="input-group">
-                 <input type="text" className="form-control oc-search-field" id="scenarioListSearchFormQ" placeholder="search scenarios..." name="q" disabled={this.isLoading() ? 'disabled' : ''}
-                 value={this.state.search.q}
-                 onChange={this.handleUpdatedSearchTerm}/>
-                 <span className="input-group-btn">
-                   <button type="submit"
-                     value="Search"
-                     disabled={this.isLoading() ? 'disabled' : ''}
-                     className="btn btn-primary" id="oc-search-btn"><span className="fa fa-search"></span></button>
-                 </span>
-                </div>
+                  <input
+                    type="text"
+                    id="scenarioListSearchFormQ"
+                    className="oc-input-extra"
+                    placeholder="Search all scenarios"
+                    name="q"
+                    disabled={this.isLoading() ? 'disabled' : ''}
+                    value={this.state.search.q}
+                    onChange={this.handleUpdatedSearchTerm}/>
+                  <span className="input-group-btn">
+                    <button
+                      type="submit"
+                      value="Search"
+                      disabled={this.isLoading() ? 'disabled' : ''}
+                      className="btn btn-primary"
+                      id="oc-search-btn">
+                      <span className="fa fa-search">
+                      </span>
+                    </button>
+                  </span>
+
 
                 </div>
+
+              </div>
               <Accordion>
-                <Panel header="filters" eventKey="1" className="oc-filters-panel">
-                  <div className="oc-sector-tags-wrapper">
-
-                  </div>
-                  <div className="oc-actor-tags-wrapper">
-
-                  </div>
-                  <div className="oc-tools-tags-wrapper">
-
-                  </div>
+                <Panel
+                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  eventKey="1"
+                  className="oc-filters-panel">
+                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormActors"
                       tags={this.state.search.actors}
-                      placeholder="actor tags"
-                      onChange={this.handleUpdatedActors} />
+                      placeholder="Add actor tags"
+                      onChange={this.handleUpdatedActors}
+                      data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
+                      suggestionsLabel="suggestions"
+                      />
+
                   </div>
                   &nbsp;
                   <div className="form-group">
                     <TagField
                       id="scenarioListSearchFormSectors"
                       tags={this.state.search.sectors}
-                      placeholder="sectors tags"
-                      onChange={this.handleUpdatedSectors} />
+                      placeholder="Add sector tags"
+                      onChange={this.handleUpdatedSectors}
+                      data={['transport', 'energy', 'retail', 'public', 'environment', 'agriculture', 'healthcare', 'cultural']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
                   <div className="form-group" id="oc-devices-form">
                     <TagField
                       id="scenarioListSearchFormDevices"
                       tags={this.state.search.devices}
-                      placeholder="device tags"
-                      onChange={this.handleUpdatedDevices} />
+                      placeholder="Add tool tags"
+                      onChange={this.handleUpdatedDevices}
+                      data={['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
                 </Panel>
@@ -186,15 +210,19 @@ var ScenarioList = React.createClass({
             </form>
 
           </div>
+
+
+          {counter}
+
+
         </div>
-        <div className="row">
-          <div className="col-md-12">
-            {counter}
-          </div>
-        </div>
-        <ScenarioThumbnails scenarios={this.state.scenarios} counter={false} />
+        <ScenarioThumbnails
+          scenarios={this.state.scenarios}
+          counter={false} />
       </div>
     );
+
+    return scenarios;
   }
 });
 

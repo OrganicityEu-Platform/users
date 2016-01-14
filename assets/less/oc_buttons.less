@@ -1,14 +1,25 @@
 @import "oc_colors.less";
+@import "oc_fonts.less";
 
-.oc-button {
+.oc-ghost {
+  background: none;
+  font-family: 'Cooper Hewitt Semibold';
+  border-radius: 1px;
+  border: 1px solid;
+}
+
+.oc-button-default {
   border-radius: 2px;
   border: 0;
+  font-family: 'Cooper Hewitt Semibold';
+}
+
+.oc-button {
+  .oc-button-default;
   background-color: @oc-magenta;
   color: @oc-white;
-  font-weight: bold;
   margin-bottom: 10px;
-  padding-top: 13px;
-  padding-bottom: 13px;
+  padding: 1.5rem 4rem 1rem;
   width:100%;
 }
 
@@ -19,4 +30,37 @@
 
 .oc-button:disabled {
   background-color: #F8B2C5;
+}
+
+.oc-ghost-white {
+  .oc-ghost;
+  color: @oc-white;
+}
+
+.oc-ghost-pink {
+  .oc-ghost;
+  color: @oc-magenta;
+}
+
+.oc-ghost-white:hover {
+  background-color: @oc-white;
+  color: @oc-magenta;
+  border: 1px solid @oc-white;
+}
+
+.oc-ghost-white > div {
+  padding-top: 5px;
+}
+
+.oc-button-white {
+  .oc-button-default;
+  color: @oc-dark-grey;
+  margin: 0px;
+  padding: 1rem 1.4rem 0.5rem;
+  vertical-align: text-top;
+}
+
+.oc-button-white:hover {
+  background-color: @oc-magenta;
+  color: @oc-white;
 }

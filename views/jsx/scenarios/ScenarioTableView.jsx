@@ -1,14 +1,15 @@
-import React      from 'react';
-import TimeAgo    from 'react-timeago';
-import ui         from '../../../ui_routes.js';
-import UserAvatar from '../users/UserAvatar.jsx';
-import Counter    from '../Counter.jsx';
-import Score    from '../Score.jsx';
-import Comments    from '../Comments.jsx';
+import React              from 'react';
+import TimeAgo            from 'react-timeago';
+import startsWithPolyfill from 'string.prototype.startswith';
+import ui                 from '../../../ui_routes.js';
+import UserAvatar         from '../users/UserAvatar.jsx';
+import Counter            from '../Counter.jsx';
+import Score              from '../Score.jsx';
+import Comments           from '../Comments.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
-import api                  from '../../../api_routes.js';
+import api                from '../../../api_routes.js';
 
-import LoadingMixin     from '../LoadingMixin.jsx';
+import LoadingMixin       from '../LoadingMixin.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin],
@@ -51,7 +52,7 @@ var ScenarioTableView = React.createClass({
     var copyright;
     if (this.props.scenario.copyright) {
       copyright = (
-        <div className="col-md-12 scenario-article-copyright">
+        <div className="scenario-article-copyright">
           &copy; {this.props.scenario.copyright}
         </div>
       );
@@ -63,7 +64,7 @@ var ScenarioTableView = React.createClass({
     }
 
     return (
-      <div className="col-lg-8 col-lg-offset-2">
+      <div className="scenario-article-wrapper">
       <div className="scenario-article">
         <header className="scenario-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
@@ -71,7 +72,7 @@ var ScenarioTableView = React.createClass({
               <div className="scenario-article-widget-data">
                 <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
                 <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
-                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-circle"></i>{evaluationsCnt} evaluations</p>
+                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-check-square-o"></i>{evaluationsCnt} evaluations</p>
               </div>
           </div>
           <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
@@ -125,8 +126,8 @@ var ScenarioTableView = React.createClass({
         <footer className="scenario-article-footer"></footer>
       </div>
       <div className="scenario-article-narrative-wrapper">
-          <span className="col-md-1">Narrative</span>
-          <div className="scenario-article-narrative col-md-11">
+          <span className="scenario-article-narrative-title">Narrative</span>
+          <div className="scenario-article-narrative">
             {this.props.scenario.narrative}
           </div>
       </div>

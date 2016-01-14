@@ -119,7 +119,7 @@ var ForgotPassword = React.createClass({
     if (this.state.id) {
 
       if (this.state.send) {
-        return (<Message type="danger" message="Password update successful sent!" type="success"/>);
+        return (<Message message="Password update successful sent!" type="success"/>);
       }
 
       return (
@@ -167,8 +167,8 @@ var ForgotPassword = React.createClass({
         );
 
         return (
-          <div>
-            <Message type="danger" message={message} type="success"/>
+          <div className="oc-forgot-password-msg-wrapper col-lg-4 col-lg-offset-4">
+            <Message message={message} type="success"/>
             <button type="submit" className="oc-button" onClick={this.handleGoBack}>Still didn't get the mail? Go back.</button>
           </div>
         );
@@ -177,8 +177,10 @@ var ForgotPassword = React.createClass({
       return (
         <form>
           <div className="row">
-            <div className="col-sm-6 col-sm-offset-3">
+            <div className="oc-forgot-password-wrapper col-sm-4 col-sm-offset-4">
               {errorMessage}
+              <h1 className="oc-pink">Reset password</h1>
+              <p>Enter your email address and we'll send you instructions for resseting your password.</p>
               <div className="form-group">
                 <input type="text"
                   className="oc-input"

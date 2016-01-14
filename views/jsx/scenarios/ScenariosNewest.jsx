@@ -37,12 +37,13 @@ var ScenariosNewest = React.createClass({
     });
   },
   render: function() {
-    if (this.state.loading) {
-      return <div>Loading Scenarios...</div>;
+    if (this.isLoading()) {
+      return this.renderLoading();
     }
 
     return (
       <div>
+        <h1 className="oc-pink">Latest scenarios</h1>
         <ScenarioThumbnails scenarios={this.state.scenarios} counter={this.props.counter} />
       </div>
     );

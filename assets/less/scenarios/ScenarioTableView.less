@@ -2,6 +2,7 @@
 
 @import "../oc_colors.less";
 @import "../oc_buttons.less";
+@import "../../../node_modules/bootstrap/less/bootstrap.less";
 
 .scenario-article-score {
   font-weight: bold;
@@ -75,7 +76,7 @@
 }
 
 .scenario-article {
-  margin-top: 55px;
+  margin-top: 15px;
   padding-left: 0px !important;
   padding-right: 0px !important;
   background-color: @oc-white;
@@ -84,6 +85,7 @@
 .scenario-article-narrative {
   font-size: 17px;
   color: #444;
+  .make-md-column(10.8);
 }
 
 .scenario-article-narrative-wrapper {
@@ -94,6 +96,7 @@
   padding-left: 10px;
   background-color: @oc-white;
   display: inline-block;
+  margin-bottom: 20px;
 }
 
 .scenario-article-header {
@@ -141,10 +144,13 @@
 .scenario-article-timestamp { margin-left: 40px;}
 
 .scenario-article-meta {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 25px;
-  padding-bottom: 35px;
+  .container-fluid();
+  background-color: @oc-white;
+}
+
+.scenario-article-meta > div {
+  padding-bottom: 20px;
+  background-color: @oc-white;
 }
 
 .scenario-article-check-icon {
@@ -153,5 +159,25 @@
 
 .scenario-ast-wrapper {
   border-top: 1px solid @oc-meta-grey;
+  padding-top: 8px;
+  margin-top: 25px;
+}
+
+.scenario-article-copyright {
+  color: rgb(153, 153, 153);
   padding-top: 5px;
+  padding-bottom: 5px;
+  .make-lg-column(12);
+}
+
+.oc-create-edit-preview-btn-wrapper {
+  .make-sm-column(4);
+  .make-sm-column-offset(4);
+  .make-xs-column(8);
+  .make-xs-column-offset(2);
+}
+
+.scenario-article-narrative-title {
+  font-size: 18px;
+  .make-md-column(1.2);
 }

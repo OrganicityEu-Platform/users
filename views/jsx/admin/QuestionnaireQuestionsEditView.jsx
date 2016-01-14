@@ -57,6 +57,7 @@ var QuestionnaireQuestionsEditView = React.createClass({
             disabled={this.state.questions.length <= 1 ? 'disabled' : ''}> - </button>
         </div>
         <div className="row">
+
           {(() => {
             return this.state.questions.map((q, index) => {
               return (
@@ -105,6 +106,7 @@ var QuestionnaireQuestionsEditView = React.createClass({
             });
           })()}
         </div>
+        
       </div>
     );
   }

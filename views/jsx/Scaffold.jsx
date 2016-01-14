@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
-import { Nav, Navbar, NavItem, DropdownButton, MenuItem, CollapsibleNav } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, DropdownButton, NavDropdown, MenuItem, CollapsibleNav } from 'react-bootstrap';
 import { NavItemLink, ButtonLink, ListGroupItemLink } from 'react-router-bootstrap';
 import ReactMixin          from 'react-mixin';
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
@@ -11,7 +11,8 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
-import Signup from './auth/Signup.jsx';
+import Signup              from './auth/Signup.jsx';
+import CookiePrompt        from './CookiePrompt.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -38,6 +39,18 @@ var Scaffold = React.createClass({
         }
       }
     });
+    $(document).ready(function() {
+      var movementStrength = 11;
+      var height = movementStrength / $(window).height();
+      var width = movementStrength / $(window).width();
+      $("#top").mousemove(function(e){
+        var pageX = e.pageX - ($(window).width() / 2);
+        var pageY = e.pageY - ($(window).height() / 2);
+        var newvalueX = width * pageX * -1 - 25;
+        var newvalueY = height * pageY * -1 - 50;
+        $('#top').css("background-position", newvalueX+"px     "+newvalueY+"px");
+      });
+    });
   },
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
@@ -57,16 +70,19 @@ var Scaffold = React.createClass({
 
     var router;
     if (this.state.initialAjax) {
-      router = (<RouteHandler
-        onLogin={this.onLogin}
-        onLogout={this.onLogout}
-        currentUser={this.state.currentUser} />);
+      router = (
+        <RouteHandler
+          onLogin={this.onLogin}
+          onLogout={this.onLogout}
+          currentUser={this.state.currentUser} />
+      );
     } else {
       //console.log('Render initial scaffold');
     }
 
     var linksLeft = [];
     var linksRight = [];
+    var adminLinks = [];
 
     linksLeft.push(
       <NavItemLink
@@ -82,24 +98,38 @@ var Scaffold = React.createClass({
     );
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
-        linksRight.push(
+        adminLinks.push(
           <NavItemLink
             key="users"
+            className="dropdown-items"
             to="admin_userList">Users</NavItemLink>
         );
-        linksRight.push(
+        adminLinks.push(
           <NavItemLink
             key="questionnaire"
+            className="dropdown-items"
             to="admin_questionnaire">Questionnaire</NavItemLink>
         );
-        linksRight.push(
+        adminLinks.push(
           <NavItemLink
             key="sysinfo"
-            to="sysinfo" data-about>About</NavItemLink>
+            className="dropdown-items"
+            to="sysinfo"
+            data-about>About</NavItemLink>
+        );
+        linksRight.push(
+          <DropdownButton
+            className="oc-admin-links"
+            title="admin">
+            {adminLinks}
+          </DropdownButton>
         );
       }
       linksRight.push(
-        <NavItemLink key="profile" to="profile">Profile</NavItemLink>
+        <NavItemLink
+          key="profile"
+          className="nav-profile-btn"
+          to="profile">profile</NavItemLink>
       );
       linksRight.push(
         <NavItemLink
@@ -112,37 +142,46 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="login"
           to="login"
-          className="nav-login-btn">login</NavItemLink>
+          className="nav-login-btn">
+          log in
+        </NavItemLink>
       );
       linksRight.push(
         <NavItemLink
           key="signup"
           to="signup"
-          className="nav-signup-btn">signup</NavItemLink>
+          className="nav-signup-btn">register</NavItemLink>
       );
     }
     return (
-      <div className="container oc-page-wrapper" id="top">
-        <div className="row">
-          <Navbar brand={<Link to="home"><img src={ui.asset('static/img/oc_logo.png')}/></Link>} toggleNavKey={0}>
-            <CollapsibleNav eventKey={0}>
-              <span className="oc-left-links-wrapper">
-                <Nav navbar>
-                  {linksLeft}
+      <div className="container oc-page-wrapper">
+        <div className="row oc-navbar-wrapper">
+          <div className="col-lg-8 col-lg-offset-2">
+            <Navbar
+              brand={
+                <Link to="home">
+                  <img src={ui.asset('static/img/oc-nav-header.png')}/>
+                </Link>
+              }
+              toggleNavKey={0}>
+              <CollapsibleNav eventKey={0}>
+                <span className="oc-left-links-wrapper">
+                  <Nav navbar>
+                    {linksLeft}
+                  </Nav>
+                </span>
+                <Nav navbar right>
+                  {linksRight}
                 </Nav>
-              </span>
-
-              <Nav navbar right>
-                {linksRight}
-              </Nav>
-            </CollapsibleNav>
-          </Navbar>
+              </CollapsibleNav>
+            </Navbar>
+          </div>
         </div>
         <FlashQueue.Queue messages={this.props.messages}/>
-         {router}
+        {router}
+        <CookiePrompt />
         <div className="oc-footers">
-          <FooterLarge/>
-          <FooterSmall currentUser={this.state.currentUser} />
+          <FooterLarge currentUser={this.state.currentUser}/>
         </div>
       </div>
     );

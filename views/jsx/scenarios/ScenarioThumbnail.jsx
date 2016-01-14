@@ -56,7 +56,10 @@ var ScenarioThumbnail = React.createClass({
               </h3>
               <span className="scenario-thumbnail-publisher-wrapper">
                 <span className="meta">Posted by: </span>
-                <span className="scenario-thumbnail-publisher"><UserAvatar uuid={this.props.scenario.creator} /></span>
+                <span className="scenario-thumbnail-publisher">
+                  <UserAvatar uuid={this.props.scenario.creator}
+                    name={this.props.scenario.creatorName} />
+                </span>
               </span>
             </header>
             <p className="scenario-thumbnail-summary">

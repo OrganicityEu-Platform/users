@@ -46,7 +46,6 @@ var api_routes = {
   'users'                      : prefixes.users + '/?',
   'user_info'                  : prefixes.users + '/info/:uuid/?',
   'user_by_uuid'               : prefixes.users + '/:uuid/?',
-  'user_info'                  : prefixes.users + '/:uuid/info/?',
   'user_thumbnail'             : prefixes.users + '/:uuid/thumbnail/?',
   'disconnect_local'           : prefixes.users + '/:uuid/unlink/local?',
   'disconnect_facebook'        : prefixes.users + '/:uuid/unlink/facebook?',

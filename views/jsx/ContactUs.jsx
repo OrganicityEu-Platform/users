@@ -118,8 +118,7 @@ var myContactForm = React.createClass({
     if (typeof this.props.currentUser == 'undefined')
     {
       return (<div>
-          <h4>Contact Us</h4>
-          <a href={'mailto:' + Contact.mailAddress}>
+          <a className="white" href={'mailto:' + Contact.mailAddress}>
             {Contact.mailAddress}
           </a>
         </div>);
@@ -141,29 +140,22 @@ var myContactForm = React.createClass({
 
     return (
       <div>
-        <h4>Contact Us</h4>
-        <form className="form-horizontal">
+        <form className="form">
           {errorMessage}
           <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              name="address"
-              placeholder="Your Email Address"
-              value={this.getMailAddress()}
-              id="address"
-              onChange={this.addressChanged}
-              disabled={this.isLoading() ? 'disabled' : ''}
-            />
+            <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just send us a message below.</span>
+            <p>You can also reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>
+                {Contact.mailAddress}
+              </a></p>
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
 
           <div className="form-group">
             <textarea
-              className="form-control"
+              className="form-control oc-input-extra"
               name="message"
-              id="message"
+              id="oc-contact-message"
               placeholder="Your Message"
               onChange={this.messageChanged}
               disabled={this.isLoading() ? 'disabled' : ''}
@@ -173,12 +165,14 @@ var myContactForm = React.createClass({
           </div>
 
           <div className="form-group">
-            <button type="button" className="btn btn-default"
-              onClick={this.submitForm}
-              disabled={this.isLoading() ? 'disabled' : ''}
-            >
-              Submit
-            </button>
+            <div className="oc-contact-submit-btn-wrapper">
+              <button type="button" className="oc-button btn-default"
+                onClick={this.submitForm}
+                disabled={this.isLoading() ? 'disabled' : ''}
+              >
+                SEND
+              </button>
+            </div>
         </div>
 
         </form>
@@ -188,4 +182,3 @@ var myContactForm = React.createClass({
 });
 
 export default validation(strategy)(myContactForm);
-

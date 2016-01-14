@@ -6,8 +6,10 @@ import HomeViewFooter from './HomeViewFooter.jsx';
 var HomeView = React.createClass({
   render : function() {
     return (
-        <div className="row">
-          <HomeViewHeader />
+        <div>
+          <div className="row">
+            <HomeViewHeader />
+          </div>
           <HomeViewSection />
           <HomeViewFooter />
         </div>
