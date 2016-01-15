@@ -1,10 +1,6 @@
-// Find uuid of logged in user:
-// In a browser, type:
+// Browser:
 // view-source:http://localhost:8080/organicity-scenario-tool/api/v1/auth/currentUser
-//
-// Import reports:
-// Copy files (entire "101reports" subfolder) to tmp
-// In a shell, type:
+// Shell:
 // cd organicity/node-scenario-tool/scripts/101reports
 // node import-reports-csv.js <uuid> reports.csv
 
@@ -81,10 +77,11 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.abstract = ellipsis(data[i][10], ReportConfig.max.abstract - 5);
 
     // Import thumbnail
-    s.thumbnail = 'tmp/101reports/600px/' + i + '_600px.jpg';
+    s.thumbnail = 'tmp/600px/' + i + '_600px.jpg';
 
-    // Import cover
-    s.image = 'tmp/101reports/covers/' + i + '.cover.jpg';
+    // Import test images
+    var idx = (i % 8) + 1;
+    s.image = 'tmp/101reports/1140_' + idx + '.jpg';
 
     var report = new Report(s);
     report.save(function(err) {
