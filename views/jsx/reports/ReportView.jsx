@@ -58,7 +58,6 @@ var ReportView = React.createClass({
               <ScenarioEditButton scenario={this.state}/>
               <ScenarioDeleteButton scenario={this.state}/>
               */}
-              Eval<br/>Edit<br/>Delete
             </div>
           </div>
         </div>
