@@ -150,7 +150,7 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="signup"
           to="signup"
-          className="nav-signup-btn">register</NavItemLink>
+          className="nav-signup-btn">sign up</NavItemLink>
       );
     }
     return (

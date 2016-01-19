@@ -83,7 +83,7 @@ var Signup = React.createClass({
       <form>
         <div className="row">
           <div className="oc-signup-wrapper col-sm-4 col-sm-offset-4">
-            <h1 className="oc-pink oc-login-signup-title">Signup</h1>
+            <h1 className="oc-pink oc-login-signup-title">Sign up</h1>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>
@@ -120,7 +120,7 @@ var Signup = React.createClass({
             <button type="submit"
               className="oc-button"
               disabled={this.isLoading() ? 'disabled' : ''}
-              onClick={this.handleSubmit}>Signup</button>
+              onClick={this.handleSubmit}>Sign up</button>
             <div className="oc-signup-help-wrapper">
               <span className="signup-help">Already have an account? <Link to="login">Login</Link></span>
             </div>
