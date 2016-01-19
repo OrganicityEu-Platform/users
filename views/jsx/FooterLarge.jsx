@@ -12,12 +12,18 @@ var flickr = "https://www.flickr.com/photos/alexandra_instituttet/"; // fa fa-fl
 var slideshare = "http://www.slideshare.net/AlexandraInstituttet"; // fa fa-slideshare
 var youtube = "https://www.youtube.com/user/alexandrainstituttet"; // fa fa-youtube-play
 
+var organicityLink = "http://organicity.eu/";
+
 var FooterLarge = React.createClass({
+  mixins: [Router.Navigation],
+  clickHandler: function () {
+    this.transitionTo('signup');
+  },
   render: function() {
     return (
       <div className="row oc-footer-large">
-        <div className="col-lg-8 col-lg-offset-2">
-          <div className="col-lg-3 white oc-footer-col">
+        <div className="oc-macro-content oc-footer-inner-wrapper">
+          <div className="col-lg-3 white oc-footer-col" id="follow-col">
             <p className="oc-footer-title">Follow us</p>
             <span className="oc-social-links-wrapper">
               <a href={twitter}>
@@ -37,19 +43,10 @@ var FooterLarge = React.createClass({
             </span>
 
           </div>
-          <div className="col-lg-4 white oc-footer-col">
+          <div className="col-lg-4 white oc-footer-col" id="resources-col">
             <p className="oc-footer-title">Resouces</p>
-            <span>OrganiCity.eu</span>
-            <span>Partners</span>
-            <span>
-              Site map
-            </span>
-            <span>
-              Privacy policy
-            </span>
-            <span>Press</span>
-            <span>Blog</span>
-            <span>
+            <span><a className="white" href={organicityLink}>OrganiCity.eu</a></span>
+            <span onClick={this.clickHandler} className="oc-link">
               Sign up for updates
             </span>
           </div>
@@ -60,7 +57,7 @@ var FooterLarge = React.createClass({
             <ContactUs currentUser={this.props.currentUser} />
           </div>
         </div>
-        <div className="col-lg-12 white">
+        <div className="white oc-footer-copy-right-wrapper">
           <span>Copyright <i className="fa fa-copyright"></i> OrganiCity 2015</span>
         </div>
       </div>

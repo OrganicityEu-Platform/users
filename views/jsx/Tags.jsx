@@ -1,4 +1,5 @@
 import React from 'react';
+
 var ReactTags = require('react-tag-input').WithContext;
 
 var Tags = React.createClass({

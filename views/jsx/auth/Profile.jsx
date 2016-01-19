@@ -334,8 +334,8 @@ var Profile = React.createClass({
     }
 
     return (
-      <div className="container oc-form-group-view">
-        <div className="row">
+      <div className="row oc-form-group-view">
+        <div className="oc-macro-content">
           <h1 className="oc-white">Profile</h1>
           <form className="form-horizontal">
 
@@ -421,7 +421,7 @@ var Profile = React.createClass({
             {localAccount}
 
             <div className="form-group">
-              <div className="col-md-2 col-md-offset-5">
+              <div className="oc-save-profile-btn-wrapper">
                 <button
                   type="button"
                   className="oc-button"

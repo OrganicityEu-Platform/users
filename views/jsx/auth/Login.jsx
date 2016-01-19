@@ -75,8 +75,9 @@ var LocalLogin = React.createClass({
 
     return (
       <form>
-        <div className="row oc-login-wrapper">
-          <div className="col-sm-6 col-sm-offset-3">
+        <div className="row">
+          <div className="oc-login-wrapper col-sm-4 col-sm-offset-4">
+            <h1 className="oc-pink oc-login-signup-title">Login</h1>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>

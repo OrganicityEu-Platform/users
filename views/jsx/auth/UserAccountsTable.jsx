@@ -49,7 +49,7 @@ var UserAccountsTable = React.createClass({
   },
   render: function() {
     if (this.isLoading() || this.state == null) {
-      return <div>Loading...</div>;
+      return this.renderLoading();
     }
     var accounts = [];
     for (var account in this.accountFields) {

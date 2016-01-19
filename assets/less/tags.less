@@ -1,0 +1,73 @@
+@import "oc_colors.less";
+@import "oc_fonts.less";
+@import "oc_input.less";
+
+
+.oc-tag-item {
+  display: inline-block;
+  background-color: none;
+  border: 1px solid @oc-dark-grey;
+  text-align: center;
+  padding: 3px 12px 3px 3px;
+  margin-right: 4px;
+  cursor: pointer;
+  color: @oc-dark-grey;
+  border-radius: 2em;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.oc-tag-item-selected {
+  background-color: @oc-dark-grey;
+  color: @oc-white;
+}
+
+.oc-tag-icon {
+  height: 30px;
+  width: 30px;
+  float: left;
+  margin-right: 15px;
+  background-repeat: no-repeat;
+}
+
+#scenarioListSearchFormActors_tag,
+#createEditSearchFormActors_tag {
+  background-image: url('../../static/img/generic_actor_icon.svg');
+}
+
+#scenarioListSearchFormSectors_tag,
+#createEditSearchFormSectors_tag {
+  background-image: url('../../static/img/generic_sector_icon.svg');
+}
+
+#scenarioListSearchFormDevices_tag,
+#createEditSearchFormDevices_tag {
+  background-image: url('../../static/img/generic_tool_icon.svg');
+}
+
+.oc-tag-item-text {
+  display: inline-block;
+  margin-top: 7px
+}
+
+.oc-tag-item > img {
+  .oc-tag-icon;
+}
+
+.oc-tag-item > span {
+  font-family: 'Cooper Hewitt Semibold';
+}
+
+.oc-tag-close {
+  margin-left: 15px;
+  font-size: 16px;
+}
+
+.oc-search-box {
+  background-color: @oc-dark-grey;
+}
+
+.active.oc-tag-item {
+  background: @oc-white;
+  color: @oc-dark-grey;
+}

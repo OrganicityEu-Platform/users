@@ -1,5 +1,7 @@
 /* Footers */
 
+@import "../../node_modules/bootstrap/less/bootstrap.less";
+
 @import "oc_colors.less";
 @import "oc_fonts.less";
 
@@ -11,12 +13,17 @@
   margin-top: 155px;
 }
 
-#oc-footer-contact-col {
-  padding-right: 0;
-}
+
 
 .oc-footer-large-social-links {
   font-size: 30px;
+}
+
+.oc-footer-copy-right-wrapper {
+  .make-lg-column(12);
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 8px;
 }
 
 .oc-logo-text {
@@ -53,8 +60,23 @@
 }
 
 .oc-footer-col {
-  padding-left: 0;
   text-align: left;
+}
+
+#follow-col {
+
+}
+
+#resources-col {
+
+}
+
+#oc-footer-contact-col {
+
+}
+
+.oc-footer-inner-wrapper {
+  padding: 0 !important;
 }
 
 .oc-footer-col > p {
