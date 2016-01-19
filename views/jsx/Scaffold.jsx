@@ -88,19 +88,22 @@ var Scaffold = React.createClass({
       <NavItemLink
         key="scenarioList"
         to="scenarioList"
-        className="navbar-explore-btn">EXPLORE</NavItemLink>
+        className="navbar-button"
+        id="navbar-explore-btn">EXPLORE</NavItemLink>
     );
     linksLeft.push(
       <NavItemLink
         key="scenarioCreate"
         to="scenarioCreate"
-        className="navbar-create-btn">CREATE</NavItemLink>
+        className="navbar-button"
+        id="navbar-create-btn">CREATE</NavItemLink>
     );
     linksLeft.push(
       <NavItemLink
         key="reportList"
         to="reportList"
-        className="navbar-reports-btn">REPORTS</NavItemLink>
+        className="navbar-button"
+        id="navbar-reports-btn">REPORTS</NavItemLink>
     );
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
