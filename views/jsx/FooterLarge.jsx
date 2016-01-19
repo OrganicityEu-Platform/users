@@ -13,6 +13,8 @@ var slideshare = "http://www.slideshare.net/AlexandraInstituttet"; // fa fa-slid
 var youtube = "https://www.youtube.com/user/alexandrainstituttet"; // fa fa-youtube-play
 
 var organicityLink = "http://organicity.eu/";
+var organicityBlog = "http://organicity.eu/blog/";
+var organicityEvents = "http://organicity.eu/events/";
 
 var FooterLarge = React.createClass({
   mixins: [Router.Navigation],
@@ -49,6 +51,8 @@ var FooterLarge = React.createClass({
             <span onClick={this.clickHandler} className="oc-link">
               Sign up for updates
             </span>
+            <span><a className="white" href={organicityBlog}>Blog</a></span>
+            <span><a className="white" href={organicityEvents}>Events</a></span>
           </div>
           <div className="col-lg-5 white oc-footer-col" id="oc-footer-contact-col">
             <p className="oc-footer-title">
