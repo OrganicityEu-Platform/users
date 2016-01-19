@@ -11,7 +11,6 @@ import TagField           from '../form-components/TagField.jsx';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
 import Tags               from '../Tags.jsx';
-import Loading            from '../Loading.jsx';
 
 import { Accordion, Panel } from 'react-bootstrap';
 
@@ -38,7 +37,7 @@ var ReportList = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.loading();
+    // this.loading();
     this.reload();
   },
   buildQueryUrl: function() {
@@ -76,7 +75,7 @@ var ReportList = React.createClass({
     if (refresh) {
       this.setState({ refresh : true });
     }
-    this.loading();
+    // this.loading();
     var url = this.buildQueryUrl();
     $.ajax(url, {
       dataType: 'json',
@@ -96,35 +95,43 @@ var ReportList = React.createClass({
   handleUpdatedAreas: function(areas) {
     this.state.search.areas = areas;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedDomains: function(domains) {
     this.state.search.domains = domains;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedOrganizations: function(organizations) {
     this.state.search.organizations = organizations;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedOrgtypes: function(orgtypes) {
     this.state.search.orgtypes = orgtypes;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedTypes: function(types) {
     this.state.search.types = types;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedApproaches: function(approaches) {
     this.state.search.approaches = approaches;
     this.setState(this.state);
+    this.reload(true);
   },
   handleUpdatedTags: function(tags) {
     this.state.search.tags = tags;
     this.setState(this.state);
+    this.reload(true);
   },
 
   handleUpdatedSearchTerm: function(evt) {
     this.state.search.q = evt.target.value;
     this.setState(this.state);
+    this.reload(true);
   },
   handleSearch : function(evt) {
     //console.log('handleSearch');
@@ -145,22 +152,26 @@ var ReportList = React.createClass({
     this.state.sortBy = nextProps.query.sortBy;
     this.state.sortDir = nextProps.query.sortDir;
     this.setState(this.state);
-    this.reload(true);
+    // this.reload(true);
   },
   render: function() {
 
-    if (this.isLoading()) {
-      return (<Loading message="Loading reports. Please wait." size="2"/>);
-    }
+    // if (this.isLoading()) {
+    //   return (<Loading message="Loading reports. Please wait." size="2"/>);
+    // }
 
     var counter = null;
     if (this.state.search.q) {
       counter = (
-        <span>Your search yields to {this.state.reports.length} reports!</span>
+        <h2 className="oc-white">
+          Your search yields to {this.state.reports.length} reports!
+        </h2>
       );
     } else {
       counter = (
-        <span>Here you can explore {this.state.reportCounter} reports!</span>
+        <h2 className="oc-white">
+          Here you can explore {this.state.reportCounter} reports!
+        </h2>
       );
     }
 
