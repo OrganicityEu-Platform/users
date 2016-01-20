@@ -195,32 +195,46 @@ var ReportList = React.createClass({
                 </div>
 
                 </div>
+
               <Accordion>
-                <Panel header="filters" eventKey="1" className="oc-filters-panel">
+                <Panel
+                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  eventKey="1"
+                  className="oc-filters-panel">
+                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many reports? Narrow your search by using the tags below.</div>
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormAreas"
                       tags={this.state.search.areas}
-                      placeholder="Areas"
-                      onChange={this.handleUpdatedAreas} />
+                      placeholder="Add area tags"
+                      onChange={this.handleUpdatedAreas}
+                      data={['Global', 'UK', 'DK', 'BE', 'NL', 'BR', 'Copenhagen (DK)', 'EU', 'London (UK)', 'Barcelona (ES)', 'Boston (US)', 'Amsterdam (NL)']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
-
+                  
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormDomains"
                       tags={this.state.search.domains}
-                      placeholder="Domains"
-                      onChange={this.handleUpdatedDomains} />
+                      placeholder="Add domain tags"
+                      onChange={this.handleUpdatedDomains}
+                      data={['Energy', 'Environment', 'Resources', 'Mobility', 'Living', 'ICT']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
-
+                  
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormOrganizations"
                       tags={this.state.search.organizations}
-                      placeholder="Organizations"
-                      onChange={this.handleUpdatedOrganizations} />
+                      placeholder="Add organization tags"
+                      onChange={this.handleUpdatedOrganizations}
+                      data={['UK Department for Business', 'Innovation & Skills', 'BIS', 'City of London', 'European Parliament', 'European Commission', 'The Climate Group', 'EUROCITIES', 'URBACT']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
 
@@ -228,37 +242,50 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormOrgtypes"
                       tags={this.state.search.orgtypes}
-                      placeholder="Organization Types"
-                      onChange={this.handleUpdatedOrgtypes} />
+                      placeholder="Add organization type tags"
+                      onChange={this.handleUpdatedOrgtypes}
+                      data={['National public institution', 'Universities', 'Non-profit organisations', 'NGOs', 'Foundations', 'Research centres', 'Charities']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
-
+                  
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormTypes"
                       tags={this.state.search.types}
-                      placeholder="Report types"
-                      onChange={this.handleUpdatedTypes} />
+                      placeholder="Add report type tags"
+                      onChange={this.handleUpdatedTypes}
+                      data={['Research paper', 'Background paper', 'Catalogue', 'Summit report', 'Scoping paper', 'White paper', 'Brochure', 'Survey']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
-
+                  
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormApproaches"
                       tags={this.state.search.approaches}
-                      placeholder="Approaches"
-                      onChange={this.handleUpdatedApproaches} />
+                      placeholder="Add approach tags"
+                      onChange={this.handleUpdatedApproaches}
+                      data={['Vertical', 'Holistic']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
-
+                  
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormTags"
                       tags={this.state.search.tags}
-                      placeholder="Tags"
-                      onChange={this.handleUpdatedTags} />
+                      placeholder="Add report tags"
+                      onChange={this.handleUpdatedTags}
+                      data={['Smart', 'Water', 'Market', 'Management', 'Energy', 'Cities', 'City', 'Transport', 'Waste', 'Technology', 'Data']}
+                      suggestionsLabel="suggestions"
+                      />
                   </div>
                   &nbsp;
+                  
                 </Panel>
               </Accordion>
             </form>
