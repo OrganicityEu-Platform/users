@@ -12,7 +12,7 @@ var uuid         = require('node-uuid');
 var handleUpload = require('../../../util/handleUpload');
 
 var validate     = require('express-validation');
-// TODO ???  var ReportJoi  = require('../../../models/joi/report.js');
+var ReportJoi    = require('../../../models/joi/report.js');
 
 var configAuth   = require('../../../config/auth.js');
 
@@ -361,8 +361,7 @@ module.exports = function(router, passport) {
     return processQueryByReportUUID(req.params.uuid, req, res);
   });
 
-  // TODO ??? router.post(api.route('report_list'), [isLoggedIn, validate(ScenarioJoi.createOrUpdate)], function(req, res, next) {
-  router.post(api.route('report_list'), [isLoggedIn], function(req, res, next) {
+  router.post(api.route('report_list'), [isLoggedIn, validate(ReportJoi.createOrUpdate)], function(req, res, next) {
     if (req.body.thumbnail && !req.body.image) {
       var err = new Error('Image not given');
       err.status = HttpStatus.BAD_REQUEST;
@@ -405,8 +404,7 @@ module.exports = function(router, passport) {
     });
   });
 
-  // TODO ???   router.put(api.route('report_by_uuid'), [isLoggedIn, validate(ReportJoi.createOrUpdate)],
-  router.put(api.route('report_by_uuid'), [isLoggedIn],
+  router.put(api.route('report_by_uuid'), [isLoggedIn, validate(ReportJoi.createOrUpdate)],
     function(req, res, next) {
 
       if (req.body.thumbnail && !req.body.image) {

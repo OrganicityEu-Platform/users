@@ -1,6 +1,6 @@
 module.exports = {
   max : {
     title: 75,
-    abstract: 5000
+    abstract: 50000
   }
 };
