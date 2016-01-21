@@ -72,7 +72,7 @@ var ScenarioEvalView = React.createClass({
       method: 'POST',
       dataType: 'json',
       data: this.state.evaluation,
-      error: this.loadingError(url, 'Error while submitting questionnaire'),
+      error: this.loadingError(url, 'Please, fill in all the answers before submitting.'),
       success: () => {
         this.loaded({ submitted : true });
       }

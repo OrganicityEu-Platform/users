@@ -130,6 +130,18 @@ module.exports = function(router, passport) {
           .status(HttpStatus.FORBIDDEN)
           .send('Evaluation was already flagged as submitted, can\'t be changed afterwards.');
       }
+      if (req.user === undefined) {
+        evaluation.user = 'Anonymous';
+      } else {
+        evaluation.user = req.user.uuid;
+      }
+      evaluation.timestamp = new Date().toISOString();
+      if (isEvaluationComplete(evaluation) === false) {
+        return res
+          .status(HttpStatus.PARTIAL_CONTENT)
+          .send('You have to complete all questions of the evaluations.');
+      }
+
       evaluationUpdateFields.forEach(function(field) {
         evaluation[field] = req.body[field];
       });
@@ -140,6 +152,7 @@ module.exports = function(router, passport) {
           console.log(err);
           return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
         }
+        calculateScore(evaluation.uuid);
         return res.status(HttpStatus.OK).send(evaluation.toObject());
       });
     });
@@ -161,7 +174,7 @@ function calculateScore(uuid) {
   console.log('calculateScore: ', uuid);
 
   if (uuid === undefined) {
-    return -1.0;
+    return 0;
   }
   var scenarioUuid = uuid;
   var filter = {};
@@ -170,30 +183,26 @@ function calculateScore(uuid) {
   }
   var query = Evaluation.find(filter);
   query.exec(function(err, evaluations) {
-
     console.log('evaluations', evaluations);
-
     if (err) {
       console.log(err);
-      return -1.0;
+      return 0;
     }
     var score = processEvaluations(evaluations);
-
     console.log('score: ', score);
-
     Scenario.find({ uuid : scenarioUuid }).sort({ version : -1 }).limit(1).exec(function(err, scenarios) {
       if (err) {
         console.log(err);
-        return -1.0;
+        return 0;
       }
       if (!scenarios || scenarios.length === 0) {
-        return -1.0;
+        return 0;
       }
       scenarios[0].score = score;
       scenarios[0].save(function(err) {
         if (err) {
           console.log(err);
-          return -1.0;
+          return 0;
         }
         return;
       });
@@ -234,20 +243,17 @@ function processEvaluations(evaluations) {
     } else if (noTechTotal === noTechAnswers) { //pure non-tech evaluation
       numOfNonTechEvaluations++;
       nonTechScoreStructure = processEvaluation(evaluations[evaluation], false, nonTechScoreStructure);
-
-    } else { //incomplete evaluation
+    } else {
+      //incomplete evaluation- do nonthing....
     }
   }
   var techTotalScore = totalScore(techScoreStructure, numOfTechEvaluations);
   var nonTechTotalScore = totalScore(nonTechScoreStructure, numOfNonTechEvaluations);
-
   var scores = {
     tech: techTotalScore.toFixed(2),
     noTech: nonTechTotalScore.toFixed(2),
     numOfEvaluations: numOfTechEvaluations + numOfNonTechEvaluations
   };
-
-  //console.log(JSON.stringify(scores));
   return scores;
 }
 
