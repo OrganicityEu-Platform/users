@@ -22,7 +22,7 @@ var SectorSelector = React.createClass({
     var sector = event.currentTarget.dataset.sector;
     //console.log(sector);
 
-    if (itemClass.indexOf('sector-item-selected') >= 0) {
+    if (itemClass.indexOf('oc-tag-item-selected') >= 0) {
       //console.log('deselected it');
       var toRemove = selectedSectors.indexOf(sector);
       if (toRemove > -1) {

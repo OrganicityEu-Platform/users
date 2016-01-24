@@ -144,7 +144,7 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">logout</NavItemLink>
+          className="nav-logout-btn">log out</NavItemLink>
       );
     } else {
       linksRight.push(
