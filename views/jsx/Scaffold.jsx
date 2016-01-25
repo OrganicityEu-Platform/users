@@ -98,13 +98,7 @@ var Scaffold = React.createClass({
         className="navbar-button"
         id="navbar-create-btn">CREATE</NavItemLink>
     );
-    linksLeft.push(
-      <NavItemLink
-        key="reportList"
-        to="reportList"
-        className="navbar-button"
-        id="navbar-reports-btn">REPORTS</NavItemLink>
-    );
+
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
         adminLinks.push(
@@ -125,6 +119,13 @@ var Scaffold = React.createClass({
             className="dropdown-items"
             to="sysinfo"
             data-about>About</NavItemLink>
+        );
+        adminLinks.push(
+          <NavItemLink
+            key="reportList"
+            to="reportList"
+            className="dropdown-items"
+            id="">Reports</NavItemLink>
         );
         linksRight.push(
           <DropdownButton
