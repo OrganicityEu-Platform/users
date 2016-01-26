@@ -117,10 +117,10 @@ var myContactForm = React.createClass({
   render: function() {
     if (typeof this.props.currentUser == 'undefined')
     {
-      return (<div>
-          <a className="white" href={'mailto:' + Contact.mailAddress}>
-            {Contact.mailAddress}
-          </a>
+      return (
+        <div>
+            <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just drop us a mail.</span>
+            <p>You can reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
         </div>);
     }
 
@@ -144,9 +144,7 @@ var myContactForm = React.createClass({
           {errorMessage}
           <div className="form-group">
             <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just send us a message below.</span>
-            <p>You can also reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>
-                {Contact.mailAddress}
-              </a></p>
+            <p>You can also reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
