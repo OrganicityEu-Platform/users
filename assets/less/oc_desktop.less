@@ -104,13 +104,22 @@
   #disqus_thread {
     padding: 5px 55px 0px 55px;
   }
+  .active-link-right {
+    background-color: @oc-magenta !important;
+    color: @oc-white !important;
+  }
+  .nav-profile-btn > a {
+    .active-link-right;
+  }
   .nav-login-btn > a {
     padding: 0px !important;
     margin-top: 15px;
+    .active-link-right;
   }
   .nav-signup-btn > a {
     padding: 0px !important;
     margin-top: 15px;
+    .active-link-right;
   }
   .navbar-right > li {
     padding-left: 10px;
@@ -128,8 +137,8 @@
   .navbar-default .navbar-nav > .active > a:hover,
   .navbar-default .navbar-nav > .active > a:focus {
     border-bottom: 1px solid @oc-white;
-    background-color: @oc-magenta;
+    background-color: @oc-white;
     padding-bottom: 0px;
-    color: @oc-white;
+    color: @oc-magenta;
   }
 }
