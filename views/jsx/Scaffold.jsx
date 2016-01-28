@@ -11,6 +11,8 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
+
+
 import Signup              from './auth/Signup.jsx';
 import CookiePrompt        from './CookiePrompt.jsx';
 
@@ -19,7 +21,7 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Scaffold = React.createClass({
-  mixins : [UserIsLoggedInMixin, UserHasRoleMixin],
+  mixins : [UserIsLoggedInMixin, Router.State, UserHasRoleMixin],
   getInitialState: function() {
     return {
       currentUser : undefined,
@@ -66,9 +68,23 @@ var Scaffold = React.createClass({
       initialAjax: true
     });
   },
+  handleClass: function() {
+    var currentRoute = this.getRoutes()[this.getRoutes().length - 1].name;
+    if (currentRoute != 'home') {
+      return (
+        'container oc-page-wrapper' // set no/new hero here if needed or reposition/animate hero (append className="animate-area")
+      );
+    }else {
+      return (
+        'container oc-page-wrapper'
+      );
+    }
+
+  },
   render : function() {
 
     var router;
+
     if (this.state.initialAjax) {
       router = (
         <RouteHandler
@@ -164,7 +180,7 @@ var Scaffold = React.createClass({
       );
     }
     return (
-      <div className="container oc-page-wrapper">
+      <div className={this.handleClass()}>
         <div className="row oc-navbar-wrapper">
           <div className="col-lg-8 col-lg-offset-2">
             <Navbar
@@ -187,9 +203,12 @@ var Scaffold = React.createClass({
             </Navbar>
           </div>
         </div>
-        <FlashQueue.Queue messages={this.props.messages}/>
-        {router}
-        <CookiePrompt />
+        <div className="oc-inner-page-wrapper">
+          <FlashQueue.Queue messages={this.props.messages}/>
+          {router}
+          <CookiePrompt />
+        </div>
+
         <div className="oc-footers">
           <FooterLarge currentUser={this.state.currentUser}/>
         </div>

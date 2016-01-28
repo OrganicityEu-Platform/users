@@ -696,3 +696,22 @@ and (min-width : 800px) {
 #oc-contact-message::-moz-placeholder {color:#fefefa;font-size: 16px;}
 #oc-contact-message::-webkit-input-placeholder {color:#fefefa;font-size: 16px;}
 #oc-contact-message:-ms-placeholder {color:#fefefa;font-size: 16px;}
+
+@keyframes animatedBackground {
+	from { background-position: center top;}
+	to { background-position: 0 -500px; }
+}
+
+.animate-area	{
+
+    background-position: 0 -500px;
+    -webkit-transition:background-position 1.1s ease-in;
+    -moz-transition:background-position 0.5s ease-in;
+    -o-transition:background-position 1.1s ease-in;
+    transition:background-position 0.5s ease-in;
+	//animation: animatedBackground 1.2s cubic-bezier(.6,.08,.51,.98);
+}
+
+.oc-inner-page-wrapper {
+  min-height: 80vh;
+}

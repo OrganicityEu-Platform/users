@@ -26,6 +26,8 @@ import UploadImage          from '../UploadImage.jsx';
 
 import lang                 from '../../../lang/en.js'
 
+var LocalStorageMixin = require('react-localstorage');
+
 var ScenarioEditView = React.createClass({
   mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin, FlashQueue.Mixin],
   predefinedSectors: [
@@ -76,9 +78,9 @@ var ScenarioEditView = React.createClass({
 
   // if we're not in the editing process already and not editing, creating a new one
   return {
-    title : '',
-    summary : '',
-    narrative : '',
+    title : localStorage.getItem('title') ? localStorage.getItem('title') : '',
+    summary : localStorage.getItem('summary') ? localStorage.getItem('summary') : '',
+    narrative : localStorage.getItem('narrative') ? localStorage.getItem('narrative') : '',
     newSectors : [],
     selectedSectors : [],
     actors : [],
@@ -93,7 +95,14 @@ var ScenarioEditView = React.createClass({
     copyright : undefined,
     btnClickedOnce : false,
   };
+
+
 },
+componentWillUnmount() {
+  console.log('somehting: ' + this.state.title);
+  localStorage.setItem('title', this.state.title);
+},
+
 componentDidMount() {
 
   if (!this.userIsLoggedIn()) {
@@ -156,6 +165,7 @@ handleChangedTitle : function(evt) {
       this.props.validate();
     } else {
       this.props.validate('title');
+      localStorage.setItem('title', this.state.title);
     }
   });
 },
@@ -165,6 +175,7 @@ handleChangedSummary : function(evt) {
       this.props.validate();
     } else {
       this.props.validate('summary');
+      localStorage.setItem('summary', this.state.summary);
     }
   });
 },
@@ -173,6 +184,7 @@ handleChangedNarrative : function(evt) {
     if (this.state.btnClickedOnce) {
       this.props.validate();
     } else {
+      localStorage.setItem('narrative', this.state.narrative);
       this.props.validate('narrative');
     }
   });
@@ -219,6 +231,7 @@ handleChangedDevices : function(devices) {
     }
   });
 },
+
 handleChangedCredit : function(evt) {
   if (evt.target.value === '') {
     this.setState({credit: undefined});
@@ -390,6 +403,22 @@ validateCurrentStep : function(onvalidate, onerror) {
     }
   }
 },
+clearField: function (evt) {
+  switch(evt.target.id) {
+    case 'clear_title':
+        $('#title').val('');
+        //localStorage.removeItem('title');
+        break;
+    case 'clear_summary':
+        $('#summary').val('');
+        //localStorage.removeItem('summary');
+        break;
+    case 'clear_narrative':
+        $('#narrative').val('');
+        //localStorage.removeItem('narrative');
+        break;
+  }
+},
 form : function() {
 
   // return (<SectorEdit onChange={this.handleChangedSectors} sectors={this.state.sectors}/>);
@@ -445,6 +474,17 @@ form : function() {
             </span>
           </label>
           <div className="col-sm-9">
+            {
+              /*
+            <span
+              className="oc-tag-field-clear-tags"
+              onClick={this.clearField}>
+                <i id="clear_title"
+                  className="fa fa-times oc-tag-clear"></i>
+                <span id="clear_title">clear text</span>
+            </span>
+            */
+            }
             <input
               maxLength={ScenarioConfig.max.title}
               type="text"
@@ -469,6 +509,17 @@ form : function() {
           </span>
         </label>
         <div className="col-sm-9">
+          {
+          /*
+          <span
+            className="oc-tag-field-clear-tags"
+            onClick={this.clearField}>
+              <i id="clear_summary"
+                className="fa fa-times oc-tag-clear"></i>
+              <span id="clear_summary">clear text</span>
+          </span>
+          */
+          }
           <textarea
             maxLength={ScenarioConfig.max.summary}
             type="text"
@@ -493,6 +544,17 @@ form : function() {
         </span>
       </label>
       <div className="col-sm-9">
+        {
+        /*
+        <span
+          className="oc-tag-field-clear-tags"
+          onClick={this.clearField}>
+            <i id="clear_narrative"
+              className="fa fa-times oc-tag-clear"></i>
+            <span id="clear_narrative">clear text</span>
+        </span>
+        */
+        }
         <textarea
           maxLength={ScenarioConfig.max.narrative}
           className="oc-input scenario-create-edit-narrative"
