@@ -102,6 +102,7 @@
     "react-bootstrap": "^0.24.2",
     "react-cookie": "^0.4.3",
     "react-disqus-thread": "^0.2.2",
+    "react-localstorage": "^0.2.9",
     "react-mixin": "^1.7.0",
     "react-native": "^0.8.0",
     "react-native-radio-buttons": "^0.5.0",
