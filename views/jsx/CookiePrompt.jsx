@@ -1,9 +1,10 @@
 import React from 'react';
-import cookie from 'react-cookie';
+
+var LocalStorageMixin = require('react-localstorage');
 
 var CookiePrompt = React.createClass ({
   getInitialState: function () {
-    if (cookie.load('showPrompt') === false) {
+    if (localStorage.getItem('showCookePrompt')) {
       return { show : false };
     }else {
       return { show : true };
@@ -11,7 +12,7 @@ var CookiePrompt = React.createClass ({
   },
   clickHandler: function () {
     this.setState( { show : false } );
-    cookie.save('showPrompt', false);
+    localStorage.setItem('showCookePrompt', 0);
   },
   render: function () {
     return (
