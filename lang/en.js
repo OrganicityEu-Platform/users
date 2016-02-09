@@ -17,6 +17,6 @@ module.exports = {
     nameInfo : 'Please tell us your real name or nick name.',
     avatarInfo : 'Please upload an avatar. The file type must be JPEG or PNG with a size of 64x64px.',
     genderInfo : 'Please tell us your gender.',
-    rolesInfo : 'Your assigned roles.'
+    rolesInfo : 'The roles you have in this scenario tool. For example, you could be a moderator.'
   }
 };
