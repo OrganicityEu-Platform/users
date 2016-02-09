@@ -363,14 +363,12 @@ validateCurrentStep : function(onvalidate, onerror) {
         }
 
         if (errorFields.length > 1) {
-          this.flash('danger', errorFields + ' fields are not valid.');
+          this.flash('danger', errorFields + ' fields are not valid.', 10000);
         }
 
         if (errorFields.length === 1) {
-          this.flash('danger', errorFields + ' field is not valid.');
+          this.flash('danger', errorFields + ' field is not valid.', 10000);
         }
-
-
 
         if (onerror) {
           onerror();
