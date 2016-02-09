@@ -9,7 +9,8 @@ var TagField = React.createClass({
       data : this.props.data ? this.props.data : [],
       suggestions : [],
       reset : null,
-      inputLabel : ''
+      inputLabel : '',
+      doEdit : this.props.doEdit ? this.props.doEdit : true
     };
   },
   componentWillReceiveProps : function(props) {
@@ -135,18 +136,23 @@ var TagField = React.createClass({
                 <span className="oc-tag-item-text">
                   {tag}
                 </span>
-                <i
-                  onClick={this.handleClick.bind(this, i)}
-                  className="fa fa-times oc-tag-close"
-                  >
-                </i>
+                {this.state.doEdit ?
+                  <i
+                    onClick={this.handleClick.bind(this, i)}
+                    className="fa fa-times oc-tag-close"
+                    >
+                  </i>:
+                  null
+                }
+
               </div>
             );
           }, this)}
         </div>
         <div>
           <span className="oc-tag-field-label">{this.state.inputLabel}</span>
-          <span onClick={this.clearTags} className="oc-tag-field-clear-tags"><i className="fa fa-times oc-tag-clear"></i>clear tags</span>
+          {this.state.doEdit ? <span onClick={this.clearTags} className="oc-tag-field-clear-tags"><i className="fa fa-times oc-tag-clear"></i>clear tags</span> : null}
+
           <input
             type="text"
             className="oc-input-extra oc-tag-input"
