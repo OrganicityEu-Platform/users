@@ -30,12 +30,23 @@ var ScenarioDeleteButton = React.createClass({
     }
   },
   render: function() {
+    console.log(this.props);
     if (this.userHasRole('admin') || this.userIsCreator(this.props.scenario)) {
-      return (
-        <button className="oc-button"
-          disabled={this.isLoading() ? 'loading' : ''}
-          onClick={this.handleClick}>DELETE</button>
-      );
+      var version = this.props.scenario.version;
+      if(version > 1) {
+        return (
+          <button className="oc-button"
+            disabled={this.isLoading() ? 'loading' : ''}
+            onClick={this.handleClick}>UNDO TO PREVIOUS VERSION</button>
+      //onClick={this.handleClick}>UNDO TO VERSION {version-1}</button>
+        );
+      } else {
+        return (
+          <button className="oc-button"
+            disabled={this.isLoading() ? 'loading' : ''}
+            onClick={this.handleClick}>DELETE</button>
+        );
+      }
     }
     return null;
   }

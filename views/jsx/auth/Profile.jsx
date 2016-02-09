@@ -328,9 +328,34 @@ var Profile = React.createClass({
       );
     }
 
-    var roleIndicator = null;
-    if (this.userHasRole('admin')) {
-      roleIndicator = (<ValidationIndicator valid={this.props.isValid('roles')}/>);
+    var roles = null;
+
+    if(this.userHasRole('admin') || this.state.profile.roles.length > 0) {
+
+      // Only show the indicator, if admin
+      var roleIndicator = null;
+      if (this.userHasRole('admin')) {
+        roleIndicator = (<ValidationIndicator valid={this.props.isValid('roles')}/>);
+      }
+
+      roles = (
+        <div className="form-group oc-form-group">
+          <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
+            <span className="oc-form-group-info">
+              {lang.Profile.rolesInfo}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <TagField
+              disabled={this.userHasRole('admin') ? false : true}
+              key={this.state.profile.uuid + '_roles'}
+              tags={this.state.profile.roles}
+              loading={this.isLoading()}
+              onChange={this.handleChangedRoles} />
+            {errorMessageRoles}
+          </div>
+        </div>
+      );
     }
 
     return (
@@ -401,23 +426,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-form-group">
-              <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
-                <span className="oc-form-group-info">
-                  {lang.Profile.rolesInfo}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <TagField
-                  disabled={this.userHasRole('admin') ? false : true}
-                  key={this.state.profile.uuid + '_roles'}
-                  tags={this.state.profile.roles}
-                  loading={this.isLoading()}
-                  onChange={this.handleChangedRoles} />
-                {errorMessageRoles}
-              </div>
-            </div>
-
+            {roles}
             {localAccount}
 
             <div className="form-group">

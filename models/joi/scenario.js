@@ -29,7 +29,7 @@ scenario.preview = {
   narrative       : joiNarrative,
   thumbnail       : Joi.string().regex(/^uploads\/|^tmp\//),
   image           : Joi.string().regex(/^uploads\/|^tmp\//),
-  selectedSectors : Joi.array().min(1).label('Sectors').items(Joi.string()),
+  selectedSectors : Joi.array().min(1).label('Sectors').items(Joi.string())
 };
 
 scenario.submit = {
