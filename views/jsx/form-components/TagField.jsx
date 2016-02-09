@@ -10,7 +10,7 @@ var TagField = React.createClass({
       suggestions : [],
       reset : null,
       inputLabel : '',
-      doEdit : this.props.doEdit ? this.props.doEdit : true
+      doEdit : this.props.doEdit ? this.props.doEdit : false
     };
   },
   componentWillReceiveProps : function(props) {

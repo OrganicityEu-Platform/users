@@ -526,6 +526,7 @@ form : function() {
           id="createEditSearchFormSectors"
           placeholder="Add sector tags"
           tags={this.state.newSectors}
+          doEdit={true}
           onChange={this.handleNewSector}
           />
       </div>
@@ -545,6 +546,7 @@ form : function() {
         id="createEditSearchFormActors"
         placeholder="Add actor tags"
         tags={this.state.actors}
+        doEdit={true}
         onChange={this.handleChangedActors}
         />
     </div>
@@ -564,6 +566,7 @@ form : function() {
         id="createEditSearchFormDevices"
         placeholder="Add tool tags"
         tags={this.state.devices}
+        doEdit={true}
         onChange={this.handleChangedDevices} />
     </div>
   </div>
