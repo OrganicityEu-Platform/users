@@ -27,7 +27,7 @@ var TagField = React.createClass({
         var e;
         var check = true;
         for(e = 0; e < this.state.tags.length; e++) {
-          if (this.state.tags[e] === evt.target.value.trim()) {
+          if (this.state.tags[e].toLowerCase() === evt.target.value.trim().toLowerCase()) {
             check = false;
           }
         }

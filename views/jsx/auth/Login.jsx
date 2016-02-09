@@ -55,7 +55,7 @@ var LocalLogin = React.createClass({
           this.loading();
           var url = api.reverse('local-login');
           $.ajax(url, {
-            error: this.loadingError(url, 'Login failed'),
+            error: this.loadingError(url, 'Log in failed'),
             success: (currentUser) => {
               this.loaded();
               this.props.onLogin(currentUser);
@@ -77,7 +77,7 @@ var LocalLogin = React.createClass({
       <form>
         <div className="row">
           <div className="oc-login-wrapper col-sm-4 col-sm-offset-4">
-            <h1 className="oc-pink oc-login-signup-title">Login</h1>
+            <h1 className="oc-pink oc-login-signup-title">Log in</h1>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>
@@ -107,9 +107,9 @@ var LocalLogin = React.createClass({
                 type="submit"
                 className="oc-button"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                onClick={this.handleSubmit}>Login</button>
+                onClick={this.handleSubmit}>Log in</button>
               <div className="oc-login-help-wrapper">
-                <span className="login-help">Need an account? <Link to="signup" >Signup</Link></span>
+                <span className="login-help">Need an account? <Link to="signup" >Sign up</Link></span>
                 <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>
               </div>
           </div>

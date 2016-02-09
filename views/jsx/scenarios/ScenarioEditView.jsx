@@ -10,6 +10,7 @@ import SectorSelector       from '../SectorSelector.jsx';
 
 import { Button, ButtonToolbar, OverlayTrigger, Popover } from 'react-bootstrap';
 
+import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
 
 // Input validation
@@ -26,7 +27,7 @@ import UploadImage          from '../UploadImage.jsx';
 import lang                 from '../../../lang/en.js'
 
 var ScenarioEditView = React.createClass({
-  mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin],
+  mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin, FlashQueue.Mixin],
   predefinedSectors: [
     'public', 'transport', 'agriculture',
     'energy', 'retail', 'healthcare',
@@ -259,6 +260,13 @@ clickedPrevious : function() {
 },
 clickedPreview : function() {
 
+
+
+  $('.oc-page-wrapper')[0].scrollIntoView(true); // fast
+  //$("html, body").animate({ scrollTop: 0 }, "slow"); // slow animated
+
+  console.log(this.currentStep());
+
   // Trim, as soon the button is clicked
   this.setState({
     btnClickedOnce: true,
@@ -279,6 +287,7 @@ clickedPreview : function() {
 
   this.validateCurrentStep(() => {
     this.transitionTo(this.routeName(), { uuid : this.props.params.uuid }, { step : this.currentStep() + 1 });
+
   });
 
 },
@@ -344,10 +353,25 @@ clickedSubmit : function() {
 validateCurrentStep : function(onvalidate, onerror) {
 
   if (this.validatorTypes) {
-
     this.props.validate((error) => {
       if (error) {
-        //console.log('Input validation error!', error);
+
+        var errorFields = [];
+
+        for (var err in error) {
+          errorFields.push(err);
+        }
+
+        if (errorFields.length > 1) {
+          this.flash('danger', errorFields + ' fields are not valid.');
+        }
+
+        if (errorFields.length === 1) {
+          this.flash('danger', errorFields + ' field is not valid.');
+        }
+
+
+
         if (onerror) {
           onerror();
         }

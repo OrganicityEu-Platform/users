@@ -30,5 +30,11 @@ module.exports = {
     'clientID'         : 'CTbb7OOYpeXfyi9TKHdlfr13W2hTbxrGkQvVSvQrur241tB6Mz1y8G3dfJMMtnWt',
     'clientSecret'     : '0N4wQA4Jq6gjVuebTcNTBldmlAtXz7mxYoF2SE56qHHGCfAFa36LxpfsjugnovbG',
     'callbackURL'      : config.host + ':' + config.port + api.route('callback_disqus')
+  },
+  'disqusAuthProduction' : {
+    'clientID'         : 'S3JTOsRJBiVXmz24MR0S94w5jC8jfk9XPEG4GfGiYeAjexDstUKfEqS7XlEDSeLF',
+    'clientSecret'     : '3uA1p9myEspmmxannqYUogYRELJXBY7aHsKh4rhxe29KZskwMeGi7q5YKhpF1PyP',
+    'callbackURL'      : config.host + ':' + config.port + api.route('callback_disqus')
   }
+
 };

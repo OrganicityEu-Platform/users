@@ -16,6 +16,10 @@ var ui_routes = {
   'scenarioView'           : '/scenarios/:uuid/?',
   'scenarioEvalView'       : '/scenarios/evaluate/:uuid/?',
 
+  // reports routes
+  'reportList'             : '/reports/?',
+  'reportView'             : '/reports/:uuid/?',
+
   // User routes
   'userView'               : '/users/:uuid/?',
 

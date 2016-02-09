@@ -11,6 +11,8 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
+
+
 import Signup              from './auth/Signup.jsx';
 import CookiePrompt        from './CookiePrompt.jsx';
 
@@ -19,7 +21,7 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Scaffold = React.createClass({
-  mixins : [UserIsLoggedInMixin, UserHasRoleMixin],
+  mixins : [UserIsLoggedInMixin, Router.State, UserHasRoleMixin],
   getInitialState: function() {
     return {
       currentUser : undefined,
@@ -66,9 +68,23 @@ var Scaffold = React.createClass({
       initialAjax: true
     });
   },
+  handleClass: function() {
+    var currentRoute = this.getRoutes()[this.getRoutes().length - 1].name;
+    if (currentRoute != 'home') {
+      return (
+        'container oc-page-wrapper' // set no/new hero here if needed or reposition/animate hero (append className="animate-area")
+      );
+    }else {
+      return (
+        'container oc-page-wrapper'
+      );
+    }
+
+  },
   render : function() {
 
     var router;
+
     if (this.state.initialAjax) {
       router = (
         <RouteHandler
@@ -88,14 +104,17 @@ var Scaffold = React.createClass({
       <NavItemLink
         key="scenarioList"
         to="scenarioList"
-        className="navbar-explore-btn">EXPLORE</NavItemLink>
+        className="navbar-button"
+        id="navbar-explore-btn">EXPLORE</NavItemLink>
     );
     linksLeft.push(
       <NavItemLink
         key="scenarioCreate"
         to="scenarioCreate"
-        className="navbar-create-btn">CREATE</NavItemLink>
+        className="navbar-button"
+        id="navbar-create-btn">CREATE</NavItemLink>
     );
+
     if (this.userIsLoggedIn()) {
       if (this.userHasRole('admin')) {
         adminLinks.push(
@@ -117,6 +136,13 @@ var Scaffold = React.createClass({
             to="sysinfo"
             data-about>About</NavItemLink>
         );
+        adminLinks.push(
+          <NavItemLink
+            key="reportList"
+            to="reportList"
+            className="dropdown-items"
+            id="">Reports</NavItemLink>
+        );
         linksRight.push(
           <DropdownButton
             className="oc-admin-links"
@@ -135,7 +161,7 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">logout</NavItemLink>
+          className="nav-logout-btn">log out</NavItemLink>
       );
     } else {
       linksRight.push(
@@ -150,18 +176,18 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="signup"
           to="signup"
-          className="nav-signup-btn">register</NavItemLink>
+          className="nav-signup-btn">sign up</NavItemLink>
       );
     }
     return (
-      <div className="container oc-page-wrapper">
+      <div className={this.handleClass()}>
         <div className="row oc-navbar-wrapper">
           <div className="col-lg-8 col-lg-offset-2">
             <Navbar
               brand={
-                <Link to="home">
+                <a href="http://organicity.eu/">
                   <img src={ui.asset('static/img/oc-nav-header.png')}/>
-                </Link>
+                </a>
               }
               toggleNavKey={0}>
               <CollapsibleNav eventKey={0}>
@@ -177,9 +203,12 @@ var Scaffold = React.createClass({
             </Navbar>
           </div>
         </div>
-        <FlashQueue.Queue messages={this.props.messages}/>
-        {router}
-        <CookiePrompt />
+        <div className="oc-inner-page-wrapper">
+          <FlashQueue.Queue messages={this.props.messages}/>
+          {router}
+          <CookiePrompt />
+        </div>
+
         <div className="oc-footers">
           <FooterLarge currentUser={this.state.currentUser}/>
         </div>
