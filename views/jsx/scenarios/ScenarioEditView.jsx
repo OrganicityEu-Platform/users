@@ -10,9 +10,6 @@ import SectorSelector       from '../SectorSelector.jsx';
 
 import { Button, ButtonToolbar, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import FlashQueue           from '../FlashQueue.jsx';
-import LoadingMixin         from '../LoadingMixin.jsx';
-
 // Input validation
 import validation           from 'react-validation-mixin';
 import strategy             from 'joi-validation-strategy';
@@ -23,6 +20,8 @@ import Message              from '../Message.jsx';
 // Mixins
 import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
+import FlashQueue           from '../FlashQueue.jsx';
+import LoadingMixin         from '../LoadingMixin.jsx';
 
 import lang                 from '../../../lang/en.js'
 
@@ -331,7 +330,7 @@ clickedSubmit : function() {
     var method = this.editMode() ? 'PUT' : 'POST';
     var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
     : api.reverse('scenario_list');
-    var successMessage = this.editMode() ? 'Sceanrios updated successfully.' : 'Sceanrio created successfully';
+    var successMessage = this.editMode() ? 'Sceanrio updated successfully.' : 'Sceanrio created successfully';
     var errorMessage = this.editMode() ? 'Error while updating a scenario.' : 'Error while creating a scenario';
 
     this.loading();
@@ -635,7 +634,7 @@ form : function() {
         type="button"
         className="oc-button"
         onClick={this.clickedPreview}
-        >Preview</button>
+        >PREVIEW</button>
     </div>
   </div>
 </form>
@@ -645,7 +644,7 @@ form : function() {
 },
 preview : function() {
 
-  var btnText = this.editMode() ? 'Submit updated scenario' : 'Submit new scenario';
+  var btnText = this.editMode() ? 'SUBMIT UPDATED SCENARIO' : 'SUBMIT NEW SCENARIO';
 
   return (
     <div>
@@ -673,7 +672,7 @@ preview : function() {
             <button
               type="button"
               className="oc-button"
-              onClick={this.clickedPrevious}>Edit</button>
+              onClick={this.clickedPrevious}>EDIT</button>
           </div>
           <div className="col-sm-3">
             <button
