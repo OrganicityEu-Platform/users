@@ -436,7 +436,7 @@ var Profile = React.createClass({
                   className="oc-button"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   onClick={this.handleSubmit}
-                >Save Profile</button>
+                >SAVE PROFILE</button>
               </div>
             </div>
 

@@ -120,7 +120,7 @@ var Signup = React.createClass({
             <button type="submit"
               className="oc-button"
               disabled={this.isLoading() ? 'disabled' : ''}
-              onClick={this.handleSubmit}>Sign up</button>
+              onClick={this.handleSubmit}>SIGN UP</button>
             <div className="oc-signup-help-wrapper">
               <span className="signup-help">Already have an account? <Link to="login">Log in</Link></span>
             </div>

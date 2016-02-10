@@ -184,11 +184,7 @@ var Scaffold = React.createClass({
         <div className="row oc-navbar-wrapper">
           <div className="col-lg-8 col-lg-offset-2">
             <Navbar
-              brand={
-                <a href="http://organicity.eu/">
-                  <img src={ui.asset('static/img/oc-nav-header.png')}/>
-                </a>
-              }
+              brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>}
               toggleNavKey={0}>
               <CollapsibleNav eventKey={0}>
                 <span className="oc-left-links-wrapper">
