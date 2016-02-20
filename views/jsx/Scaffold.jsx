@@ -166,17 +166,17 @@ var Scaffold = React.createClass({
     } else {
       linksRight.push(
         <NavItemLink
+          key="signup"
+          to="signup"
+          className="nav-signup-btn">sign up</NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
           key="login"
           to="login"
           className="nav-login-btn">
           log in
         </NavItemLink>
-      );
-      linksRight.push(
-        <NavItemLink
-          key="signup"
-          to="signup"
-          className="nav-signup-btn">sign up</NavItemLink>
       );
     }
     return (
@@ -193,7 +193,7 @@ var Scaffold = React.createClass({
                   </Nav>
                 </span>
                 <Nav navbar right>
-                  {linksRight}
+                  {linksRight.reverse()}
                 </Nav>
               </CollapsibleNav>
             </Navbar>
