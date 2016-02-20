@@ -10,8 +10,7 @@ var TagField = React.createClass({
       suggestions     : [],
       reset           : null,
       inputLabel      : '',
-      doEdit          : this.props.doEdit ? this.props.doEdit : false,
-      topDescription  : this.props.topDescription ? this.props.topDescription : null
+      doEdit          : this.props.doEdit ? this.props.doEdit : false
     };
   },
   componentWillReceiveProps : function(props) {
@@ -125,7 +124,6 @@ var TagField = React.createClass({
     return (
       <div id={this.props.id + '_wrapper'}>
         <div className="oc-tags-wrapper">
-          <span className="oc-tagfield-description">{this.state.topDescription}</span>
           {this.state.tags.map(function(tag, i) {
             return (
               <div

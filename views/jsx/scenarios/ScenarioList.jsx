@@ -131,7 +131,9 @@ var ScenarioList = React.createClass({
     }
     var scenarios = (
       <div className="scenario-list">
-        <h1 className="oc-white">Explore scenarios</h1>
+        <h1 className="oc-white">
+          Explore scenarios
+        </h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form
@@ -167,23 +169,42 @@ var ScenarioList = React.createClass({
               </div>
               <Accordion>
                 <Panel
-                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  header={
+                    <span>
+                      <span className="oc-bold white">
+                        filter tags
+                      </span>
+                      <i
+                        id="oc-search-desc-icon"
+                        className="fa fa-sort-desc white">
+                      </i>
+                    </span>
+                  }
                   eventKey="1"
                   className="oc-filters-panel">
-                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
+                  <div className="oc-filters-info">
+                    <i className="fa fa-info-circle">
+                    </i> Seeing too many scenarios? Narrow your search by using the tags below.
+                  </div>
 
-                  <div className="yh">
 
-            <label for="scenarioListSearchFormActors" className="control-label col-sm-3">
-            <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
-              <div className="oc-tag-item oc-tag-item-selected">
-                <img className="oc-tag-icon" src={ui.asset('static/img/generic_actor_icon.svg')}></img>
-                <span className="oc-tag-item-text">actor</span>
-              </div>
-            <span className="oc-explore-tagfield-description">Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.</span>
-              </label>
+                  <label
+                    for="scenarioListSearchFormActors"
+                    className="control-label col-sm-3">
+                    <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
+                    <div className="oc-tag-item oc-tag-item-selected">
+                      <img
+                        className="oc-tag-icon"
+                        src={ui.asset('static/img/generic_actor_icon.svg')}>
+                      </img>
+                      <span className="oc-tag-item-text">actor</span>
+                    </div>
+                    <span className="oc-explore-tagfield-description gray">
+                      Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.
+                    </span>
+                  </label>
 
-                <div className="oc-form-group col-sm-9">
+                  <div className="oc-form-group col-sm-9">
 
                     <TagField
                       id="scenarioListSearchFormActors"
@@ -199,16 +220,23 @@ var ScenarioList = React.createClass({
 
                   &nbsp;
 
-                  <label for="scenarioListSearchFormSectors" className="control-label col-sm-3">
-            <h3 className="oc-pink oc-explore-tagfield-title">Sectors</h3>
-              <div className="oc-tag-item oc-tag-item-selected">
-                <img className="oc-tag-icon" src={ui.asset('static/img/generic_sector_icon.svg')}></img>
-                <span className="oc-tag-item-text">sector</span>
-              </div>
-              <span className="oc-explore-tagfield-description">Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".</span>
-              </label>
+                  <label
+                    for="scenarioListSearchFormSectors"
+                    className="control-label col-sm-3">
+                    <h3 className="oc-pink oc-explore-tagfield-title">Sectors</h3>
+                    <div className="oc-tag-item oc-tag-item-selected">
+                      <img
+                        className="oc-tag-icon"
+                        src={ui.asset('static/img/generic_sector_icon.svg')}>
+                      </img>
+                      <span className="oc-tag-item-text">sector</span>
+                    </div>
+                    <span className="oc-explore-tagfield-description gray">
+                      Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".
+                    </span>
+                  </label>
 
-                <div className="oc-form-group col-sm-9">
+                  <div className="oc-form-group col-sm-9">
 
                     <TagField
                       id="scenarioListSearchFormSectors"
@@ -223,13 +251,20 @@ var ScenarioList = React.createClass({
 
                   &nbsp;
 
-                  <label for="scenarioListSearchFormDevices" className="control-label col-sm-3">
+                  <label
+                    for="scenarioListSearchFormDevices"
+                    className="control-label col-sm-3">
                     <h3 className="oc-pink oc-explore-tagfield-title">Tools</h3>
-                      <div className="oc-tag-item oc-tag-item-selected">
-                        <img className="oc-tag-icon" src={ui.asset('static/img/generic_tool_icon.svg')}></img>
-                        <span className="oc-tag-item-text">tool</span>
-                      </div>
-                    <span className="oc-explore-tagfield-description">Tools are instruments you would need to implement your scenario.</span>
+                    <div className="oc-tag-item oc-tag-item-selected">
+                      <img
+                        className="oc-tag-icon"
+                        src={ui.asset('static/img/generic_tool_icon.svg')}>
+                      </img>
+                      <span className="oc-tag-item-text">tool</span>
+                    </div>
+                    <span className="oc-explore-tagfield-description gray">
+                      Tools are instruments you would need to implement your scenario.
+                    </span>
 
                   </label>
 
@@ -237,7 +272,9 @@ var ScenarioList = React.createClass({
 
 
 
-                  <div className="oc-form-group col-sm-9" id="oc-devices-form">
+                  <div
+                    className="oc-form-group col-sm-9"
+                    id="oc-devices-form">
 
                     <TagField
                       id="scenarioListSearchFormDevices"
@@ -251,7 +288,7 @@ var ScenarioList = React.createClass({
                   </div>
                   &nbsp;
 
-                  </div>
+
                 </Panel>
               </Accordion>
             </form>
