@@ -63,6 +63,7 @@
     "cron": "~1.0.9",
     "csv-parse": "^1.0.0",
     "ejs": "~0.8.8",
+    "escope": "^3.3.0",
     "express": "~4.13.1",
     "express-list-routes": "~0.1.4",
     "express-session": "~1.0.4",

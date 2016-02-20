@@ -432,7 +432,7 @@ form : function() {
           {this.editMode() ? 'Edit your scenario' : 'Create your scenario'}
         </h1>
         <form className="form-horizontal">
-          <div className="form-group oc-form-group">
+          <div className="form-group oc-form-group oc-edit-group">
             <label
               className="control-label col-sm-3"
               htmlFor="title">
@@ -456,7 +456,7 @@ form : function() {
             {errorMessageTitle}
           </div>
         </div>
-        <div className="form-group oc-form-group">
+        <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
             htmlFor="summary">
@@ -480,7 +480,7 @@ form : function() {
           {errorMessageSummary}
         </div>
       </div>
-      <div className="form-group oc-form-group">
+      <div className="form-group oc-form-group oc-edit-group">
         <label
           className="control-label col-sm-3"
           htmlFor="narrative">
@@ -503,7 +503,7 @@ form : function() {
         {errorMessageNarrative}
       </div>
     </div>
-    <div className="form-group oc-form-group">
+    <div className="form-group oc-form-group oc-edit-group">
       <label
         className="control-label col-sm-3"
         htmlFor="sectors">
@@ -532,7 +532,7 @@ form : function() {
       </div>
     </div>
   </div>
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
@@ -552,7 +552,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
@@ -571,7 +571,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label className="control-label col-sm-3">
       Image
       <span className="oc-form-group-info">
@@ -589,7 +589,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="copyright">
@@ -609,7 +609,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">

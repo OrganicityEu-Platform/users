@@ -4,13 +4,14 @@ import $     from 'jquery';
 var TagField = React.createClass({
   getInitialState : function() {
     return {
-      tags : this.props.tags ? this.props.tags : [],
-      tagsString : this.props.tags ? this.props.tags.join(', ') : '',
-      data : this.props.data ? this.props.data : [],
-      suggestions : [],
-      reset : null,
-      inputLabel : '',
-      doEdit : this.props.doEdit ? this.props.doEdit : false
+      tags            : this.props.tags ? this.props.tags : [],
+      tagsString      : this.props.tags ? this.props.tags.join(', ') : '',
+      data            : this.props.data ? this.props.data : [],
+      suggestions     : [],
+      reset           : null,
+      inputLabel      : '',
+      doEdit          : this.props.doEdit ? this.props.doEdit : false,
+      topDescription  : this.props.topDescription ? this.props.topDescription : null
     };
   },
   componentWillReceiveProps : function(props) {
@@ -124,6 +125,7 @@ var TagField = React.createClass({
     return (
       <div id={this.props.id + '_wrapper'}>
         <div className="oc-tags-wrapper">
+          <span className="oc-tagfield-description">{this.state.topDescription}</span>
           {this.state.tags.map(function(tag, i) {
             return (
               <div
