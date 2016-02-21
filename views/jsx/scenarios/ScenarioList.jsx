@@ -182,33 +182,37 @@ var ScenarioList = React.createClass({
                     <i className="fa fa-info-circle">
                     </i> Seeing too many scenarios? Narrow your search by using the tags below.
                   </div>
-                  <label
-                    for="scenarioListSearchFormActors"
-                    className="control-label col-sm-3">
-                    <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
-                    <div className="oc-tag-item oc-tag-item-selected">
-                      <img
-                        className="oc-tag-icon"
-                        src={ui.asset('static/img/generic_actor_icon.svg')}>
-                      </img>
-                      <span className="oc-tag-item-text">actor</span>
+
+                  <div className="col-sm-12">
+                    <label
+                      for="scenarioListSearchFormActors"
+                      className="control-label col-sm-3">
+                      <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
+                      <div className="oc-tag-item oc-tag-item-selected">
+                        <img
+                          className="oc-tag-icon"
+                          src={ui.asset('static/img/generic_actor_icon.svg')}>
+                        </img>
+                        <span className="oc-tag-item-text">actor</span>
+                      </div>
+                      <span className="oc-explore-tagfield-description">
+                        Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.
+                      </span>
+                    </label>
+                    <div className="oc-form-group col-sm-9">
+                      <TagField
+                        id="scenarioListSearchFormActors"
+                        tags={this.state.search.actors}
+                        placeholder="Add actor tags"
+                        doEdit={true}
+                        onChange={this.handleUpdatedActors}
+                        data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
+                        suggestionsLabel="suggestions"
+                        />
                     </div>
-                    <span className="oc-explore-tagfield-description">
-                      Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.
-                    </span>
-                  </label>
-                  <div className="oc-form-group col-sm-9">
-                    <TagField
-                      id="scenarioListSearchFormActors"
-                      tags={this.state.search.actors}
-                      placeholder="Add actor tags"
-                      doEdit={true}
-                      onChange={this.handleUpdatedActors}
-                      data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
-                      suggestionsLabel="suggestions"
-                      />
                   </div>
-                  &nbsp;
+
+                  <div className="col-sm-12">
                   <label
                     for="scenarioListSearchFormSectors"
                     className="control-label col-sm-3">
@@ -235,7 +239,8 @@ var ScenarioList = React.createClass({
                       suggestionsLabel="suggestions"
                       />
                   </div>
-                  &nbsp;
+                </div>
+                <div className="col-sm-12">
                   <label
                     for="scenarioListSearchFormDevices"
                     className="control-label col-sm-3">
@@ -265,7 +270,7 @@ var ScenarioList = React.createClass({
                       suggestionsLabel="suggestions"
                       />
                   </div>
-                  &nbsp;
+                </div>
 
 
                 </Panel>
