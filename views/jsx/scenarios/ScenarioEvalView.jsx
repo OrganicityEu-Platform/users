@@ -18,8 +18,8 @@ var ScenarioEvalView = React.createClass({
       questionnaire: null,
       evaluation: {
         scenario: {
-          uuid : this.props.params.uuid,
-          version : this.props.query.version
+          uuid : this.props.uuid,
+          version : this.props.version
         },
         submitted: false,
         answers: []
@@ -44,19 +44,7 @@ var ScenarioEvalView = React.createClass({
         this.loaded({ questionnaire : questionnaire,  evaluation : this.state.evaluation });
       }
     });
-  },
-  clickedTech: function(tech) {
 
-    return () => {
-      var params = {
-        uuid : this.props.params.uuid
-      };
-      var query  = {
-        version : this.props.query.version,
-        tech : tech
-      };
-      this.transitionTo(ui.reverse('scenarioEvalView', params, query));
-    };
   },
   selectedAnswer: function(questionIndex, answerIndex) {
     return () => {
@@ -80,7 +68,7 @@ var ScenarioEvalView = React.createClass({
   },
   handleGoBack : function(evt) {
     this.transitionTo('scenarioView', {
-      uuid : this.props.params.uuid
+      uuid : this.props.uuid
     });
   },
   render: function() {
@@ -92,30 +80,11 @@ var ScenarioEvalView = React.createClass({
       return (
         <div className="col-lg-8 col-lg-offset-2">
           <Message type="success" message="Thank you!" />
-          <button type="submit" className="oc-button" onClick={this.handleGoBack}>
-            Back to the scenario
-          </button>
         </div>
       );
     }
 
-    if (!this.props.query.tech) {
-      return (
-        <div className="col-lg-8 col-lg-offset-2">
-          Are you a...<br/>
-          <button type="button"
-            className="oc-button"
-            onClick={this.clickedTech(true)}>
-            Technical Person
-          </button>
-          <button type="button"
-            className="oc-button"
-            onClick={this.clickedTech(false)}>
-            Non-Technical Person
-          </button>
-        </div>
-      );
-    }
+
 
     //Questionnaire > version, description, [questions{tech,text,[values{value,weight}]}]
     //Evaluation    > scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
@@ -129,7 +98,7 @@ var ScenarioEvalView = React.createClass({
           <div className="oc-evaluation-table-div">
             <div className="row oc-radios-wrapper">
               {this.state.questionnaire.questions.map((q, qIdx) =>
-                q.tech !== (this.props.query.tech === 'true') ? [] : [
+                q.tech !== (this.props.tech === 'true') ? [] : [
                   <div className="oc-eval-question col-lg-12" key={'question_' + qIdx + '_radios'}>
                     <div className="oc-evaluation-question">
                     {q.text}</div>
