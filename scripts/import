@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	rm -rf "$DIR/backup/"
+	cd "$DIR"
+	unzip $1 -d .
+	mongorestore -d scenarios "$DIR/backup/db/scenarios"
+else
+	echo "No zip given"
+fi
