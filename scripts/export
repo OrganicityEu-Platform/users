@@ -1,0 +1,12 @@
+#!/bin/bash
+
+NOW=$(date +"%Y%m%d_%H%M%S")
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+mkdir -p "$DIR/backup/"
+mkdir -p "$DIR/backup/db/"
+mkdir -p "$DIR/backup/db/"
+mongodump -d scenarios -o "$DIR/backup/db/"
+cp -R ../uploads/ "$DIR/backup/uploads/"
+cd "$DIR/"
+zip -r scenarios.$NOW.zip "./backup/"
+rm -rf "$DIR/backup/"
