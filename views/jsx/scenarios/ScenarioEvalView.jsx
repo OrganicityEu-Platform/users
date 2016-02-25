@@ -65,7 +65,7 @@ var ScenarioEvalView = React.createClass({
       error: this.loadingError(url, 'Please, fill in all the answers before submitting.'),
       success: () => {
         this.loaded({ submitted : true });
-        $("#scenarioIndicator").html('<i class="fa fa-star pink"></i>you have evaluated this scenario');
+        $("#scenarioIndicator").html('<i class="fa fa-check-square-o pink"></i>you have evaluated this scenario');
         this.flash('success', 'Evaluation complete.', 10000);
       }
     });

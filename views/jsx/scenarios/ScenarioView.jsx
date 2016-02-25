@@ -9,9 +9,8 @@ import ScenarioEditButton   from './ScenarioEditButton.jsx';
 import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
-
 import EvalCom              from './EvalCom.jsx';
-
+import EvalButton           from './EvalButton.jsx';
 
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
@@ -42,10 +41,6 @@ var ScenarioView = React.createClass({
       }
     });
   },
-  handleClick: function () {
-    $("#oc-eval-button").click();
-    $("#oc-eval-prim").hide();
-  },
   render: function() {
     if (this.state === null) {
       return null;
@@ -59,6 +54,7 @@ var ScenarioView = React.createClass({
     return (
       <div>
         <div className="row">
+
           <ScenarioTableView scenario={this.state} />
         </div>
         <div className="row">
@@ -66,11 +62,8 @@ var ScenarioView = React.createClass({
             <div className="oc-macro-content">
               <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
               <div className="col-sm-4">
-                <button
-                className="oc-button"
-                id="oc-eval-prim"
-                onClick={() => this.handleClick()}
-                >EVALUATE THIS SCENARIO</button></div>
+                <EvalButton scenario={this.state}></EvalButton>
+              </div>
               <div className="col-sm-4"><ScenarioDeleteButton scenario={this.state}/></div>
             </div>
           </div>

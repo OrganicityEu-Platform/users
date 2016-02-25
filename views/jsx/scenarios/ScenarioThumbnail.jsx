@@ -1,11 +1,13 @@
 
-import TimeAgo    from 'react-timeago';
-import api        from '../../../api_routes.js';
-import ui         from '../../../ui_routes.js';
-import React      from 'react';
-import UserAvatar from '../users/UserAvatar.jsx';
-import ellipsis   from '../../../util/ellipsis.js';
-import Score    from '../Score.jsx';
+import TimeAgo            from 'react-timeago';
+import api                from '../../../api_routes.js';
+import ui                 from '../../../ui_routes.js';
+import React              from 'react';
+import UserAvatar         from '../users/UserAvatar.jsx';
+import ellipsis           from '../../../util/ellipsis.js';
+import Score              from '../Score.jsx';
+import ScenarioIndicator  from './ScenarioIndicator.jsx';
+
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -44,6 +46,7 @@ var ScenarioThumbnail = React.createClass({
               </div>
             </div>
             <header className="scenario-thumbnail-header">
+
               <span>
                 <span className="scenario-thumbnail-timestamp">
                   { this.props.scenario.timestamp ?
@@ -60,6 +63,7 @@ var ScenarioThumbnail = React.createClass({
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
                 </span>
+                <ScenarioIndicator scenario={this.props.scenario}></ScenarioIndicator>
               </span>
             </header>
             <p className="scenario-thumbnail-summary">
