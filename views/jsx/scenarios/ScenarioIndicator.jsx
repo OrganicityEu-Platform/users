@@ -17,15 +17,13 @@ var ScenarioIdicator = React.createClass({
       showEvalText: this.props.showEvalText ? this.props.showEvalText : false
     };
   },
-  componentWillMount: function() {
+  componentDidMount: function() {
+    this.loading();
     if(this.userIsLoggedIn()) {
       this.state.show = true;
       this.setState(this.state);
       this.getUserEvaluations();
     }
-  },
-  componentDidMount: function() {
-    this.loading();
   },
   getUserEvaluations: function() {
 

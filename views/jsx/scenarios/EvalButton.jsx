@@ -18,7 +18,7 @@ var EvalButton = React.createClass({
       allowOwnerEvals: this.props.allowOwnerEvals ? this.props.allowOwnerEvals : false,
     };
   },
-  componentWillMount: function () {
+  componentDidMount: function () {
 
     if (this.userIsLoggedIn()) {
       this.userIsOwner();
