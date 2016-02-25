@@ -89,6 +89,7 @@ var api_routes = {
   // evaluations routes
   'evaluations_list'           : prefixes.evaluations + '/?',
   'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
+  'evaluation_by_user'         : prefixes.evaluations + '/user/:uuid',
   'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?',
 
   'contactUs'                  : prefixes.contactUs + '/?'

@@ -8,7 +8,7 @@ import Score              from '../Score.jsx';
 import Comments           from '../Comments.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                from '../../../api_routes.js';
-
+import ScenarioIndicator from './ScenarioIndicator.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 
 var ScenarioTableView = React.createClass({
@@ -76,6 +76,10 @@ var ScenarioTableView = React.createClass({
               </div>
           </div>
           <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
+            <ScenarioIndicator
+              scenario_uuid={this.props.scenario.uuid}
+              scenario_version={this.props.scenario.version}>
+            </ScenarioIndicator>
             <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
               <div>
                 <span className="scenario-article-publisher">
