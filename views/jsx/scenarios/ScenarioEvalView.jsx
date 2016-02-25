@@ -10,8 +10,10 @@ import ui               from '../../../ui_routes.js';
 
 import Message          from '../Message.jsx';
 
+import FlashQueue           from '../FlashQueue.jsx';
+
 var ScenarioEvalView = React.createClass({
-  mixins: [LoadingMixin, Router.Navigation],
+  mixins: [LoadingMixin, Router.Navigation, FlashQueue.Mixin],
   // scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
   getInitialState: function() {
     return {
@@ -64,6 +66,7 @@ var ScenarioEvalView = React.createClass({
       success: () => {
         this.loaded({ submitted : true });
         $("#scenarioIndicator").html('<i class="fa fa-star pink"></i>you have evaluated this scenario');
+        this.flash('success', 'Evaluation complete.', 10000);
       }
     });
   },
@@ -79,9 +82,7 @@ var ScenarioEvalView = React.createClass({
 
     if (this.state.submitted) {
       return (
-        <div className="col-lg-8 col-lg-offset-2">
-          <Message type="success" message="Thank you!" />
-        </div>
+        null
       );
     }
 

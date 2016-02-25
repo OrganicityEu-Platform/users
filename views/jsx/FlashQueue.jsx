@@ -16,7 +16,9 @@ var Queue = React.createClass({
     };
   },
   componentDidMount: function() {
+
     mountedInstance = this;
+
   },
   dismissMessage: function(id) {
     this.state.messages = this.state.messages.filter((message) => message.id !== id);
@@ -24,6 +26,8 @@ var Queue = React.createClass({
   },
   flash: function(type, text, timeout) {
     var id = ++this.state.id;
+    //$('.oc-page-wrapper')[0].scrollIntoView(true);
+    $("html, body").animate({ scrollTop: 0 }, "slow"); // slow animated
     //this.dismissMessage(id - 1);
     timeout = timeout || 5000;
     this.state.messages.push({

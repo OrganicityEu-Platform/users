@@ -54,7 +54,6 @@ var ScenarioIdicator = React.createClass({
     $.ajax(url, {
       dataType : 'json',
       success : (scenarios) => {
-        console.log("your scenarios: " + JSON.stringify(scenarios));
         var k;
         for(k = 0; k < scenarios.length; k++) {
           if (scenarios[k].uuid === this.state.scenario_uuid) {

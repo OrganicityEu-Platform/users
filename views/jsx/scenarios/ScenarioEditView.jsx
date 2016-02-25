@@ -259,11 +259,6 @@ clickedPrevious : function() {
 },
 clickedPreview : function() {
 
-
-
-  $('.oc-page-wrapper')[0].scrollIntoView(true); // fast
-  //$("html, body").animate({ scrollTop: 0 }, "slow"); // slow animated
-
   console.log(this.currentStep());
 
   // Trim, as soon the button is clicked
