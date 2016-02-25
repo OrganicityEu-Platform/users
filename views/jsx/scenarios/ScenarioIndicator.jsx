@@ -67,19 +67,39 @@ var ScenarioIdicator = React.createClass({
   },
   render: function() {
     if(this.state.show) {
-
       if (this.state.evaluated) {
         return (
           <div>
-            {this.state.isOwner ? <div>owner</div> : <div>not owner</div>}
-            <i className="fa fa-star pink"></i>you have evaluated this scenario</div>
-
+            {this.state.isOwner ?
+              <div>owner</div>
+              :
+              <div>
+                not owner
+              </div>
+            }
+            <div id="scenarioIndicator">
+              <i className="fa fa-star pink">
+              </i>
+              you have evaluated this scenario
+            </div>
+          </div>
         );
       }else {
         return (
           <div>
-            {this.state.isOwner ? <div>owner</div> : <div>not owner</div>}
-            <i className="fa fa-star-o grey"></i>you have NOT evaluated this scenario</div>
+            {this.state.isOwner ?
+              <div>owner</div>
+              :
+              <div>
+                not owner
+              </div>
+            }
+            <div id="scenarioIndicator">
+              <i className="fa fa-star-o grey">
+              </i>
+              you have NOT evaluated this scenario
+            </div>
+          </div>
         );
       }
     }else {
