@@ -18,7 +18,6 @@ var ScenarioIdicator = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.loading();
     if(this.userIsLoggedIn()) {
       this.state.show = true;
       this.getUserEvaluations();
@@ -36,12 +35,12 @@ var ScenarioIdicator = React.createClass({
         for(e = 0; e < data.length; e++) {
           if(data[e].uuid === this.state.scenario.uuid && data[e].version === this.state.scenario.version){
             this.state.evaluated = true;
-            break;
+            this.setState(this.state);
           }
         }
-        this.setState(this.state);
       }
     });
+
   },
   render: function() {
 
