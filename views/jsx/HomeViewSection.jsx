@@ -2,13 +2,18 @@ import React              from 'react';
 import { Button }         from 'react-bootstrap';
 import ui                 from '../../ui_routes.js';
 
+import LoadingMixin         from './LoadingMixin.jsx';
+
 var Router = require('react-router');
 var Link = Router.Link;
 
 var HomeViewSection = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, LoadingMixin],
   clickHandler: function () {
     this.transitionTo('signup');
+  },
+  componentWillMount: function() {
+    this.loading();
   },
   render: function() {
     return (
