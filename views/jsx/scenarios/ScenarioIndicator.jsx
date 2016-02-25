@@ -21,7 +21,6 @@ var ScenarioIdicator = React.createClass({
     this.loading();
     if(this.userIsLoggedIn()) {
       this.state.show = true;
-      this.setState(this.state);
       this.getUserEvaluations();
     }
   },
