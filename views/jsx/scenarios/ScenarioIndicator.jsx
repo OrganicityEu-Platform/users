@@ -43,6 +43,7 @@ var ScenarioIdicator = React.createClass({
           if(data[e].uuid === this.state.scenario.uuid && data[e].version === this.state.scenario.version){
             this.state.evaluated = true;
             this.setState(this.state);
+            break;
           }
         }
       },
@@ -68,7 +69,7 @@ var ScenarioIdicator = React.createClass({
           <div>
             <div id="scenarioIndicator">
               <i className="fa fa-check-square-o pink"></i>
-              {this.state.showEvalText ? userHasEvaluated : null}
+
             </div>
           </div>
         );
@@ -77,7 +78,7 @@ var ScenarioIdicator = React.createClass({
           <div>
             <div id="scenarioIndicator">
               <i className="fa fa-check-square-o gray"></i>
-              {this.state.showEvalText ? userHasNotEvaluated : null}
+            
             </div>
           </div>
         );
