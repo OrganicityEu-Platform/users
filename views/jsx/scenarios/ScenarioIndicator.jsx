@@ -14,15 +14,22 @@ var ScenarioIdicator = React.createClass({
       evaluations: null,
       show: false,
       evaluated: false,
-      showEvalText: this.props.showEvalText ? this.props.showEvalText : false
+      showEvalText: this.props.showEvalText ? this.props.showEvalText : false,
+      isOwner: false
     };
   },
   componentDidMount: function() {
     if(this.userIsLoggedIn()) {
       this.state.show = true;
       this.getUserEvaluations();
+
+      if(this.userIsCreator(this.state.scenario)) {
+        this.state.isOwner = true;
+      }
+
       this.setState(this.state);
     }
+
   },
   getUserEvaluations: function() {
 
@@ -47,7 +54,7 @@ var ScenarioIdicator = React.createClass({
     var userHasEvaluated = <span>you have evaluated this scenario.</span>;
     var userHasNotEvaluated = <span>you have not evaluated this scenario yet.</span>;
 
-    if(this.state.show && !this.userIsCreator(this.state.scenario)) {
+    if(this.state.show && !this.state.isOwner) {
       if (this.state.evaluated) {
         return (
           <div>

@@ -63,6 +63,9 @@ var ScenarioThumbnail = React.createClass({
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
                 </span>
+                <ScenarioIndicator
+                  scenario={this.props.scenario}
+                  showEvalText={false} />
               </span>
             </header>
             <p className="scenario-thumbnail-summary">
