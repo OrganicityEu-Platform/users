@@ -45,6 +45,14 @@ var ScenarioIdicator = React.createClass({
             this.setState(this.state);
           }
         }
+      },
+      error : (xhr, textStatus, errorThrown) => {
+        if (xhr.status === 401) {
+          this.state.show = false;
+          this.setState(this.state);
+        } else {
+          this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
+        }
       }
     });
 

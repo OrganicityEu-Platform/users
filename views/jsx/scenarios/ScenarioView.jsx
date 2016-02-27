@@ -62,14 +62,14 @@ var ScenarioView = React.createClass({
             <div className="oc-macro-content">
               <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
               <div className="col-sm-4">
-                <EvalButton scenario={this.state}></EvalButton>
+
               </div>
               <div className="col-sm-4"><ScenarioDeleteButton scenario={this.state}/></div>
             </div>
           </div>
         </div>
 
-        <EvalCom uuid={this.props.params.uuid} version={this.state.version}></EvalCom>
+      
         <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread
