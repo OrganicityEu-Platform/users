@@ -17,22 +17,36 @@ var ScenarioIdicator = React.createClass({
     };
   },
   componentDidMount: function() {
-    this.userHasEvaluated(this.state.evaluations);
+    if(this.userHasEvaluated(this.state.evaluations)) {
+      this.state.evaluated = true;
+      this.setState(this.state);
+    }
+
   },
+
   userHasEvaluated: function(evaluations) {
     if (evaluations){
       var e;
       for(e = 0; e < evaluations.length; e++) {
         if(evaluations[e].uuid === this.state.scenario.uuid){
-          this.state.evaluated = true;
+          return true;
         }
       }
     }
   },
   render: function() {
     if(this.userIsLoggedIn()){
-      if(!this.state.evaluated) {return(<div>not evaluated</div>);}
-      if(this.state.evaluated) {return(<div>evaluated this</div>);}
+      var userHasEvaluated = <span>You have evaluated this scenario.</span>;
+      var userHasNotEvaluated = <span>You have not evaluated this scenario yet.</span>;
+      if(this.userIsCreator(this.state.scenario)) {return null;}
+      if(!this.state.evaluated) {return(<div id="scenarioIndicator">
+        <i className="fa fa-check-square-o"></i>
+        {this.state.showEvalText ? userHasNotEvaluated : null}
+      </div>);}
+      if(this.state.evaluated) {return(<div id="scenarioIndicator">
+        <i className="fa fa-check-square-o pink"></i>
+        {this.state.showEvalText ? userHasEvaluated : null}
+      </div>);}
     }else {
       return null;
     }

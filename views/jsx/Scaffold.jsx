@@ -24,7 +24,7 @@ var Scaffold = React.createClass({
     return {
       currentUser : undefined,
       initialAjax : false,
-      userEvaluations: null
+      userEvaluations: null,
     };
   },
   componentDidMount: function() {
@@ -63,19 +63,15 @@ var Scaffold = React.createClass({
   },
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
-    window.userEvaluations = null;
+    this.getUserEvaluations();
     this.setState({
       currentUser: currentUser,
       initialAjax: true
     });
-
-    this.getUserEvaluations();
   },
   onLogout: function() {
-
     window.currentUser = undefined;
     window.userEvaluations = null;
-
     this.userEvaluations = null;
     this.setState({
       currentUser: undefined,

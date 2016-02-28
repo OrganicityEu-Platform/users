@@ -36,8 +36,8 @@ var ScenarioThumbnail = React.createClass({
 
     return (
       <div className="col-md-4">
-      
-        <ScenarioIndicator evaluations={userEvaluations} scenario={this.props.scenario}></ScenarioIndicator>
+
+
         <div className="well scenario-thumbnail">
           <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
             <div>
@@ -48,7 +48,6 @@ var ScenarioThumbnail = React.createClass({
               </div>
             </div>
             <header className="scenario-thumbnail-header">
-
               <span>
                 <span className="scenario-thumbnail-timestamp">
                   { this.props.scenario.timestamp ?
@@ -66,6 +65,7 @@ var ScenarioThumbnail = React.createClass({
                     name={this.props.scenario.creatorName} />
                 </span>
                 <ScenarioIndicator
+                  evaluations={userEvaluations}
                   scenario={this.props.scenario}
                   showEvalText={false} />
               </span>
