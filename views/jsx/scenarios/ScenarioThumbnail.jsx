@@ -14,7 +14,7 @@ var Link = Router.Link;
 var ScenarioThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
-  
+
   render: function() {
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
@@ -36,6 +36,8 @@ var ScenarioThumbnail = React.createClass({
 
     return (
       <div className="col-md-4">
+      
+        <ScenarioIndicator evaluations={userEvaluations} scenario={this.props.scenario}></ScenarioIndicator>
         <div className="well scenario-thumbnail">
           <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
             <div>
