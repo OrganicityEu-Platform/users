@@ -11,25 +11,26 @@ var ScenarioIdicator = React.createClass({
   getInitialState: function() {
     return {
       scenario: this.props.scenario ? this.props.scenario : null,
-      evaluations: null,
       show: false,
-      evaluated: false,
       showEvalText: this.props.showEvalText ? this.props.showEvalText : false,
-      isOwner: false
+      evaluated: false
     };
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     if(this.userIsLoggedIn()) {
       this.state.show = true;
       this.getUserEvaluations();
-
-      if(this.userIsCreator(this.state.scenario)) {
-        this.state.isOwner = true;
-      }
-
       this.setState(this.state);
     }
-
+  },
+  componentDidMount: function() {
+      if(this.userIsCreator(this.state.scenario)) {
+        this.state.show = false;
+        this.setState(this.state);
+      }
+  },
+  userHasEvaluated: function(value) {
+    this.setState({evaluated: value});
   },
   getUserEvaluations: function() {
 
@@ -41,16 +42,14 @@ var ScenarioIdicator = React.createClass({
         var e;
         for(e = 0; e < data.length; e++) {
           if(data[e].uuid === this.state.scenario.uuid && data[e].version === this.state.scenario.version){
-            this.state.evaluated = true;
-            this.setState(this.state);
+            this.userHasEvaluated(true);
             break;
           }
         }
       },
       error : (xhr, textStatus, errorThrown) => {
         if (xhr.status === 401) {
-          this.state.show = false;
-          this.setState(this.state);
+
         } else {
           this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
         }
@@ -63,7 +62,7 @@ var ScenarioIdicator = React.createClass({
     var userHasEvaluated = <span>you have evaluated this scenario.</span>;
     var userHasNotEvaluated = <span>you have not evaluated this scenario yet.</span>;
 
-    if(this.state.show && !this.state.isOwner) {
+    if(this.userIsLoggedIn() && this.state.show) {
       if (this.state.evaluated) {
         return (
           <div>
@@ -78,7 +77,7 @@ var ScenarioIdicator = React.createClass({
           <div>
             <div id="scenarioIndicator">
               <i className="fa fa-check-square-o gray"></i>
-            
+
             </div>
           </div>
         );

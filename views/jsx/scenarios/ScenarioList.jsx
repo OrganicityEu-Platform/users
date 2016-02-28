@@ -185,7 +185,7 @@ var ScenarioList = React.createClass({
 
                   <div className="col-sm-12">
                     <label
-                      for="scenarioListSearchFormActors"
+                      htmlFor="scenarioListSearchFormActors"
                       className="control-label col-sm-3">
                       <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
                       <div className="oc-tag-item oc-tag-item-selected">
@@ -214,7 +214,7 @@ var ScenarioList = React.createClass({
 
                   <div className="col-sm-12">
                   <label
-                    for="scenarioListSearchFormSectors"
+                    htmlFor="scenarioListSearchFormSectors"F
                     className="control-label col-sm-3">
                     <h3 className="oc-pink oc-explore-tagfield-title">Sectors</h3>
                     <div className="oc-tag-item oc-tag-item-selected">
@@ -242,7 +242,7 @@ var ScenarioList = React.createClass({
                 </div>
                 <div className="col-sm-12">
                   <label
-                    for="scenarioListSearchFormDevices"
+                    htmlFor="scenarioListSearchFormDevices"
                     className="control-label col-sm-3">
                     <h3 className="oc-pink oc-explore-tagfield-title">Tools</h3>
                     <div className="oc-tag-item oc-tag-item-selected">

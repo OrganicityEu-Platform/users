@@ -14,7 +14,7 @@ var Link = Router.Link;
 var ScenarioThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
-
+  
   render: function() {
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
@@ -71,6 +71,7 @@ var ScenarioThumbnail = React.createClass({
             <p className="scenario-thumbnail-summary">
               {summary}
             </p>
+
             <span className="scenario-thumbnail-sat-wrapper">
               <span>Sectors: {sectors}</span>
               <span>Actors: {actors}</span>
