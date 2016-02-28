@@ -17,11 +17,11 @@ var ScenarioIdicator = React.createClass({
     };
   },
   componentWillMount: function() {
-    if(this.userIsLoggedIn()) {
+
       this.state.show = true;
       this.getUserEvaluations();
       this.setState(this.state);
-    }
+
   },
   componentDidMount: function() {
       if(this.userIsCreator(this.state.scenario)) {
@@ -33,29 +33,29 @@ var ScenarioIdicator = React.createClass({
     this.setState({evaluated: value});
   },
   getUserEvaluations: function() {
+    if(this.userIsLoggedIn()) {
+      var url = api.reverse('evaluation_by_user', { uuid : currentUser.uuid });
 
-    var url = api.reverse('evaluation_by_user', { uuid : currentUser.uuid });
+      $.ajax(url, {
+        dataType: 'json',
+        success : (data) => {
+          var e;
+          for(e = 0; e < data.length; e++) {
+            if(data[e].uuid === this.state.scenario.uuid && data[e].version === this.state.scenario.version){
+              this.userHasEvaluated(true);
+              break;
+            }
+          }
+        },
+        error : (xhr, textStatus, errorThrown) => {
+          if (xhr.status === 401) {
 
-    $.ajax(url, {
-      dataType: 'json',
-      success : (data) => {
-        var e;
-        for(e = 0; e < data.length; e++) {
-          if(data[e].uuid === this.state.scenario.uuid && data[e].version === this.state.scenario.version){
-            this.userHasEvaluated(true);
-            break;
+          } else {
+            this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
           }
         }
-      },
-      error : (xhr, textStatus, errorThrown) => {
-        if (xhr.status === 401) {
-
-        } else {
-          this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
-        }
-      }
-    });
-
+      });
+    }
   },
   render: function() {
 
