@@ -54,7 +54,6 @@ var ScenarioView = React.createClass({
     return (
       <div>
         <div className="row">
-
           <ScenarioTableView scenario={this.state} />
         </div>
         <div className="row">
@@ -69,7 +68,7 @@ var ScenarioView = React.createClass({
           </div>
         </div>
 
-      
+
         <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread
