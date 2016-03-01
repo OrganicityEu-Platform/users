@@ -25,7 +25,7 @@ $(function() {
     var options = {
        debug: ga_config.debug
     };
-    ga.initialize(ga_config.id, options);
+    ga.pageview(state.pathname);
 
     // Render page
     React.render(<Handler/>, document.body);
