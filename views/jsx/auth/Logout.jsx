@@ -9,6 +9,10 @@ import LoadingMixin from '../LoadingMixin.jsx';
 var Navigation = Router.Navigation;
 var Link = Router.Link;
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
+
 var Logout = React.createClass({
   mixins: [Router.Navigation, LoadingMixin],
   getInitialState : function() {
@@ -28,7 +32,10 @@ var Logout = React.createClass({
   },
   render : function() {
     return (
-      <div>Logging you out...</div>
+      <div>
+        <DocumentTitle title={config.title + ' | Logout'} />
+        <div>Logging you out...</div>
+      </div>
     );
   }
 });

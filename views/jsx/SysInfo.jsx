@@ -3,6 +3,9 @@ import React        from 'react';
 import LoadingMixin from './LoadingMixin.jsx';
 import api          from '../../api_routes.js';
 
+import config             from '../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var SysInfo = React.createClass({
   mixins : [LoadingMixin],
   getInitialState : function() {
@@ -21,8 +24,9 @@ var SysInfo = React.createClass({
   render : function() {
     return (
       <div className="row sysinfo">
+        <DocumentTitle title={config.title + ' | Admin | System info'} />
         <div className="col-md-12">
-          <h1>About</h1>
+          <h1>System Info</h1>
           <h2>Version Control Information</h2>
           <table>
             <thead>

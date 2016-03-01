@@ -9,6 +9,10 @@ import api              from '../../../api_routes.js';
 
 import QuestionnaireQuestionsEditView from './QuestionnaireQuestionsEditView.jsx';
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
+
 var QuestionnaireEditView = React.createClass({
   mixins: [LoadingMixin, UserHasRoleMixin],
   getInitialState: function() {
@@ -74,6 +78,7 @@ var QuestionnaireEditView = React.createClass({
     }
     return (
       <div className="row">
+        <DocumentTitle title={config.title + ' | Admin Questionaires'} />
         <div className="oc-macro-content">
           <div className="col-md-12">
             <h2>

@@ -8,6 +8,7 @@ import FlashQueue           from '../FlashQueue.jsx';
 
 import api                  from '../../../api_routes.js';
 import ui                   from '../../../ui_routes.js';
+import config               from '../../../config/config.js';
 import SocialmediaLogin     from './SocialmediaLogin.jsx';
 
 // Input validation
@@ -15,6 +16,8 @@ import validation   from 'react-validation-mixin';
 import strategy     from 'joi-validation-strategy';
 import UserJoi      from '../../../models/joi/user.js';
 import Message      from '../Message.jsx';
+
+import DocumentTitle      from 'react-document-title';
 
 var Link = Router.Link;
 
@@ -75,6 +78,7 @@ var LocalLogin = React.createClass({
 
     return (
       <form>
+        <DocumentTitle title={config.title + ' | Login'} />
         <div className="row">
           <div className="oc-login-wrapper col-sm-4 col-sm-offset-4">
             <h1 className="oc-pink oc-login-signup-title">Log in</h1>

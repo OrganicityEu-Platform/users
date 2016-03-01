@@ -2,6 +2,7 @@ import $                from 'jquery';
 import React            from 'react';
 import api              from '../../../api_routes.js';
 import ui               from '../../../ui_routes.js';
+import config           from '../../../config/config.js';
 import SocialmediaLogin from './SocialmediaLogin.jsx';
 
 import FlashQueue       from '../FlashQueue.jsx';
@@ -12,6 +13,8 @@ import validation       from 'react-validation-mixin';
 import strategy         from 'joi-validation-strategy';
 import UserJoi          from '../../../models/joi/user.js';
 import Message          from '../Message.jsx';
+
+import DocumentTitle      from 'react-document-title';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -81,6 +84,7 @@ var Signup = React.createClass({
 
     return (
       <form>
+        <DocumentTitle title={config.title + ' | Sign up'} />
         <div className="row">
           <div className="oc-signup-wrapper col-sm-4 col-sm-offset-4">
             <h1 className="oc-pink oc-login-signup-title">Sign up</h1>

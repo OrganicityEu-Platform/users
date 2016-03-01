@@ -12,6 +12,10 @@ import Message          from '../Message.jsx';
 
 import FlashQueue           from '../FlashQueue.jsx';
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
+
 var ScenarioEvalView = React.createClass({
   mixins: [LoadingMixin, Router.Navigation, FlashQueue.Mixin],
   // scenario{uuid,version},submitted,[answers{question{...},answer{value,weight}}]
@@ -93,6 +97,7 @@ var ScenarioEvalView = React.createClass({
 
     return (
       <div className="col-lg-8 col-lg-offset-2 oc-evaluation-div">
+        <DocumentTitle title={config.title + ' | Scenario Evaluation'} />
         <form>
           <div className="oc-evaluation-description-div col-lg-12">
             {this.state.questionnaire.description}

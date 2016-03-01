@@ -104,6 +104,7 @@
     "react-bootstrap": "^0.24.2",
     "react-cookie": "^0.4.3",
     "react-disqus-thread": "^0.2.2",
+    "react-document-title": "^2.0.1",
     "react-ga": "^1.2.0",
     "react-localstorage": "^0.2.9",
     "react-mixin": "^1.7.0",

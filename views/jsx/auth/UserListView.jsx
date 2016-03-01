@@ -14,6 +14,9 @@ import UserDeleteButton  from './UserDeleteButton.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var UserListView = React.createClass({
   mixins: [UserHasRoleMixin, LoadingMixin],
   getInitialState: function() {
@@ -51,6 +54,7 @@ var UserListView = React.createClass({
 
     return (
       <div className="row">
+        <DocumentTitle title={config.title + ' | Admin | User List'} />
         <div className="oc-macro-content">
           <h1>Users</h1>
           <table className="adminUsersTable">

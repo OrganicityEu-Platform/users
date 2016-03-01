@@ -1,18 +1,21 @@
-import $                  from 'jquery';
-import React              from 'react';
+import $                    from 'jquery';
+import React                from 'react';
 
-import LoadingMixin       from '../LoadingMixin.jsx';
+import LoadingMixin         from '../LoadingMixin.jsx';
 
-import ScenarioListItem   from './ScenarioListItem.jsx';
-import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
-import ScenarioThumbnails from './ScenarioThumbnails.jsx';
-import Router             from 'react-router';
-import TagField           from '../form-components/TagField.jsx';
-import api                from '../../../api_routes.js';
-import ui                 from '../../../ui_routes.js';
-import Tags               from '../Tags.jsx';
+import ScenarioListItem     from './ScenarioListItem.jsx';
+import ScenarioThumbnail    from './ScenarioThumbnail.jsx';
+import ScenarioThumbnails   from './ScenarioThumbnails.jsx';
+import Router               from 'react-router';
+import TagField             from '../form-components/TagField.jsx';
+import api                  from '../../../api_routes.js';
+import ui                   from '../../../ui_routes.js';
+import Tags                 from '../Tags.jsx';
 
 import { Accordion, Panel } from 'react-bootstrap';
+
+import config               from '../../../config/config.js';
+import DocumentTitle        from 'react-document-title';
 
 var Link = Router.Link;
 
@@ -131,6 +134,7 @@ var ScenarioList = React.createClass({
     }
     var scenarios = (
       <div className="scenario-list">
+        <DocumentTitle title={config.title + ' | Explore'} />
         <h1 className="oc-white">
           Explore scenarios
         </h1>
