@@ -11,8 +11,6 @@ import FlashQueue          from './FlashQueue.jsx';
 import api                 from '../../api_routes.js';
 import ui                  from '../../ui_routes.js';
 
-
-
 import Signup              from './auth/Signup.jsx';
 import CookiePrompt        from './CookiePrompt.jsx';
 
@@ -25,7 +23,8 @@ var Scaffold = React.createClass({
   getInitialState: function() {
     return {
       currentUser : undefined,
-      initialAjax : false
+      initialAjax : false,
+      userEvaluations: null,
     };
   },
   componentDidMount: function() {
@@ -41,21 +40,30 @@ var Scaffold = React.createClass({
         }
       }
     });
-    $(document).ready(function() {
-      var movementStrength = 11;
-      var height = movementStrength / $(window).height();
-      var width = movementStrength / $(window).width();
-      $("#top").mousemove(function(e){
-        var pageX = e.pageX - ($(window).width() / 2);
-        var pageY = e.pageY - ($(window).height() / 2);
-        var newvalueX = width * pageX * -1 - 25;
-        var newvalueY = height * pageY * -1 - 50;
-        $('#top').css("background-position", newvalueX+"px     "+newvalueY+"px");
+  },
+  getUserEvaluations: function() {
+      var url = api.reverse('evaluation_by_user', { uuid : currentUser.uuid });
+      $.ajax(url, {
+        dataType: 'json',
+        success : this.setEvaluations,
+        error : (xhr, textStatus, errorThrown) => {
+          if (xhr.status === 401) {
+            this.onLogout();
+          } else {
+            this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
+          }
+        }
       });
+  },
+  setEvaluations: function(evaluations) {
+    window.userEvaluations = evaluations;
+    this.setState({
+      userEvaluations: evaluations
     });
   },
   onLogin: function(currentUser) {
     window.currentUser = currentUser;
+    this.getUserEvaluations();
     this.setState({
       currentUser: currentUser,
       initialAjax: true
@@ -63,9 +71,13 @@ var Scaffold = React.createClass({
   },
   onLogout: function() {
     window.currentUser = undefined;
+    window.userEvaluations = null;
+    this.userEvaluations = null;
     this.setState({
       currentUser: undefined,
+      userEvaluations: null,
       initialAjax: true
+
     });
   },
   handleClass: function() {
@@ -166,17 +178,17 @@ var Scaffold = React.createClass({
     } else {
       linksRight.push(
         <NavItemLink
+          key="signup"
+          to="signup"
+          className="nav-signup-btn">sign up</NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
           key="login"
           to="login"
           className="nav-login-btn">
           log in
         </NavItemLink>
-      );
-      linksRight.push(
-        <NavItemLink
-          key="signup"
-          to="signup"
-          className="nav-signup-btn">sign up</NavItemLink>
       );
     }
     return (
@@ -184,11 +196,7 @@ var Scaffold = React.createClass({
         <div className="row oc-navbar-wrapper">
           <div className="col-lg-8 col-lg-offset-2">
             <Navbar
-              brand={
-                <a href="http://organicity.eu/">
-                  <img src={ui.asset('static/img/oc-nav-header.png')}/>
-                </a>
-              }
+              brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>}
               toggleNavKey={0}>
               <CollapsibleNav eventKey={0}>
                 <span className="oc-left-links-wrapper">
@@ -197,7 +205,7 @@ var Scaffold = React.createClass({
                   </Nav>
                 </span>
                 <Nav navbar right>
-                  {linksRight}
+                  {linksRight.reverse()}
                 </Nav>
               </CollapsibleNav>
             </Navbar>

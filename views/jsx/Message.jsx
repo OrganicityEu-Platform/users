@@ -47,7 +47,7 @@ var Message = React.createClass({
 
   },
   renderDiv: function(message) {
-    var classes = ['alert', 'alert-' + this.state.type];
+    var classes = ['oc-msg alert', 'alert-' + this.state.type];
     return (
       <div className={classes.join(' ')}>{message}</div>
     );

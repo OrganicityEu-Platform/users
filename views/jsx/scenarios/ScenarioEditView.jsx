@@ -259,11 +259,6 @@ clickedPrevious : function() {
 },
 clickedPreview : function() {
 
-
-
-  $('.oc-page-wrapper')[0].scrollIntoView(true); // fast
-  //$("html, body").animate({ scrollTop: 0 }, "slow"); // slow animated
-
   console.log(this.currentStep());
 
   // Trim, as soon the button is clicked
@@ -362,14 +357,12 @@ validateCurrentStep : function(onvalidate, onerror) {
         }
 
         if (errorFields.length > 1) {
-          this.flash('danger', errorFields + ' fields are not valid.');
+          this.flash('danger', errorFields + ' fields are not valid.', 10000);
         }
 
         if (errorFields.length === 1) {
-          this.flash('danger', errorFields + ' field is not valid.');
+          this.flash('danger', errorFields + ' field is not valid.', 10000);
         }
-
-
 
         if (onerror) {
           onerror();
@@ -434,7 +427,7 @@ form : function() {
           {this.editMode() ? 'Edit your scenario' : 'Create your scenario'}
         </h1>
         <form className="form-horizontal">
-          <div className="form-group oc-form-group">
+          <div className="form-group oc-form-group oc-edit-group">
             <label
               className="control-label col-sm-3"
               htmlFor="title">
@@ -458,7 +451,7 @@ form : function() {
             {errorMessageTitle}
           </div>
         </div>
-        <div className="form-group oc-form-group">
+        <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
             htmlFor="summary">
@@ -482,7 +475,7 @@ form : function() {
           {errorMessageSummary}
         </div>
       </div>
-      <div className="form-group oc-form-group">
+      <div className="form-group oc-form-group oc-edit-group">
         <label
           className="control-label col-sm-3"
           htmlFor="narrative">
@@ -505,7 +498,7 @@ form : function() {
         {errorMessageNarrative}
       </div>
     </div>
-    <div className="form-group oc-form-group">
+    <div className="form-group oc-form-group oc-edit-group">
       <label
         className="control-label col-sm-3"
         htmlFor="sectors">
@@ -528,12 +521,13 @@ form : function() {
           id="createEditSearchFormSectors"
           placeholder="Add sector tags"
           tags={this.state.newSectors}
+          doEdit={true}
           onChange={this.handleNewSector}
           />
       </div>
     </div>
   </div>
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
@@ -547,12 +541,13 @@ form : function() {
         id="createEditSearchFormActors"
         placeholder="Add actor tags"
         tags={this.state.actors}
+        doEdit={true}
         onChange={this.handleChangedActors}
         />
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
@@ -566,11 +561,12 @@ form : function() {
         id="createEditSearchFormDevices"
         placeholder="Add tool tags"
         tags={this.state.devices}
+        doEdit={true}
         onChange={this.handleChangedDevices} />
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label className="control-label col-sm-3">
       Image
       <span className="oc-form-group-info">
@@ -588,7 +584,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="copyright">
@@ -608,7 +604,7 @@ form : function() {
     </div>
   </div>
 
-  <div className="form-group oc-form-group">
+  <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">

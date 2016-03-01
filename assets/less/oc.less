@@ -500,7 +500,7 @@ and (min-width : 800px) {
   //background: rgba(63,63,63,0.2);
   background: @oc-white;
   padding: 0;
-  padding-bottom: 60px;
+  padding-bottom: 30px;
   border-radius: 2px;
 }
 
@@ -511,8 +511,7 @@ and (min-width : 800px) {
 #scenarioListSearchFormActors_wrapper,
 #scenarioListSearchFormSectors_wrapper,
 #scenarioListSearchFormDevices_wrapper {
-  .make-md-column(10);
-  .make-md-column-offset(1);
+
 }
 
 #scenarioListSearchFormActors,
@@ -581,7 +580,7 @@ and (min-width : 800px) {
 }
 
 .oc-tags-wrapper {
-  display: inline-block;
+  min-height: 40px;
   margin-bottom: 15px;
 }
 
@@ -642,7 +641,7 @@ and (min-width : 800px) {
 }
 
 .oc-tag-suggestions-wrapper {
-  margin-bottom: 20px;
+  min-height: 40px;
 }
 
 .oc-tag-clear {
@@ -714,4 +713,89 @@ and (min-width : 800px) {
 
 .oc-inner-page-wrapper {
   min-height: 80vh;
+}
+
+.oc-msg {
+  clear: left;
+}
+
+
+.navbar-default .navbar-nav > li > a:focus {
+    color: @oc-white;
+}
+
+.oc-tagfield-description {
+  display: block;
+  padding: 5px;
+}
+
+.oc-filter-tag-description {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.oc-explore-tagfield-title {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.oc-explore-tagfield-description {
+  display: inline-block;
+  padding-top: 5px;
+  font-size: 12px;
+  .gray;
+}
+
+.oc-edit-group {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.oc-eval-com {
+
+}
+
+.oc-eval-actor-description {
+  //background-color: @oc-dark-grey;
+  background-color: @oc-white;
+  padding-left: 25px;
+  padding-top: 15px;
+
+}
+
+.oc-eval-actor-tile {
+  background-color: @oc-dark-grey;
+    margin-right: 25px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.oc-eval-actor-tiles-wrapper {
+  //.make-sm-column(9);
+  //.make-sm-column-offset(3);
+
+
+}
+.oc-eval-actor-tile-description {
+  padding-top: 5px;
+  text-align: left;
+}
+.oc-eval-actor-tiles-outer-wrapper {
+  background-color: @oc-dark-grey;
+}
+
+#oc-eval-button {
+  display: none;
+}
+
+.scenario-thumbnail {
+  #scenarioIndicator {
+    float: right;
+  }
+}
+
+#scenarioIndicator > i {
+  font-size: 22px;
+  padding-top: 8px;
+  padding-right: 5px;
 }

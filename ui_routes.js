@@ -7,7 +7,6 @@ var ui_routes = {
   'home'                   : '/?',
 
   'contactUs' : '/contactUs/?',
-  'kool' : '/kool/?',
 
   // scenario routes
   'scenarioList'           : '/scenarios/?',

@@ -131,13 +131,14 @@ var ScenarioList = React.createClass({
     }
     var scenarios = (
       <div className="scenario-list">
-        <h1 className="oc-white">Explore scenarios</h1>
+        <h1 className="oc-white">
+          Explore scenarios
+        </h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form
               className="scenario-list-search-form"
               onSubmit={this.handleSearch}>
-
               <div className="form-group" id="oc-search-form">
                 <div className="input-group">
                   <input
@@ -160,51 +161,118 @@ var ScenarioList = React.createClass({
                       </span>
                     </button>
                   </span>
-
-
                 </div>
-
               </div>
               <Accordion>
                 <Panel
-                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  header={
+                    <span>
+                      <span className="oc-bold white">
+                        filter tags
+                      </span>
+                      <i
+                        id="oc-search-desc-icon"
+                        className="fa fa-sort-desc white">
+                      </i>
+                    </span>
+                  }
                   eventKey="1"
                   className="oc-filters-panel">
-                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many scenarios? Narrow your search by using the tags below.</div>
-                  <div className="form-group">
-                    <TagField
-                      id="scenarioListSearchFormActors"
-                      tags={this.state.search.actors}
-                      placeholder="Add actor tags"
-                      onChange={this.handleUpdatedActors}
-                      data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
-                      suggestionsLabel="suggestions"
-                      />
-
+                  <div className="oc-filters-info">
+                    <i className="fa fa-info-circle">
+                    </i> Seeing too many scenarios? Narrow your search by using the tags below.
                   </div>
-                  &nbsp;
-                  <div className="form-group">
+
+                  <div className="col-sm-12">
+                    <label
+                      htmlFor="scenarioListSearchFormActors"
+                      className="control-label col-sm-3">
+                      <h3 className="oc-pink oc-explore-tagfield-title">Actors</h3>
+                      <div className="oc-tag-item oc-tag-item-selected">
+                        <img
+                          className="oc-tag-icon"
+                          src={ui.asset('static/img/generic_actor_icon.svg')}>
+                        </img>
+                        <span className="oc-tag-item-text">actor</span>
+                      </div>
+                      <span className="oc-explore-tagfield-description">
+                        Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.
+                      </span>
+                    </label>
+                    <div className="oc-form-group col-sm-9">
+                      <TagField
+                        id="scenarioListSearchFormActors"
+                        tags={this.state.search.actors}
+                        placeholder="Add actor tags"
+                        doEdit={true}
+                        onChange={this.handleUpdatedActors}
+                        data={['tourist', 'business', 'government', 'policy', 'developer', 'researcher']}
+                        suggestionsLabel="suggestions"
+                        />
+                    </div>
+                  </div>
+
+                  <div className="col-sm-12">
+                  <label
+                    htmlFor="scenarioListSearchFormSectors"F
+                    className="control-label col-sm-3">
+                    <h3 className="oc-pink oc-explore-tagfield-title">Sectors</h3>
+                    <div className="oc-tag-item oc-tag-item-selected">
+                      <img
+                        className="oc-tag-icon"
+                        src={ui.asset('static/img/generic_sector_icon.svg')}>
+                      </img>
+                      <span className="oc-tag-item-text">sector</span>
+                    </div>
+                    <span className="oc-explore-tagfield-description">
+                      Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".
+                    </span>
+                  </label>
+                  <div className="oc-form-group col-sm-9">
                     <TagField
                       id="scenarioListSearchFormSectors"
                       tags={this.state.search.sectors}
                       placeholder="Add sector tags"
+                      doEdit={true}
                       onChange={this.handleUpdatedSectors}
                       data={['transport', 'energy', 'retail', 'public', 'environment', 'agriculture', 'healthcare', 'cultural']}
                       suggestionsLabel="suggestions"
                       />
                   </div>
-                  &nbsp;
-                  <div className="form-group" id="oc-devices-form">
+                </div>
+                <div className="col-sm-12">
+                  <label
+                    htmlFor="scenarioListSearchFormDevices"
+                    className="control-label col-sm-3">
+                    <h3 className="oc-pink oc-explore-tagfield-title">Tools</h3>
+                    <div className="oc-tag-item oc-tag-item-selected">
+                      <img
+                        className="oc-tag-icon"
+                        src={ui.asset('static/img/generic_tool_icon.svg')}>
+                      </img>
+                      <span className="oc-tag-item-text">tool</span>
+                    </div>
+                    <span className="oc-explore-tagfield-description">
+                      Tools are instruments you would need to implement your scenario.
+                    </span>
+                  </label>
+                  <div
+                    className="oc-form-group col-sm-9"
+                    id="oc-devices-form">
+
                     <TagField
                       id="scenarioListSearchFormDevices"
                       tags={this.state.search.devices}
                       placeholder="Add tool tags"
+                      doEdit={true}
                       onChange={this.handleUpdatedDevices}
                       data={['mobile', 'cloud', 'wearable sensors', 'smartphone', 'rfid', 'sensors']}
                       suggestionsLabel="suggestions"
                       />
                   </div>
-                  &nbsp;
+                </div>
+
+
                 </Panel>
               </Accordion>
             </form>

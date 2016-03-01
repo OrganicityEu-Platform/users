@@ -277,7 +277,7 @@ var Profile = React.createClass({
         <div>
           <h2 className="oc-white">Local account</h2>
 
-          <div className="form-group oc-form-group">
+          <div className="form-group oc-form-group oc-edit-group">
             <label className="control-label col-sm-3" htmlFor="email">E-Mail
               <span className="oc-form-group-info">
                 {lang.Profile.emailInfo}
@@ -292,7 +292,7 @@ var Profile = React.createClass({
             </div>
           </div>
 
-          <div className="form-group oc-form-group">
+          <div className="form-group oc-form-group oc-edit-group">
             <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator valid={this.props.isValid('local.password')}/>
               <span className="oc-form-group-info">
                 {lang.Profile.passwordInfo}
@@ -308,7 +308,7 @@ var Profile = React.createClass({
             </div>
           </div>
 
-          <div className="form-group oc-form-group">
+          <div className="form-group oc-form-group oc-edit-group">
             <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
               <span className="oc-form-group-info">
                 {lang.Profile.passwordRepeatInfo}
@@ -339,7 +339,7 @@ var Profile = React.createClass({
       }
 
       roles = (
-        <div className="form-group oc-form-group">
+        <div className="form-group oc-form-group oc-edit-group">
           <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
             <span className="oc-form-group-info">
               {lang.Profile.rolesInfo}
@@ -364,7 +364,7 @@ var Profile = React.createClass({
           <h1 className="oc-white">Profile</h1>
           <form className="form-horizontal">
 
-            <div className="form-group oc-form-group">
+            <div className="form-group oc-form-group oc-edit-group">
               <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator valid={this.props.isValid('name')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.nameInfo}
@@ -383,7 +383,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-form-group">
+            <div className="form-group oc-form-group oc-edit-group">
               <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator valid={this.props.isValid('avatar')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.avatarInfo}
@@ -401,7 +401,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <div className="form-group oc-form-group">
+            <div className="form-group oc-form-group oc-edit-group">
               <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator valid={this.props.isValid('gender')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.genderInfo}
@@ -436,7 +436,7 @@ var Profile = React.createClass({
                   className="oc-button"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   onClick={this.handleSubmit}
-                >Save Profile</button>
+                >SAVE PROFILE</button>
               </div>
             </div>
 

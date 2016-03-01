@@ -107,7 +107,7 @@ var LocalLogin = React.createClass({
                 type="submit"
                 className="oc-button"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                onClick={this.handleSubmit}>Log in</button>
+                onClick={this.handleSubmit}>LOG IN</button>
               <div className="oc-login-help-wrapper">
                 <span className="login-help">Need an account? <Link to="signup" >Sign up</Link></span>
                 <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>

@@ -16,22 +16,29 @@ var Queue = React.createClass({
     };
   },
   componentDidMount: function() {
+
     mountedInstance = this;
+
   },
   dismissMessage: function(id) {
     this.state.messages = this.state.messages.filter((message) => message.id !== id);
     this.setState(this.state);
   },
-  flash: function(type, text) {
+  flash: function(type, text, timeout) {
     var id = ++this.state.id;
+    //$('.oc-page-wrapper')[0].scrollIntoView(true);
+    $("html, body").animate({ scrollTop: 0 }, "slow"); // slow animated
+    //this.dismissMessage(id - 1);
+    timeout = timeout || 5000;
     this.state.messages.push({
       type: type,
+      timeout: timeout,
       text: text,
       id: id,
       dismissable: true
     });
     this.setState(this.state);
-    setTimeout(() => this.dismissMessage(id), 5000);
+    setTimeout(() => this.dismissMessage(id), timeout);
   },
   render: function() {
     return (
@@ -75,12 +82,12 @@ var Message = React.createClass({
 
 var Mixin = {
   allowedTypes : ['success', 'info', 'warning', 'danger'],
-  flash: function(type, text) {
+  flash: function(type, text, timeout) {
     if (!this.allowedTypes.some((t) => t === type)) {
       console.log(`Wrong flash type "${type}". Use one of ${JSON.stringify(this.allowedTypes)}`);
       return;
     }
-    mountedInstance.flash(type, text);
+    mountedInstance.flash(type, text, timeout);
   },
   flashOnAjaxError: function(url, message) {
     return function(jqXHR, textStatus, errorThrown) {
