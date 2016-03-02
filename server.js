@@ -61,6 +61,7 @@ var startServer = function(done) {
 
   // routes =====================================================================
   var routes_scenarios     = require('./routes/api/v1/scenarios.js')(router, passport);
+  var routes_ratings       = require('./routes/api/v1/ratings.js')(router, passport);
   var routes_reports       = require('./routes/api/v1/reports.js')(router, passport);
   var routes_auth          = require('./routes/api/v1/auth.js')(router, passport);
   var routes_users         = require('./routes/api/v1/users.js')(router, passport);
@@ -74,6 +75,7 @@ var startServer = function(done) {
 
   app.use(routes_scenarios);
   app.use(routes_reports);
+  app.use(routes_ratings);
   app.use(routes_auth);
   app.use(routes_users);
   app.use(routes_error);

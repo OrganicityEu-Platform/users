@@ -5,6 +5,7 @@ var prefixes = {
   'auth'           : '/api/v1/auth',
   'users'          : '/api/v1/users',
   'scenarios'      : '/api/v1/scenarios',
+  'ratings'        : '/api/v1/ratings',
   'actors'         : '/api/v1/actors',
   'sectors'        : '/api/v1/sectors',
   'devices'        : '/api/v1/devices',
@@ -91,6 +92,9 @@ var api_routes = {
   'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
   'evaluation_by_user'         : prefixes.evaluations + '/user/:uuid',
   'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?',
+
+  // ratings
+  'ratings_list'               : prefixes.ratings + '/?',
 
   'contactUs'                  : prefixes.contactUs + '/?'
 };
