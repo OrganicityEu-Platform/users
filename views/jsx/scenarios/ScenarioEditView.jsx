@@ -23,6 +23,9 @@ import UploadImage          from '../UploadImage.jsx';
 import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
 
+import config               from '../../../config/config.js';
+import DocumentTitle        from 'react-document-title';
+
 import lang                 from '../../../lang/en.js'
 
 var ScenarioEditView = React.createClass({
@@ -420,11 +423,14 @@ form : function() {
     );
   }
 
+  var pageTitle = this.editMode() ? 'Edit your scenario' : 'Create your scenario';
+
   return (
     <div className="row oc-form-group-view">
+      <DocumentTitle title={config.title + ' | ' + pageTitle} />
       <div className="oc-macro-content">
         <h1 className="oc-white">
-          {this.editMode() ? 'Edit your scenario' : 'Create your scenario'}
+          {pageTitle}
         </h1>
         <form className="form-horizontal">
           <div className="form-group oc-form-group oc-edit-group">
@@ -642,13 +648,15 @@ preview : function() {
 
   var btnText = this.editMode() ? 'SUBMIT UPDATED SCENARIO' : 'SUBMIT NEW SCENARIO';
 
+  var title = this.editMode() ? 'Edit your scenario' : 'Create your scenario';
+
   return (
     <div>
+      <DocumentTitle title={config.title + ' | ' + title} />
       <div className="col-lg-8 col-lg-offset-2">
         <div>
           <h1 className="oc-white">
-            {this.editMode() ? 'Edit your scenario' : 'Create your scenario'}
-            <small className="white">preview</small>
+            {title} <small className="white">preview</small>
           </h1>
           <h2 className="oc-white">
             Here's your story!

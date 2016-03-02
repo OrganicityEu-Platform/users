@@ -3,6 +3,7 @@ import React                from 'react';
 import Router               from 'react-router';
 
 import api                  from '../../../api_routes.js';
+import config               from '../../../config/config.js';
 import TagField             from '../form-components/TagField.jsx';
 import UploadImage          from '../UploadImage.jsx';
 
@@ -22,6 +23,8 @@ import Message              from '../Message.jsx';
 import ScenariosNewest      from '../scenarios/ScenariosNewest.jsx';
 
 import lang                 from '../../../lang/en.js'
+
+import DocumentTitle      from 'react-document-title';
 
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
@@ -275,6 +278,7 @@ var Profile = React.createClass({
 
       localAccount = (
         <div>
+          <DocumentTitle title={config.title + ' | Profile '} />
           <h2 className="oc-white">Local account</h2>
 
           <div className="form-group oc-form-group oc-edit-group">

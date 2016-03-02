@@ -2,13 +2,14 @@ import React              from 'react';
 import TimeAgo            from 'react-timeago';
 import startsWithPolyfill from 'string.prototype.startswith';
 import ui                 from '../../../ui_routes.js';
+
 import UserAvatar         from '../users/UserAvatar.jsx';
 import Counter            from '../Counter.jsx';
 import Score              from '../Score.jsx';
 import Comments           from '../Comments.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                from '../../../api_routes.js';
-import ScenarioIndicator from './ScenarioIndicator.jsx';
+import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 
 var ScenarioTableView = React.createClass({

@@ -12,6 +12,9 @@ import ReportTableView      from './ReportTableView.jsx';
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var ReportView = React.createClass({
   mixins: [Router.Navigation],
   getInitialState: function() {
@@ -47,6 +50,7 @@ var ReportView = React.createClass({
 
     return (
       <div>
+        <DocumentTitle title={config.title + ' | Admin | Report View'} />
         <div className="row">
           <ReportTableView report={this.state} />
         </div>

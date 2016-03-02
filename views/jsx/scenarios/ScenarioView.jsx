@@ -15,6 +15,9 @@ import EvalButton           from './EvalButton.jsx';
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation],
   getInitialState: function() {
@@ -53,6 +56,7 @@ var ScenarioView = React.createClass({
 
     return (
       <div>
+        <DocumentTitle title={config.title + ' | Sceanrio | ' + this.state.title} />
         <div className="row">
           <ScenarioTableView scenario={this.state} />
         </div>

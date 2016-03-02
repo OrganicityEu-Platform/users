@@ -13,6 +13,9 @@ import Message      from '../Message.jsx';
 
 var Router = require('react-router');
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var ForgotPassword = React.createClass({
   mixins: [LoadingMixin],
   getInitialState : function() {
@@ -124,6 +127,7 @@ var ForgotPassword = React.createClass({
 
       return (
         <form>
+          <DocumentTitle title={config.title + ' | Reset Password'} />
           <div className="row">
             <div className="col-sm-6 col-sm-offset-3">
               {errorMessage}
@@ -160,14 +164,18 @@ var ForgotPassword = React.createClass({
       if (this.state.send) {
         var message = (
           <span>
+            <DocumentTitle title={config.title + ' | Reset Password'} />
             <h1>Password request sent!</h1>
-            We've emailed you instructions on how to reset your password.
-            Don't forget to check your spam folder.
+            <div>
+              We've emailed you instructions on how to reset your password.
+              Don't forget to check your spam folder.
+            </div>
           </span>
         );
 
         return (
           <div className="oc-forgot-password-msg-wrapper col-lg-4 col-lg-offset-4">
+            <DocumentTitle title={config.title + ' | Reset Password'} />
             <Message message={message} type="success"/>
             <button type="submit" className="oc-button" onClick={this.handleGoBack}>Still didn't get the mail? Go back.</button>
           </div>
@@ -176,6 +184,7 @@ var ForgotPassword = React.createClass({
 
       return (
         <form>
+          <DocumentTitle title={config.title + ' | Reset Password'} />
           <div className="row">
             <div className="oc-forgot-password-wrapper col-sm-4 col-sm-offset-4">
               {errorMessage}

@@ -22,6 +22,7 @@ tmp
 config/auth.js
 config/config.js
 config/database.js
+config/ga.js
 
 # Ignore public folder, because it will be created
 public

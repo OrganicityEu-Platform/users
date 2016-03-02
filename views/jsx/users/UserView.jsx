@@ -13,6 +13,9 @@ import Message            from '../Message.jsx';
 var Router = require('react-router');
 var Link = Router.Link;
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien rutrum erat sagittis ultricies a eu arcu. Pellentesque ut sem vel nunc eleifend dapibus eu eget nunc. Quisque ac mattis elit. Nunc tristique aliquet rutrum. Vestibulum ultrices eros tellus, vitae bibendum nibh pulvinar a. Integer rutrum faucibus est, a dignissim tellus pulvinar vitae. Integer elementum dictum mi non ultricies.';
 
 var UserAvatar = React.createClass({
@@ -69,6 +72,7 @@ var UserAvatar = React.createClass({
 
     return (
       <div className="row">
+        <DocumentTitle title={config.title + ' | User | ' + userText} />
         <div className="col-lg-8 col-lg-offset-2">
           <div className="user-view-profile-wrapper row">
             <div className="user-view-profile-image-wrapper col-md-3">

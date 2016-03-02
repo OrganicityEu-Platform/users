@@ -1,4 +1,5 @@
 var ui = require('./ui_routes.js');
+var config = require('./config/config.js');
 
 module.exports = '' +
 '<!DOCTYPE html>' +
@@ -7,7 +8,7 @@ module.exports = '' +
 '  <meta charset="utf-8">' +
 '  <meta http-equiv="X-UA-Compatible" content="IE=edge">' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1">' +
-'  <title>OrganiCity | Scenarios</title>' +
+'  <title>' + config.title + '</title>' +
 '  <link href="' + ui.asset('static/css/font-awesome.min.css') + '" rel="stylesheet">' +
 '  <link href="' + ui.asset('static/css/oc.css') + '" rel="stylesheet">' +
 '  <link href="' + ui.asset('static/img/favicon.ico') + '" rel="SHORTCUT ICON">' +

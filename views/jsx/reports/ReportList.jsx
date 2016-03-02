@@ -16,6 +16,9 @@ import { Accordion, Panel } from 'react-bootstrap';
 
 var Link = Router.Link;
 
+import config             from '../../../config/config.js';
+import DocumentTitle      from 'react-document-title';
+
 var ReportList = React.createClass({
   mixins: [Router.Navigation, LoadingMixin],
   getInitialState: function() {
@@ -177,6 +180,7 @@ var ReportList = React.createClass({
 
     return (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
+        <DocumentTitle title={config.title + ' | Admin | Report List'} />
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
@@ -213,7 +217,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormDomains"
@@ -225,7 +229,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormOrganizations"
@@ -249,7 +253,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormTypes"
@@ -261,7 +265,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormApproaches"
@@ -273,7 +277,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormTags"
@@ -285,7 +289,7 @@ var ReportList = React.createClass({
                       />
                   </div>
                   &nbsp;
-                  
+
                 </Panel>
               </Accordion>
             </form>
