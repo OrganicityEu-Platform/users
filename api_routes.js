@@ -6,6 +6,7 @@ var prefixes = {
   'users'          : '/api/v1/users',
   'scenarios'      : '/api/v1/scenarios',
   'ratings'        : '/api/v1/ratings',
+  'feedback'       : '/api/v1/feedback',
   'actors'         : '/api/v1/actors',
   'sectors'        : '/api/v1/sectors',
   'devices'        : '/api/v1/devices',
@@ -90,12 +91,16 @@ var api_routes = {
   // evaluations routes
   'evaluations_list'           : prefixes.evaluations + '/?',
   'evaluation_by_uuid'         : prefixes.evaluations + '/:uuid/?',
-  'evaluation_by_user'         : prefixes.evaluations + '/user/:uuid',
   'evaluation_score'           : prefixes.evaluations + '/evaluations_score/:uuid/?',
 
   // ratings
   'ratings_list'               : prefixes.ratings + '/?',
   'ratings_by_scenario'        : prefixes.ratings + '/:uuid/?',
+
+  // feedback
+  'feedback_list'              : prefixes.feedback + '/?',
+  'feedback_by_scenario'       : prefixes.feedback + '/:uuid/?',
+  'feedback_by_user'           : prefixes.feedback + '/user/:uuid',
 
   'contactUs'                  : prefixes.contactUs + '/?'
 };

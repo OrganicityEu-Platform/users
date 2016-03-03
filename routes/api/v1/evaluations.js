@@ -61,23 +61,6 @@ module.exports = function(router, passport) {
     });
   });
 
-  router.get(api.route('evaluation_by_user'), [isLoggedIn], function(req, res) {
-    Evaluation.find({ user : req.params.uuid }, function(err, evaluation) {
-      if (err) {
-        console.log(err);
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-      }
-
-      var evaluations = evaluation;
-      var evaluatedScenarios = [];
-
-      for (e = 0; e < evaluations.length; e++) {
-        evaluatedScenarios.push(evaluations[e].scenario);
-      }
-      return res.status(HttpStatus.OK).send(evaluatedScenarios);
-    });
-  });
-
   var evaluationUpdateFields = ['scenario', 'submitted', 'answers', 'comment'];
   var forbiddenUpdateFields = ['uuid', 'user', 'timestamp'];
 

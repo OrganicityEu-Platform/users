@@ -42,7 +42,7 @@ var Scaffold = React.createClass({
     });
   },
   getUserEvaluations: function() {
-      var url = api.reverse('evaluation_by_user', { uuid : currentUser.uuid });
+      var url = api.reverse('feedback_by_user', { uuid : currentUser.uuid });
       $.ajax(url, {
         dataType: 'json',
         success : this.setEvaluations,

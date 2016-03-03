@@ -11,7 +11,7 @@ import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
-import ScenarioRating       from './ScenarioRating.jsx';
+import ScenarioRating     from './ScenarioRating.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin],
@@ -82,10 +82,10 @@ var ScenarioTableView = React.createClass({
           </div>
           <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
             <h2 className="scenario-article-title">{this.props.scenario.title}</h2>
-              <ScenarioIndicator
+              {/*<ScenarioIndicator
                 evaluations={userEvaluations}
                 scenario={this.props.scenario}
-                showEvalText={true} />
+                showEvalText={true} />*/}
               <div>
                 <span className="scenario-article-publisher">
                   Created by <UserAvatar uuid={this.props.scenario.creator} />

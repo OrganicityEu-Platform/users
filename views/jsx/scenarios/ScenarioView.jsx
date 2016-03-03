@@ -16,8 +16,10 @@ import ScenarioRating       from './ScenarioRating.jsx';
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
 
-import config             from '../../../config/config.js';
-import DocumentTitle      from 'react-document-title';
+import config               from '../../../config/config.js';
+import DocumentTitle        from 'react-document-title';
+
+import Feedback             from './Feedback.jsx';
 
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation],
@@ -59,6 +61,7 @@ var ScenarioView = React.createClass({
         <DocumentTitle title={config.title + ' | Sceanrio | ' + this.state.title} />
         <div className="row">
           <ScenarioTableView scenario={this.state} />
+
         </div>
         <div className="row">
           <div className="form-group">
@@ -71,6 +74,7 @@ var ScenarioView = React.createClass({
             </div>
           </div>
         </div>
+        <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
         <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread

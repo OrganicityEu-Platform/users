@@ -64,10 +64,11 @@ var ScenarioThumbnail = React.createClass({
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
                 </span>
-                <ScenarioIndicator
+                {/*<ScenarioIndicator
                   evaluations={userEvaluations}
                   scenario={this.props.scenario}
-                  showEvalText={false} />
+                  showEvalText={false} />*/}
+
               </span>
             </header>
             <p className="scenario-thumbnail-summary">

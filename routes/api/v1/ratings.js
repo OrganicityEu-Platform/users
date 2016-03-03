@@ -1,6 +1,6 @@
-var api         = require('../../../api_routes.js');
-var uuid        = require('node-uuid');
-var Rating      = require('../../../models/schema/rating.js');
+var api           = require('../../../api_routes.js');
+var uuid          = require('node-uuid');
+var Rating        = require('../../../models/schema/rating.js');
 var HttpStatus    = require('http-status');
 
 module.exports = function(router, passport) {
