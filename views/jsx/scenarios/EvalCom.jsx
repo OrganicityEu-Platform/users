@@ -36,9 +36,7 @@ var EvalCom = React.createClass({
     }else {
       this.state.selectedActor = "false";
     }
-
     this.setState(this.state);
-
   },
   handleBack: function () {
     this.state.selectedActor = null;

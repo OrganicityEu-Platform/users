@@ -20,7 +20,15 @@ module.exports = function(router, passport) {
       }));
     });
   });
-  router.get(api.route('feedback_by_scenario'), function(req, res) {});
+  router.get(api.route('feedback_by_scenario'), function(req, res) {
+    Feedback.find({'scenario.uuid': req.params.uuid}, function(err, feedback) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+      return res.status(HttpStatus.OK).send(feedback);
+    });
+  });
   router.post(api.route('feedback_list'), function(req, res, next) {
     var feedback = new Feedback(req.body);
     feedback.uuid = uuid.v4();

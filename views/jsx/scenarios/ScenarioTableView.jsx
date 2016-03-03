@@ -72,7 +72,6 @@ var ScenarioTableView = React.createClass({
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
             <div className={sector_colour_marker}><span className="scenario-article-score">
               <ScenarioRating scenario={this.props.scenario}></ScenarioRating>
-
               </span></div>
               <div className="scenario-article-widget-data">
                 <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
@@ -139,9 +138,7 @@ var ScenarioTableView = React.createClass({
           <div className="scenario-article-narrative">
             {this.props.scenario.narrative}
           </div>
-
       </div>
-      <ScenarioRating enabled={true} scenario={this.props.scenario}></ScenarioRating>
     </div>
     );
   }

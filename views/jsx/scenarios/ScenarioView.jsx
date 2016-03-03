@@ -11,7 +11,6 @@ import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
 import EvalCom              from './EvalCom.jsx';
 import EvalButton           from './EvalButton.jsx';
-import ScenarioRating       from './ScenarioRating.jsx';
 
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
