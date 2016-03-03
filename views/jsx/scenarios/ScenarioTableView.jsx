@@ -11,6 +11,7 @@ import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
+import ScenarioRating       from './ScenarioRating.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin],
@@ -69,7 +70,10 @@ var ScenarioTableView = React.createClass({
       <div className="scenario-article">
         <header className="scenario-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
-            <div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.scenario.score} /></span></div>
+            <div className={sector_colour_marker}><span className="scenario-article-score">
+              <ScenarioRating scenario={this.props.scenario}></ScenarioRating>
+
+              </span></div>
               <div className="scenario-article-widget-data">
                 <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="scenarios" className="scenario-article-views" id={this.props.scenario.uuid} />  views</p>
                 <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="scenarios" className="scenario-article-comments" id={this.props.scenario.uuid} />  comments</p>
@@ -135,7 +139,9 @@ var ScenarioTableView = React.createClass({
           <div className="scenario-article-narrative">
             {this.props.scenario.narrative}
           </div>
+
       </div>
+      <ScenarioRating enabled={true} scenario={this.props.scenario}></ScenarioRating>
     </div>
     );
   }

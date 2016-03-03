@@ -11,6 +11,7 @@ import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
 import EvalCom              from './EvalCom.jsx';
 import EvalButton           from './EvalButton.jsx';
+import ScenarioRating       from './ScenarioRating.jsx';
 
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';
@@ -33,7 +34,6 @@ var ScenarioView = React.createClass({
       url: url,
       success: (scenario) => {
         if (this.isMounted()) {
-
           this.setState(scenario);
         }
       },
@@ -71,8 +71,6 @@ var ScenarioView = React.createClass({
             </div>
           </div>
         </div>
-
-
         <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread

@@ -17,6 +17,26 @@ module.exports = function(router, passport) {
       }));
     });
   });
+  router.get(api.route('ratings_by_scenario'), function(req, res) {
+
+    var query = Rating.aggregate([
+      {$group: {_id: '$scenario.uuid', average: { $avg: '$rating' }}},
+      {$match: {_id: req.params.uuid }}]);
+
+    query.exec(function(err, ratings) {
+        if (err) {
+          console.log(err);
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        if (ratings[0]) {
+          var result = ratings[0];
+          result.uuid = result._id;
+          delete result._id;
+          return res.status(HttpStatus.OK).json(result);
+        }
+        res.status(HttpStatus.NOT_FOUND).send('Rating not found.');
+      });
+  });
   router.post(api.route('ratings_list'), function(req, res, next) {
     var rating = new Rating(req.body);
     rating.uuid = uuid.v4();

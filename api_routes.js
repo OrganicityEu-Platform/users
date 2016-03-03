@@ -95,6 +95,7 @@ var api_routes = {
 
   // ratings
   'ratings_list'               : prefixes.ratings + '/?',
+  'ratings_by_scenario'        : prefixes.ratings + '/:uuid/?',
 
   'contactUs'                  : prefixes.contactUs + '/?'
 };
