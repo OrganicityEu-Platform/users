@@ -10,8 +10,12 @@ var ScenarioRating = React.createClass({
       rating: null,
       icons: ["fa fa-star-o","fa fa-star-o","fa fa-star-o","fa fa-star-o","fa fa-star-o"],
       enabled: this.props.enabled ? this.props.enabled : false,
-      scenario: this.props.scenario ? this.props.scenario : null
+      scenario: this.props.scenario ? this.props.scenario : null,
+      ajax: this.props.ajax ? this.props.ajax : false
     };
+  },
+  componentWillReceiveProps: function() {
+    console.log("oh yeah bois");
   },
   componentDidMount: function() {
     if(!this.state.enabled) {
@@ -41,7 +45,8 @@ var ScenarioRating = React.createClass({
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(rated),
-        method: 'POST'
+        method: 'POST',
+        success: this.setState({enabled: false})
       });
     }
   },

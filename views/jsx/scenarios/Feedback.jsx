@@ -7,8 +7,6 @@ import LoadingMixin         from '../LoadingMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
-
-
 var Feedback = React.createClass({
   mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin],
   getInitialState: function() {
@@ -64,11 +62,21 @@ var Feedback = React.createClass({
         dislike: feedback[e].dislike
         // TODO: add timestamp in api
       };
-      var tock = <div>
-        <span>{feedback[e].user}</span>
-        <span>Likes:</span><p>{feedback[e].like}</p>
-        <span>Dislikes:</span><p>{feedback[e].dislike}</p>
-      </div>;
+      var tock =
+      <div>
+        <span className="pink">
+          {feedback[e].user}
+        </span>
+        <span> likes:</span>
+        <p>
+          {feedback[e].like}
+        </p>
+        <span>and dislikes:</span>
+        <p>
+          {feedback[e].dislike}
+        </p>
+      </div>
+      ;
       this.state.userFeedback.push(tock);
     }
     this.setState(this.state);
@@ -76,7 +84,7 @@ var Feedback = React.createClass({
   getUserFeedback: function() {
     return this.state.userFeedback.map(function(feedback, i){
       return <div>
-          {feedback}
+        {feedback}
       </div>;
     }, this);
   },
@@ -110,62 +118,86 @@ var Feedback = React.createClass({
     if(this.userIsCreator(this.state.scenario)) {return(
       <div className="row">
         <div className="oc-macro-content">
-          <span>{this.getUserFeedback()}</span>
+          <div className="oc-feedback-wrapper">
+          <h3>User Feedback</h3>
+          <span>
+            {this.getUserFeedback()}
+          </span>
+        </div>
         </div>
       </div>
     );}
     if(this.state.hasEvaluated){return(
       <div className="row">
         <div className="oc-macro-content">
-          <span>You have evaluated this scenario.</span>
+          <span>
+            You have evaluated this scenario.
+          </span>
         </div>
       </div>
     );}
     if(this.state.show) {
+
+      var starRating =
+      <div>
+        <span>
+          Rate this scenario
+        </span>
+        <span id="oc-star-rating-wrapper">
+          <ScenarioRating
+            scenario={this.props.scenario}
+            enabled={true}>
+          </ScenarioRating>
+        </span>
+      </div>
+      ;
+
       return(
         <div className="row">
+
           <div className="oc-macro-content">
-            <span>Rate this scenario </span>
-            <ScenarioRating
-              scenario={this.props.scenario}
-              enabled={true}>
-            </ScenarioRating>
-            <span>
-              {likeText}
-            </span>
-            <textarea
-              className="oc-input"
-              onChange={this.handleLikeTextChange}>
-            </textarea>
-            <span>
-              {dislikeText}
-            </span>
-            <textarea
-              className="oc-input"
-              onChange={this.handleDislikeTextChange}>
-            </textarea>
+            <div className="oc-feedback-wrapper">
+            {this.userIsLoggedIn() ?
+              starRating : null}
+              <span>
+                {likeText}
+              </span>
+              <textarea
+                className="oc-input"
+                onChange={this.handleLikeTextChange}>
+              </textarea>
+              <span>
+                {dislikeText}
+              </span>
+              <textarea
+                className="oc-input"
+                onChange={this.handleDislikeTextChange}>
+              </textarea>
+            </div>
+            </div>
+            <div className="col-md-2 col-md-offset-5">
+              <button
+                className="oc-button"
+                onClick={() => this.handleSubmit()}>
+                SEND FEEDBACK
+              </button>
+            </div>
 
           </div>
-          <div className="col-md-2 col-md-offset-5">
-            <button
-              className="oc-button"
-              onClick={() => this.handleSubmit()}>
-              SEND FEEDBACK
-            </button>
+        );
+      }
+      if(!this.state.show) {
+        return(
+          <div className="row">
+            <div className="oc-macro-content">
+              <span>
+                Thank you!
+              </span>
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     }
-    if(!this.state.show) {
-      return(
-        <div className="row">
-          <div className="oc-macro-content">
-            <span>Thank you!</span>
-          </div>
-        </div>
-      );
-    }
-  }
-});
+  });
 
-export default Feedback;
+  export default Feedback;
