@@ -2,10 +2,12 @@ import $                    from 'jquery';
 import api                  from '../../../api_routes.js';
 import React                from 'react';
 import ScenarioRating       from './ScenarioRating.jsx';
+import ValidationIndicator  from '../ValidationIndicator.jsx'
 
 import LoadingMixin         from '../LoadingMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+
 
 var Feedback = React.createClass({
   mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin],
@@ -71,7 +73,9 @@ var Feedback = React.createClass({
         <p>
           {feedback[e].like}
         </p>
-        <span>and dislikes:</span>
+        <span>
+          and dislikes:
+        </span>
         <p>
           {feedback[e].dislike}
         </p>
@@ -89,26 +93,32 @@ var Feedback = React.createClass({
     }, this);
   },
   handleSubmit: function() {
-    var url = api.reverse("feedback_list");
-    var feedback = {
-      user: currentUser ? currentUser.uuid : "Anonymous",
-      like: this.state.likeText,
-      dislike: this.state.dislikeText,
-      scenario: {
-        uuid: this.state.scenario.uuid,
-        version: this.state.scenario.version
+
+    if(this.state.likeText && this.state.dislikeText) {
+      if(this.state.likeText !== "" && this.state.dislikeText !== "") {
+        var url = api.reverse("feedback_list");
+        var feedback = {
+          user: currentUser ? currentUser.uuid : "Anonymous",
+          like: this.state.likeText,
+          dislike: this.state.dislikeText,
+          scenario: {
+            uuid: this.state.scenario.uuid,
+            version: this.state.scenario.version
+          }
+        };
+        $.ajax(url, {
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(feedback),
+          method: 'POST',
+          error : (xhr, textStatus, errorThrown) => {
+            console.log(errorThrown);
+          },
+          success: this.setState({show: false})
+        });
       }
-    };
-    $.ajax(url, {
-      dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify(feedback),
-      method: 'POST',
-      error : (xhr, textStatus, errorThrown) => {
-        console.log(errorThrown);
-      },
-      success: this.setState({show: false})
-    });
+    }
+
   },
   render: function() {
 
@@ -119,11 +129,13 @@ var Feedback = React.createClass({
       <div className="row">
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">
-          <h3>User Feedback</h3>
-          <span>
-            {this.getUserFeedback()}
-          </span>
-        </div>
+            <h3>
+              User Feedback
+            </h3>
+            <span>
+              {this.getUserFeedback()}
+            </span>
+          </div>
         </div>
       </div>
     );}
@@ -140,49 +152,78 @@ var Feedback = React.createClass({
 
       var starRating =
       <div>
-        <span>
-          Rate this scenario
-        </span>
-        <span id="oc-star-rating-wrapper">
+        <div id="oc-star-rating-wrapper">
           <ScenarioRating
             scenario={this.props.scenario}
             enabled={true}>
           </ScenarioRating>
-        </span>
+        </div>
       </div>
       ;
 
       return(
         <div className="row">
-
           <div className="oc-macro-content">
             <div className="oc-feedback-wrapper">
-            {this.userIsLoggedIn() ?
-              starRating : null}
-              <span>
-                {likeText}
-              </span>
-              <textarea
-                className="oc-input"
-                onChange={this.handleLikeTextChange}>
-              </textarea>
-              <span>
-                {dislikeText}
-              </span>
-              <textarea
-                className="oc-input"
-                onChange={this.handleDislikeTextChange}>
-              </textarea>
+              <div>
+                <h3>
+                  Evaluate this scenario
+                </h3>
+                {this.userIsLoggedIn() ?
+                  starRating : null}
+                </div>
+                <form className="form-horizontal">
+                  <div
+                    className="form-group oc-form-group oc-edit-group"
+                    id="oc-like-text-wrapper">
+                    <label
+                      className="control-label col-sm-3"
+                      htmlFor="like">
+                      <span className="oc-feedback-label-text">
+                        {likeText}
+                      </span>
+                    </label>
+                    <div className="col-sm-9">
+                      <textarea
+                        name="like"
+                        className="oc-input oc-feedback-text"
+                        onChange={this.handleLikeTextChange}>
+                      </textarea>
+                    </div>
+                  </div>
+                  <div className="form-group oc-form-group oc-edit-group">
+                    <label
+                      className="control-label col-sm-3"
+                      htmlFor="dislike">
+                      <span className="oc-feedback-label-text">
+                        {dislikeText}
+                      </span>
+                    </label>
+                    <div className="col-sm-9">
+                      <textarea
+                        name="dislike"
+                        className="oc-input oc-feedback-text"
+                        onChange={this.handleDislikeTextChange}>
+                      </textarea>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+            <div className="oc-macro-content">
+              <div className="col-sm-4">
+              </div>
+              <div className="col-sm-4">
+                <button
+                  className="oc-button"
+                  id="oc-submit-feedback"
+                  onClick={() => this.handleSubmit()}>
+                  SEND FEEDBACK
+                </button>
+              </div>
+              <div className="col-sm-4">
+              </div>
             </div>
-            <div className="col-md-2 col-md-offset-5">
-              <button
-                className="oc-button"
-                onClick={() => this.handleSubmit()}>
-                SEND FEEDBACK
-              </button>
-            </div>
-
           </div>
         );
       }

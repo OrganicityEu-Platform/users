@@ -14,9 +14,6 @@ var ScenarioRating = React.createClass({
       ajax: this.props.ajax ? this.props.ajax : false
     };
   },
-  componentWillReceiveProps: function() {
-    console.log("oh yeah bois");
-  },
   componentDidMount: function() {
     if(!this.state.enabled) {
       this.getRating();

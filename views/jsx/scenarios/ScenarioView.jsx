@@ -64,7 +64,7 @@ var ScenarioView = React.createClass({
         </div>
         <div className="row">
           <div className="form-group">
-            <div className="oc-macro-content">
+            <div className="oc-macro-content oc-scenario-controls">
               <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
               <div className="col-sm-4">
 
