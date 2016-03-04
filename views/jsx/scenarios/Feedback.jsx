@@ -152,11 +152,26 @@ var Feedback = React.createClass({
 
       var starRating =
       <div>
-        <div id="oc-star-rating-wrapper">
-          <ScenarioRating
-            scenario={this.props.scenario}
-            enabled={true}>
-          </ScenarioRating>
+        <div>
+          <div
+            className="form-group oc-form-group oc-edit-group"
+            >
+            <label
+              className="control-label col-sm-3"
+              >
+              <span className="oc-feedback-label-text">
+                Rate this scenario
+              </span>
+            </label>
+            <div
+              className="col-sm-9"
+              id="oc-star-rating-wrapper">
+              <ScenarioRating
+                scenario={this.props.scenario}
+                enabled={true}>
+              </ScenarioRating>
+            </div>
+          </div>
         </div>
       </div>
       ;
