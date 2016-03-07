@@ -34,11 +34,11 @@ var ScenarioIdicator = React.createClass({
   },
   render: function() {
     if(this.userIsLoggedIn()){
-      var userHasEvaluated = <span>You have evaluated this scenario.</span>;
-      var userHasNotEvaluated = <span>You have not evaluated this scenario yet.</span>;
+      var userHasEvaluated = <span className="pink">You have evaluated this scenario.</span>;
+      var userHasNotEvaluated = <span className="gray">You have not evaluated this scenario yet.</span>;
       if(this.userIsCreator(this.state.scenario)) {return null;}
       if(!this.state.evaluated) {return(<div id="scenarioIndicator">
-        <i className="fa fa-check-square-o"></i>
+        <i className="fa fa-check-square-o gray"></i>
         {this.state.showEvalText ? userHasNotEvaluated : null}
       </div>);}
       if(this.state.evaluated) {return(<div id="scenarioIndicator">

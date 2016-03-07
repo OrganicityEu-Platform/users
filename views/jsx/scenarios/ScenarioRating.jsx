@@ -75,7 +75,6 @@ var ScenarioRating = React.createClass({
     }
   },
   getIcons: function(){
-
     return this.state.icons.map(function(icon, i){
       return <span>
         <i
