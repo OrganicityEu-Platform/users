@@ -1,6 +1,6 @@
-import React                from 'react';
 import $                    from 'jquery';
 import api                  from '../../../api_routes.js';
+import React                from 'react';
 
 import LoadingMixin         from '../LoadingMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
@@ -21,9 +21,7 @@ var ScenarioIdicator = React.createClass({
       this.state.evaluated = true;
       this.setState(this.state);
     }
-
   },
-
   userHasEvaluated: function(evaluations) {
     if (evaluations){
       var e;

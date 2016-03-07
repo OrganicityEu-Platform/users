@@ -7,6 +7,7 @@ import UserAvatar         from '../users/UserAvatar.jsx';
 import ellipsis           from '../../../util/ellipsis.js';
 import Score              from '../Score.jsx';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
+import ScenarioRating     from './ScenarioRating.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -23,10 +24,25 @@ var ScenarioThumbnail = React.createClass({
     var sector_colour = this.props.scenario.sectors[0];
     var sector_colour_marker;
     var sector_colour_overlay;
+    var sector_icon;
+    var fixed_sectors = ['transport', 'retail', 'energy', 'environment', 'agriculture', 'healthcare', 'cultural', 'public'];
+
+    var arrayContains;
+
+
 
     if (sector_colour) {
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
       sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
+      arrayContains = (fixed_sectors.indexOf(sector_colour.toLowerCase()) > -1);
+    }else {
+      console.log("no color");
+    }
+
+    if(arrayContains) {
+      sector_icon = sector_colour.toLowerCase().concat('_icon.svg');
+    }else {
+      sector_icon = 'generic_sector_icon.svg';
     }
 
     var thumbnail;
@@ -43,7 +59,7 @@ var ScenarioThumbnail = React.createClass({
             <div>
               <div className={sector_colour_marker}>
                 <span className="scenario-thumbnail-marker-score">
-                  <Score className="scenario-article-score-thumbnail" score={this.props.scenario.score} />
+                  <img className="oc-tag-icon" src={ui.asset('static/img/'.concat(sector_icon))}/>
                 </span>
               </div>
             </div>
@@ -54,6 +70,10 @@ var ScenarioThumbnail = React.createClass({
                     <TimeAgo date={this.props.scenario.timestamp} />
                     : '' }
                 </span>
+                <div className="oc-thumbnail-rating-wrapper">
+                  <ScenarioRating scenario={this.props.scenario} />
+                </div>
+
               </span>
               <h3 className="scenario-thumbnail-title">
                 {this.props.scenario.title}
@@ -64,10 +84,10 @@ var ScenarioThumbnail = React.createClass({
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
                 </span>
-                {/*<ScenarioIndicator
+                <ScenarioIndicator
                   evaluations={userEvaluations}
                   scenario={this.props.scenario}
-                  showEvalText={false} />*/}
+                  showEvalText={false} />
 
               </span>
             </header>

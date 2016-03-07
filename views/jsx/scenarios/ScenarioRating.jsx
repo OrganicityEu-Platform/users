@@ -78,14 +78,19 @@ var ScenarioRating = React.createClass({
 
     return this.state.icons.map(function(icon, i){
       return <span>
-          <i className={this.state.icons[i]}
-            onClick={this.handleClick.bind(this, i)}></i>
-        </span>;
+        <i
+          className={this.state.icons[i]}
+          onClick={this.handleClick.bind(this, i)}>
+        </i>
+      </span>;
     }, this);
   },
   render: function() {
     return (
-      <div>{this.getIcons()}</div>);
+      <div>
+        {this.getIcons()}
+      </div>
+    );
   }
 });
 
