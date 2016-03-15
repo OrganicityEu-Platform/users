@@ -1,6 +1,8 @@
 import React               from 'react';
 import $                   from 'jquery';
+import ui                  from '../../../ui_routes.js';
 import api                 from '../../../api_routes.js';
+
 import LoadingMixin        from '../LoadingMixin.jsx';
 
 var ScenarioRating = React.createClass({
@@ -8,11 +10,20 @@ var ScenarioRating = React.createClass({
   getInitialState: function() {
     return {
       rating: null,
-      icons: ["fa fa-star-o","fa fa-star-o","fa fa-star-o","fa fa-star-o","fa fa-star-o"],
+      doMeta: this.props.doMeta ? this.props.doMeta : false,
+      icons:
+      ["emptystaricon.png","emptystaricon.png","emptystaricon.png","emptystaricon.png","emptystaricon.png"],
+      metaIcons:
+      ["emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png"],
       enabled: this.props.enabled ? this.props.enabled : false,
       scenario: this.props.scenario ? this.props.scenario : null,
       ajax: this.props.ajax ? this.props.ajax : false
     };
+  },
+  componentWillMount: function() {
+    if(this.state.doMeta) {
+      this.setState({icons: this.state.metaIcons});
+    }
   },
   componentDidMount: function() {
     if(!this.state.enabled) {
@@ -25,7 +36,7 @@ var ScenarioRating = React.createClass({
       this.setState(this.state);
       var e;
       for(e = 0; e <= i; e++) {
-        this.state.icons[e] = "fa fa-star";
+        this.state.icons[e] = "fullstaricon.png";
       }
       this.setState(this.state);
       var rating = i + 1;
@@ -65,10 +76,18 @@ var ScenarioRating = React.createClass({
       if(floor >= 1) {
         var e;
         for(e = 0; e < floor; e++) {
-          this.state.icons[e] = "fa fa-star";
+          if(this.state.doMeta) {
+            this.state.icons[e] = "fullstaricon_meta.png";
+          }else{
+            this.state.icons[e] = "fullstaricon.png";
+          }
         }
         if(frac >= 0.5) {
-          this.state.icons[floor] = "fa fa-star-half-full";
+          if(this.state.doMeta) {
+            this.state.icons[floor] = "halfstaricon_meta.png";
+          }else {
+            this.state.icons[floor] = "halfstaricon.png";
+          }
         }
       }
       this.setState(this.state);
@@ -77,10 +96,11 @@ var ScenarioRating = React.createClass({
   getIcons: function(){
     return this.state.icons.map(function(icon, i){
       return <span>
-        <i
-          className={this.state.icons[i]}
-          onClick={this.handleClick.bind(this, i)}>
-        </i>
+        <img
+          className={this.props.className}
+          src={ui.asset('static/img/'.concat(this.state.icons[i]))}
+          onClick={this.handleClick.bind(this, i)}
+          />
       </span>;
     }, this);
   },

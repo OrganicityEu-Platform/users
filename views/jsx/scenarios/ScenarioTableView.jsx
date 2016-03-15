@@ -13,6 +13,8 @@ import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import LoadingMixin       from '../LoadingMixin.jsx';
 import ScenarioRating     from './ScenarioRating.jsx';
 
+import SectorIcon         from '../SectorIcon.jsx';
+
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 var ScenarioTableView = React.createClass({
@@ -82,8 +84,7 @@ var ScenarioTableView = React.createClass({
             <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
               <div className={sector_colour_marker}>
                 <span className="scenario-article-score">
-                  <ScenarioRating scenario={this.props.scenario}>
-                  </ScenarioRating>
+                  <SectorIcon className={"oc-article-sector-icon"} sector={sector_colour} />
                 </span>
               </div>
               <div className="scenario-article-widget-data">
@@ -108,7 +109,11 @@ var ScenarioTableView = React.createClass({
                       </i>
                       <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> evaluations
                       </p>
+                      <p>
+                        <ScenarioRating doMeta={true} className={"oc-article-star"} scenario={this.props.scenario} />
+                      </p>
                     </div>
+
                   </div>
                   <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
                     <div className="col-lg-12 scenario-article-indicator-wrapper">

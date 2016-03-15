@@ -18,6 +18,7 @@ var HomeViewSection = React.createClass({
   render: function() {
     return (
       <div className="oc-home-view-section-wrapper">
+
         <div className="row oc-home-view-section-icons-wrapper">
           <div className="col-lg-8 col-lg-offset-2">
             <div className="oc-home-view-section-icon-wrapper">

@@ -29,8 +29,6 @@ var ScenarioThumbnail = React.createClass({
 
     var arrayContains;
 
-
-
     if (sector_colour) {
       sector_colour_marker = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-marker');
       sector_colour_overlay = sector_colour.toLowerCase().concat('_colour scenario-thumbnail-image-wrapper');
@@ -52,8 +50,6 @@ var ScenarioThumbnail = React.createClass({
 
     return (
       <div className="col-md-4">
-
-
         <div className="well scenario-thumbnail">
           <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
             <div>
@@ -71,7 +67,9 @@ var ScenarioThumbnail = React.createClass({
                     : '' }
                 </span>
                 <div className="oc-thumbnail-rating-wrapper">
-                  <ScenarioRating scenario={this.props.scenario} />
+                  <ScenarioRating
+                    scenario={this.props.scenario}
+                    className={"oc-thumbnail-star"} />
                 </div>
                 <ScenarioIndicator
                   evaluations={userEvaluations}
