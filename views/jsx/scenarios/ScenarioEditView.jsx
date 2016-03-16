@@ -429,7 +429,7 @@ form : function() {
     <div className="row oc-form-group-view">
       <DocumentTitle title={config.title + ' | ' + pageTitle} />
       <div className="oc-macro-content">
-        <h1 className="oc-white">
+        <h1 className="oc-pink">
           {pageTitle}
         </h1>
         <form className="form-horizontal">

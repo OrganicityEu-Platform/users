@@ -17,7 +17,7 @@ var SectorIcon = React.createClass({
       return(
         <img
           className={this.props.className}
-          src={ui.asset('static/img/'.concat(this.props.sector).concat('_icon.svg'))}/>
+          src={ui.asset('static/img/'.concat(this.props.sector.toLowerCase()).concat('_icon.svg'))}/>
       );
     }else {
       return(

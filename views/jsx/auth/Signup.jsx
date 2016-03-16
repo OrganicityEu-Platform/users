@@ -88,6 +88,10 @@ var Signup = React.createClass({
         <div className="row">
           <div className="oc-signup-wrapper col-sm-4 col-sm-offset-4">
             <h1 className="oc-pink oc-login-signup-title">Sign up</h1>
+              <p className="oc-signup-description">
+                <span>Share ideas, discuss and</span>
+                <span>connect with other innovators.</span>
+              </p>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>

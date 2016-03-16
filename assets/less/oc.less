@@ -88,10 +88,10 @@ a:hover {
   height: 100%;
   table-layout: fixed;
   width: 100%;
-  background-image: url('../../static/img/oc-hero-image.jpg');
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center top;
+  //background-image: url('../../static/img/oc-hero-image.jpg');
+  //background-repeat: no-repeat;
+  //background-size: 100%;
+  //background-position: center top;
 }
 
 .ocTable {
@@ -291,7 +291,9 @@ input[type="submit"] {
 
 .oc-home-view-header-sub-text {
   margin-top: 0;
-  color: @oc-white;
+    span {
+      display: block;
+    }
 }
 
 .oc-home-view-section-icon-wrapper > p {
@@ -533,13 +535,14 @@ and (min-width : 800px) {
 #scenarioListSearchFormQ {
   margin-top: 0px;
   margin-bottom: 0px;
-  border-bottom: 2px solid @oc-white;
+  border-bottom: 2px solid @oc-dark-grey;
   background: 0;
+  color: @oc-dark-grey !important;
 }
 
 #scenarioListSearchFormQ:focus {
-  border-bottom: 2px solid @oc-white !important;
-  color: @oc-white;
+  border-bottom: 2px solid @oc-dark-grey !important;
+  color: @oc-dark-grey;
   font-size: 16px;
 }
 
@@ -595,17 +598,16 @@ and (min-width : 800px) {
 #oc-search-btn {
   background: 0;
   border: none;
-  border-bottom: 2px solid @oc-white;
-  color: @oc-white;
+  border-bottom: 2px solid @oc-dark-grey;
+  color: @oc-dark-grey;
   border-radius: 0;
 }
 
 #oc-search-form {
-  .make-sm-column(4);
-  .make-sm-column-offset(4);
-  float: right !important;
-  margin-bottom: 0;
-  padding-right: 0;
+  .make-md-column(3.5);
+  .make-md-column-offset(8.5);
+  margin-bottom: 50px;
+  margin-top: 20px;
 }
 
 .scenario-list-search-form .panel-group {
@@ -666,24 +668,24 @@ and (min-width : 800px) {
   .make-lg-column-offset(2);
 }
 
-.oc-input-extra::-webkit-input-placeholder {color:#3f3f3f;font-size: 16px;}
-#scenarioListSearchFormActors:focus::-webkit-input-placeholder {color:#fefefa;}
-#scenarioListSearchFormSectors:focus::-webkit-input-placeholder {color:#fefefa;}
-#scenarioListSearchFormDevices:focus::-webkit-input-placeholder {color:#fefefa;}
+.oc-input-extra::-webkit-input-placeholder {color: @oc-dark-grey;font-size: 16px;}
+#scenarioListSearchFormActors:focus::-webkit-input-placeholder {color: @oc-dark-grey;}
+#scenarioListSearchFormSectors:focus::-webkit-input-placeholder {color: @oc-dark-grey;}
+#scenarioListSearchFormDevices:focus::-webkit-input-placeholder {color: @oc-dark-grey;}
 
-.oc-input-extra::-moz-placeholder {color:#3f3f3f;font-size: 16px;}
-#scenarioListSearchFormActors:focus::-moz-placeholder {color:#fefefa;}
-#scenarioListSearchFormSectors:focus::-moz-placeholder {color:#fefefa;}
-#scenarioListSearchFormDevices:focus::-moz-placeholder {color:#fefefa;}
+.oc-input-extra::-moz-placeholder {color: @oc-dark-grey;font-size: 16px;}
+#scenarioListSearchFormActors:focus::-moz-placeholder {color: @oc-dark-grey;}
+#scenarioListSearchFormSectors:focus::-moz-placeholder {color: @oc-dark-grey;}
+#scenarioListSearchFormDevices:focus::-moz-placeholder {color: @oc-dark-grey;}
 
-.oc-input-extra:-ms-placeholder {color:#3f3f3f;font-size: 16px;}
-#scenarioListSearchFormActors:focus:-ms-placeholder {color:#fefefa;}
-#scenarioListSearchFormSectors:focus:-ms-placeholder {color:#fefefa;}
-#scenarioListSearchFormDevices:focus:-ms-placeholder {color:#fefefa;}
+.oc-input-extra:-ms-placeholder {color: @oc-dark-grey;font-size: 16px;}
+#scenarioListSearchFormActors:focus:-ms-placeholder {color:@oc-dark-grey;}
+#scenarioListSearchFormSectors:focus:-ms-placeholder {color: @oc-dark-grey;}
+#scenarioListSearchFormDevices:focus:-ms-placeholder {color: @oc-dark-grey;}
 
-#scenarioListSearchFormQ::-webkit-input-placeholder {color:#fefefa;font-size: 16px;}
-#scenarioListSearchFormQ::-moz-placeholder {color:#fefefa;font-size: 16px;}
-#scenarioListSearchFormQ:-ms-input-placeholder {color:#fefefa;font-size: 16px;}
+#scenarioListSearchFormQ::-webkit-input-placeholder {color: @oc-dark-grey;font-size: 16px;}
+#scenarioListSearchFormQ::-moz-placeholder {color: @oc-dark-grey;font-size: 16px;}
+#scenarioListSearchFormQ:-ms-input-placeholder {color: @oc-dark-grey;font-size: 16px;}
 
 #oc-contact-message {
   border-bottom: 1px solid @oc-white;
@@ -859,4 +861,14 @@ and (min-width : 800px) {
   height: 65px;
   width: 65px;
   // TODO: fix this for mobile such that it is same as thumbnails + marker
+}
+
+.oc-signup-description {
+  text-align: center;
+  padding-bottom: 25px;
+  span {
+    display: block;
+    .oc-bold;
+    font-size: 16px;
+  }
 }

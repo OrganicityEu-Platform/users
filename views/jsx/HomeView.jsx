@@ -14,7 +14,6 @@ var HomeView = React.createClass({
           <div className="row">
             <HomeViewHeader />
           </div>
-          <HomeViewSection />
           <HomeViewFooter />
         </div>
     );
