@@ -279,7 +279,7 @@ var Profile = React.createClass({
       localAccount = (
         <div>
           <DocumentTitle title={config.title + ' | Profile '} />
-          <h2 className="oc-pink">Local account</h2>
+          <h2 className="pink">Local account</h2>
 
           <div className="form-group oc-form-group oc-edit-group">
             <label className="control-label col-sm-3" htmlFor="email">E-Mail
@@ -444,7 +444,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <h2 className="oc-pink">Scenarios created</h2>
+            <h2 className="pink">Scenarios created</h2>
             <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
 
           </form>

@@ -19,6 +19,7 @@ import config               from '../../../config/config.js';
 import DocumentTitle        from 'react-document-title';
 
 import Feedback             from './Feedback.jsx';
+import ScenarioRating       from './ScenarioRating.jsx';
 
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation],
@@ -63,6 +64,21 @@ var ScenarioView = React.createClass({
 
         </div>
         <div className="row">
+          <div className="oc-macro-content">
+            <div className="oc-article-star-rating-wrapper">
+              <div className="col-md-12">
+                <h4 className="oc-bold">How interesting is this scenario for you?</h4></div>
+              <div className="col-md-12">
+                <ScenarioRating
+                  scenario={this.state}
+                  enabled={true}
+                  className={"oc-article-rate-star"} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
+        <div className="row">
           <div className="form-group">
             <div className="oc-macro-content oc-scenario-controls">
               <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
@@ -73,7 +89,7 @@ var ScenarioView = React.createClass({
             </div>
           </div>
         </div>
-        <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
+
         <div className="oc-macro-content">
           <div className="oc-disqus-wrapper">
             <ReactDisqusThread

@@ -113,7 +113,6 @@ var ScenarioTableView = React.createClass({
                         <ScenarioRating doMeta={true} className={"oc-article-star"} scenario={this.props.scenario} />
                       </p>
                     </div>
-
                   </div>
                   <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
                     <div className="col-lg-12 scenario-article-indicator-wrapper">
@@ -122,21 +121,22 @@ var ScenarioTableView = React.createClass({
                         scenario={this.props.scenario}
                         showEvalText={true} />
                     </div>
-
-                    <h2 className="scenario-article-title">
-                      {this.props.scenario.title}
-                    </h2>
-
-                      <div>
-                        <span className="scenario-article-publisher">
-                          Created by <UserAvatar uuid={this.props.scenario.creator} />
-                      </span>
-                      <span className="scenario-article-timestamp">
-                        { this.props.scenario.timestamp ?
-                          <TimeAgo date={this.props.scenario.timestamp} />
-                          : '' }
+                    <div className="scenario-article-heading-wrapper">
+                      <h2 className="scenario-article-title">
+                        {this.props.scenario.title}
+                      </h2>
+                        <div>
+                          <span className="scenario-article-publisher">
+                            Created by <UserAvatar uuid={this.props.scenario.creator} />
                         </span>
-                      </div>
+                        <span className="scenario-article-timestamp">
+                          { this.props.scenario.timestamp ?
+                            <TimeAgo date={this.props.scenario.timestamp} />
+                            : '' }
+                          </span>
+                        </div>
+                    </div>
+
                       <div className="scenario-article-summary-wrapper">
                         <p className="scenario-article-summary">
                           {this.props.scenario.summary}
@@ -144,7 +144,6 @@ var ScenarioTableView = React.createClass({
                       </div>
                     </div>
                   </header>
-
                   <div className="scenario-article-section">
                     <div className={article_image_overlay}>
                       {image}
@@ -160,7 +159,6 @@ var ScenarioTableView = React.createClass({
                           <br>
                           </br>
                         </div>
-
                       </div>
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
@@ -189,7 +187,6 @@ var ScenarioTableView = React.createClass({
                   </footer>
                 </div>
                 <div className="scenario-article-narrative-wrapper">
-                  <span className="scenario-article-narrative-title">Narrative</span>
                   <div className="scenario-article-narrative">
                     {this.props.scenario.narrative}
                   </div>

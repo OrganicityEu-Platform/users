@@ -1,16 +1,17 @@
 import $                    from 'jquery';
+import ui                   from '../../../ui_routes.js';
 import api                  from '../../../api_routes.js';
 import React                from 'react';
-import ScenarioRating       from './ScenarioRating.jsx';
 import ValidationIndicator  from '../ValidationIndicator.jsx'
 
+import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
 
 var Feedback = React.createClass({
-  mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin],
+  mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
   getInitialState: function() {
     return {
       show: true,
@@ -66,17 +67,23 @@ var Feedback = React.createClass({
       };
       var tock =
       <div>
-        <span className="pink">
-          {feedback[e].user}
+        <span className="oc-feedback-user-label">
+          <span className="pink">
+            {feedback[e].user}
+          </span>
+          <span> said</span>
         </span>
-        <span> likes:</span>
+
         <p>
+          <img
+            className="oc-feedback-arrow"
+            src={ui.asset('static/img/icon-09.png')}/>
           {feedback[e].like}
         </p>
-        <span>
-          and dislikes:
-        </span>
         <p>
+          <img
+            className="oc-feedback-arrow"
+            src={ui.asset('static/img/icon-10.png')}/>
           {feedback[e].dislike}
         </p>
       </div>
@@ -114,23 +121,25 @@ var Feedback = React.createClass({
           error : (xhr, textStatus, errorThrown) => {
             console.log(errorThrown);
           },
-          success: this.setState({show: false})
+          success: () => {
+            this.setState({show: false});
+            this.flash('success', 'Thank you for your feedback', 150000);
+          }
         });
       }
     }
-
   },
   render: function() {
 
-    var likeText = "What do you like about this scenario?";
-    var dislikeText = "What don't you like about this scenario?";
+    var likeText = "I like...";
+    var dislikeText = "I dislike...";
 
     if(this.userIsCreator(this.state.scenario)) {return(
       <div className="row">
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">
             <h3>
-              User Feedback
+              Feedback recieved
             </h3>
             <span>
               {this.getUserFeedback()}
@@ -150,31 +159,7 @@ var Feedback = React.createClass({
     );}
     if(this.state.show) {
 
-      var starRating =
-      <div>
-        <div>
-          <div
-            className="form-group oc-form-group oc-edit-group"
-            >
-            <label
-              className="control-label col-sm-3"
-              >
-              <span className="oc-feedback-label-text">
-                Rate this scenario
-              </span>
-            </label>
-            <div
-              className="col-sm-9"
-              id="oc-star-rating-wrapper">
-              <ScenarioRating
-                scenario={this.props.scenario}
-                enabled={true}>
-              </ScenarioRating>
-            </div>
-          </div>
-        </div>
-      </div>
-      ;
+
 
       return(
         <div className="row">
@@ -184,8 +169,6 @@ var Feedback = React.createClass({
                 <h3>
                   Evaluate this scenario
                 </h3>
-                {this.userIsLoggedIn() ?
-                  starRating : null}
                 </div>
                 <form className="form-horizontal">
                   <div
@@ -195,6 +178,9 @@ var Feedback = React.createClass({
                       className="control-label col-sm-3"
                       htmlFor="like">
                       <span className="oc-feedback-label-text">
+                        <img
+                          className="oc-feedback-label-icon"
+                          src={ui.asset('static/img/oc-smiley.png')}/>
                         {likeText}
                       </span>
                     </label>
@@ -211,6 +197,9 @@ var Feedback = React.createClass({
                       className="control-label col-sm-3"
                       htmlFor="dislike">
                       <span className="oc-feedback-label-text">
+                        <img
+                          className="oc-feedback-label-icon"
+                          src={ui.asset('static/img/oc-saddy.png')}/>
                         {dislikeText}
                       </span>
                     </label>
@@ -243,12 +232,15 @@ var Feedback = React.createClass({
         );
       }
       if(!this.state.show) {
+
         return(
           <div className="row">
             <div className="oc-macro-content">
-              <span>
-                Thank you!
-              </span>
+              <div className="oc-feedback-success-msg">
+                <span>
+                  THANK YOU FOR YOUR FEEDBACK
+                </span>
+              </div>
             </div>
           </div>
         );

@@ -92,8 +92,8 @@ var ScenarioThumbnail = React.createClass({
             </p>
 
             <span className="scenario-thumbnail-sat-wrapper">
+              <span>Participants: {actors}</span>
               <span>Sectors: {sectors}</span>
-              <span>Actors: {actors}</span>
               <span>Tools: {tools}</span>
             </span>
             <div className={sector_colour_overlay}>

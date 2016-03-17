@@ -423,7 +423,7 @@ form : function() {
     );
   }
 
-  var pageTitle = this.editMode() ? 'Edit your scenario' : 'Create your scenario';
+  var pageTitle = this.editMode() ? 'Edit your scenario' : 'Share your scenario for our future cities';
 
   return (
     <div className="row oc-form-group-view">
@@ -432,6 +432,7 @@ form : function() {
         <h1 className="oc-pink">
           {pageTitle}
         </h1>
+        <h2 className="pink">Mandatory fields</h2>
         <form className="form-horizontal">
           <div className="form-group oc-form-group oc-edit-group">
             <label
@@ -525,14 +526,16 @@ form : function() {
         Suggest new sectors:
         <TagField
           id="createEditSearchFormSectors"
-          placeholder="Add sector tags"
+          placeholder="Write your sector if it’s different"
           tags={this.state.newSectors}
           doEdit={true}
+          clearText={"clear all sectors"}
           onChange={this.handleNewSector}
           />
       </div>
     </div>
   </div>
+  <h2 className="pink">Optional fields</h2>
   <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
@@ -545,9 +548,10 @@ form : function() {
     <div className="col-sm-9">
       <TagField
         id="createEditSearchFormActors"
-        placeholder="Add actor tags"
+        placeholder="List the type of people involved"
         tags={this.state.actors}
         doEdit={true}
+        clearText={"clear all participants"}
         onChange={this.handleChangedActors}
         />
     </div>
@@ -565,9 +569,10 @@ form : function() {
     <div className="col-sm-9">
       <TagField
         id="createEditSearchFormDevices"
-        placeholder="Add tool tags"
+        placeholder="List products, devices and methods needed"
         tags={this.state.devices}
         doEdit={true}
+        clearText={"clear all tools"}
         onChange={this.handleChangedDevices} />
     </div>
   </div>
@@ -648,7 +653,7 @@ preview : function() {
 
   var btnText = this.editMode() ? 'SUBMIT UPDATED SCENARIO' : 'SUBMIT NEW SCENARIO';
 
-  var title = this.editMode() ? 'Edit your scenario' : 'Create your scenario';
+  var title = this.editMode() ? 'Edit your scenario' : 'Share your scenario for our future cities';
 
   return (
     <div>

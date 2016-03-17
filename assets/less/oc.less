@@ -46,11 +46,13 @@ a:focus {
 }
 
 body {
-  background-color: @oc-grey;
+  //background-color: @oc-grey;
+  background-color: lightgrey;
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
   font-family: 'Cooper Hewitt Book';
+
 }
 
 /* TOP WINDOW SHADOW */
@@ -133,18 +135,13 @@ input[type="submit"] {
   padding: 5px;
 }
 
-@media only screen and (max-width: 420px) {
-  .flash-queue {
-    width: 96%;
-    margin-left: -48%;
-  }
-}
+
 
 .flash-message {
   position: relative;
   margin-bottom: 5px;
   border-radius: 3px;
-  padding: 8px 20px 8px 8px;
+  padding: 15px 15px 15px 15px;
 
   span.bold {
     font-weight: bold;
@@ -822,8 +819,9 @@ and (min-width : 800px) {
 }
 
 .oc-feedback-wrapper {
-  padding: 25px;
   background-color: @oc-white;
+  padding: 15px 15px 15px 25px;
+  margin-top: 20px;
 }
 
 #oc-star-rating-wrapper {
@@ -871,4 +869,51 @@ and (min-width : 800px) {
     .oc-bold;
     font-size: 16px;
   }
+}
+
+.oc-feedback-label-icon {
+  height: 40px;
+  padding-right: 15px;
+}
+
+.oc-feedback-arrow {
+  height: 12px;
+  padding-right: 15px;
+}
+
+.oc-feedback-user-label {
+  padding-bottom: 12px;
+  display: inline-block;
+  padding-top: 20px;
+}
+
+.oc-feedback-success-msg {
+  text-align: center;
+  .make-md-column(4);
+  .make-md-column-offset(4);
+  .oc-bold;
+  height: 55px;
+  line-height: 55px;
+  border: 2px solid @oc-magenta;
+  color: @oc-magenta;
+}
+
+.oc-article-rate-star {
+  height: 30px;
+  margin-right: 8px;
+}
+
+.oc-article-star-rating-wrapper {
+  margin-top: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: @oc-white;
+  .make-md-column(12);
+  .col-md-12 {
+    padding-left: 10px;
+  }
+}
+
+.scenario-article-heading-wrapper {
+  display: inline-table;
 }

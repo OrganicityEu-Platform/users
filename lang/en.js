@@ -1,14 +1,14 @@
 module.exports = {
   ScenarioEditView : {
-    titleInfo : 'No author would publish without a good title. Keep it short and sweet.',
-    summaryInfo : 'If you could summarize in a tweet, how would it be?',
-    narrativeInfo : 'Narrative is the core of your scenario. While it may be tempting to write an epic, you are limited to 2500 characters, about the length of a highschool essay. Keep it focused.',
-    sectorsInfo : 'Sectors are the area in which your scenario pertains to. If your idea revolves around shopping, your sector would be "Retail".',
-    actorsInfo : 'Actors facilitators. While it may be tempting to choose your favorite big screen personality, think of those who could push your ideas forward.',
-    toolsInfo : 'Tools are instruments you would need to implement your scenario.',
-    imageuploadInfo : 'Please upload an image. The file type must be JPEG or PNG with a width of at least 1140 px.',
-    //imageCopyrightInfo : '...',
-    //creditInfo : '...'
+    titleInfo : 'Keep it short and sweet.',
+    summaryInfo : 'If you could explain it in a tweet, what would you say?',
+    narrativeInfo : 'Explain your idea as brief as you like. Include details or references.',
+    sectorsInfo : 'Areas where your idea belongs. This would mean “retail” for an idea around shopping or “cultural” for a scenario around art or literature.',
+    actorsInfo : 'People involved in making your idea happen or those affected by the scenario. For example, “citizen”, “business”, “student”, “policy maker”...',
+    toolsInfo : 'Products, devices, instruments, methods that will be used to make your idea a reality. Think of “smart phone” or “sensors”. You can also include the ones in the OrganiCity toolkit.',
+    imageuploadInfo : 'Upload an image that symbolises your idea (a sketch, a visualisation...). Use a JPEG or PNG with a minimum width of 600px.',
+    imageCopyrightInfo : 'Copyright: name the author or paste the URL of where you got it.',
+    creditInfo : 'Those who contributed to the scenario.'
   },
   Profile : {
     passwordInfo : 'Select a new password for your local login. The password must have at least 6 characters.',
