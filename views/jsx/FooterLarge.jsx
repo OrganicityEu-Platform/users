@@ -46,7 +46,7 @@ var FooterLarge = React.createClass({
 
           </div>
           <div className="col-lg-4 white oc-footer-col" id="resources-col">
-            <p className="oc-footer-title">Resouces</p>
+            <p className="oc-footer-title">More about OrganiCity</p>
             <span><a className="white" href={organicityLink}>OrganiCity.eu</a></span>
             <span onClick={this.clickHandler} className="oc-link">
               Sign up for updates

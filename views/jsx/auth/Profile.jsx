@@ -369,7 +369,7 @@ var Profile = React.createClass({
           <form className="form-horizontal">
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">Name <ValidationIndicator valid={this.props.isValid('name')}/>
+              <label className="control-label col-sm-3" htmlFor="name">My name <ValidationIndicator valid={this.props.isValid('name')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.nameInfo}
                 </span>

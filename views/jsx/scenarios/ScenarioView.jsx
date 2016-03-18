@@ -21,8 +21,11 @@ import DocumentTitle        from 'react-document-title';
 import Feedback             from './Feedback.jsx';
 import ScenarioRating       from './ScenarioRating.jsx';
 
+import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
+import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+
 var ScenarioView = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return null;
   },
@@ -56,6 +59,25 @@ var ScenarioView = React.createClass({
       return (<Message type="danger" message={message} />);
     }
 
+    var starRating = <div className="row">
+      <div className="oc-macro-content">
+        <div className="oc-article-star-rating-wrapper">
+          <div className="col-md-12">
+            <h4 className="oc-bold">How interesting is this scenario for you?</h4></div>
+          <div className="col-md-12">
+            <ScenarioRating
+              scenario={this.state}
+              enabled={true}
+              className={"oc-article-rate-star"} />
+          </div>
+        </div>
+      </div>
+    </div>;
+
+    if(this.userIsCreator(this.state)) {
+      starRating = null;
+    }
+
     return (
       <div>
         <DocumentTitle title={config.title + ' | Sceanrio | ' + this.state.title} />
@@ -63,20 +85,7 @@ var ScenarioView = React.createClass({
           <ScenarioTableView scenario={this.state} />
 
         </div>
-        <div className="row">
-          <div className="oc-macro-content">
-            <div className="oc-article-star-rating-wrapper">
-              <div className="col-md-12">
-                <h4 className="oc-bold">How interesting is this scenario for you?</h4></div>
-              <div className="col-md-12">
-                <ScenarioRating
-                  scenario={this.state}
-                  enabled={true}
-                  className={"oc-article-rate-star"} />
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.userIsLoggedIn() ? starRating : null}
         <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
         <div className="row">
           <div className="form-group">

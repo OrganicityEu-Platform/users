@@ -14,9 +14,9 @@ module.exports = {
     passwordInfo : 'Select a new password for your local login. The password must have at least 6 characters.',
     passwordRepeatInfo : 'If you selected a new password, please repeat it here.',
     emailInfo : 'Your E-Mail',
-    nameInfo : 'Please tell us your real name or nick name.',
+    nameInfo : 'Use your real name or a nick name.',
     avatarInfo : 'Please upload an avatar. The file type must be JPEG or PNG with a size of 64x64px.',
-    genderInfo : 'Please tell us your gender.',
+    genderInfo : 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.',
     rolesInfo : 'The roles you have in this scenario tool. For example, you could be a moderator.'
   }
 };

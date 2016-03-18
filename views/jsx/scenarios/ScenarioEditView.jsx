@@ -540,7 +540,7 @@ form : function() {
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
-      Actors
+      Participants
       <span className="oc-form-group-info">
         {lang.ScenarioEditView.actorsInfo}
       </span>
@@ -599,7 +599,7 @@ form : function() {
     <label
       className="control-label col-sm-3"
       htmlFor="copyright">
-      Image copyright
+      Image origin
       <span className="oc-form-group-info">
         {lang.ScenarioEditView.imageCopyrightInfo}
       </span>

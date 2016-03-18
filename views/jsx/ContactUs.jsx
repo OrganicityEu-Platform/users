@@ -119,7 +119,7 @@ var myContactForm = React.createClass({
     {
       return (
         <div>
-            <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just drop us a mail.</span>
+            <span className="white">We would love to hear from you! Send us a question, report a bug or just give feedback. Just drop us a mail.</span>
             <p>You can reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
         </div>);
     }
@@ -143,8 +143,8 @@ var myContactForm = React.createClass({
         <form className="form">
           {errorMessage}
           <div className="form-group">
-            <span className="white">We would love to hear from you! Be it a question, report a bug or just give feedback. Just send us a message below.</span>
-            <p>You can also reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
+            <span className="white">We would love to hear from you! Be it a question, report a bug or give feedback.</span>
+            <p>Just drop us an email at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
