@@ -2,11 +2,12 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 var user = mongoose.Schema({
-  uuid    : String,
-  name    : String,
-  gender  : String,
-  roles : [String],
-  avatar : String,
+  uuid     : String,
+  name     : String,
+  location : String,
+  gender   : String,
+  roles    : [String],
+  avatar   : String,
   local            : {
     email        : String,
     password     : String,
@@ -20,31 +21,36 @@ var user = mongoose.Schema({
     token        : String,
     email        : String,
     name         : String,
-    displayName  : String
+    displayName  : String,
+    public       : { type: Boolean, default: false }
   },
   twitter          : {
     id           : String,
     token        : String,
     displayName  : String,
-    username     : String
+    username     : String,
+    public       : { type: Boolean, default: false }
   },
   google           : {
     id           : String,
     token        : String,
     email        : String,
-    name         : String
+    name         : String,
+    public       : { type: Boolean, default: false }
   },
   github           : {
     id           : String,
     token        : String,
     username     : String,
-    displayName  : String
+    displayName  : String,
+    public       : { type: Boolean, default: false }
   },
   disqus           : {
     id           : String,
     token        : String,
     email        : String,
-    name         : String
+    name         : String,
+    public       : { type: Boolean, default: false }
   }
 });
 

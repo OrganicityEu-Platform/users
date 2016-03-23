@@ -70,6 +70,111 @@ var UserAvatar = React.createClass({
       image = 'https://www.gravatar.com/avatar/?d=mm' ;
     }
 
+    var facebook;
+    if(this.state.user.facebook) {
+      var url = 'https://facebook.com/' + this.state.user.facebook;
+      facebook = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            <span className="fa fa-facebook fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var twitter;
+    if(this.state.user.twitter) {
+      var url = 'https://twitter.com/' + this.state.user.twitter;
+      twitter = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            @{this.state.user.twitter} <span className="fa fa-twitter fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var google;
+    if(this.state.user.google) {
+      var url = 'https://plus.google.com/' + this.state.user.google;
+      google = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            <span className="fa fa-google-plus fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var github;
+    if(this.state.user.github) {
+      var url = 'https://github.com/' + this.state.user.github;
+      github = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            {this.state.user.github} <span className="fa fa-github fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var location;
+    if (this.state.user.location) {
+      location = (
+        <div className="oc-userview-social">
+          <span className="fa-lg fa-fw fa-map-marker"></span> {this.state.user.location}
+        </div>
+      );
+    }
+
+    // http://fortawesome.github.io/Font-Awesome/icon/map-marker/
+    // http://fortawesome.github.io/Font-Awesome/icon/link/
+
+    return (
+      <div>
+
+        <div className="container">
+
+          <div className="row oc-userview">
+            <div className="col-sm-8">
+              <h1 className="oc-userview-title">{this.state.user.name}</h1>
+              {location}
+            </div>
+            <div className="col-sm-4 oc-userview-right">
+              {twitter}
+              {github}
+              {facebook}
+              {google}
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-12 oc-userview-center">
+              <h3>Scenarios created</h3>
+              <ScenariosNewest creator={this.props.params.uuid} counter={false} />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+
+/*
+          <div className="row">
+            <div className="col-sm-6 oc-userview-center">
+              <h3>Scenarios created</h3>
+              <ScenariosNewest creator={this.props.params.uuid} counter={false} />
+            </div>
+            <div className="col-sm-6 oc-userview-center">
+              <h3>Scenarios rated</h3>
+              <ScenariosNewest creator={this.props.params.uuid} counter={false} />
+            </div>
+          </div>
+
+
+*/
+
+    /*
     return (
       <div className="row">
         <DocumentTitle title={config.title + ' | User | ' + userText} />
@@ -93,12 +198,11 @@ var UserAvatar = React.createClass({
             </div>
           </div>
           <div className="user-view-thumbnails-wrapper">
-            <h3>Published scenarios</h3>
-            <ScenariosNewest creator={this.props.params.uuid} counter={true} />
           </div>
         </div>
       </div>
     );
+    */
   }
 });
 

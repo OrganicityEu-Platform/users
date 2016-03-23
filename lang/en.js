@@ -11,12 +11,13 @@ module.exports = {
     creditInfo : 'Those who contributed to the scenario.'
   },
   Profile : {
-    passwordInfo : 'Select a new password for your local login. The password must have at least 6 characters.',
-    passwordRepeatInfo : 'If you selected a new password, please repeat it here.',
-    emailInfo : 'Your E-Mail',
-    nameInfo : 'Use your real name or a nick name.',
+    passwordInfo : 'Type a new password for your login. The password must contain at least 6 characters.',
+    passwordRepeatInfo : 'If you have selected a new password, please repeat it here.',
+    emailInfo : 'Sign-in details',
+    nameInfo : 'Use your real name or a nickname.',
     avatarInfo : 'Please upload an avatar. The file type must be JPEG or PNG with a size of 64x64px.',
     genderInfo : 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.',
-    rolesInfo : 'The roles you have in this scenario tool. For example, you could be a moderator.'
+    rolesInfo : 'The roles you have in this scenario tool. For example, you could be a moderator.',
+    socialInfo : 'Here you can link your profile with differenct social media platforms. Afterwards, you can use them also to login to this tool. You can define, if they are shown within the public contact section of your profile.'
   }
 };

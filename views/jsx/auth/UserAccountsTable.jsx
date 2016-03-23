@@ -53,7 +53,7 @@ var UserAccountsTable = React.createClass({
     }
     var accounts = [];
     for (var account in this.accountFields) {
-      if (this.state[account]) {
+      if (this.state[account] && this.state[account].id) {
         accounts.push(this.renderAccount(account));
       }
     }

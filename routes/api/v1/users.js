@@ -77,8 +77,10 @@ module.exports = function(router, passport) {
       var p = {
         uuid : user.uuid,
         name : user.name,
+        location : user.location
       };
 
+      /*
       if (user.avatar) {
         p.image = user.avatar;
       } else if (user.facebook && user.facebook.id) {
@@ -93,11 +95,9 @@ module.exports = function(router, passport) {
 
       } else if (user.google && user.google.id) {
 
-        /*
-         * IMPROVE: Use OAuth API to get bigger images
-         * http://stackoverflow.com/q/9128700/605890
-         * http://unirest.io/nodejs.html
-         */
+//         * IMPROVE: Use OAuth API to get bigger images
+//         * http://stackoverflow.com/q/9128700/605890
+//         * http://unirest.io/nodejs.html
 
         var url = 'http://picasaweb.google.com/data/entry/api/user/' + user.google.id + '?alt=json';
         unirest.get(url)
@@ -135,6 +135,25 @@ module.exports = function(router, passport) {
         var gravatarUrl = gravatar.url(user.local.email, {s: size, d: 'mm'}, true);
         p.image = gravatarUrl;
       }
+*/
+
+      console.log(user);
+
+      if (user.facebook && user.facebook.public) {
+        p.facebook = user.facebook.id;
+      }
+
+      if (user.github && user.github.public) {
+        p.github = user.github.username; // OK
+      }
+
+      if (user.twitter && user.twitter.public) {
+        p.twitter = user.twitter.username;
+      }
+
+      if (user.google && user.google.public) {
+        p.google = user.google.id;
+      }
 
       res.json(p);
     });
@@ -145,6 +164,44 @@ module.exports = function(router, passport) {
       res.json(user);
     });
   });
+
+  router.patch(
+    api.route('user-update-viablility'),
+    [isLoggedIn, isUserOrAdmin], // validate(UserJoi.profileServer)
+    function(req, res, next) {
+
+      User.findOne({ 'uuid' : req.params.uuid }, function(err, user) {
+        if (err) {
+          return next(err);
+        } else {
+
+          if (req.body.github) {
+            user.github.public = req.body.github.public;
+            user.save(function(err) {
+              res.status(200).send('OK - Github status set');
+            });
+          } else if (req.body.facebook) {
+            user.facebook.public = req.body.facebook.public;
+            user.save(function(err) {
+              res.status(200).send('OK - Facebook status set');
+            });
+          } else if (req.body.twitter) {
+            user.twitter.public = req.body.twitter.public;
+            user.save(function(err) {
+              res.status(200).send('OK - Twitter status set');
+            });
+          } else if (req.body.google) {
+            user.google.public = req.body.google.public;
+            user.save(function(err) {
+              res.status(200).send('OK - Goodle status set');
+            });
+          } else {
+            res.status(406).send('Not Acceptable');
+          }
+        }
+      });
+    }
+  );
 
   router.patch(
     api.route('user_by_uuid'),
@@ -168,6 +225,10 @@ module.exports = function(router, passport) {
 
           if (req.body.hasOwnProperty('name')) {
             user.name = req.body.name;
+          }
+
+          if (req.body.hasOwnProperty('location')) {
+            user.location = req.body.location;
           }
 
           // If set, gender will never be emty due to validation
@@ -362,7 +423,9 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
+        user.facebook.id = undefined;
         user.facebook.token = undefined;
+        user.facebook.public = false;
         user.save(function(err) {
           res.redirect(req.header('Referer'));
         });
@@ -376,7 +439,9 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
+        user.twitter.id = undefined;
         user.twitter.token = undefined;
+        user.twitter.public = false;
         user.save(function(err) {
           res.redirect(req.header('Referer'));
         });
@@ -390,7 +455,9 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
+        user.google.id = undefined;
         user.google.token = undefined;
+        user.google.public = false;
         user.save(function(err) {
           res.redirect(req.header('Referer'));
         });
@@ -404,7 +471,9 @@ module.exports = function(router, passport) {
       if (err) {
         return next(err);
       } else {
+        user.github.id = undefined;
         user.github.token = undefined;
+        user.github.public = false;
         user.save(function(err) {
           res.redirect(req.header('Referer'));
         });

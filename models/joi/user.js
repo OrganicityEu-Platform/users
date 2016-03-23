@@ -70,16 +70,16 @@ user.updatePasswordServer = {
 
 user.profile = {
   name   : Joi.string().label('Name'),
-  gender : Joi.string().valid('m', 'f').label('Gender').options(
+  gender : Joi.string().valid('m', 'f', 'o').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
   roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
     { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
   ),
-  avatar : Joi.string().min(1).label('Avatar'),
   local : {
     password: joiPassword.optional().allow('')
-  }
+  },
+  location : Joi.string().trim().min(1).label('Location').optional()
 };
 
 user.profileServer = {

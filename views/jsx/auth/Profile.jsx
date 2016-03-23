@@ -68,6 +68,9 @@ var Profile = React.createClass({
         }
       },
       success : (profile) => {
+
+        console.log('XHR:', profile);
+
         var e = {};
         e.name = (profile.name) ? profile.name : '';
         e.gender = (profile.gender) ? profile.gender : '';
@@ -77,10 +80,18 @@ var Profile = React.createClass({
         }
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
+        e.location = profile.location;
         e.dirty = false;
         this.loaded({profile: e}, () => {
           // Initial validate to show validation indicators
           this.props.validate();
+        });
+
+        this.setState({
+          google: profile.google,
+          facebook: profile.facebook,
+          twitter: profile.twitter,
+          github: profile.github,
         });
 
       }
@@ -91,7 +102,6 @@ var Profile = React.createClass({
     return routeName;
   },
   handleChangedName: function(evt) {
-
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
@@ -102,6 +112,20 @@ var Profile = React.createClass({
         this.props.validate();
       } else {
         this.props.validate('name');
+      }
+    });
+  },
+  handleChangedLocation: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        location : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('location');
       }
     });
   },
@@ -169,7 +193,8 @@ var Profile = React.createClass({
 
     var profile = {
       name: this.state.profile.name,
-      gender: this.state.profile.gender
+      gender: this.state.profile.gender,
+      location: this.state.profile.location
     };
 
     if (this.state.profile.local) {
@@ -225,22 +250,9 @@ var Profile = React.createClass({
       });
     });
   },
-  onThumbnail: function(data) {
-    this.setState({
-      dirty : true,
-      profile : $.extend(this.state.profile, {
-        avatar: data.image
-      })
-    }, () => {
-      if (this.state.btnClickedOnce) {
-        this.props.validate();
-      } else {
-        this.props.validate('avatar');
-      }
-    });
-
-  },
   render: function() {
+
+    var that = this;
 
     if (!this.userIsLoggedIn()) {
       return (
@@ -279,10 +291,9 @@ var Profile = React.createClass({
       localAccount = (
         <div>
           <DocumentTitle title={config.title + ' | Profile '} />
-          <h2 className="pink">Local account</h2>
-
+          <h2 className="pink">Account settings</h2>
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="email">E-Mail
+            <label className="control-label col-sm-3" htmlFor="email">Email
               <span className="oc-form-group-info">
                 {lang.Profile.emailInfo}
               </span>
@@ -362,10 +373,93 @@ var Profile = React.createClass({
       );
     }
 
+     //icon-eye-open icon-eye-close
+
+    function socialLink(name, icon) {
+
+      var unlink = function(name) {
+        return function(evt) {
+          evt.preventDefault();
+
+          $.ajax(api.reverse('disconnect_' + name, { uuid : that.state.profile.uuid }), {
+            error: (xhr, textStatus, errorThrown) => {
+              console.log('ERROR');
+            },
+            success : (profile) => {
+              var newState = {};
+              newState[name] = {
+                public : false,
+                id : undefined
+              };
+
+              console.log(newState);
+              that.setState(newState);
+            }
+          });
+        }
+      }
+
+      var changeVisability = function(name, e) {
+        return function (evt) {
+          evt.preventDefault();
+
+          var b = !e.public;
+          console.log('Change visability for ', name, 'to', b);
+
+          var data = {};
+          data[name] = { public : b}
+
+          $.ajax(api.reverse('user-update-viablility', { uuid : that.state.profile.uuid }), {
+            type : 'PATCH',
+            data : JSON.stringify(data),
+            contentType : 'application/json',
+            error: (xhr, textStatus, errorThrown) => {
+              console.log('ERROR');
+            },
+            success : (profile) => {
+              var newState = {};
+              newState[name] = that.state[name];
+              newState[name].public = !e.public;
+              console.log(newState);
+              that.setState(newState);
+            }
+          });
+        }
+      }
+
+      var e = that.state[name];
+      if(e && e.id) {
+        return (
+          <div>
+            <button type="button" className="oc-link-social-unlink" onClick={unlink(name)}>
+              Unlink <span className={icon}/>
+            </button>
+            <button type="button" className="oc-link-social" onClick={changeVisability(name, e)} title="Show this on your public profile">
+              <span className={e.public ? "fa fa-eye" : "fa fa-eye-slash"}/>
+            </button>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <a className="oc-link-social-link" href={api.reverse('auth_' + name)}>
+              Link with <span className={icon}></span>
+            </a>
+          </div>
+        );
+      }
+    }
+
+    var linkTwitter = socialLink('twitter', 'fa fa-twitter');
+    var linkFacebook = socialLink('facebook', 'fa fa-facebook');
+    var linkGoogle = socialLink('google', 'fa fa-google-plus');
+    var linkGithub = socialLink('github', 'fa fa-github');
+
     return (
       <div className="row oc-form-group-view">
         <div className="oc-macro-content">
-          <h1 className="oc-pink">Profile</h1>
+          <h1 className="oc-pink">Public profile</h1>
+          <h4 className="oc-profile-info">Your profile allows you to connect, share and discuss ideas with others</h4>
           <form className="form-horizontal">
 
             <div className="form-group oc-form-group oc-edit-group">
@@ -380,7 +474,7 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="name"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'Name...'}
+                  placeholder={this.isLoading() ? 'Loading...' : 'Name or nickname'}
                   value={this.state.profile.name}
                   onChange={this.handleChangedName} />
                 {errorMessageName}
@@ -388,25 +482,26 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="avatar">Avatar <ValidationIndicator valid={this.props.isValid('avatar')}/>
+              <label className="control-label col-sm-3" htmlFor="name">My location
                 <span className="oc-form-group-info">
-                  {lang.Profile.avatarInfo}
+                  {lang.Profile.locationInfo}
                 </span>
               </label>
               <div className="col-sm-9">
-                <UploadImage
-                  url={api.reverse('user_thumbnail', {uuid: this.state.profile.uuid})}
-                  joi={UserJoi.image}
+                <input
+                  type="text"
+                  className="oc-input"
+                  id="name"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  callback={this.onThumbnail}
-                  thumbnail={this.state.profile.avatar}
-                  thumbnail_width="64px"
-                />
+                  placeholder={this.isLoading() ? 'Loading...' : 'I\'m at...'}
+                  value={this.state.profile.location}
+                  onChange={this.handleChangedLocation} />
+                {errorMessageName}
               </div>
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="gender">Gender <ValidationIndicator valid={this.props.isValid('gender')}/>
+              <label className="control-label col-sm-3" htmlFor="gender">My gender <ValidationIndicator valid={this.props.isValid('gender')}/>
                 <span className="oc-form-group-info">
                   {lang.Profile.genderInfo}
                 </span>
@@ -414,24 +509,53 @@ var Profile = React.createClass({
               <div className="col-sm-9">
                 <input type="radio"
                   name="gender"
-                  id="profile-gender-f"
+                  value="m"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  checked={this.state.profile.gender === 'm'}
+                  onChange={this.handleChangedGender} /> Male<br/>
+                <input type="radio"
+                  name="gender"
                   value="f"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   checked={this.state.profile.gender === 'f'}
                   onChange={this.handleChangedGender} /> Female<br/>
                 <input type="radio"
                   name="gender"
-                  id="profile-gender-m"
-                  value="m"
+                  value="o"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'm'}
-                  onChange={this.handleChangedGender} /> Male
+                  checked={this.state.profile.gender === 'o'}
+                  onChange={this.handleChangedGender} /> Other<br/>
                 {errorMessageGender}
               </div>
             </div>
 
             {roles}
-            {localAccount}
+
+            <div className="form-group oc-form-group oc-edit-group">
+              <label className="control-label col-sm-3" htmlFor="name">Public contact
+                <span className="oc-form-group-info">
+                  {lang.Profile.locationInfo}
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <input
+                  type="text"
+                  className="oc-input"
+                  id="name"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  placeholder={this.isLoading() ? 'Loading...' : 'email'}
+                  value={this.state.profile.publicEmail}
+                  onChange={this.handleChangedpublicEmail} /><br/>
+                <input
+                  type="text"
+                  className="oc-input"
+                  id="name"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  placeholder={this.isLoading() ? 'Loading...' : 'website'}
+                  value={this.state.profile.publicWebsite}
+                  onChange={this.handleChangedpublicWebSite} /><br/>
+              </div>
+            </div>
 
             <div className="form-group">
               <div className="oc-save-profile-btn-wrapper">
@@ -444,7 +568,25 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <h2 className="pink">Scenarios created</h2>
+            <h2 className="pink">Social links</h2>
+
+            <div className="form-group oc-form-group oc-edit-group">
+              <label className="control-label col-sm-3" htmlFor="name">Social links
+                <span className="oc-form-group-info">
+                  {lang.Profile.socialInfo}
+                </span>
+              </label>
+              <div className="col-sm-9">
+                {linkTwitter}
+                {linkFacebook}
+                {linkGoogle}
+                {linkGithub}
+              </div>
+            </div>
+
+            {localAccount}
+
+            <h2 className="pink">Your scenarios</h2>
             <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
 
           </form>
@@ -459,6 +601,8 @@ var Profile = React.createClass({
     if (profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
       profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
     }
+
+    console.log('Profile to submit: ', profile);
 
     return profile;
   },
