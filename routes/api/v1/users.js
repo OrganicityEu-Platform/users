@@ -77,7 +77,9 @@ module.exports = function(router, passport) {
       var p = {
         uuid : user.uuid,
         name : user.name,
-        location : user.location
+        location : user.location,
+        profession : user.profession,
+        professionTitle : user.professionTitle
       };
 
       /*
@@ -219,6 +221,8 @@ module.exports = function(router, passport) {
 
         handleUpload(req.body.avatar, next, function(path) {
 
+          console.log(req.body);
+
           if (req.body.local && req.body.local.password) {
             user.local.password = user.generateHash(req.body.local.password);
           }
@@ -231,6 +235,10 @@ module.exports = function(router, passport) {
             user.location = req.body.location;
           }
 
+          if (req.body.hasOwnProperty('professionTitle')) {
+            user.professionTitle = req.body.professionTitle;
+          }
+
           // If set, gender will never be emty due to validation
           if (req.body.gender) {
             user.gender = req.body.gender;
@@ -239,6 +247,10 @@ module.exports = function(router, passport) {
           // If set, roles will never be emty due to validation
           if (req.body.roles) {
             user.roles = req.body.roles;
+          }
+
+          if (req.body.profession) {
+            user.profession = req.body.profession;
           }
 
           if (path) {

@@ -24,7 +24,9 @@ import ScenariosNewest      from '../scenarios/ScenariosNewest.jsx';
 
 import lang                 from '../../../lang/en.js'
 
-import DocumentTitle      from 'react-document-title';
+import DocumentTitle        from 'react-document-title';
+
+import Select               from 'react-select';
 
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
@@ -82,6 +84,9 @@ var Profile = React.createClass({
         e.avatar = profile.avatar;
         e.location = profile.location;
         e.dirty = false;
+        e.profession = (profile.profession) ? profile.profession : [];
+        e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
+
         this.loaded({profile: e}, () => {
           // Initial validate to show validation indicators
           this.props.validate();
@@ -106,6 +111,20 @@ var Profile = React.createClass({
       dirty : true,
       profile : $.extend(this.state.profile, {
         name : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('name');
+      }
+    });
+  },
+  handleChangedProfessionTitle: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        professionTitle : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
@@ -157,6 +176,20 @@ var Profile = React.createClass({
       }
     });
   },
+  handleChangedProfession: function(profession) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        profession : (profession === '') ? [] : profession.split(",")
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('profession');
+      }
+    });
+  },
   handleChangedPassword : function(evt) {
 
     this.setState({
@@ -194,7 +227,9 @@ var Profile = React.createClass({
     var profile = {
       name: this.state.profile.name,
       gender: this.state.profile.gender,
-      location: this.state.profile.location
+      location: this.state.profile.location,
+      profession: this.state.profile.profession,
+      professionTitle : this.state.profile.professionTitle
     };
 
     if (this.state.profile.local) {
@@ -275,6 +310,7 @@ var Profile = React.createClass({
     var errorMessageRoles = null;
     var errorMessagePassword = null;
     var errorMessagePasswordRepeat = null;
+    var errorMessageProfession = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageName = (<Message type="danger" messages={this.props.getValidationMessages('name')} />);
@@ -282,6 +318,7 @@ var Profile = React.createClass({
       errorMessageRoles = (<Message type="danger" messages={this.props.getValidationMessages('roles')} />);
       errorMessagePassword = (<Message type="danger" messages={this.props.getValidationMessages('local.password')} />);
       errorMessagePasswordRepeat = (<Message type="danger" messages={this.props.getValidationMessages('local.password_repeat')} />);
+      errorMessageProfession = (<Message type="danger" messages={this.props.getValidationMessages('profession')} />);
     }
 
     var localAccount = null;
@@ -455,6 +492,29 @@ var Profile = React.createClass({
     var linkGoogle = socialLink('google', 'fa fa-google-plus');
     var linkGithub = socialLink('github', 'fa fa-github');
 
+    var large  = [];
+    for (var i = 0; i < 100; i++) {
+        large.push({value: 'Item ' + i});
+    }
+
+    var options = [
+      { value: 'Academic', label: 'Academic' },
+      { value: 'Artist', label: 'Artist' },
+      { value: 'Business owner', label: 'Business owner' },
+      { value: 'Designer', label: 'Designer' },
+      { value: 'Developer', label: 'Developer' },
+      { value: 'Entrepreneur', label: 'Entrepreneur' },
+      { value: 'Government', label: 'Government' },
+      { value: 'Manager', label: 'Manager' },
+      { value: 'Policy maker', label: 'Policy maker' },
+      { value: 'Researcher', label: 'Researcher' },
+      { value: 'Student (school)', label: 'Student (school)' },
+      { value: 'Student (university)', label: 'Student (university)' },
+      { value: 'Technology expert', label: 'Technology expert' },
+      { value: 'Urbanist', label: 'Urbanist' },
+      { value: 'Other', label: 'Other' },
+    ];
+
     return (
       <div className="row oc-form-group-view">
         <div className="oc-macro-content">
@@ -482,7 +542,7 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">My location
+              <label className="control-label col-sm-3" htmlFor="location">My location
                 <span className="oc-form-group-info">
                   {lang.Profile.locationInfo}
                 </span>
@@ -491,12 +551,36 @@ var Profile = React.createClass({
                 <input
                   type="text"
                   className="oc-input"
-                  id="name"
+                  id="location"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   placeholder={this.isLoading() ? 'Loading...' : 'I\'m at...'}
                   value={this.state.profile.location}
                   onChange={this.handleChangedLocation} />
-                {errorMessageName}
+              </div>
+            </div>
+
+            <div className="form-group oc-form-group oc-edit-group">
+              <label className="control-label col-sm-3" htmlFor="profession">What do you do? <ValidationIndicator valid={this.props.isValid('profession')}/>
+                <span className="oc-form-group-info">
+                  {lang.Profile.locationInfo}
+                </span>
+              </label>
+              <div className="col-sm-9">
+                <Select
+                  name="form-field-name"
+                  value={this.state.profile.profession}
+                  options={options}
+                  onChange={this.handleChangedProfession}
+                  multi={true}/>
+                <input
+                  type="text"
+                  className="oc-input"
+                  id="profession"
+                  disabled={this.isLoading() ? 'disabled' : ''}
+                  placeholder={this.isLoading() ? 'Loading...' : 'Specific title and/or field...'}
+                  value={this.state.profile.professionTitle}
+                  onChange={this.handleChangedProfessionTitle} />
+                {errorMessageProfession}
               </div>
             </div>
 

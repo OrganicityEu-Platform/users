@@ -7,7 +7,9 @@ var user = mongoose.Schema({
   location : String,
   gender   : String,
   roles    : [String],
-  avatar   : String,
+  profession : [String],
+  professionTitle : String,
+  avatar   : String, // REMOVE
   local            : {
     email        : String,
     password     : String,
@@ -51,7 +53,7 @@ var user = mongoose.Schema({
     email        : String,
     name         : String,
     public       : { type: Boolean, default: false }
-  }
+  },
 });
 
 // generate a hash
