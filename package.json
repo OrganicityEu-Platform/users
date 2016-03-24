@@ -112,6 +112,7 @@
     "react-native-radio-buttons": "^0.5.0",
     "react-router": "^0.13.3",
     "react-router-bootstrap": "^0.18.0",
+    "react-select": "^0.6.12",
     "react-tag-input": "^1.0.3",
     "react-timeago": "^2.2.1",
     "react-validation-mixin": "5.3.4",
