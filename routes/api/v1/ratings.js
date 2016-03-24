@@ -4,8 +4,49 @@ var Rating        = require('../../../models/schema/rating.js');
 var HttpStatus    = require('http-status');
 
 module.exports = function(router, passport) {
+  router.patch(api.route('ratings_list'), function(req, res, next) {
+
+    var filter = {};
+
+    if (req.body.user) {
+      filter.user = req.body.user;
+    }
+
+    if (req.body.scenario.uuid) {
+      filter['scenario.uuid'] = req.body.scenario.uuid;
+    }
+
+    Rating.findOne(filter).exec(function(err, rating) {
+      if (err) {
+        console.log(err);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+      }
+      if (!rating) {
+        return res.status(HttpStatus.NOT_FOUND).send();
+      }
+      if (req.body.rating) {
+        rating.rating = req.body.rating;
+      }
+      rating.save(function(err, rating) {
+        if (err) {
+          console.log(err);
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        return res.status(HttpStatus.OK).send(rating.toObject());
+      });
+    });
+  });
   router.get(api.route('ratings_list'), function(req, res) {
     var filter = {};
+
+    if (req.query.user_uuid) {
+      filter.user = req.query.user_uuid;
+    }
+
+    if (req.query.scenario_uuid) {
+      filter['scenario.uuid'] = req.query.scenario_uuid;
+    }
+
     var query = Rating.find(filter);
     query.exec(function(err, ratings) {
       if (err) {
@@ -34,7 +75,7 @@ module.exports = function(router, passport) {
           delete result._id;
           return res.status(HttpStatus.OK).json(result);
         }
-        res.status(HttpStatus.NOT_FOUND).send('Rating not found.');
+        res.send(ratings);
       });
   });
   router.post(api.route('ratings_list'), function(req, res, next) {
