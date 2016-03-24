@@ -2,19 +2,16 @@ import $          from 'jquery';
 import React      from 'react';
 import routes     from './Routes.jsx';
 
-import ga_config  from '../../config/ga.js';
-
-console.log(ga_config);
-
 var Router = require('react-router');
 var Route = Router.Route;
 
 var ga = require('react-ga');
+import ga_config  from '../../config/ga.js';
 
 $(function() {
   // Google Analytics
   var options = { debug: true };
-  ga.initialize('UA-74522426-1', options);
+  ga.initialize(ga_config.id, options);
 
   Router.run(routes, Router.HistoryLocation, function(Handler, state) {
 
