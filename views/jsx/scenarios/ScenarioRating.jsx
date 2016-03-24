@@ -4,9 +4,10 @@ import ui                  from '../../../ui_routes.js';
 import api                 from '../../../api_routes.js';
 
 import LoadingMixin        from '../LoadingMixin.jsx';
+import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
 var ScenarioRating = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, UserIsLoggedInMixin],
   getInitialState: function() {
     return {
       rating: null,
@@ -17,21 +18,38 @@ var ScenarioRating = React.createClass({
       ["emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png","emptystaricon_meta.png"],
       enabled: this.props.enabled ? this.props.enabled : false,
       scenario: this.props.scenario ? this.props.scenario : null,
-      ajax: this.props.ajax ? this.props.ajax : false
+      userRating: [],
+      showThanks: false
     };
   },
   componentWillMount: function() {
+
     if(this.state.doMeta) {
       this.setState({icons: this.state.metaIcons});
     }
   },
+  setUserRating: function(rating) {
+    this.setState({userRating: rating});
+    this.setRating();
+  },
   componentDidMount: function() {
+
+    if(this.userIsLoggedIn() && this.state.enabled) {
+      var url = api.reverse('ratings_list', {
+        user_uuid: currentUser.uuid,
+        scenario_uuid: this.state.scenario.uuid});
+      $.ajax(url, {
+        dataType : 'json',
+        success: this.setUserRating
+      });
+    }
     if(!this.state.enabled) {
       this.getRating();
     }
   },
   handleClick: function(i) {
     if(this.state.enabled) {
+
       this.state.icons = this.getInitialState().icons;
       this.setState(this.state);
       var e;
@@ -42,20 +60,32 @@ var ScenarioRating = React.createClass({
       var rating = i + 1;
       var url = api.reverse('ratings_list');
       var rated = {
-        user: this.state.scenario.creator,
+        user: currentUser.uuid,
         rating: rating,
         scenario: {
           uuid: this.state.scenario.uuid,
           version: this.state.scenario.version
         }
       };
-      $.ajax(url, {
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(rated),
-        method: 'POST',
-        success: this.setState({enabled: false})
-      });
+
+      if(this.state.userRating.length === 0) {
+        $.ajax(url, {
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(rated),
+          method: 'POST',
+          success: this.setState({showThanks: true})
+        });
+      }
+      if(this.state.userRating.length === 1) {
+        $.ajax(url, {
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(rated),
+          method: 'PATCH',
+          success: this.setState({showThanks: true})
+        });
+      }
     }
   },
   getRating: function() {
@@ -70,16 +100,23 @@ var ScenarioRating = React.createClass({
     });
   },
   setRating: function() {
+    if(this.state.userRating.length === 1) {
+      var e;
+      for(e = 0; e < this.state.userRating[0].rating; e++ ) {
+        this.state.icons[e] = "fullstaricon.png";
+      }
+      this.setState(this.state);
+    }
     if(this.state.rating) {
       var floor = Math.floor(this.state.rating);
       var frac = this.state.rating % 1;
       if(floor >= 1) {
-        var e;
-        for(e = 0; e < floor; e++) {
+        var i;
+        for(i = 0; i < floor; i++) {
           if(this.state.doMeta) {
-            this.state.icons[e] = "fullstaricon_meta.png";
+            this.state.icons[i] = "fullstaricon_meta.png";
           }else{
-            this.state.icons[e] = "fullstaricon.png";
+            this.state.icons[i] = "fullstaricon.png";
           }
         }
         if(frac >= 0.5) {
@@ -108,6 +145,7 @@ var ScenarioRating = React.createClass({
     return (
       <div>
         {this.getIcons()}
+        {this.state.enabled && this.state.showThanks ? null : null}
       </div>
     );
   }
