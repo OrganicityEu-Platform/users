@@ -79,7 +79,9 @@ module.exports = function(router, passport) {
         name : user.name,
         location : user.location,
         profession : user.profession,
-        professionTitle : user.professionTitle
+        professionTitle : user.professionTitle,
+        publicEmail : user.publicEmail,
+        publicWebsite : user.publicWebsite
       };
 
       /*
@@ -251,6 +253,14 @@ module.exports = function(router, passport) {
 
           if (req.body.profession) {
             user.profession = req.body.profession;
+          }
+
+          if (req.body.publicEmail) {
+            user.publicEmail = req.body.publicEmail;
+          }
+
+          if (req.body.publicWebsite) {
+            user.publicWebsite = req.body.publicWebsite;
           }
 
           if (path) {

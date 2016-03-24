@@ -83,6 +83,8 @@ var Profile = React.createClass({
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
         e.location = profile.location;
+        e.publicEmail = profile.publicEmail;
+        e.publicWebsite = profile.publicWebsite;
         e.dirty = false;
         e.profession = (profile.profession) ? profile.profession : [];
         e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
@@ -111,6 +113,34 @@ var Profile = React.createClass({
       dirty : true,
       profile : $.extend(this.state.profile, {
         name : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('name');
+      }
+    });
+  },
+  handleChangedpublicEmail: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        publicEmail : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('name');
+      }
+    });
+  },
+  handleChangedpublicWebSite: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        publicWebsite : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
@@ -229,7 +259,9 @@ var Profile = React.createClass({
       gender: this.state.profile.gender,
       location: this.state.profile.location,
       profession: this.state.profile.profession,
-      professionTitle : this.state.profile.professionTitle
+      professionTitle : this.state.profile.professionTitle,
+      publicEmail: this.state.profile.publicEmail,
+      publicWebsite: this.state.profile.publicWebsite,
     };
 
     if (this.state.profile.local) {

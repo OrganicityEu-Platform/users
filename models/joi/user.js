@@ -81,7 +81,9 @@ user.profile = {
   },
   location : Joi.string().trim().min(1).label('Location').optional(),
   profession : Joi.array().min(1).label('Profession').items(Joi.string()),
-  professionTitle : Joi.string().optional()
+  professionTitle : Joi.string().optional(),
+  publicEmail : Joi.string().optional(),
+  publicWebsite : Joi.string().optional()
 };
 
 user.profileServer = {

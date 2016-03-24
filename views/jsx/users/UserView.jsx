@@ -127,20 +127,74 @@ var UserAvatar = React.createClass({
       );
     }
 
-    // http://fortawesome.github.io/Font-Awesome/icon/map-marker/
-    // http://fortawesome.github.io/Font-Awesome/icon/link/
+
+    var twitter;
+    if(this.state.user.twitter) {
+      var url = 'https://twitter.com/' + this.state.user.twitter;
+      twitter = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            @{this.state.user.twitter} <span className="fa fa-twitter fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var publicWebsite;
+    if(this.state.user.publicWebsite) {
+      var url = this.state.user.publicWebsite;
+      publicWebsite = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            {this.state.user.publicWebsite} <span className="fa fa-home fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var publicEmail;
+    if(this.state.user.publicEmail) {
+      var url = 'mailto:' + this.state.user.publicEmail;
+      publicEmail = (
+        <div className="oc-userview-social">
+          <a href={url} target="_blank">
+            {this.state.user.publicEmail} <span className="fa fa-envelope fa-lg fa-fw"></span>
+          </a>
+        </div>
+      )
+    }
+
+    var profession;
+    if(this.state.user.profession && this.state.user.profession.length > 0) {
+      profession = (
+        <div>
+          {this.state.user.profession.join(' / ')}
+        </div>
+      )
+    }
+
+    var professionTitle;
+    if(this.state.user.professionTitle) {
+      professionTitle = (
+        <div>
+          {this.state.user.professionTitle}
+        </div>
+      )
+    }
 
     return (
       <div>
-
         <div className="container">
-
           <div className="row oc-userview">
             <div className="col-sm-8">
               <h1 className="oc-userview-title">{this.state.user.name}</h1>
               {location}
+              {profession}
+              {professionTitle}
             </div>
             <div className="col-sm-4 oc-userview-right">
+              {publicEmail}
+              {publicWebsite}
               {twitter}
               {github}
               {facebook}

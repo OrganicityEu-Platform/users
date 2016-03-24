@@ -9,6 +9,8 @@ var user = mongoose.Schema({
   roles    : [String],
   profession : [String],
   professionTitle : String,
+  publicEmail : String,
+  publicWebsite : String,
   avatar   : String, // REMOVE
   local            : {
     email        : String,
