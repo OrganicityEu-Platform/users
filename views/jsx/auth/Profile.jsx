@@ -132,7 +132,7 @@ var Profile = React.createClass({
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('name');
+        this.props.validate('publicEmail');
       }
     });
   },
@@ -146,7 +146,7 @@ var Profile = React.createClass({
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('name');
+        this.props.validate('publicWebsite');
       }
     });
   },
@@ -160,7 +160,7 @@ var Profile = React.createClass({
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('name');
+        this.props.validate('professionTitle');
       }
     });
   },
@@ -285,36 +285,37 @@ var Profile = React.createClass({
   },
   handleSubmit: function(evt) {
     evt.preventDefault();
-
     this.setState({
       error: undefined,
       btnClickedOnce: true
     }, () => {
-      this.props.validate((error) => {
-        if (!error) {
-          if (this.state.dirty) {
-            this.loading();
-            var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
-            $.ajax(url, {
-              type : 'PATCH',
-              data : JSON.stringify(this.getProfile()),
-              contentType : 'application/json',
-              error : this.loadingError(url, 'Error updating user profile'),
-              success : () => {
-                this.loadingSuccess('Profile succesfully updated!', {
-                  dirty : false,
-                  btnClickedOnce: false
-                });
-              }
-            });
+      if (this.state.dirty) {
+        this.props.validate((error) => {
+          if (!error) {
+              this.loading();
+              var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
+              $.ajax(url, {
+                type : 'PATCH',
+                data : JSON.stringify(this.getProfile()),
+                contentType : 'application/json',
+                error : this.loadingError(url, 'Error updating user profile'),
+                success : () => {
+                  this.loadingSuccess('Profile succesfully updated!', {
+                    dirty : false,
+                    btnClickedOnce: false
+                  });
+                }
+              });
           } else {
-            this.loadingSuccess('Nothing changed!', {
-              dirty : false,
-              btnClickedOnce: false
-            });
+            console.log('Validation error:', error);
           }
-        }
-      });
+        });
+      } else {
+        this.loadingSuccess('Nothing changed!', {
+          dirty : false,
+          btnClickedOnce: false
+        });
+      }
     });
   },
   render: function() {
