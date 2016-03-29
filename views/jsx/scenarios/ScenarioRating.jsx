@@ -6,8 +6,10 @@ import api                 from '../../../api_routes.js';
 import LoadingMixin        from '../LoadingMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
+var Router = require('react-router');
+
 var ScenarioRating = React.createClass({
-  mixins: [LoadingMixin, UserIsLoggedInMixin],
+  mixins: [LoadingMixin, UserIsLoggedInMixin, Router.Navigation],
   getInitialState: function() {
     return {
       rating: null,
@@ -23,7 +25,6 @@ var ScenarioRating = React.createClass({
     };
   },
   componentWillMount: function() {
-
     if(this.state.doMeta) {
       this.setState({icons: this.state.metaIcons});
     }
@@ -49,7 +50,12 @@ var ScenarioRating = React.createClass({
   },
   handleClick: function(i) {
     if(this.state.enabled) {
-
+      if(!this.userIsLoggedIn()) {
+        sessionStorage.setItem('prevScenario', this.state.scenario.uuid);
+        sessionStorage.setItem('prevScenarioScore', i + 1);
+        this.transitionTo('login');
+        return;
+      }
       this.state.icons = this.getInitialState().icons;
       this.setState(this.state);
       var e;

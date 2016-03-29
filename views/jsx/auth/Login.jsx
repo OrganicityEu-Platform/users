@@ -62,7 +62,13 @@ var LocalLogin = React.createClass({
             success: (currentUser) => {
               this.loaded();
               this.props.onLogin(currentUser);
-              this.transitionTo(ui.reverse('profile'));
+              if(sessionStorage.getItem('prevScenario') && sessionStorage.getItem('prevScenarioScore')) {
+                this.transitionTo('scenarioView', { uuid : sessionStorage.getItem('prevScenario') });
+                sessionStorage.removeItem('prevScenario');
+                sessionStorage.removeItem('prevScenarioScore');
+              }else {
+                this.transitionTo(ui.reverse('profile'));
+              }
             },
             method: 'POST',
             data: {

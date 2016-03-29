@@ -68,7 +68,13 @@ var Signup = React.createClass({
             success: (currentUser) => {
               this.loadingSuccess('New account created.');
               this.props.onLogin(currentUser);
-              this.transitionTo(ui.route('profile'));
+              if(sessionStorage.getItem('prevScenario') && sessionStorage.getItem('prevScenarioScore')) {
+                this.transitionTo('scenarioView', { uuid : sessionStorage.getItem('prevScenario') });
+                sessionStorage.removeItem('prevScenario');
+                sessionStorage.removeItem('prevScenarioScore');
+              }else {
+                this.transitionTo(ui.reverse('profile'));
+              }
             },
             method: 'POST',
             data: {
