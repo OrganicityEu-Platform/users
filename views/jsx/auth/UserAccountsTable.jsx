@@ -27,6 +27,7 @@ var UserAccountsTable = React.createClass({
     });
   },
   accountFields : {
+    'local'    : ['email'],
     'twitter'  : ['displayName', 'username'],
     'google'   : ['email', 'name'],
     'facebook' : ['displayName'],
@@ -53,7 +54,9 @@ var UserAccountsTable = React.createClass({
     }
     var accounts = [];
     for (var account in this.accountFields) {
-      if (this.state[account] && this.state[account].id) {
+      if(account === 'local' && this.state[account] && this.state[account].email) {
+        accounts.push(this.renderAccount(account));
+      } else if (this.state[account] && this.state[account].id) {
         accounts.push(this.renderAccount(account));
       }
     }
