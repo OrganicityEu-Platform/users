@@ -1,28 +1,65 @@
-import React from 'react';
-import api   from '../../../api_routes.js';
+import React  from 'react';
+import api    from '../../../api_routes.js';
+import login  from '../../../config/login.js';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var SocialmediaLogin = React.createClass({
   render() {
-    return (
-      <div className="social-logins">
+
+    var facebook = null;
+    if(login.facebook) {
+      facebook = (
         <a href={api.reverse('auth_facebook')} className="">
           <span className="fa fa-facebook"></span>
         </a>
+      );
+    }
+
+    var twitter = null;
+    if(login.twitter) {
+      twitter = (
         <a href={api.reverse('auth_twitter')} className="">
           <span className="fa fa-twitter"></span>
         </a>
+      );
+    };
+
+    var google = null;
+    if(login.google) {
+      google = (
         <a href={api.reverse('auth_google')} className="">
           <span className="fa fa-google-plus"></span>
         </a>
+      );
+    };
+
+    var github = null;
+    if(login.github) {
+      github = (
         <a href={api.reverse('auth_github')} className="">
           <span className="fa fa-github"></span>
         </a>
-        <a href={api.reverse('auth_disqus')} className="">
+      );
+    };
+
+    var disqus = null;
+    if(login.disqus) {
+      disqus = (
+       <a href={api.reverse('auth_disqus')} className="">
           <span className="">DISQUS</span>
         </a>
+      );
+    };
+
+    return (
+      <div className="social-logins">
+        {facebook}
+        {twitter}
+        {google}
+        {github}
+        {disqus}
       </div>
 
     );

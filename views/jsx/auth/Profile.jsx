@@ -28,6 +28,9 @@ import DocumentTitle        from 'react-document-title';
 
 import Select               from 'react-select';
 
+import login                from '../../../config/login.js';
+
+
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
   getInitialState: function() {
@@ -447,6 +450,8 @@ var Profile = React.createClass({
 
     function socialLink(name, icon) {
 
+      return null; // Disable social links
+
       var unlink = function(name) {
         return function(evt) {
           evt.preventDefault();
@@ -497,6 +502,9 @@ var Profile = React.createClass({
         }
       }
 
+      // Disable linking
+      if(!login[name]) return null;
+
       var e = that.state[name];
       if(e && e.id) {
         return (
@@ -525,10 +533,27 @@ var Profile = React.createClass({
     var linkGoogle = socialLink('google', 'fa fa-google-plus');
     var linkGithub = socialLink('github', 'fa fa-github');
 
-    var large  = [];
-    for (var i = 0; i < 100; i++) {
-        large.push({value: 'Item ' + i});
-    }
+    var socialLinks = (
+      <div>
+        <h2 className="pink">Social links</h2>
+
+        <div className="form-group oc-form-group oc-edit-group">
+          <label className="control-label col-sm-3" htmlFor="name">Social links
+            <span className="oc-form-group-info">
+              {lang.Profile.socialInfo}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            {linkTwitter}
+            {linkFacebook}
+            {linkGoogle}
+            {linkGithub}
+          </div>
+        </div>
+      </div>
+    );
+
+    socialLinks = null;
 
     var options = [
       { value: 'Academic', label: 'Academic' },
@@ -685,22 +710,7 @@ var Profile = React.createClass({
               </div>
             </div>
 
-            <h2 className="pink">Social links</h2>
-
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">Social links
-                <span className="oc-form-group-info">
-                  {lang.Profile.socialInfo}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                {linkTwitter}
-                {linkFacebook}
-                {linkGoogle}
-                {linkGithub}
-              </div>
-            </div>
-
+            {socialLinks}
             {localAccount}
 
             <h2 className="pink">Your scenarios</h2>
