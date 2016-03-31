@@ -1,4 +1,5 @@
 @import "oc_colors.less";
+@import "../../node_modules/bootstrap/less/bootstrap.less";
 
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 320px) and (max-device-width: 680px) {
@@ -12,16 +13,28 @@
     width: 135px !important;
     top: -13px !important;
   }
-  .navbar {
-    position: absolute;
-    width: 100%;
-    z-index: 9999;
-  }
   .oc-eval-answers-wrapper {
     padding-left: 5px;
     padding-right: 5px;
     text-align: center !important;
   }
+
+
+  .scenario-article-marker {
+    height: 80px !important;
+    width: 80px !important;
+  }
+  .scenario-article-score {
+    margin-top: 10px !important;
+    margin-right: 10px !important;
+    padding: 0px !important;
+  }
+  .oc-article-sector-icon {
+    height: 45px !important;
+    width: 45px !important;
+  }
+
+
 }
 
 @media only screen and (min-device-width: 510px) and (max-device-width: 720px) {

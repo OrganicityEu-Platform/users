@@ -197,7 +197,7 @@ handleSectorSelector: function(selectedSectors) {
   Array.prototype.push.apply(sectors, selectedSectors);
   Array.prototype.push.apply(sectors, this.state.newSectors);
 
-  console.log('selectedSectors', selectedSectors);
+  //console.log('selectedSectors', selectedSectors);
 
   this.setState({selectedSectors: selectedSectors, sectors: sectors}, () => {
     if (this.state.btnClickedOnce) {

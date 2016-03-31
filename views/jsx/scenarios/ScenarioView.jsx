@@ -85,7 +85,7 @@ var ScenarioView = React.createClass({
           <ScenarioTableView scenario={this.state} />
 
         </div>
-        {this.userIsLoggedIn() ? starRating : null}
+        {this.userIsLoggedIn() ? starRating : starRating}
         <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
         <div className="row">
           <div className="form-group">
