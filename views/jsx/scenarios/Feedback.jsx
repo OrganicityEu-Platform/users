@@ -9,7 +9,6 @@ import LoadingMixin         from '../LoadingMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
-
 var Feedback = React.createClass({
   mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
   getInitialState: function() {
@@ -149,18 +148,9 @@ var Feedback = React.createClass({
       </div>
     );}
     if(this.state.hasEvaluated){return(
-      <div className="row">
-        <div className="oc-macro-content">
-          <span>
-            You have evaluated this scenario.
-          </span>
-        </div>
-      </div>
+      null
     );}
     if(this.state.show) {
-
-
-
       return(
         <div className="row">
           <div className="oc-macro-content">
@@ -232,17 +222,8 @@ var Feedback = React.createClass({
         );
       }
       if(!this.state.show) {
-
         return(
-          <div className="row">
-            <div className="oc-macro-content">
-              <div className="oc-feedback-success-msg">
-                <span>
-                  THANK YOU FOR YOUR FEEDBACK
-                </span>
-              </div>
-            </div>
-          </div>
+          null
         );
       }
     }
