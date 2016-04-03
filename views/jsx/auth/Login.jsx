@@ -44,6 +44,9 @@ var LocalLogin = React.createClass({
       }
     });
   },
+  loginSuccess: function() {
+    this.flash('success', 'Login successful.');
+  },
   handleSubmit : function(evt) {
 
     evt.preventDefault();
@@ -66,8 +69,29 @@ var LocalLogin = React.createClass({
                 this.transitionTo('scenarioView', { uuid : sessionStorage.getItem('prevScenario') });
                 sessionStorage.removeItem('prevScenario');
                 sessionStorage.removeItem('prevScenarioScore');
-              }else {
-                this.transitionTo(ui.reverse('profile'));
+              }else if(sessionStorage.getItem('srcPath')) {
+
+                var srcPath = JSON.parse(sessionStorage.getItem('srcPath'));
+
+                if(srcPath.route === 'scenarioView') {
+                  this.transitionTo('scenarioView', {uuid: srcPath.params.uuid});
+                  sessionStorage.removeItem('srcPath');
+                  this.loginSuccess();
+                }else if(srcPath.route === 'userView') {
+                  this.transitionTo('userView', {uuid: srcPath.params.uuid});
+                  sessionStorage.removeItem('srcPath');
+                  this.loginSuccess();
+                }else {
+                  if(srcPath.route === 'login' || srcPath.route === 'signup') {
+                    this.transitionTo(ui.reverse('profile'));
+                    sessionStorage.removeItem('srcPath');
+                    this.loginSuccess();
+                  }else {
+                    this.transitionTo(ui.reverse(srcPath.route));
+                    sessionStorage.removeItem('srcPath');
+                    this.loginSuccess();
+                  }
+                }
               }
             },
             method: 'POST',

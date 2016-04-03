@@ -93,6 +93,22 @@ var Scaffold = React.createClass({
     }
 
   },
+  routeName: function() {
+    return this.getRoutes()[this.getRoutes().length - 1].name;
+  },
+  setSource: function() {
+    var src = {
+      route: this.routeName(),
+      params: this.getParams()
+    };
+    sessionStorage.setItem('srcPath', JSON.stringify(src));
+  },
+  clickedLogin: function() {
+    this.setSource();
+  },
+  clickedSignup: function() {
+    this.setSource();
+  },
   render : function() {
 
     var router;
@@ -180,12 +196,14 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="signup"
           to="signup"
+          onClick={this.clickedSignup}
           className="nav-signup-btn">sign up</NavItemLink>
       );
       linksRight.push(
         <NavItemLink
           key="login"
           to="login"
+          onClick={this.clickedLogin}
           className="nav-login-btn">
           log in
         </NavItemLink>
