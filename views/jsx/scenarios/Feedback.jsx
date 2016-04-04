@@ -6,11 +6,13 @@ import ValidationIndicator  from '../ValidationIndicator.jsx'
 
 import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
+import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
+
 var Feedback = React.createClass({
-  mixins : [LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
+  mixins : [UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
   getInitialState: function() {
     return {
       show: true,
@@ -133,7 +135,7 @@ var Feedback = React.createClass({
     var likeText = "I like...";
     var dislikeText = "I dislike...";
 
-    if(this.userIsCreator(this.state.scenario)) {return(
+    if(this.userIsCreator(this.state.scenario) || this.userHasRole('admin')) {return(
       <div className="row">
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">

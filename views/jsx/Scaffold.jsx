@@ -109,6 +109,13 @@ var Scaffold = React.createClass({
   clickedSignup: function() {
     this.setSource();
   },
+  clickedCreate: function() {
+    if(!this.userIsLoggedIn()) {
+      sessionStorage.setItem('srcPath', JSON.stringify({
+        route: 'scenarioCreate'
+      }));
+    }
+  },
   render : function() {
 
     var router;
@@ -139,6 +146,7 @@ var Scaffold = React.createClass({
       <NavItemLink
         key="scenarioCreate"
         to="scenarioCreate"
+        onClick={this.clickedCreate}
         className="navbar-button"
         id="navbar-create-btn">CREATE</NavItemLink>
     );
