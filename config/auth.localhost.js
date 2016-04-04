@@ -35,6 +35,12 @@ module.exports = {
     'clientID'         : 'S3JTOsRJBiVXmz24MR0S94w5jC8jfk9XPEG4GfGiYeAjexDstUKfEqS7XlEDSeLF',
     'clientSecret'     : '3uA1p9myEspmmxannqYUogYRELJXBY7aHsKh4rhxe29KZskwMeGi7q5YKhpF1PyP',
     'callbackURL'      : config.host + ':' + config.port + api.route('callback_disqus')
+  },
+  'oAuth2' : {
+    'clientID'         : 'scenarios',
+    'clientSecret'     : null,
+    'callbackURL'      : config.host + ':' + config.port + api.route('callback_oauth2'),
+    'authorizationURL' : 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth',
+    'tokenURL'         : 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/token'
   }
-
 };

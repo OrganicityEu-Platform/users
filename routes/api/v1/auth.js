@@ -89,13 +89,14 @@ module.exports = function(router, passport) {
   // LOGIN USING OAUTH / OPEN ID CONNECT PROVIDERS ===============================
   // =============================================================================
 
-  var authProviders = ['facebook', 'twitter', 'google', 'github', 'disqus'];
+  var authProviders = ['facebook', 'twitter', 'google', 'github', 'disqus', 'oauth2'];
   var authScopes = {
     'facebook' : { scope : ['email'] },
     'twitter'  : { scope : ['profile', 'email'] },
     'google'   : { scope : ['profile', 'email'] },
     'github'   : { scope : ['profile', 'email'] },
-    'disqus'   : { scope : ['read', 'write', 'email'] }
+    'disqus'   : { scope : ['read', 'write', 'email'] },
+    'oauth2'   : { scope : ['profile', 'email'] },
   };
 
   // login / signup using auth providers

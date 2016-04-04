@@ -56,6 +56,13 @@ var user = mongoose.Schema({
     name         : String,
     public       : { type: Boolean, default: false }
   },
+  oauth2           : {
+    id           : String,
+    token        : String,
+    username     : String,
+    displayName  : String,
+    public       : { type: Boolean, default: false }
+  },
 });
 
 // generate a hash

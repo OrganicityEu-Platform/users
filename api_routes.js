@@ -31,11 +31,13 @@ var api_routes = {
   'auth_google'                : prefixes.auth + '/google',
   'auth_disqus'                : prefixes.auth + '/disqus',
   'auth_github'                : prefixes.auth + '/github',
-  'connect_facebook'           : prefixes.auth + '/facebook',
+  'auth_oauth2'                : prefixes.auth + '/oauth2',
+  'connect_facebook'           : prefixes.auth + '/oauth2',
   'connect_twitter'            : prefixes.auth + '/twitter',
   'connect_google'             : prefixes.auth + '/google',
   'connect_github'             : prefixes.auth + '/github',
   'connect_disqus'             : prefixes.auth + '/disqus',
+  'connect_oauth2'             : prefixes.auth + '/oauth2',
   'connect_local-signup'       : prefixes.auth + '/local',
   'login'                      : prefixes.auth + '/login',
   'logout'                     : prefixes.auth + '/logout',
@@ -44,6 +46,7 @@ var api_routes = {
   'callback_google'            : prefixes.auth + '/google/callback',
   'callback_github'            : prefixes.auth + '/github/callback',
   'callback_disqus'            : prefixes.auth + '/disqus/callback',
+  'callback_oauth2'            : prefixes.auth + '/oauth2/callback',
 
   // users routes
   'users'                      : prefixes.users + '/?',

@@ -3,6 +3,7 @@ module.exports = {
   twitter : false,
   google : false,
   github : true,
-  disqus : false
+  disqus : false,
+  oauth2 : true
 };
 

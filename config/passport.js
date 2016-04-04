@@ -5,6 +5,7 @@ var TwitterStrategy  = require('passport-twitter').Strategy;
 var GithubStrategy   = require('passport-github').Strategy;
 var BasicStrategy    = require('passport-http').BasicStrategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
+var OAuth2Strategy   = require('passport-oauth2').Strategy;
 var DisqusStrategy   = require('passport-disqus').Strategy;
 
 //
@@ -596,6 +597,94 @@ module.exports = function(passport) {
           user.disqus.id = profile.id;
           user.disqus.token = token;
           user.disqus.name = profile.displayName;
+          user.disqus.email = profile.eMail;
+
+          user.save(function(err) {
+            if (err) {
+              return done(err);
+            }
+            return done(null, user);
+          });
+        }
+      });
+
+    }));
+
+  // =========================================================================
+  // OrganiCity OAuth2
+  // =========================================================================
+
+  passport.use(new OAuth2Strategy({
+      authorizationURL: configAuth.oAuth2.authorizationURL,
+      tokenURL: configAuth.oAuth2.tokenURL,
+      clientID: configAuth.oAuth2.clientID,
+      clientSecret: configAuth.oAuth2.clientSecret,
+      callbackURL: configAuth.oAuth2.callbackURL,
+      passReqToCallback: true
+    },
+    function(req, token, refreshToken, profile, done) {
+
+      // asynchronous
+      process.nextTick(function() {
+        // check if the user is already logged in
+        if (!req.user) {
+          console.log('oAuth2 strategy', profile);
+          User.findOne({
+            'oauth.id': profile.id
+          }, function(err, user) {
+            if (err) {
+              return done(err);
+            }
+            if (user) {
+
+              /*
+              // if there is a user id already but no token (user was linked at one point and then removed)
+              if (!user.disqus.token) {
+                user.disqus.token = token;
+                newUser.disqus.name = profile.displayName;
+
+                var raw = JSON.parse(profile._raw);
+                var email = raw.response.email;
+                newUser.disqus.email = (email || '').toLowerCase(); // pull the first email
+
+                user.save(function(err) {
+                  if (err) {
+                    return done(err);
+                  }
+
+                  return done(null, user);
+                });
+              }
+              */
+              return done(null, user);
+            } else {
+              var newUser = new User();
+              newUser.uuid = uuid.v4();
+              newUser.oauth.id = profile.id;
+              newUser.oauth.token = token;
+
+              newUser.oauth.name = profile.displayName;
+              var raw = JSON.parse(profile._raw);
+              var email = raw.response.email; // CHECK
+              newUser.oauth.email = (email || '').toLowerCase(); // pull the first email
+
+              newUser.save(function(err) {
+                if (err) {
+                  return done(err);
+                }
+
+                return done(null, newUser);
+              });
+            }
+          });
+
+        } else {
+          // user already exists and is logged in, we have to link accounts
+          var user = req.user; // pull the user out of the session
+
+          user.disqus.id = profile.id;
+          user.disqus.token = token;
+          user.disqus.name = profile.displayName;
           var raw = JSON.parse(profile._raw);
           var email = raw.response.email;
           user.disqus.email = (email || '').toLowerCase(); // pull the first email
@@ -608,6 +697,7 @@ module.exports = function(passport) {
           });
         }
       });
+    }
+  ));
 
-    }));
 };
