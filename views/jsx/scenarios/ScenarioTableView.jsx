@@ -17,8 +17,11 @@ import SectorIcon         from '../SectorIcon.jsx';
 
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
+import I18nMixin          from '../i18n/I18nMixin.jsx';
+
+
 var ScenarioTableView = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, I18nMixin],
   render: function() {
     if (!this.props.scenario) {
       return null;
@@ -127,7 +130,7 @@ var ScenarioTableView = React.createClass({
                       </h2>
                         <div>
                           <span className="scenario-article-publisher">
-                            Created by <UserAvatar uuid={this.props.scenario.creator} />
+                            {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
                         </span>
                         <span className="scenario-article-timestamp">
                           { this.props.scenario.timestamp ?

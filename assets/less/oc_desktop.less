@@ -105,19 +105,22 @@
   .nav-profile-btn > a {
     .active-link-right;
   }
-  .nav-login-btn > a {
+  .nav-login-btn > a, .nav-signup-btn > a, .nav-lang-btn > div {
     padding: 0px !important;
-    margin-top: 15px;
     .active-link-right;
   }
-  .nav-signup-btn > a {
-    padding: 0px !important;
-    margin-top: 15px;
-    .active-link-right;
-  }
-  .navbar-right > li > a {
+  .navbar-right > li > a, #lang-dropdown {
     padding-left: 0px;
     padding-right: 0px;
+    padding: 0px;
+    margin-top: 15px;
+  }
+  #lang-dropdown {
+    font-size: 14px;
+    border: 0px;
+  }
+  .nav-lang-btn {
+    margin-left: 20px;
   }
   .oc-cookie-prompt-wrapper {
     .make-lg-column(6);

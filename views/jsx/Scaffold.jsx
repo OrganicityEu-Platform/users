@@ -13,6 +13,7 @@ import ui                  from '../../ui_routes.js';
 
 import Signup              from './auth/Signup.jsx';
 import CookiePrompt        from './CookiePrompt.jsx';
+import LanguageSwitcher    from './i18n/LanguageSwitcher.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -217,6 +218,10 @@ var Scaffold = React.createClass({
         </NavItemLink>
       );
     }
+    linksRight.push(
+      <li className="nav-lang-btn"><LanguageSwitcher /></li>
+    );
+
     return (
       <div className={this.handleClass()}>
         <div className="row oc-navbar-wrapper">
