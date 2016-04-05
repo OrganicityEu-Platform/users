@@ -200,6 +200,7 @@ var Scaffold = React.createClass({
           className="nav-logout-btn">log out</NavItemLink>
       );
     } else {
+      /*
       linksRight.push(
         <NavItemLink
           key="signup"
@@ -207,6 +208,7 @@ var Scaffold = React.createClass({
           onClick={this.clickedSignup}
           className="nav-signup-btn">sign up</NavItemLink>
       );
+      */
       linksRight.push(
         <NavItemLink
           key="login"
