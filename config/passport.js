@@ -8,6 +8,8 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var OAuth2Strategy   = require('passport-oauth2').Strategy;
 var DisqusStrategy   = require('passport-disqus').Strategy;
 
+var unirest           = require('unirest');
+
 //
 var uuid = require('node-uuid');
 
@@ -612,7 +614,7 @@ module.exports = function(passport) {
 
     }));
 
-  // =========================================================================
+  // b=========================================================================
   // OrganiCity OAuth2
   // =========================================================================
 
@@ -629,28 +631,85 @@ module.exports = function(passport) {
       // asynchronous
       process.nextTick(function() {
 
-        console.log('oAuth2 strategy req', req);
-        console.log('oAuth2 strategy token', token);
-        console.log('oAuth2 strategy refreshToken', refreshToken);
-        console.log('oAuth2 strategy profile', profile);
-        console.log('oAuth2 strategy profile.id', profile.id);
+        //console.log('oAuth2 strategy req', req);
+        //console.log('oAuth2 strategy token', token);
+        //console.log('oAuth2 strategy refreshToken', refreshToken);
+        //console.log('oAuth2 strategy profile', profile);
+        //console.log('oAuth2 strategy profile.id', profile.id);
 
-        // check if the user is already logged in
-        if (!req.user) {
-          User.findOne({
-            'oauth.id': profile.id
-          }, function(err, user) {
-            if (err) {
-              return done(err);
-            }
-            if (user) {
+        var url = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/userinfo';
+        unirest.get(url)
+          .header('Authorization', 'Bearer ' + token)
+          .send()
+          .end(function(response) {
+            if (response.status === 200 && response.body) {
+              var profile = response.body;
+              console.log('Profile: ', profile);
 
-              // if there is a user id already but no token (user was linked at one point and then removed)
-              if (!user.oauth2.token) {
+              // check if the user is already logged in
+              if (!req.user) {
+                User.findOne({
+                  'oauth2.id': profile.sub
+                }, function(err, user) {
+                  if (err) {
+                    return done(err);
+                  }
+                  if (user) {
 
-                user.oauth2.token = token;
-                user.oauth2.name = profile.displayName;
-                user.oauth2.email = profile.email;
+                    console.log('User found');
+
+                    // if there is a user id already but no token (user was linked at one point and then removed)
+                    if (!user.oauth2.token) {
+
+                      console.log('User has no token!');
+
+                      user.oauth2.id = profile.sub;
+                      user.oauth2.token = token;
+                      user.oauth2.name = profile.name;
+                      user.oauth2.email = profile.email;
+
+                      user.save(function(err) {
+                        if (err) {
+                          return done(err);
+                        }
+                        return done(null, user);
+                      });
+
+                    }
+                    return done(null, user);
+                  } else {
+
+                    console.log('Create new user!');
+
+                    var newUser = new User();
+                    newUser.uuid = uuid.v4();
+
+                    newUser.oauth2.id = profile.sub;
+                    newUser.oauth2.token = token;
+                    newUser.oauth2.name = profile.name;
+                    newUser.oauth2.email = profile.email;
+
+                    newUser.save(function(err) {
+                      if (err) {
+                        return done(err);
+                      }
+
+                      return done(null, newUser);
+                    });
+                  }
+                });
+
+              } else {
+
+                console.log('Link new user!');
+
+                // user already exists and is logged in, we have to link accounts
+                var user = req.user; // pull the user out of the session
+
+                newUser.oauth2.id = profile.sub;
+                newUser.oauth2.token = token;
+                newUser.oauth2.name = profile.name;
+                newUser.oauth2.email = profile.email;
 
                 user.save(function(err) {
                   if (err) {
@@ -658,43 +717,11 @@ module.exports = function(passport) {
                   }
                   return done(null, user);
                 });
-
               }
-              return done(null, user);
-            } else {
-              var newUser = new User();
-              newUser.uuid = uuid.v4();
-
-              newUser.oauth2.token = token;
-              newUser.oauth2.name = profile.displayName;
-              newUser.oauth2.email = profile.email;
-
-              newUser.save(function(err) {
-                if (err) {
-                  return done(err);
-                }
-
-                return done(null, newUser);
-              });
             }
+
           });
 
-        } else {
-          // user already exists and is logged in, we have to link accounts
-          var user = req.user; // pull the user out of the session
-
-          newUser.oauth2.id = profile.id;
-          newUser.oauth2.token = token;
-          newUser.oauth2.name = profile.displayName;
-          newUser.oauth2.email = profile.email;
-
-          user.save(function(err) {
-            if (err) {
-              return done(err);
-            }
-            return done(null, user);
-          });
-        }
       });
     }
   ));
