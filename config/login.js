@@ -1,9 +1,9 @@
 module.exports = {
-  facebook : true,
+  facebook : false,
   twitter : false,
   google : false,
-  github : true,
+  github : false,
   disqus : false,
-  oauth2 : true
+  oauth2 : false
 };
 

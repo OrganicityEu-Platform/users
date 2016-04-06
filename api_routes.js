@@ -32,7 +32,7 @@ var api_routes = {
   'auth_disqus'                : prefixes.auth + '/disqus',
   'auth_github'                : prefixes.auth + '/github',
   'auth_oauth2'                : prefixes.auth + '/oauth2',
-  'connect_facebook'           : prefixes.auth + '/oauth2',
+  'connect_facebook'           : prefixes.auth + '/facebook',
   'connect_twitter'            : prefixes.auth + '/twitter',
   'connect_google'             : prefixes.auth + '/google',
   'connect_github'             : prefixes.auth + '/github',

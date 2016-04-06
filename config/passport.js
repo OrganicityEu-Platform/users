@@ -706,10 +706,10 @@ module.exports = function(passport) {
                 // user already exists and is logged in, we have to link accounts
                 var user = req.user; // pull the user out of the session
 
-                newUser.oauth2.id = profile.sub;
-                newUser.oauth2.token = token;
-                newUser.oauth2.name = profile.name;
-                newUser.oauth2.email = profile.email;
+                user.oauth2.id = profile.sub;
+                user.oauth2.token = token;
+                user.oauth2.name = profile.name;
+                user.oauth2.email = profile.email;
 
                 user.save(function(err) {
                   if (err) {

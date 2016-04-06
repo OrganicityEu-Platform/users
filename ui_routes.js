@@ -24,6 +24,7 @@ var ui_routes = {
 
   // authentication routes
   'profile'                : '/auth/profile/?',
+  'login-internal'         : '/auth/login-internal/?',
   'login'                  : '/auth/login/?',
   'logout'                 : '/auth/logout/?',
   'signup'                 : '/auth/signup/?',
