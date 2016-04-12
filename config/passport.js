@@ -634,8 +634,8 @@ module.exports = function(passport) {
 
         // unpack access token.
         var profile = jwtDecode(token);
-        var roles = profile.resource_access.scenarios.roles;
-
+        console.log('profile', profile.resource_access);
+        var roles = profile.resource_access.scenarios ? profile.resource_access.scenarios.roles : [];
         // check if the user is already logged in
         if (!req.user) {
           User.findOne({
@@ -672,8 +672,6 @@ module.exports = function(passport) {
                 }
                 return done(null, user);
               });
-
-              return done(null, user);
             } else {
 
               console.log('Create new user!');
