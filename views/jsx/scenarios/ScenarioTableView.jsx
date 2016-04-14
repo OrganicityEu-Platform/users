@@ -40,7 +40,7 @@ var ScenarioTableView = React.createClass({
       image = undefined;
     }
 
-    var sector_colour = this.props.scenario.sectors[0];
+    var sector_colour = (this.props.scenario && this.props.scenario.sectors ? this.props.scenario.sectors[0] : '');
     var sector_colour_marker;
     var article_image_overlay;
     if (sector_colour) {
@@ -97,7 +97,7 @@ var ScenarioTableView = React.createClass({
                   <Counter
                     scope="scenarios"
                     className="scenario-article-views"
-                    id={this.props.scenario.uuid} />  views
+                    id={this.props.scenario.uuid} />  {this.i18n('views', 'views')}
                   </p>
                   <p className="scenario-article-widget-data-comments">
                     <i className="fa fa-comment-o">
@@ -105,12 +105,12 @@ var ScenarioTableView = React.createClass({
                     <Comments
                       scope="scenarios"
                       className="scenario-article-comments"
-                      id={this.props.scenario.uuid} />  comments
+                      id={this.props.scenario.uuid} />  {this.i18n('comments', 'comments')}
                     </p>
                     <p className="scenario-article-widget-data-evaluations">
                       <i className="fa fa-check-square-o">
                       </i>
-                      <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> evaluations
+                      <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> {this.i18n('evaluations', 'evaluations')}
                       </p>
                       <p>
                         <ScenarioRating doMeta={true} className={"oc-article-star"} scenario={this.props.scenario} />
@@ -155,7 +155,7 @@ var ScenarioTableView = React.createClass({
                     <div className="scenario-article-meta">
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Participants:</span>
+                          <span className="scenario-ast">{this.i18n('participants', 'Participants')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}
                           </span>
@@ -165,7 +165,7 @@ var ScenarioTableView = React.createClass({
                       </div>
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Sectors:</span>
+                          <span className="scenario-ast">{this.i18n('sectors', 'Sectors')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}
                           </span>
@@ -175,7 +175,7 @@ var ScenarioTableView = React.createClass({
                       </div>
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Tools:</span>
+                          <span className="scenario-ast">{this.i18n('tools', 'Tools')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}
                           </span>

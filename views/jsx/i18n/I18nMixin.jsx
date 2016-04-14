@@ -29,7 +29,7 @@ var I18nMixin = {
       // survive, use default  (eg. iOS private mode)
     }
 
-    return { "currentLang": currentLang, "data": data };
+    return { "currentLang": currentLang, "langdata": data };
   },
 
   setCurrentLanguage: function(language) {
@@ -66,11 +66,11 @@ var I18nMixin = {
     var val;
     switch (this.state.currentLang) {
       case 'es-ES':
-        val = this.state.data.esES[key];
+        val = this.state.langdata.esES[key];
         break;
       case 'en-GB':
       default:
-        val = this.state.data.enGB[key];
+        val = this.state.langdata.enGB[key];
     }
 
     if (val) {

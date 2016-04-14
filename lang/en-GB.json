@@ -1,4 +1,14 @@
 {
     created_by: 'Created by',
-    test: 'test'
+    views: 'views',
+    comments: 'comments',
+    evaluations: 'evaluations',
+    participants: 'Participants',
+    sectors: 'Sectors',
+    tools: 'Tools',
+    how_interesting: 'How interesting is this scenario for you?',
+    scenario: 'Scenario',
+    eval_this_scenario: 'Evaluate this scenario',
+    i_like: 'I like...',
+    i_dislike: 'I dislike...',
 }

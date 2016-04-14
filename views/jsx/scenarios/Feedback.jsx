@@ -9,10 +9,11 @@ import LoadingMixin         from '../LoadingMixin.jsx';
 import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 
 var Feedback = React.createClass({
-  mixins : [UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
+  mixins : [UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin, I18nMixin],
   getInitialState: function() {
     return {
       show: true,
@@ -132,8 +133,8 @@ var Feedback = React.createClass({
   },
   render: function() {
 
-    var likeText = "I like...";
-    var dislikeText = "I dislike...";
+    var likeText = this.i18n('i_like', 'I like...');
+    var dislikeText = this.i18n('i_dislike', 'I dislike...');
 
     if(this.userIsCreator(this.state.scenario) || this.userHasRole('admin')) {return(
       <div className="row">
@@ -159,7 +160,7 @@ var Feedback = React.createClass({
             <div className="oc-feedback-wrapper">
               <div>
                 <h3>
-                  Evaluate this scenario
+                  {this.i18n('eval_this_scenario', 'Evaluate this scenario')}
                 </h3>
                 </div>
                 <form className="form-horizontal">

@@ -24,8 +24,10 @@ import ScenarioRating       from './ScenarioRating.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
+import I18nMixin            from '../i18n/I18nMixin.jsx';
+
 var ScenarioView = React.createClass({
-  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin, I18nMixin],
   getInitialState: function() {
     return null;
   },
@@ -63,7 +65,7 @@ var ScenarioView = React.createClass({
       <div className="oc-macro-content">
         <div className="oc-article-star-rating-wrapper">
           <div className="col-md-12">
-            <h4 className="oc-bold">How interesting is this scenario for you?</h4></div>
+            <h4 className="oc-bold">{this.i18n('how_interesting', 'How interesting is this scenario for you?')}</h4></div>
           <div className="col-md-12">
             <ScenarioRating
               scenario={this.state}
@@ -80,7 +82,7 @@ var ScenarioView = React.createClass({
 
     return (
       <div>
-        <DocumentTitle title={config.title + ' | Sceanrio | ' + this.state.title} />
+        <DocumentTitle title={config.title + ' | ' + this.i18n('scenario', 'Scenario') + ' | ' + this.state.title} />
         <div className="row">
           <ScenarioTableView scenario={this.state} />
 
