@@ -17,6 +17,15 @@ var SocialmediaLogin = React.createClass({
       );
     }
 
+    var oauth2 = null;
+    if(login.oauth2) {
+      oauth2 = (
+        <a href={api.reverse('auth_oauth2')} className="">
+          <span className="fa fa-sign-in"></span>
+        </a>
+      );
+    }
+
     var twitter = null;
     if(login.twitter) {
       twitter = (
@@ -55,6 +64,7 @@ var SocialmediaLogin = React.createClass({
 
     return (
       <div className="social-logins">
+        {oauth2}
         {facebook}
         {twitter}
         {google}

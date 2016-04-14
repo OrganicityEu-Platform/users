@@ -5,7 +5,11 @@ var TwitterStrategy  = require('passport-twitter').Strategy;
 var GithubStrategy   = require('passport-github').Strategy;
 var BasicStrategy    = require('passport-http').BasicStrategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
+var OAuth2Strategy   = require('passport-oauth2').Strategy;
 var DisqusStrategy   = require('passport-disqus').Strategy;
+
+var unirest           = require('unirest');
+var jwtDecode = require('jwt-decode');
 
 //
 var uuid = require('node-uuid');
@@ -551,11 +555,11 @@ module.exports = function(passport) {
               // if there is a user id already but no token (user was linked at one point and then removed)
               if (!user.disqus.token) {
                 user.disqus.token = token;
-                newUser.disqus.name = profile.displayName;
+                user.disqus.name = profile.displayName;
 
                 var raw = JSON.parse(profile._raw);
                 var email = raw.response.email;
-                newUser.disqus.email = (email || '').toLowerCase(); // pull the first email
+                user.disqus.email = (email || '').toLowerCase(); // pull the first email
 
                 user.save(function(err) {
                   if (err) {
@@ -597,8 +601,8 @@ module.exports = function(passport) {
           user.disqus.token = token;
           user.disqus.name = profile.displayName;
           var raw = JSON.parse(profile._raw);
-          var email = raw.response.email;
-          user.disqus.email = (email || '').toLowerCase(); // pull the first email
+          var email = raw.response.email; // CHECK
+          newUser.oauth.email = (email || '').toLowerCase(); // pull the first email
 
           user.save(function(err) {
             if (err) {
@@ -610,4 +614,109 @@ module.exports = function(passport) {
       });
 
     }));
+
+  // =========================================================================
+  // OrganiCity OAuth2
+  // =========================================================================
+
+  passport.use(new OAuth2Strategy({
+      authorizationURL: configAuth.oAuth2.authorizationURL,
+      tokenURL: configAuth.oAuth2.tokenURL,
+      clientID: configAuth.oAuth2.clientID,
+      clientSecret: configAuth.oAuth2.clientSecret,
+      callbackURL: configAuth.oAuth2.callbackURL,
+      passReqToCallback: true
+    },
+    function(req, token, refreshToken, profile, done) {
+
+      // asynchronous
+      process.nextTick(function() {
+
+        // unpack access token.
+        var profile = jwtDecode(token);
+        console.log('profile', profile.resource_access);
+        var roles = profile.resource_access.scenarios ? profile.resource_access.scenarios.roles : [];
+        // check if the user is already logged in
+        if (!req.user) {
+          User.findOne({
+            'oauth2.id': profile.sub
+          }, function(err, user) {
+            if (err) {
+              return done(err);
+            }
+            if (user) {
+
+              console.log('User found');
+
+              // if there is a user id already but no token (user was linked at one point and then removed)
+              if (!user.oauth2.token) {
+
+                console.log('User has no token!');
+
+                user.oauth2.id = profile.sub;
+                user.oauth2.token = token;
+                user.oauth2.name = profile.name;
+                user.oauth2.email = profile.email;
+                user.roles = roles;
+              } else {
+                console.log('user is known, refreshing data.');
+
+                user.oauth2.name = profile.name;
+                user.oauth2.email = profile.email;
+                user.roles = roles;
+              }
+
+              user.save(function(err) {
+                if (err) {
+                  return done(err);
+                }
+                return done(null, user);
+              });
+            } else {
+
+              console.log('Create new user!');
+
+              var newUser = new User();
+              newUser.uuid = uuid.v4();
+
+              newUser.oauth2.id = profile.sub;
+              newUser.oauth2.token = token;
+              newUser.oauth2.name = profile.name;
+              newUser.oauth2.email = profile.email;
+              newUser.roles = roles;
+
+              newUser.save(function(err) {
+                if (err) {
+                  return done(err);
+                }
+
+                return done(null, newUser);
+              });
+            }
+          });
+
+        } else {
+
+          console.log('Link new user!');
+
+          // user already exists and is logged in, we have to link accounts
+          var user = req.user; // pull the user out of the session
+
+          user.oauth2.id = profile.sub;
+          user.oauth2.token = token;
+          user.oauth2.name = profile.name;
+          user.oauth2.email = profile.email;
+          user.roles = roles;
+
+          user.save(function(err) {
+            if (err) {
+              return done(err);
+            }
+            return done(null, user);
+          });
+        }
+      });
+    }
+  ));
+
 };
