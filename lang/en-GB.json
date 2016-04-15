@@ -11,4 +11,5 @@
     eval_this_scenario: 'Evaluate this scenario',
     i_like: 'I like...',
     i_dislike: 'I dislike...',
+    send_feedback: 'SEND FEEDBACK',
 }

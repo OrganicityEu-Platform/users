@@ -215,7 +215,7 @@ var Feedback = React.createClass({
                   className="oc-button"
                   id="oc-submit-feedback"
                   onClick={() => this.handleSubmit()}>
-                  SEND FEEDBACK
+                  {this.i18n('send_feedback', 'SEND FEEDBACK')}
                 </button>
               </div>
               <div className="col-sm-4">
