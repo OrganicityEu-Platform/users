@@ -21,4 +21,7 @@
 	profile: 'ES profile',
 	log_out: 'ES log out',
 	log_in: 'ES log in',
+	join_community: 'es join the community to',
+	explore_share_discuss: 'es explore, share and discuss',
+	scenarios_future_cities: 'es scenarios for our future cities',
 }
