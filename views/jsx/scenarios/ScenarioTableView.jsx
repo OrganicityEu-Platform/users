@@ -19,6 +19,29 @@ import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin],
+  handleCreditClick: function(i, creditorUrl) {
+    window.open(creditorUrl, '_blank');
+  },
+  handleCredits: function() {
+
+      return this.props.scenario.credits.map(function(credit, i){
+        var creditLink;
+        if (!credit.creditorUrl) {
+          creditLink = <span
+            className="oc-credit-no-link">
+            {credit.creditor}
+          </span>;
+        }else {
+          creditLink = <span
+            onClick={this.handleCreditClick.bind(this, i, credit.creditorUrl)}
+            className="oc-credit-with-link">
+            {credit.creditor}
+          </span>;
+        }
+        return creditLink;
+      }, this);
+
+  },
   render: function() {
     if (!this.props.scenario) {
       return null;
@@ -48,13 +71,13 @@ var ScenarioTableView = React.createClass({
     }
 
     var credit;
-    if (this.props.scenario.credit) {
+    if (this.props.scenario.credits.length > 0) {
       credit = (
         <div className="col-md-3">
           <div className="scenario-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
             <span className="scenario-ast-items">
-              {this.props.scenario.credit}
+              {this.handleCredits()}
             </span>
             <br>
             </br>
@@ -181,6 +204,7 @@ var ScenarioTableView = React.createClass({
                         </div>
                       </div>
                       {credit}
+
                     </div>
                   </div>
                   <footer className="scenario-article-footer">

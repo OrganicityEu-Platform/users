@@ -37,6 +37,9 @@ scenario.submit = {
   summary     : joiSummary,
   narrative   : joiNarrative,
   actors      : Joi.array().label('Actors').items(Joi.string()),
+  credits     : Joi.array().label('Credits').items(Joi.object().keys({
+    creditor: Joi.string(),
+    creditorUrl: Joi.string()})).optional(),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   credit      : Joi.string().trim().min(1).label('Credit').optional(),

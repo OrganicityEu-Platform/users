@@ -92,6 +92,9 @@ var ScenarioEditView = React.createClass({
     thumbnail : undefined,  // Here, the path will be stored
     image : undefined,      // Here, the path will be stored
     credit : undefined,
+    credits: [],
+    creditor: undefined,
+    creditorUrl: undefined,
     copyright : undefined,
     btnClickedOnce : false,
   };
@@ -207,6 +210,13 @@ handleSectorSelector: function(selectedSectors) {
     }
   });
 },
+handleChangedCredits : function(credits) {
+  this.setState({actors: actors}, () => {
+    if(this.state.btnClickedOnce) {
+      this.props.validate();
+    }
+  });
+},
 handleChangedActors : function(actors) {
   this.setState({actors: actors}, () => {
     if (this.state.btnClickedOnce) {
@@ -231,6 +241,48 @@ handleChangedCredit : function(evt) {
       }
     });
   }
+},
+addCredit: function(evt) {
+  var creditor = this.state.creditor;
+  var creditorUrl = this.state.creditorUrl;
+  evt.preventDefault();
+  this.state.credits.push(
+    {
+      creditor: creditor,
+      creditorUrl: creditorUrl
+    }
+  );
+  this.setState(this.state);
+},
+handleChangedCreditor: function(evt) {
+  if (evt.target.value === '') {
+    this.setState({creditor: undefined});
+  } else {
+    this.setState({creditor: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
+  }
+},
+handleChangedCreditorUrl: function(evt) {
+  if (evt.target.value === '') {
+    this.setState({creditorUrl: undefined});
+  } else {
+    this.setState({creditorUrl: evt.target.value}, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      }
+    });
+  }
+},
+handleEditCreditor: function(i, evt) {
+  this.state.credits[i].creditor = evt.target.value;
+  this.setState(this.state);
+},
+handleEditCreditorUrl: function(i, evt) {
+  this.state.credits[i].creditorUrl = evt.target.value;
+  this.setState(this.state);
 },
 handleChangedCopyright : function(evt) {
   if (evt.target.value === '') {
@@ -267,11 +319,11 @@ clickedPreview : function() {
   // Trim, as soon the button is clicked
   this.setState({
     btnClickedOnce: true,
-    title     : this.state.title.trim(),
-    summary   : this.state.summary.trim(),
-    narrative : this.state.narrative.trim(),
-    credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
-    copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
+    title       : this.state.title.trim(),
+    summary     : this.state.summary.trim(),
+    narrative   : this.state.narrative.trim(),
+    credit      : this.state.credit ? this.state.credit.trim() : this.state.credit,
+    copyright   : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
   });
 
   if (this.currentStep() + 1 > this.getSteps().length) {
@@ -297,6 +349,7 @@ prepareValidationPreview : function() {
       narrative       : this.state.narrative.trim(),
       selectedSectors : this.state.selectedSectors,
       actors          : this.state.actors,
+      credits         : this.state.credits,
       devices         : this.state.devices,
       thumbnail       : this.state.thumbnail,
       image           : this.state.image,
@@ -316,6 +369,7 @@ clickedSubmit : function() {
       narrative : this.state.narrative.trim(),
       sectors   : this.state.sectors,
       actors    : this.state.actors,
+      credits   : this.state.credits,
       devices   : this.state.devices,
       thumbnail : this.state.thumbnail,
       image     : this.state.image,
@@ -346,6 +400,28 @@ clickedSubmit : function() {
     });
   });
 
+},
+getCredits: function() {
+  return this.state.credits.map(function(credit, i){
+    return <div className="oc-inner-credit-form-wrapper">
+      <div className="col-md-3">
+        <input
+          type="text"
+          className="oc-input"
+          placeholder="name"
+          onChange={this.handleEditCreditor.bind(this, i)}
+          defaultValue={credit.creditor}></input>
+      </div>
+      <div className="col-md-9">
+        <input
+          type="text"
+          className="oc-input"
+          placeholder="url"
+          onChange={this.handleEditCreditorUrl.bind(this, i)}
+          defaultValue={credit.creditorUrl}></input>
+      </div>
+    </div>;
+  }, this);
 },
 validateCurrentStep : function(onvalidate, onerror) {
 
@@ -618,20 +694,41 @@ form : function() {
   <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
-      htmlFor="sectors">
+      htmlFor="credit">
       Credit
       <span className="oc-form-group-info">
         {lang.ScenarioEditView.creditInfo}
       </span>
     </label>
-    <div className="col-sm-9">
-      <input
-        type="text"
-        className="oc-input"
-        name="credit"
-        id="credit"
-        value={this.state.credit}
-        onChange={this.handleChangedCredit} />
+    {/*
+      <div className="col-sm-9">
+        <input
+          type="text"
+          className="oc-input"
+          name="credit"
+          id="credit"
+          value={JSON.stringify(this.state.credits)}
+          onChange={this.handleChangedCredits} />
+      </div>
+    */}
+
+    <div className="oc-credit-form-wrapper">
+      {this.getCredits()}
+      <div className="">
+        <div className="col-md-3">
+          <input className="oc-input"
+            onChange={this.handleChangedCreditor}
+            type="text"
+            placeholder="name"></input>
+        </div>
+        <div className="col-md-6">
+          <input className="oc-input"
+            onChange={this.handleChangedCreditorUrl}
+            type="text"
+            placeholder="optional url"></input>
+        </div>
+        <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>ADD</button></div>
+      </div>
     </div>
   </div>
 
