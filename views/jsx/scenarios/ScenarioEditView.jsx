@@ -91,7 +91,6 @@ var ScenarioEditView = React.createClass({
     image_type : undefined,
     thumbnail : undefined,  // Here, the path will be stored
     image : undefined,      // Here, the path will be stored
-    credit : undefined,
     credits: [],
     creditor: undefined,
     creditorUrl: undefined,
@@ -210,13 +209,6 @@ handleSectorSelector: function(selectedSectors) {
     }
   });
 },
-handleChangedCredits : function(credits) {
-  this.setState({actors: actors}, () => {
-    if(this.state.btnClickedOnce) {
-      this.props.validate();
-    }
-  });
-},
 handleChangedActors : function(actors) {
   this.setState({actors: actors}, () => {
     if (this.state.btnClickedOnce) {
@@ -243,6 +235,8 @@ handleChangedCredit : function(evt) {
   }
 },
 addCredit: function(evt) {
+  $("#oc-creditName-input").val("");
+  $("#oc-creditUrl-input").val("");
   var creditor = this.state.creditor;
   var creditorUrl = this.state.creditorUrl;
   evt.preventDefault();
@@ -322,7 +316,6 @@ clickedPreview : function() {
     title       : this.state.title.trim(),
     summary     : this.state.summary.trim(),
     narrative   : this.state.narrative.trim(),
-    credit      : this.state.credit ? this.state.credit.trim() : this.state.credit,
     copyright   : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
   });
 
@@ -353,7 +346,6 @@ prepareValidationPreview : function() {
       devices         : this.state.devices,
       thumbnail       : this.state.thumbnail,
       image           : this.state.image,
-      credit          : this.state.credit ? this.state.credit.trim() : this.state.credit,
       copyright       : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
     };
   };
@@ -373,7 +365,6 @@ clickedSubmit : function() {
       devices   : this.state.devices,
       thumbnail : this.state.thumbnail,
       image     : this.state.image,
-      credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
       copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
     };
   };
@@ -404,18 +395,19 @@ clickedSubmit : function() {
 getCredits: function() {
   return this.state.credits.map(function(credit, i){
     return <div className="oc-inner-credit-form-wrapper">
+      <div className="oc-credit-count"># {i + 1}</div>
       <div className="col-md-3">
         <input
           type="text"
-          className="oc-input"
+          className="oc-input-extra"
           placeholder="name"
           onChange={this.handleEditCreditor.bind(this, i)}
           defaultValue={credit.creditor}></input>
       </div>
-      <div className="col-md-9">
+      <div className="col-md-8">
         <input
           type="text"
-          className="oc-input"
+          className="oc-input-extra"
           placeholder="url"
           onChange={this.handleEditCreditorUrl.bind(this, i)}
           defaultValue={credit.creditorUrl}></input>
@@ -719,12 +711,14 @@ form : function() {
           <input className="oc-input"
             onChange={this.handleChangedCreditor}
             type="text"
+            id="oc-creditName-input"
             placeholder="name"></input>
         </div>
         <div className="col-md-6">
           <input className="oc-input"
             onChange={this.handleChangedCreditorUrl}
             type="text"
+            id="oc-creditUrl-input"
             placeholder="optional url"></input>
         </div>
         <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>ADD</button></div>
@@ -757,13 +751,13 @@ preview : function() {
       <DocumentTitle title={config.title + ' | ' + title} />
       <div className="col-lg-8 col-lg-offset-2">
         <div>
-          <h1 className="oc-white">
-            {title} <small className="white">preview</small>
+          <h1 className="oc-pink">
+            {title} <small className="pink">preview</small>
           </h1>
-          <h2 className="oc-white">
+          <h2 className="oc-pink">
             Here's your story!
           </h2>
-          <p className="white">
+          <p className="pink">
             Please review your scenario. If everything is fine, please submit it.
           </p>
         </div>
