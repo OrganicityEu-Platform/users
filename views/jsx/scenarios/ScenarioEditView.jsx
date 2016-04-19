@@ -235,7 +235,10 @@ addCredit: function(evt) {
       creditorUrl: creditorUrl
     }
   );
-  this.setState(this.state);
+  this.setState({
+    creditor: "",
+    creditorUrl: ""
+  });
 },
 handleChangedCreditor: function(evt) {
   if (evt.target.value === '') {
@@ -250,14 +253,17 @@ handleChangedCreditorUrl: function(evt) {
   } else {
     this.setState({creditorUrl: evt.target.value});
   }
+  this.props.validate('credits');
 },
 handleEditCreditor: function(i, evt) {
   this.state.credits[i].creditor = evt.target.value;
   this.setState(this.state);
+  this.props.validate('credits');
 },
 handleEditCreditorUrl: function(i, evt) {
   this.state.credits[i].creditorUrl = evt.target.value;
   this.setState(this.state);
+  this.props.validate('credits');
 },
 handleChangedCopyright : function(evt) {
   if (evt.target.value === '') {
@@ -453,6 +459,7 @@ form : function() {
   //console.log('narrative', this.props.isValid('narrative'));
 
   var errorMessageTitle = null;
+  var errorMessageCredits = null;
   var errorMessageSummary = null;
   var errorMessageNarrative = null;
   var errorMessageSelectedSectors = null;
@@ -478,6 +485,11 @@ form : function() {
       <Message
         type="danger"
         messages={this.props.getValidationMessages('selectedSectors')} />
+    );
+    errorMessageCredits = (
+      <Message
+        type="danger"
+        messages={this.props.getValidationMessages('credits')} />
     );
   }
 
@@ -696,6 +708,7 @@ form : function() {
 
     <div className="oc-credit-form-wrapper">
       {this.getCredits()}
+      {errorMessageCredits}
       <div className="">
         <div className="col-md-3">
           <input className="oc-input"
