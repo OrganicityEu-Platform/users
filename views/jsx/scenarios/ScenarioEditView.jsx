@@ -392,6 +392,10 @@ clickedSubmit : function() {
   });
 
 },
+removeCredit: function(i) {
+  this.state.credits.splice(i, 1);
+  this.setState(this.state);
+},
 getCredits: function() {
   return this.state.credits.map(function(credit, i){
     return <div className="oc-inner-credit-form-wrapper">
@@ -404,7 +408,7 @@ getCredits: function() {
           onChange={this.handleEditCreditor.bind(this, i)}
           defaultValue={credit.creditor}></input>
       </div>
-      <div className="col-md-8">
+      <div className="oc-credit-url-wrapper">
         <input
           type="text"
           className="oc-input-extra"
@@ -412,6 +416,11 @@ getCredits: function() {
           onChange={this.handleEditCreditorUrl.bind(this, i)}
           defaultValue={credit.creditorUrl}></input>
       </div>
+      <div className="oc-remove-credit-wrapper">
+        <span className="oc-remove-credit-inner-wrapper"
+          onClick={() => this.removeCredit(i)}>
+          <i className="fa fa-times oc-tag-clear"></i>remove</span>
+          </div>
     </div>;
   }, this);
 },
