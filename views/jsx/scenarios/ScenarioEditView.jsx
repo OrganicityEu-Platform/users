@@ -708,8 +708,8 @@ form : function() {
 
     <div className="oc-credit-form-wrapper">
       {this.getCredits()}
-      {errorMessageCredits}
-      <div className="">
+      <div className="oc-credit-errors">{errorMessageCredits}</div>
+      <div>
         <div className="col-md-3">
           <input className="oc-input"
             onChange={this.handleChangedCreditor}
