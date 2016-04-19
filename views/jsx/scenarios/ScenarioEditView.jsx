@@ -223,17 +223,6 @@ handleChangedDevices : function(devices) {
     }
   });
 },
-handleChangedCredit : function(evt) {
-  if (evt.target.value === '') {
-    this.setState({credit: undefined});
-  } else {
-    this.setState({credit: evt.target.value}, () => {
-      if (this.state.btnClickedOnce) {
-        this.props.validate();
-      }
-    });
-  }
-},
 addCredit: function(evt) {
   $("#oc-creditName-input").val("");
   $("#oc-creditUrl-input").val("");
@@ -252,22 +241,14 @@ handleChangedCreditor: function(evt) {
   if (evt.target.value === '') {
     this.setState({creditor: undefined});
   } else {
-    this.setState({creditor: evt.target.value}, () => {
-      if (this.state.btnClickedOnce) {
-        this.props.validate();
-      }
-    });
+    this.setState({creditor: evt.target.value});
   }
 },
 handleChangedCreditorUrl: function(evt) {
   if (evt.target.value === '') {
     this.setState({creditorUrl: undefined});
   } else {
-    this.setState({creditorUrl: evt.target.value}, () => {
-      if (this.state.btnClickedOnce) {
-        this.props.validate();
-      }
-    });
+    this.setState({creditorUrl: evt.target.value});
   }
 },
 handleEditCreditor: function(i, evt) {

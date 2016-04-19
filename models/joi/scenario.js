@@ -38,8 +38,8 @@ scenario.submit = {
   narrative   : joiNarrative,
   actors      : Joi.array().label('Actors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
-    creditor: Joi.string(), // TODO: add regex for URL
-    creditorUrl: Joi.string()})).optional(), // TODO: add regex for URL
+    creditor: Joi.string(), 
+    creditorUrl: Joi.string().regex(/^(http|https):\//)})).optional(), // TODO: add regex for URL
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
