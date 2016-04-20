@@ -25,7 +25,8 @@
 	explore_share_discuss: 'es explore, share and discuss',
 	scenarios_future_cities: 'es scenarios for our future cities',
 	explore_all_scenarios: 'es explore all scenarios',
-
+	explore_scenarios: 'ES Explore scenarios',
+	search_all_scenarios: 'ES Search all scenarios',
 
 	cookie1: 'ES OrganiCity Scenarios uses cookies to give you an enhanced experience.',
 	cookie2: 'ES Read more about it in our',
