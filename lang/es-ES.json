@@ -24,4 +24,10 @@
 	join_community: 'es join the community to',
 	explore_share_discuss: 'es explore, share and discuss',
 	scenarios_future_cities: 'es scenarios for our future cities',
+	explore_all_scenarios: 'es explore all scenarios',
+
+	cookie1: 'ES OrganiCity Scenarios uses cookies to give you an enhanced experience.',
+	cookie2: 'ES Read more about it in our',
+	cookie3: 'ES privacy policy',
+	dismiss: 'Despedir',
 }
