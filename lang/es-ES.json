@@ -52,4 +52,16 @@
 	your_message: 'ES Your Message',
 	send: 'ES SEND',
 
+	error: 'ES ERROR',
+	success: 'ES SUCCESS',
+	warning: 'ES WARNING',
+	notice: 'ES NOTICE',
+
+	login_successful: 'ES Login successful.',
+	email: 'ES email',
+	password: 'ES password',
+	need_an_account: 'ES Need an account?',
+	sign_up: 'ES Sign up',
+	forgot_password: 'ES Forgot password?',
+
 }

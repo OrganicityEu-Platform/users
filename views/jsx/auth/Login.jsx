@@ -18,11 +18,12 @@ import UserJoi      from '../../../models/joi/user.js';
 import Message      from '../Message.jsx';
 
 import DocumentTitle      from 'react-document-title';
+import I18nMixin from '../i18n/I18nMixin.jsx';
 
 var Link = Router.Link;
 
 var LocalLogin = React.createClass({
-  mixins: [Router.Navigation, UserIsLoggedInMixin, FlashQueue.Mixin, LoadingMixin],
+  mixins: [Router.Navigation, UserIsLoggedInMixin, FlashQueue.Mixin, LoadingMixin, I18nMixin],
   getInitialState : function() {
     return {
       email : '',
@@ -45,7 +46,8 @@ var LocalLogin = React.createClass({
     });
   },
   loginSuccess: function() {
-    this.flash('success', 'Login successful.');
+    var msg = this.i18n('login_successful', 'Login successful.');
+    this.flash("success", msg);
   },
   handleSubmit : function(evt) {
 
@@ -111,14 +113,14 @@ var LocalLogin = React.createClass({
         <DocumentTitle title={config.title + ' | Login'} />
         <div className="row">
           <div className="oc-login-wrapper col-sm-4 col-sm-offset-4">
-            <h1 className="oc-pink oc-login-signup-title">Log in</h1>
+            <h1 className="oc-pink oc-login-signup-title">{this.i18n('log_in', 'Log in')}</h1>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
             </div>
               <div className="form-group">
                 <input type="text"
                   className="oc-input"
-                  placeholder="email"
+                  placeholder={this.i18n('email', 'email')}
                   name="email"
                   id="email"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -129,7 +131,7 @@ var LocalLogin = React.createClass({
               <div className="form-group">
                 <input type="password"
                   className="oc-input"
-                  placeholder="password"
+                  placeholder={this.i18n('password', 'password')}
                   name="password"
                   id="password"
                   disabled={this.isLoading() ? 'disabled' : ''}
@@ -139,12 +141,12 @@ var LocalLogin = React.createClass({
               <Message type="danger" messages={this.props.getValidationMessages('password')} />
               <button
                 type="submit"
-                className="oc-button"
+                className="oc-button all-uppercase"
                 disabled={this.isLoading() ? 'disabled' : ''}
-                onClick={this.handleSubmit}>LOG IN</button>
+                onClick={this.handleSubmit}>{this.i18n('log_in', 'LOG IN')}</button>
               <div className="oc-login-help-wrapper">
-                <span className="login-help">Need an account? <Link to="signup" >Sign up</Link></span>
-                <span className="login-help-forgot-password"><Link to="forgot-password" >Forgot password?</Link></span>
+                <span className="login-help">{this.i18n('need_an_account', 'Need an account?')} <Link to="signup" >{this.i18n('sign_up', 'Sign up')}</Link></span>
+                <span className="login-help-forgot-password"><Link to="forgot-password" >{this.i18n('forgot_password', 'Forgot password?')}</Link></span>
               </div>
           </div>
         </div>

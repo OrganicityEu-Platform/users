@@ -4,6 +4,7 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 
 import config from '../../config/config.js';
+import I18nMixin from './i18n/I18nMixin.jsx';
 
 // used for singleton pattern
 var mountedInstance;
@@ -16,9 +17,7 @@ var Queue = React.createClass({
     };
   },
   componentDidMount: function() {
-
     mountedInstance = this;
-
   },
   dismissMessage: function(id) {
     this.state.messages = this.state.messages.filter((message) => message.id !== id);
@@ -59,12 +58,14 @@ var Queue = React.createClass({
 });
 
 var Message = React.createClass({
+  mixins: [I18nMixin],
+
   render: function() {
     var classes = ['alert', 'flash-message', 'alert-' + this.props.type];
 
     var preText = 'ERROR';
     if (this.props.type === 'success') {
-      preText = 'SUCCESS';
+      preText = this.i18n('success', 'SUCCESS');
     } else if (this.props.type === 'warning') {
       preText = 'WARNING';
     } else if (this.props.type === 'info') {
