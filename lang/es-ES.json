@@ -48,6 +48,7 @@
 	contact_us3: 'ES Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible.',
 	contact_us4: 'ES We would love to hear from you! Be it a question, report a bug or give feedback.',
 	contact_us5: 'ES Just drop us an email at',
-	send: 'SEND',
+	your_message: 'ES Your Message',
+	send: 'ES SEND',
 
 }

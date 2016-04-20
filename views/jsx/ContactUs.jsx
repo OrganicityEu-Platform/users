@@ -155,7 +155,7 @@ var myContactForm = React.createClass({
               className="form-control oc-input-extra"
               name="message"
               id="oc-contact-message"
-              placeholder="Your Message"
+              placeholder={this.i18n('your_message', 'Your Message')}
               onChange={this.messageChanged}
               disabled={this.isLoading() ? 'disabled' : ''}
             />
