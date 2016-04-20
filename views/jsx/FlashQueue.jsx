@@ -63,13 +63,13 @@ var Message = React.createClass({
   render: function() {
     var classes = ['alert', 'flash-message', 'alert-' + this.props.type];
 
-    var preText = 'ERROR';
+    var preText = this.i18n('error', 'ERROR');
     if (this.props.type === 'success') {
       preText = this.i18n('success', 'SUCCESS');
     } else if (this.props.type === 'warning') {
-      preText = 'WARNING';
+      preText = this.i18n('warning', 'WARNING');
     } else if (this.props.type === 'info') {
-      preText = 'NOTICE';
+      preText = this.i18n('notice', 'NOTICE');
     }
 
     return (
