@@ -32,7 +32,7 @@ scenario.preview = {
   selectedSectors : Joi.array().min(1).label('Sectors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
     creditor: Joi.string(),
-    creditorUrl: Joi.string().regex(/^(http|https):\//)})).optional(), // TODO: add regex for URL
+    creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)})),
 };
 
 scenario.submit = {
@@ -42,7 +42,7 @@ scenario.submit = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
     creditor: Joi.string(),
-    creditorUrl: Joi.string().regex(/^(http|https):\//)})).optional(), // TODO: add regex for URL
+    creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)})),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
