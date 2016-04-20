@@ -430,8 +430,17 @@ module.exports = function(router, passport) {
               newVersion[field] = update[field];
             });
             newVersion.uuid = oldVersion[0].uuid;
+            newVersion.timestamp = oldVersion[0].timestamp;
             newVersion.version = oldVersion[0].version + 1;
-            newVersion.creator = req.user.uuid;
+
+            if (
+              req.user.hasRole(['admin']) ||
+              req.user.hasRole(['moderator'])
+            ) {
+              newVersion.creator = oldVersion[0].creator;
+            } else {
+              newVersion.creator = req.user.uuid;
+            }
 
             newVersion.save(function(err, scenario) {
               if (err) {

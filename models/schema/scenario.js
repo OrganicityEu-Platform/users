@@ -9,6 +9,7 @@ var scenario = mongoose.Schema({
   creator     : { type: String, required: true  }, // user uuid
   image       : { type: String                  }, // the image
   thumbnail   : { type: String                  }, // the thumbnail
+  credit      : { type: String                  }, // the credit
   credits     : { type: [{
     creditor: String,
     creditorUrl: String}]                       },
