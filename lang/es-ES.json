@@ -26,8 +26,28 @@
 	scenarios_future_cities: 'es scenarios for our future cities',
 	explore_all_scenarios: 'es explore all scenarios',
 
+
 	cookie1: 'ES OrganiCity Scenarios uses cookies to give you an enhanced experience.',
 	cookie2: 'ES Read more about it in our',
 	cookie3: 'ES privacy policy',
 	dismiss: 'Despedir',
+
+	follow_us: 'ES Follow us',
+	footer1: 'ES This project has received funding from the European Union\'s Horizon 2020 research and innovation program under the grant agreement No. 645198.',
+	footer2: 'ES More about OrganiCity',
+	footer3: 'ES OrganiCity.eu',
+	footer4: 'ES Sign up for updates',
+	blog: 'ES Blog',
+	events: 'ES Events',
+	contact_us: 'ES Contact us',
+	copyright: 'ES Copyright',
+	oc_2015: 'ES OrganiCity 2015',
+
+	contact_us1: 'ES We would love to hear from you! Send us a question, report a bug or just give feedback. Just drop us a mail.',
+	contact_us2: 'ES You can reach us at',
+	contact_us3: 'ES Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible.',
+	contact_us4: 'ES We would love to hear from you! Be it a question, report a bug or give feedback.',
+	contact_us5: 'ES Just drop us an email at',
+	send: 'SEND',
+
 }

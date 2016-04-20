@@ -13,9 +13,10 @@ import User from '../../logic/user.js';
 
 import UserIsLoggedInMixin from './UserIsLoggedInMixin.jsx';
 import LoadingMixin from './LoadingMixin.jsx';
+import I18nMixin from './i18n/I18nMixin.jsx';
 
 var myContactForm = React.createClass({
-  mixins: [UserIsLoggedInMixin, LoadingMixin],
+  mixins: [UserIsLoggedInMixin, LoadingMixin, I18nMixin],
 
   getInitialState: function() {
     return {
@@ -119,8 +120,8 @@ var myContactForm = React.createClass({
     {
       return (
         <div>
-            <span className="white">We would love to hear from you! Send us a question, report a bug or just give feedback. Just drop us a mail.</span>
-            <p>You can reach us at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
+            <span className="white">{this.i18n('contact_us1', 'We would love to hear from you! Send us a question, report a bug or just give feedback. Just drop us a mail.')}</span>
+            <p>{this.i18n('contact_us2', 'You can reach us at')} <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
         </div>);
     }
 
@@ -132,7 +133,7 @@ var myContactForm = React.createClass({
       } else {
         return (
           <div onClick={this.resetForm}>
-            <Message type="success" message="Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible." />
+            <Message type="success" message="{this.i18n('contact_us3', 'Your message has been sent. Thank you for your feedback! We will get back to you as soon as possible.')}" />
           </div>
         );
       }
@@ -143,8 +144,8 @@ var myContactForm = React.createClass({
         <form className="form">
           {errorMessage}
           <div className="form-group">
-            <span className="white">We would love to hear from you! Be it a question, report a bug or give feedback.</span>
-            <p>Just drop us an email at <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
+            <span className="white">{this.i18n('contact_us4', 'We would love to hear from you! Be it a question, report a bug or give feedback.')}</span>
+            <p>{this.i18n('contact_us5', 'Just drop us an email at')} <a className="pink" href={'mailto:' + Contact.mailAddress}>{Contact.mailAddress}</a>.</p>
             <Message type="danger"
               messages={this.props.getValidationMessages('address')} />
           </div>
@@ -164,11 +165,11 @@ var myContactForm = React.createClass({
 
           <div className="form-group">
             <div className="oc-contact-submit-btn-wrapper">
-              <button type="button" className="oc-button btn-default"
+              <button type="button" className="oc-button btn-default all-uppercase"
                 onClick={this.submitForm}
                 disabled={this.isLoading() ? 'disabled' : ''}
               >
-                SEND
+                {this.i18n('send', 'SEND')}
               </button>
             </div>
         </div>
