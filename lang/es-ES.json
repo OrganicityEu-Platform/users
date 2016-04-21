@@ -14,6 +14,7 @@
     send_feedback: 'ES SEND FEEDBACK',
     explore: 'ES EXPLORE',
     create: 'ES CREATE',
+    admin: 'ES admin',
 	users: 'ES Users',
 	questionnaire: 'ES Questionnaire',
 	about: 'ES About',

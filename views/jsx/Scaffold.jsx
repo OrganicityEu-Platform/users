@@ -184,7 +184,7 @@ var Scaffold = React.createClass({
         linksRight.push(
           <DropdownButton
             className="oc-admin-links"
-            title="admin">
+            title={this.i18n('admin', 'admin')}>
             {adminLinks}
           </DropdownButton>
         );
