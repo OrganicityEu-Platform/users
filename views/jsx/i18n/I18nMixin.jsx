@@ -60,25 +60,47 @@ var I18nMixin = {
   },
 
   /**
-   * Translates string (key) based on current language
+   * Translates string (key) based on current language.
+   * 
+   * Key can contain zero or one dot.
+   * Eg:
+   * 'Profile.save'
+   * or
+   * 'created_by'
    */
-  i18n: function(key, defaultValue) {
-    var val;
-    switch (this.state.currentLang) {
-      case 'es-ES':
-        val = this.state.langdata.esES[key];
-        break;
-      case 'en-GB':
-      default:
-        val = this.state.langdata.enGB[key];
-    }
-
-    if (val) {
-      return val;
-    } else {
-      return defaultValue;
-    }
-  }
+   i18n: function(key, defaultValue) {
+     try {
+       var lang;
+       var val;
+       // Find language
+       switch (this.state.currentLang) {
+         case 'es-ES':
+           lang = this.state.langdata.esES;
+           break;
+         case 'en-GB':
+         default:
+           lang = this.state.langdata.enGB;
+       }
+       // Key format (0 or 1 dot)
+       if (key) {
+         if (key.match(/\w+\.\w+/)) {
+           var key1 = key.split(".")[0];
+           var key2 = key.split(".")[1];
+           val = lang[key1][key2];
+         } else {
+           val = lang[key];
+         }
+       }
+       //
+       if (val) {
+         return val;
+       } else {
+         return defaultValue;
+       }
+     } catch (exp) {
+       return defaultValue;
+     }
+   },
 
 };
 

@@ -29,10 +29,11 @@ import DocumentTitle        from 'react-document-title';
 import Select               from 'react-select';
 
 import login                from '../../../config/login.js';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 
 var Profile = React.createClass({
-  mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin, I18nMixin],
   getInitialState: function() {
     return {};
   },
@@ -364,11 +365,11 @@ var Profile = React.createClass({
       localAccount = (
         <div>
           <DocumentTitle title={config.title + ' | Profile '} />
-          <h2 className="pink">Account settings</h2>
+          <h2 className="pink">{this.i18n('Profile.account_settings', 'Account settings')}</h2>
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="email">Email
+            <label className="control-label col-sm-3 first-letter-uppercase" htmlFor="email">{this.i18n('Profile.email', 'Email')}
               <span className="oc-form-group-info">
-                {lang.Profile.emailInfo}
+                {this.i18n('Profile.emailInfo', 'Sign-in details')}
               </span>
             </label>
             <div className="col-sm-9">
@@ -381,9 +382,9 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="password">Password <ValidationIndicator valid={this.props.isValid('local.password')}/>
+            <label className="control-label col-sm-3" htmlFor="password">{this.i18n('Profile.password', 'Password')} <ValidationIndicator valid={this.props.isValid('local.password')}/>
               <span className="oc-form-group-info">
-                {lang.Profile.passwordInfo}
+                {this.i18n('Profile.passwordInfo', 'Type a new password for your login. The password must contain at least 6 characters.')}
               </span>
             </label>
             <div className="col-sm-9">
@@ -397,9 +398,9 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="password_repeat">Password Repeat <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
+            <label className="control-label col-sm-3" htmlFor="password_repeat">{this.i18n('Profile.password_repeat', 'Password Repeat')} <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
               <span className="oc-form-group-info">
-                {lang.Profile.passwordRepeatInfo}
+                {this.i18n('Profile.passwordRepeatInfo', 'If you have selected a new password, please repeat it here.')}
               </span>
             </label>
             <div className="col-sm-9">
@@ -576,14 +577,17 @@ var Profile = React.createClass({
     return (
       <div className="row oc-form-group-view">
         <div className="oc-macro-content">
-          <h1 className="oc-pink">Public profile</h1>
-          <h4 className="oc-profile-info">Your profile allows you to connect, share and discuss ideas with others</h4>
+          <h1 className="oc-pink">{this.i18n('Profile.public_profile', 'Public profile')}</h1>
+          <h4 className="oc-profile-info">
+            {this.i18n('Profile.your_profile_allows', 'Your profile allows you to connect, share and discuss ideas with others')}
+          </h4>
           <form className="form-horizontal">
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">My name <ValidationIndicator valid={this.props.isValid('name')}/>
+              <label className="control-label col-sm-3" htmlFor="name">
+                {this.i18n('Profile.my_name', 'My name')} <ValidationIndicator valid={this.props.isValid('name')}/>
                 <span className="oc-form-group-info">
-                  {lang.Profile.nameInfo}
+                  {this.i18n('Profile.nameInfo', 'Use your real name or a nickname.')}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -592,7 +596,7 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="name"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'Name or nickname'}
+                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.name_or_nick', 'Name or nickname')}
                   value={this.state.profile.name}
                   onChange={this.handleChangedName} />
                 {errorMessageName}
@@ -600,9 +604,9 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="location">My location
+              <label className="control-label col-sm-3" htmlFor="location">{this.i18n('Profile.my_location', 'My location')}
                 <span className="oc-form-group-info">
-                  {lang.Profile.locationInfo}
+                  {this.i18n('Profile.locationInfo', '')}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -611,16 +615,16 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="location"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'I\'m at...'}
+                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.location_placeholder', 'I\'m at...')}
                   value={this.state.profile.location}
                   onChange={this.handleChangedLocation} />
               </div>
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="profession">What do you do? <ValidationIndicator valid={this.props.isValid('profession')}/>
+              <label className="control-label col-sm-3" htmlFor="profession">{this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
                 <span className="oc-form-group-info">
-                  {lang.Profile.locationInfo}
+                  {this.i18n('Profile.professionInfo', '')}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -628,6 +632,7 @@ var Profile = React.createClass({
                   name="form-field-name"
                   value={this.state.profile.profession}
                   options={options}
+                  placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
                   onChange={this.handleChangedProfession}
                   multi={true}/>
                 <input
@@ -635,7 +640,7 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="profession"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'Specific title and/or field...'}
+                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
                   value={this.state.profile.professionTitle}
                   onChange={this.handleChangedProfessionTitle} />
                 {errorMessageProfession}
@@ -643,9 +648,9 @@ var Profile = React.createClass({
             </div>
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="gender">My gender <ValidationIndicator valid={this.props.isValid('gender')}/>
+              <label className="control-label col-sm-3" htmlFor="gender">{this.i18n('Profile.gender', 'My gender')} <ValidationIndicator valid={this.props.isValid('gender')}/>
                 <span className="oc-form-group-info">
-                  {lang.Profile.genderInfo}
+                  {this.i18n('Profile.genderInfo', 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.')}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -654,19 +659,19 @@ var Profile = React.createClass({
                   value="m"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   checked={this.state.profile.gender === 'm'}
-                  onChange={this.handleChangedGender} /> Male<br/>
+                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_m', 'Male')}<br/>
                 <input type="radio"
                   name="gender"
                   value="f"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   checked={this.state.profile.gender === 'f'}
-                  onChange={this.handleChangedGender} /> Female<br/>
+                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_f', 'Female')}<br/>
                 <input type="radio"
                   name="gender"
                   value="o"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   checked={this.state.profile.gender === 'o'}
-                  onChange={this.handleChangedGender} /> Other<br/>
+                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_o', 'Other')}<br/>
                 {errorMessageGender}
               </div>
             </div>
@@ -674,9 +679,9 @@ var Profile = React.createClass({
             {roles}
 
             <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">Public contact
+              <label className="control-label col-sm-3" htmlFor="name">{this.i18n('Profile.public_contact', 'Public contact')}
                 <span className="oc-form-group-info">
-                  {lang.Profile.locationInfo}
+                  {this.i18n('Profile.public_contact_info', '')}
                 </span>
               </label>
               <div className="col-sm-9">
@@ -685,7 +690,7 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="name"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'email'}
+                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
                   value={this.state.profile.publicEmail}
                   onChange={this.handleChangedpublicEmail} /><br/>
                 <input
@@ -693,7 +698,7 @@ var Profile = React.createClass({
                   className="oc-input"
                   id="name"
                   disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : 'website'}
+                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.website', 'website')}
                   value={this.state.profile.publicWebsite}
                   onChange={this.handleChangedpublicWebSite} /><br/>
               </div>
@@ -706,7 +711,7 @@ var Profile = React.createClass({
                   className="oc-button"
                   disabled={this.isLoading() ? 'disabled' : ''}
                   onClick={this.handleSubmit}
-                >SAVE PROFILE</button>
+                >{this.i18n('Profile.save', 'SAVE PROFILE')}</button>
               </div>
             </div>
 
