@@ -38,7 +38,9 @@ var scenarioProjection = {
   image       : 1,
   credit      : 1,
   credits     : 1,
-  score       : 1
+  score       : 1,
+  editor      : 1,
+  editor_timestamp : 1
 };
 
 var fieldsInUpdate = [
@@ -429,18 +431,16 @@ module.exports = function(router, passport) {
             fieldsInUpdate.forEach(function(field) {
               newVersion[field] = update[field];
             });
+
+            // Keep the original infos
             newVersion.uuid = oldVersion[0].uuid;
+            newVersion.creator = oldVersion[0].creator;
             newVersion.timestamp = oldVersion[0].timestamp;
             newVersion.version = oldVersion[0].version + 1;
 
-            if (
-              req.user.hasRole(['admin']) ||
-              req.user.hasRole(['moderator'])
-            ) {
-              newVersion.creator = oldVersion[0].creator;
-            } else {
-              newVersion.creator = req.user.uuid;
-            }
+            // Add editor infos
+            newVersion.editor = req.user.uuid;
+            newVersion.editor_timestamp = new Date();
 
             newVersion.save(function(err, scenario) {
               if (err) {

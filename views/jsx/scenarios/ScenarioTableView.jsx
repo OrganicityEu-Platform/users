@@ -100,6 +100,24 @@ var ScenarioTableView = React.createClass({
       evaluationsCnt = this.props.scenario.score.numOfEvaluations;
     }
 
+    var editor = null;
+
+    if(this.props.scenario.editor) {
+
+      editor = (
+        <div>
+          <span className="scenario-article-publisher">
+            Edited by <UserAvatar uuid={this.props.scenario.editor} />
+          </span>
+          <span className="scenario-article-timestamp">
+            { this.props.scenario.timestamp ?
+              <TimeAgo date={this.props.scenario.editor_timestamp} />
+                : '' }
+          </span>
+        </div>
+      )
+    }
+
     return (
       <div className="scenario-article-wrapper">
         <div className="scenario-article">
@@ -151,15 +169,15 @@ var ScenarioTableView = React.createClass({
                         <div>
                           <span className="scenario-article-publisher">
                             Created by <UserAvatar uuid={this.props.scenario.creator} />
-                        </span>
-                        <span className="scenario-article-timestamp">
-                          { this.props.scenario.timestamp ?
-                            <TimeAgo date={this.props.scenario.timestamp} />
-                            : '' }
+                          </span>
+                          <span className="scenario-article-timestamp">
+                            { this.props.scenario.timestamp ?
+                              <TimeAgo date={this.props.scenario.timestamp} />
+                                : '' }
                           </span>
                         </div>
-                    </div>
-
+                        {editor}
+                        </div>
                       <div className="scenario-article-summary-wrapper">
                         <p className="scenario-article-summary">
                           {this.props.scenario.summary}

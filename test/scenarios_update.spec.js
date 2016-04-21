@@ -112,27 +112,38 @@ describe('When updating a scenario, the API', function() {
     inputValidationTestHelper(scenario, http.FORBIDDEN, done);
   });
 
-  it('should allow if user is administrator and update creator field accordingly', function(done) {
+  it('should allow if user is administrator and do set the editor field accordingly', function(done) {
 
-    url = api.reverse('scenario_by_uuid', { uuid : scenarios[0].uuid });
     user = users[2]; // daniel_admin
+    url = api.reverse('scenario_by_uuid', { uuid : scenarios[0].uuid });
 
     var scenario = ss.cloneConstrained(scenarios[0]);
     scenario.title = 'Updated title';
     inputValidationTestHelper(scenario, http.CREATED, done, function(res) {
-      expect(res.body.creator).to.eql(user.uuid);
+      console.log('------------------------------------------------');
+      console.log(res.body);
+      console.log('------------------------------------------------');
+
+      expect(res.body.creator).to.eql(users[0].uuid); // daniel
+      expect(res.body.editor).to.eql(users[2].uuid); // daniel_admin
     });
   });
 
-  it('should allow if user is moderator and update creator field accordingly2', function(done) {
+  it('should allow if user is moderator and do set the editor field accordingly', function(done) {
 
-    url = api.reverse('scenario_by_uuid', { uuid : scenarios[0].uuid });
     user = users[3]; // leinad_moderator
+    url = api.reverse('scenario_by_uuid', { uuid : scenarios[0].uuid });
 
     var scenario = ss.cloneConstrained(scenarios[0]);
     scenario.title = 'Updated title';
     inputValidationTestHelper(scenario, http.CREATED, done, function(res) {
-      expect(res.body.creator).to.eql(users[3].uuid);
+
+      console.log('------------------------------------------------');
+      console.log(res.body);
+      console.log('------------------------------------------------');
+
+      expect(res.body.creator).to.eql(users[0].uuid); // daniel
+      expect(res.body.editor).to.eql(users[3].uuid); // leinad_moderator
     });
   });
 

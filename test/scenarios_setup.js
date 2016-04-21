@@ -85,7 +85,9 @@ var scenarioFields       = [
   'title', 'summary', 'narrative', 'dataSources', 'actors', 'sectors', 'devices'
 ];
 
-var scenarioUpdateFields = ['title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'];
+var scenarioUpdateFields = [
+  'title', 'summary', 'narrative', 'actors', 'sectors', 'devices', 'dataSources'
+];
 
 var cloneConstrained = function(scenario) {
   var clone = {};
