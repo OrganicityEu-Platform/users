@@ -1,5 +1,6 @@
 import React  from 'react';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
+import I18nMixin  from '../i18n/I18nMixin.jsx';
 
 // FIXME: move to less
 var sceanriosCounterStyle = {
@@ -7,6 +8,7 @@ var sceanriosCounterStyle = {
 };
 
 var ScenarioThumbnails = React.createClass({
+  mixins: [I18nMixin],
 
   render: function() {
 
@@ -18,7 +20,7 @@ var ScenarioThumbnails = React.createClass({
     if (this.props.counter) {
       counter = (
         <div style={sceanriosCounterStyle}>
-          Scenarios: {this.props.scenarios.length}
+          {this.i18n('scenarios', 'Scenarios')}: {this.props.scenarios.length}
         </div>
       );
     }

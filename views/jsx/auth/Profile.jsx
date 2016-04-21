@@ -429,9 +429,9 @@ var Profile = React.createClass({
 
       roles = (
         <div className="form-group oc-form-group oc-edit-group">
-          <label className="control-label col-sm-3" htmlFor="name">Roles {roleIndicator}
+          <label className="control-label col-sm-3" htmlFor="name">{this.i18n('Profile.roles', 'Roles')} {roleIndicator}
             <span className="oc-form-group-info">
-              {lang.Profile.rolesInfo}
+              {this.i18n('Profile.rolesInfo', 'The roles you have in this scenario tool. For example, you could be a moderator.')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -718,7 +718,7 @@ var Profile = React.createClass({
             {socialLinks}
             {localAccount}
 
-            <h2 className="pink">Your scenarios</h2>
+            <h2 className="pink">{this.i18n('Profile.your_scenarios', 'Your scenarios')}</h2>
             <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
 
           </form>
