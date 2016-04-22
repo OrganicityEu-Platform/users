@@ -53,7 +53,7 @@ scenario.submit = {
 
 scenario.createOrUpdate = {
   options : {
-    allowUnknownBody: false
+    allowUnknownBody: true
   },
   body: scenario.submit
 };
