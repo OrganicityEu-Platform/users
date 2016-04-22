@@ -27,15 +27,21 @@ var ScenarioTableView = React.createClass({
       return this.props.scenario.credits.map(function(credit, i){
         var creditLink;
         if (!credit.creditorUrl) {
-          creditLink = <span
-            className="oc-credit-no-link">
-            {credit.creditor}
+          creditLink = <span className="oc-credit-wrapper">
+            <span
+              className="oc-credit-no-link">
+              {credit.creditor}
+            </span>
+            {this.props.scenario.credits.length === i + 1 ? null : ","}
           </span>;
         }else {
-          creditLink = <span
-            onClick={this.handleCreditClick.bind(this, i, credit.creditorUrl)}
-            className="oc-credit-with-link">
-            {credit.creditor}
+          creditLink = <span className="oc-credit-wrapper">
+            <span
+              onClick={this.handleCreditClick.bind(this, i, credit.creditorUrl)}
+              className="oc-credit-with-link">
+              {credit.creditor}
+            </span>
+            {this.props.scenario.credits.length === i + 1 ? null : ","}
           </span>;
         }
         return creditLink;
