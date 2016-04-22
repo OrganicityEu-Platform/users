@@ -42,7 +42,7 @@ scenario.submit = {
   actors      : Joi.array().label('Actors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
     creditor: Joi.string(),
-    creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)})),
+    creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)}).options({allowUnknown: true})),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
   copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
@@ -53,7 +53,7 @@ scenario.submit = {
 
 scenario.createOrUpdate = {
   options : {
-    allowUnknownBody: true
+    allowUnknownBody: false
   },
   body: scenario.submit
 };
