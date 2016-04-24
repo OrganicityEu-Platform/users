@@ -392,6 +392,7 @@ getCredits: function() {
           type="text"
           className="oc-input-extra"
           placeholder="name"
+          autoComplete="off"
           onChange={this.handleEditCreditor.bind(this, i)}
           defaultValue={credit.creditor}></input>
       </div>
@@ -399,7 +400,8 @@ getCredits: function() {
         <input
           type="text"
           className="oc-input-extra"
-          placeholder="url"
+          placeholder="optional url"
+          autoComplete="off"
           onChange={this.handleEditCreditorUrl.bind(this, i)}
           defaultValue={credit.creditorUrl}></input>
       </div>
@@ -436,6 +438,7 @@ validateCurrentStep : function(onvalidate, onerror) {
         }
         this.setState({}); // Rerender to show errors
       } else {
+        this.flash('info', 'Please review your scenario. If everything is fine, please submit it.', 20000);
         //console.log('Input validation successful!');
         if (onvalidate) {
           onvalidate();
@@ -519,6 +522,7 @@ form : function() {
               type="text"
               className="oc-input"
               name="title"
+              autoComplete="off"
               id="title"
               value={this.state.title}
               onChange={this.handleChangedTitle} />
@@ -679,6 +683,7 @@ form : function() {
         type="text"
         className="oc-input"
         name="copyright"
+        autoComplete="off"
         id="copyright"
         value={this.state.copyright}
         onChange={this.handleChangedCopyright} />
@@ -715,6 +720,7 @@ form : function() {
             onChange={this.handleChangedCreditor}
             type="text"
             id="oc-creditName-input"
+            autoComplete="off"
             placeholder="name"></input>
         </div>
         <div className="col-md-6">
@@ -722,6 +728,7 @@ form : function() {
             onChange={this.handleChangedCreditorUrl}
             type="text"
             id="oc-creditUrl-input"
+            autoComplete="off"
             placeholder="optional url"></input>
         </div>
         <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>ADD</button></div>
@@ -755,14 +762,8 @@ preview : function() {
       <div className="col-lg-8 col-lg-offset-2">
         <div>
           <h1 className="oc-pink">
-            {title} <small className="pink">preview</small>
+            {title} <small className="oc-preview-tag">preview</small>
           </h1>
-          <h2 className="oc-pink">
-            Here's your story!
-          </h2>
-          <p className="pink">
-            Please review your scenario. If everything is fine, please submit it.
-          </p>
         </div>
       </div>
       <ScenarioTableView scenario={this.state} />

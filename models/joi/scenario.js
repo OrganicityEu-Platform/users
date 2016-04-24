@@ -31,7 +31,7 @@ scenario.preview = {
   image           : Joi.string().regex(/^uploads\/|^tmp\//),
   selectedSectors : Joi.array().min(1).label('Sectors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
-    creditor: Joi.string(),
+    creditor: Joi.string().required(),
     creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)})),
 };
 
@@ -41,7 +41,7 @@ scenario.submit = {
   narrative   : joiNarrative,
   actors      : Joi.array().label('Actors').items(Joi.string()),
   credits     : Joi.array().label('Credits').items(Joi.object().keys({
-    creditor: Joi.string(),
+    creditor: Joi.string().required(),
     creditorUrl: Joi.string().allow('').regex(/^(http|https):\//)}).options({allowUnknown: true})),
   sectors     : Joi.array().label('Sectors').items(Joi.string()),
   devices     : Joi.array().label('Devices').items(Joi.string()),
