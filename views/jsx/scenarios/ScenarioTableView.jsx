@@ -15,6 +15,8 @@ import ScenarioRating     from './ScenarioRating.jsx';
 
 import SectorIcon         from '../SectorIcon.jsx';
 
+import Favorite        from './Favorite.jsx';
+
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 var ScenarioTableView = React.createClass({
@@ -162,6 +164,11 @@ var ScenarioTableView = React.createClass({
                     </div>
                   </div>
                   <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
+                    <div className="col-lg-12">
+                      <Favorite
+                        scenario={this.props.scenario.uuid}
+                        />
+                    </div>
                     <div className="col-lg-12 scenario-article-indicator-wrapper">
                       <ScenarioIndicator
                         evaluations={userEvaluations}
