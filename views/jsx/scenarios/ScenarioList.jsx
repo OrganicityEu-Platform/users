@@ -135,7 +135,7 @@ var ScenarioList = React.createClass({
     }
     var scenarios = (
       <div className="scenario-list">
-        <DocumentTitle title={config.title + ' | Explore'} />
+        <DocumentTitle title={config.title + ' | ' + this.i18n('explore', 'Explore')} />
         <h1 className="oc-pink">
           {this.i18n('explore_scenarios', 'Explore scenarios')}
         </h1>
