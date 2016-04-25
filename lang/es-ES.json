@@ -29,6 +29,7 @@
 	explore_scenarios: 'ES Explore scenarios',
 	search_all_scenarios: 'ES Search all scenarios',
 	scenarios: 'ES Scenarios',
+	posted_by: 'ES Posted by:',
 
 	cookie1: 'ES OrganiCity Scenarios uses cookies to give you an enhanced experience.',
 	cookie2: 'ES Read more about it in our',
@@ -100,7 +101,7 @@
         password_repeat: 'ES Password Repeat',
 	    passwordRepeatInfo : 'ES If you have selected a new password, please repeat it here.',
 
-	    roles: 'Roles',
+	    roles: 'ES Roles',
 	    rolesInfo : 'ES The roles you have in this scenario tool. For example, you could be a moderator.',
 	    your_scenarios: 'ES Your scenarios',
 	}

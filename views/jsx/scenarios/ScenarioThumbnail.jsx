@@ -8,13 +8,14 @@ import ellipsis           from '../../../util/ellipsis.js';
 import Score              from '../Score.jsx';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import ScenarioRating     from './ScenarioRating.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var ScenarioThumbnail = React.createClass({
 
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, I18nMixin],
 
   render: function() {
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
@@ -80,7 +81,7 @@ var ScenarioThumbnail = React.createClass({
                 {this.props.scenario.title}
               </h3>
               <span className="scenario-thumbnail-publisher-wrapper">
-                <span className="meta">Posted by: </span>
+                <span className="meta">{this.i18n('posted_by', 'Posted by:')} </span>
                 <span className="scenario-thumbnail-publisher">
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
