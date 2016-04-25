@@ -63,9 +63,11 @@ var ScenarioThumbnail = React.createClass({
             <header className="scenario-thumbnail-header">
               <span>
                 <span className="scenario-thumbnail-timestamp">
-                  { this.props.scenario.timestamp ?
-                    <TimeAgo date={this.props.scenario.timestamp} />
-                    : '' }
+                  { 
+                    this.props.scenario.timestamp ?
+                    <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
+                    : ''
+                  }
                 </span>
                 <div className="oc-thumbnail-rating-wrapper">
                   <ScenarioRating

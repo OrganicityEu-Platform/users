@@ -6,12 +6,14 @@ import React      from 'react';
 import UserAvatar from '../users/UserAvatar.jsx';
 import ellipsis   from '../../../util/ellipsis.js';
 import Score      from '../Score.jsx';
+import I18nMixin  from '../i18n/I18nMixin.jsx';
+
 var Router = require('react-router');
 var Link = Router.Link;
 
 var ReportThumbnail = React.createClass({
 
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, I18nMixin],
 
   statics: {
     /* Transforms eg. "Economy & Finance" to "Economy" */
@@ -60,7 +62,7 @@ var ReportThumbnail = React.createClass({
             <div>
               <div className={sector_colour_marker}>
                 <span className="scenario-thumbnail-marker-score">
-                  <Score className="scenario-article-score-thumbnail" score={this.props.report.score} />
+                  {/*<Score className="scenario-article-score-thumbnail" score={this.props.report.score} />*/}
                 </span>
               </div>
             </div>
@@ -68,7 +70,7 @@ var ReportThumbnail = React.createClass({
               <span>
                 <span className="scenario-thumbnail-timestamp">
                   { this.props.report.timestamp ?
-                    <TimeAgo date={this.props.report.timestamp} />
+                    <TimeAgo date={this.props.report.timestamp} formatter={this.i18nFormatter} />
                     : '' }
                 </span>
               </span>
@@ -76,7 +78,7 @@ var ReportThumbnail = React.createClass({
                 {this.props.report.title}
               </h3>
               <span className="scenario-thumbnail-publisher-wrapper">
-                <span className="meta">Posted by: </span>
+                <span className="meta">{this.i18n('Reports.posted_by', 'Posted by:')} </span>
                 <span className="scenario-thumbnail-publisher">
                   <UserAvatar uuid={this.props.report.creator}
                     name={this.props.report.creatorName} />
@@ -87,13 +89,13 @@ var ReportThumbnail = React.createClass({
               {summary}
             </p>
             <span className="scenario-thumbnail-sat-wrapper">
-              <span>Areas: {areas}</span>
-              <span>Domains: {domains}</span>
-              <span>Organizations: {organizations}</span>
-              <span>Organization Types: {orgtypes}</span>
-              <span>Types of report: {types}</span>
-              <span>Approach: {approaches}</span>
-              <span>Tags: {tags}</span>
+              <span>{this.i18n('Reports.areas', 'Areas')}: {areas}</span>
+              <span>{this.i18n('Reports.domains', 'Domains')}: {domains}</span>
+              <span>{this.i18n('Reports.organizations', 'Organizations')}: {organizations}</span>
+              <span>{this.i18n('Reports.org_types', 'Organization Types')}: {orgtypes}</span>
+              <span>{this.i18n('Reports.types_of_report', 'Types of report')}: {types}</span>
+              <span>{this.i18n('Reports.approach', 'Approach')}: {approaches}</span>
+              <span>{this.i18n('Reports.tags', 'Tags')}: {tags}</span>
             </span>
             <div className={sector_colour_overlay}>
               {thumbnail}

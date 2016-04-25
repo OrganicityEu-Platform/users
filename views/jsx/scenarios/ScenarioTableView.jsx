@@ -134,7 +134,7 @@ var ScenarioTableView = React.createClass({
                         </span>
                         <span className="scenario-article-timestamp">
                           { this.props.scenario.timestamp ?
-                            <TimeAgo date={this.props.scenario.timestamp} />
+                            <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
                             : '' }
                           </span>
                         </div>

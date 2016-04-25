@@ -10,9 +10,10 @@ import api                from '../../../api_routes.js';
 import ReportThumbnail    from './ReportThumbnail.jsx';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var ReportTableView = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, I18nMixin],
   render: function() {
     if (!this.props.report) {
       return null;
@@ -80,7 +81,7 @@ var ReportTableView = React.createClass({
                 </span>
                 <span className="scenario-article-timestamp">
                   { this.props.report.timestamp ?
-                    <TimeAgo date={this.props.report.timestamp} />
+                    <TimeAgo date={this.props.report.timestamp} formatter={this.i18nFormatter} />
                     : '' }
                 </span>
               </div>

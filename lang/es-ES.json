@@ -31,6 +31,17 @@
 	scenarios: 'ES Scenarios',
 	posted_by: 'ES Posted by:',
 
+	Reports : {
+		posted_by: 'ES Posted by:',
+		areas: 'ES Areas',
+		domains: 'ES Domains',
+        organizations: 'ES Organizations',
+        org_types: 'ES Organization Types',
+        types_of_report: 'ES Types of report',
+        approach: 'ES Approach',
+        tags: 'ES Tags',
+	},
+
 	cookie1: 'ES OrganiCity Scenarios uses cookies to give you an enhanced experience.',
 	cookie2: 'ES Read more about it in our',
 	cookie3: 'ES privacy policy',
@@ -104,6 +115,23 @@
 	    roles: 'ES Roles',
 	    rolesInfo : 'ES The roles you have in this scenario tool. For example, you could be a moderator.',
 	    your_scenarios: 'ES Your scenarios',
-	}
+	},
+
+	TimeAgo : {
+		second: 'ES second ago',
+		second_plural: 'ES seconds ago',
+		minute: 'ES minute ago',
+		minute_plural: 'ES minutes ago',
+		hour: 'ES hour ago',
+		hour_plural: 'ES hours ago',
+		day: 'ES day ago',
+		day_plural: 'ES days ago',
+		week: 'ES week ago',
+		week_plural: 'ES weeks ago',
+		month: 'ES month ago',
+		month_plural: 'ES months ago',
+		week: 'ES week ago',
+		week_plural: 'ES weeks ago',
+	},
 
 }

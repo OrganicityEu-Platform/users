@@ -68,7 +68,7 @@ var I18nMixin = {
    * or
    * 'created_by'
    */
-   i18n: function(key, defaultValue) {
+  i18n: function(key, defaultValue) {
      try {
        var lang;
        var val;
@@ -100,7 +100,18 @@ var I18nMixin = {
      } catch (exp) {
        return defaultValue;
      }
-   },
+  },
+
+  // For formatting TimeAgo.
+  // Assumes suffix = "ago"
+  i18nFormatter: function(value, unit, suffix, date) {
+    var unitPlural = '';
+    if (value > 1) {
+      unitPlural = '_plural';
+    }
+    var u = this.i18n('TimeAgo.' + unit + unitPlural, unit);
+    return value + ' ' + u;
+  },
 
 };
 
