@@ -2,9 +2,8 @@ import $                  from 'jquery';
 import React              from 'react';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
-// import ScenarioListItem   from './ScenarioListItem.jsx';
-// import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 import ReportThumbnails   from './ReportThumbnails.jsx';
 import Router             from 'react-router';
 import TagField           from '../form-components/TagField.jsx';
@@ -20,7 +19,8 @@ import config             from '../../../config/config.js';
 import DocumentTitle      from 'react-document-title';
 
 var ReportList = React.createClass({
-  mixins: [Router.Navigation, LoadingMixin],
+  mixins: [Router.Navigation, LoadingMixin, I18nMixin],
+
   getInitialState: function() {
     return {
       refresh : false,
@@ -158,36 +158,38 @@ var ReportList = React.createClass({
     // this.reload(true);
   },
   render: function() {
-
-    // if (this.isLoading()) {
-    //   return (<Loading message="Loading reports. Please wait." size="2"/>);
-    // }
-
     var counter = null;
     if (this.state.search.q) {
       counter = (
         <h2 className="oc-white">
-          Your search yields to {this.state.reports.length} reports!
+          {this.i18n('Reports.your_search_yields_to', 'Your search yields to')} {this.state.reports.length} {this.i18n('Reports.reports', 'reports!')}
         </h2>
       );
     } else {
       counter = (
         <h2 className="oc-white">
-          Here you can explore {this.state.reportCounter} reports!
+          {this.i18n('Reports.here_you_can_explore', 'Here you can explore')} {this.state.reportCounter} {this.i18n('Reports.reports', 'reports!')}
         </h2>
       );
     }
 
+    var tabTitle = config.title + ' | ' +
+        this.i18n('Reports.admin',' Admin') + ' | ' +
+        this.i18n('Reports.report_list',' Report List');
+
     return (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
-        <DocumentTitle title={config.title + ' | Admin | Report List'} />
+        <DocumentTitle title={tabTitle} />
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
             <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
 
               <div className="form-group" id="oc-search-form">
                 <div className="input-group">
-                 <input type="text" className="form-control oc-search-field" id="reportListSearchFormQ" placeholder="search reports..." name="q" disabled={this.isLoading() ? 'disabled' : ''}
+                 <input type="text" className="form-control oc-search-field" id="reportListSearchFormQ"
+                        placeholder={this.i18n('Reports.search_reports', "search reports...")}
+                        name="q"
+                        disabled={this.isLoading() ? 'disabled' : ''}
                  value={this.state.search.q}
                  onChange={this.handleUpdatedSearchTerm}/>
                  <span className="input-group-btn">

@@ -40,7 +40,7 @@ var ReportTableView = React.createClass({
       credit = (
         <div className="col-md-3">
           <div className="scenario-ast-wrapper">
-            <span className="scenario-ast">Credit:</span>
+            <span className="scenario-ast">{this.i18n('Reports.credit', 'Credit')}:</span>
             <span className="scenario-ast-items">{this.props.report.credit}</span><br></br>
           </div>
         </div>
@@ -66,18 +66,20 @@ var ReportTableView = React.createClass({
       <div className="scenario-article">
         <header className="report-article-header row">
           <div className="col-lg-4 col-lg-push-8 scenario-article-header-right-top">
-            <div className={sector_colour_marker}><span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.report.score} /></span></div>
+            <div className={sector_colour_marker}>
+              {/*<span className="scenario-article-score"><Score className="scenario-article-score" score={this.props.report.score} /></span>*/}
+            </div>
               <div className="scenario-article-widget-data">
-                <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="reports" className="scenario-article-views" id={this.props.report.uuid} />  views</p>
-                <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="reports" className="scenario-article-comments" id={this.props.report.uuid} />  comments</p>
-                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-check-square-o"></i>{evaluationsCnt} evaluations</p>
+                <p className="scenario-article-widget-data-views"><i className="fa fa-eye"></i><Counter scope="reports" className="scenario-article-views" id={this.props.report.uuid} />  {this.i18n('Reports.views', 'views')}</p>
+                <p className="scenario-article-widget-data-comments"><i className="fa fa-comment-o"></i><Comments scope="reports" className="scenario-article-comments" id={this.props.report.uuid} />  {this.i18n('Reports.comments', 'comments')}</p>
+                <p className="scenario-article-widget-data-evaluations"><i className="fa fa-check-square-o"></i>{evaluationsCnt} {this.i18n('Reports.evaluations', 'evaluations')}</p>
               </div>
           </div>
           <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
             <h2 className="scenario-article-title">{this.props.report.title}</h2>
               <div>
                 <span className="scenario-article-publisher">
-                  Created by <UserAvatar uuid={this.props.report.creator} />
+                  {this.i18n('Reports.created_by', 'Created by')} <UserAvatar uuid={this.props.report.creator} />
                 </span>
                 <span className="scenario-article-timestamp">
                   { this.props.report.timestamp ?
@@ -101,20 +103,36 @@ var ReportTableView = React.createClass({
           <div className="scenario-article-meta">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">{this.props.report.domains && this.props.report.domains.length > 1 ? 'Domains:' : 'Domain:'}</span>
-                <span className="scenario-ast-items">{this.props.report.domains ? this.props.report.domains.join(', ') : ''}</span><br></br>
+                <span className="scenario-ast">
+                  {this.props.report.domains && this.props.report.domains.length > 1 ?
+                    this.i18n('Reports.domains', 'Domains') + ':'
+                    :
+                    this.i18n('Reports.domain', 'Domain') + ':'}
+                </span>
+                <span className="scenario-ast-items">
+                  {this.props.report.domains ? this.props.report.domains.join(', ') : ''}
+                </span><br></br>
               </div>
             </div>
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">Tags:</span>
-                <span className="scenario-ast-items">{this.props.report.tags ? this.props.report.tags.join(', ') : ''}</span><br></br>
+                <span className="scenario-ast">{this.i18n('Reports.tags', 'Tags')}:</span>
+                <span className="scenario-ast-items">
+                  {this.props.report.tags ? this.props.report.tags.join(', ') : ''}
+                </span><br></br>
               </div>
             </div>
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
-                <span className="scenario-ast">{this.props.report.areas && this.props.report.areas.length > 1 ? 'Areas:' : 'Area:'}</span>
-                <span className="scenario-ast-items">{this.props.report.areas ? this.props.report.areas.join(', ') : ''}</span><br></br>
+                <span className="scenario-ast">
+                  {this.props.report.areas && this.props.report.areas.length > 1 ?
+                    this.i18n('Reports.areas', 'Areas') + ':'
+                    :
+                    this.i18n('Reports.area', 'Area') + ':'}
+                </span>
+                <span className="scenario-ast-items">
+                  {this.props.report.areas ? this.props.report.areas.join(', ') : ''}
+                </span><br></br>
               </div>
             </div>
 
@@ -125,7 +143,9 @@ var ReportTableView = React.createClass({
         <footer className="scenario-article-footer"></footer>
       </div>
       <div className="scenario-article-narrative-wrapper">
-          <span className="col-md-1 scenario-article-narrative-title">Abstract</span>
+          <span className="col-md-1 scenario-article-narrative-title">
+            {this.i18n('Reports.abstract', 'Abstract')}
+          </span>
           <div className="scenario-article-narrative col-md-11">
             {this.props.report.abstract}
           </div>
