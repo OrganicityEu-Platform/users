@@ -171,6 +171,12 @@
         email: 'ES email',
         edit: 'ES EDIT',
         delete: 'ES DELETE',
+        system_info: 'ES System Info',
+        version_control_info: 'ES Version Control Information',
+		branch: 'ES Branch',
+        revision_short: 'ES Revision (short)',
+        revision_long: 'ES Revision (long)',
+        tag: 'ES Tag',
 	},
 
 }
