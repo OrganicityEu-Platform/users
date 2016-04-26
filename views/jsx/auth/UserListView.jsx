@@ -4,6 +4,7 @@ import ReactMixin        from 'react-mixin';
 import UserHasRoleMixin  from '../UserHasRoleMixin.jsx';
 
 import LoadingMixin      from '../LoadingMixin.jsx';
+import I18nMixin         from '../i18n/I18nMixin.jsx';
 
 import api               from '../../../api_routes.js';
 import TagField          from '../form-components/TagField.jsx';
@@ -18,7 +19,7 @@ import config             from '../../../config/config.js';
 import DocumentTitle      from 'react-document-title';
 
 var UserListView = React.createClass({
-  mixins: [UserHasRoleMixin, LoadingMixin],
+  mixins: [UserHasRoleMixin, LoadingMixin, I18nMixin],
   getInitialState: function() {
     return {
       users : []
@@ -52,17 +53,19 @@ var UserListView = React.createClass({
       return this.renderLoading();
     }
 
+    var title = config.title + ' | ' + this.i18n('Admin.admin', 'Admin') + ' | ' + this.i18n('Admin.user_list', 'User List');
+
     return (
       <div className="row">
-        <DocumentTitle title={config.title + ' | Admin | User List'} />
+        <DocumentTitle title={title} />
         <div className="oc-macro-content">
-          <h1>Users</h1>
+          <h1>{this.i18n('Admin.users', 'Users')}</h1>
           <table className="adminUsersTable">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Roles</th>
-                <th>Accounts</th>
+                <th>{this.i18n('Admin.name', 'Name')}</th>
+                <th>{this.i18n('Admin.roles', 'Roles')}</th>
+                <th>{this.i18n('Admin.accounts', 'Accounts')}</th>
                 <th></th>
                 <th></th>
               </tr>

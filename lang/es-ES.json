@@ -161,4 +161,16 @@
 		week_plural: 'ES weeks ago',
 	},
 
+	Admin : {
+		admin: 'ES Admin',
+		user_list: 'ES User List',
+		users: 'ES Users',
+		name: 'ES Name',
+        roles: 'ES Roles',
+        accounts: 'ES Accounts',
+        email: 'ES email',
+        edit: 'ES EDIT',
+        delete: 'ES DELETE',
+	},
+
 }
