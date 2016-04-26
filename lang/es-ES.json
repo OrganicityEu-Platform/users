@@ -179,4 +179,17 @@
         tag: 'ES Tag',
 	},
 
+	Questionnaire : {
+		loading: 'ES Loading...',
+        edit: 'ES Edit Questionnaire',
+        subheader: 'ES Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.',
+        description: 'ES Description',
+        explanation: 'ES Explanation',
+        questions: 'ES Questions',
+        publish_as_new: 'ES Publish as new version',
+        publish_as_new_desc: 'ES This will \"release\" a new questionnaire version. The evaluations users fill out are annotated with the questionnaire version so it is always clear which version of questionnaire was filled out. Please keep in mind that answers to questionnaires of different version might not be comparable at all or need additional manual effort to make them comparable.',
+        publish_as_cosmetic: 'ES Publish as cosmetic change',
+        publish_as_cosmetic_desc: 'ES This will update the current version in place and not increment the version number. Only do this if you\'re doing cosmetic changes (such as fixing typos) in the questionnaire.',
+	},
+
 }
