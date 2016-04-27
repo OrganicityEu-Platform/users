@@ -1,18 +1,23 @@
 import React from 'react';
 
 var LocalStorageMixin = require('react-localstorage');
+var Router = require('react-router');
 
 var CookiePrompt = React.createClass ({
+  mixins: [Router.Navigation],
   getInitialState: function () {
-    if (localStorage.getItem('showCookePrompt')) {
+    if (localStorage.getItem('showOCCookiePrompt')) {
       return { show : false };
     }else {
       return { show : true };
     }
   },
+  handlePrivacy: function() {
+    this.transitionTo('privacy');
+  },
   clickHandler: function () {
     this.setState( { show : false } );
-    localStorage.setItem('showCookePrompt', 0);
+    localStorage.setItem('showOCCookiePrompt', 0);
   },
   render: function () {
     return (
@@ -29,10 +34,8 @@ var CookiePrompt = React.createClass ({
                 <p className="oc-cookie-text">
                   OrganiCity Scenarios uses cookies to give you an enhanced experience.
                 </p>
-                <span>
-                  Read more about it in our
-                </span>
-                <span className="pink"> privacy policy</span>
+                <span>Read more about it in our </span>
+                <span onClick={this.handlePrivacy} className="oc-privacy-link">privacy policy</span>.
               </div>
               <div className="col-lg-2">
                 <button

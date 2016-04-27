@@ -21,6 +21,9 @@ var FooterLarge = React.createClass({
   clickHandler: function () {
     this.transitionTo('signup');
   },
+  handlePrivacy: function() {
+    this.transitionTo('privacy');
+  },
   render: function() {
     return (
       <div className="row oc-footer-large">
@@ -47,12 +50,13 @@ var FooterLarge = React.createClass({
           </div>
           <div className="col-lg-4 white oc-footer-col" id="resources-col">
             <p className="oc-footer-title">More about OrganiCity</p>
-            <span><a className="white" href={organicityLink}>OrganiCity.eu</a></span>
+            <span><a className="white oc-link" href={organicityLink}>OrganiCity.eu</a></span>
             <span onClick={this.clickHandler} className="oc-link">
               Sign up for updates
             </span>
-            <span><a className="white" href={organicityBlog}>Blog</a></span>
-            <span><a className="white" href={organicityEvents}>Events</a></span>
+            <span><a className="white oc-link" href={organicityBlog}>Blog</a></span>
+            <span><a className="white oc-link" href={organicityEvents}>Events</a></span>
+            <span className="oc-link oc-link" onClick={this.handlePrivacy}>Privacy policy</span>
           </div>
           <div className="col-lg-5 white oc-footer-col" id="oc-footer-contact-col">
             <p className="oc-footer-title">
