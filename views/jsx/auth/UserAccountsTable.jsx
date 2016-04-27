@@ -32,7 +32,6 @@ var UserAccountsTable = React.createClass({
     'twitter'  : ['displayName', 'username'],
     'google'   : ['email', 'name'],
     'facebook' : ['displayName'],
-    'local'    : ['email'],
     'github'   : ['displayName', 'username']
   },
   renderAccount: function(account) {

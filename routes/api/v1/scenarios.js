@@ -37,7 +37,10 @@ var scenarioProjection = {
   copyright   : 1,
   image       : 1,
   credit      : 1,
-  score       : 1
+  credits     : 1,
+  score       : 1,
+  editor      : 1,
+  editor_timestamp : 1
 };
 
 var fieldsInUpdate = [
@@ -50,7 +53,8 @@ var fieldsInUpdate = [
   'thumbnail',
   'copyright',
   'image',
-  'credit'
+  'credit',
+  'credits'
 ];
 
 /**
@@ -134,6 +138,7 @@ module.exports = function(router, passport) {
         'copyright'   : { '$first' : '$thumbnail'   },
         'image'       : { '$first' : 'image'        },
         'credit'      : { '$first' : '$credit'      },
+        'credits'     : { '$first' : '$credits'     },
         'score'       : { '$first' : '$score'       },
         'dataSources' : { '$first' : '$dataSources' }
       }
@@ -426,9 +431,16 @@ module.exports = function(router, passport) {
             fieldsInUpdate.forEach(function(field) {
               newVersion[field] = update[field];
             });
+
+            // Keep the original infos
             newVersion.uuid = oldVersion[0].uuid;
+            newVersion.creator = oldVersion[0].creator;
+            newVersion.timestamp = oldVersion[0].timestamp;
             newVersion.version = oldVersion[0].version + 1;
-            newVersion.creator = req.user.uuid;
+
+            // Add editor infos
+            newVersion.editor = req.user.uuid;
+            newVersion.editor_timestamp = new Date();
 
             newVersion.save(function(err, scenario) {
               if (err) {

@@ -91,7 +91,9 @@ var ScenarioEditView = React.createClass({
     image_type : undefined,
     thumbnail : undefined,  // Here, the path will be stored
     image : undefined,      // Here, the path will be stored
-    credit : undefined,
+    credits: [],
+    creditor: undefined,
+    creditorUrl: undefined,
     copyright : undefined,
     btnClickedOnce : false,
   };
@@ -221,16 +223,47 @@ handleChangedDevices : function(devices) {
     }
   });
 },
-handleChangedCredit : function(evt) {
+addCredit: function(evt) {
+  $("#oc-creditName-input").val("");
+  $("#oc-creditUrl-input").val("");
+  var creditor = this.state.creditor;
+  var creditorUrl = this.state.creditorUrl;
+  evt.preventDefault();
+  this.state.credits.push(
+    {
+      creditor: creditor,
+      creditorUrl: creditorUrl
+    }
+  );
+  this.setState({
+    creditor: "",
+    creditorUrl: ""
+  });
+},
+handleChangedCreditor: function(evt) {
   if (evt.target.value === '') {
-    this.setState({credit: undefined});
+    this.setState({creditor: undefined});
   } else {
-    this.setState({credit: evt.target.value}, () => {
-      if (this.state.btnClickedOnce) {
-        this.props.validate();
-      }
-    });
+    this.setState({creditor: evt.target.value});
   }
+},
+handleChangedCreditorUrl: function(evt) {
+  if (evt.target.value === '') {
+    this.setState({creditorUrl: undefined});
+  } else {
+    this.setState({creditorUrl: evt.target.value});
+  }
+  this.props.validate('credits');
+},
+handleEditCreditor: function(i, evt) {
+  this.state.credits[i].creditor = evt.target.value;
+  this.setState(this.state);
+  this.props.validate('credits');
+},
+handleEditCreditorUrl: function(i, evt) {
+  this.state.credits[i].creditorUrl = evt.target.value;
+  this.setState(this.state);
+  this.props.validate('credits');
 },
 handleChangedCopyright : function(evt) {
   if (evt.target.value === '') {
@@ -267,11 +300,10 @@ clickedPreview : function() {
   // Trim, as soon the button is clicked
   this.setState({
     btnClickedOnce: true,
-    title     : this.state.title.trim(),
-    summary   : this.state.summary.trim(),
-    narrative : this.state.narrative.trim(),
-    credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
-    copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
+    title       : this.state.title.trim(),
+    summary     : this.state.summary.trim(),
+    narrative   : this.state.narrative.trim(),
+    copyright   : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
   });
 
   if (this.currentStep() + 1 > this.getSteps().length) {
@@ -297,10 +329,10 @@ prepareValidationPreview : function() {
       narrative       : this.state.narrative.trim(),
       selectedSectors : this.state.selectedSectors,
       actors          : this.state.actors,
+      credits         : this.state.credits,
       devices         : this.state.devices,
       thumbnail       : this.state.thumbnail,
       image           : this.state.image,
-      credit          : this.state.credit ? this.state.credit.trim() : this.state.credit,
       copyright       : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
     };
   };
@@ -316,10 +348,10 @@ clickedSubmit : function() {
       narrative : this.state.narrative.trim(),
       sectors   : this.state.sectors,
       actors    : this.state.actors,
+      credits   : this.state.credits,
       devices   : this.state.devices,
       thumbnail : this.state.thumbnail,
       image     : this.state.image,
-      credit    : this.state.credit ? this.state.credit.trim() : this.state.credit,
       copyright : this.state.copyright ? this.state.copyright.trim() : this.state.copyright
     };
   };
@@ -347,6 +379,40 @@ clickedSubmit : function() {
   });
 
 },
+removeCredit: function(i) {
+  this.state.credits.splice(i, 1);
+  this.setState(this.state);
+},
+getCredits: function() {
+  return this.state.credits.map(function(credit, i){
+    return <div className="oc-inner-credit-form-wrapper">
+      <div className="oc-credit-count"># {i + 1}</div>
+      <div className="col-md-3">
+        <input
+          type="text"
+          className="oc-input-extra"
+          placeholder="name"
+          autoComplete="off"
+          onChange={this.handleEditCreditor.bind(this, i)}
+          defaultValue={credit.creditor}></input>
+      </div>
+      <div className="oc-credit-url-wrapper">
+        <input
+          type="text"
+          className="oc-input-extra"
+          placeholder="optional url"
+          autoComplete="off"
+          onChange={this.handleEditCreditorUrl.bind(this, i)}
+          defaultValue={credit.creditorUrl}></input>
+      </div>
+      <div className="oc-remove-credit-wrapper">
+        <span className="oc-remove-credit-inner-wrapper"
+          onClick={() => this.removeCredit(i)}>
+          <i className="fa fa-times oc-tag-clear"></i>remove</span>
+          </div>
+    </div>;
+  }, this);
+},
 validateCurrentStep : function(onvalidate, onerror) {
 
   if (this.validatorTypes) {
@@ -372,6 +438,7 @@ validateCurrentStep : function(onvalidate, onerror) {
         }
         this.setState({}); // Rerender to show errors
       } else {
+        this.flash('info', 'Please review your scenario. If everything is fine, please submit it.', 20000);
         //console.log('Input validation successful!');
         if (onvalidate) {
           onvalidate();
@@ -395,6 +462,7 @@ form : function() {
   //console.log('narrative', this.props.isValid('narrative'));
 
   var errorMessageTitle = null;
+  var errorMessageCredits = null;
   var errorMessageSummary = null;
   var errorMessageNarrative = null;
   var errorMessageSelectedSectors = null;
@@ -420,6 +488,11 @@ form : function() {
       <Message
         type="danger"
         messages={this.props.getValidationMessages('selectedSectors')} />
+    );
+    errorMessageCredits = (
+      <Message
+        type="danger"
+        messages={this.props.getValidationMessages('credits')} />
     );
   }
 
@@ -449,6 +522,7 @@ form : function() {
               type="text"
               className="oc-input"
               name="title"
+              autoComplete="off"
               id="title"
               value={this.state.title}
               onChange={this.handleChangedTitle} />
@@ -609,6 +683,7 @@ form : function() {
         type="text"
         className="oc-input"
         name="copyright"
+        autoComplete="off"
         id="copyright"
         value={this.state.copyright}
         onChange={this.handleChangedCopyright} />
@@ -618,20 +693,46 @@ form : function() {
   <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
-      htmlFor="sectors">
+      htmlFor="credit">
       Credit
       <span className="oc-form-group-info">
         {lang.ScenarioEditView.creditInfo}
       </span>
     </label>
-    <div className="col-sm-9">
-      <input
-        type="text"
-        className="oc-input"
-        name="credit"
-        id="credit"
-        value={this.state.credit}
-        onChange={this.handleChangedCredit} />
+    {/*
+      <div className="col-sm-9">
+        <input
+          type="text"
+          className="oc-input"
+          name="credit"
+          id="credit"
+          value={JSON.stringify(this.state.credits)}
+          onChange={this.handleChangedCredits} />
+      </div>
+    */}
+
+    <div className="oc-credit-form-wrapper">
+      {this.getCredits()}
+      <div className="oc-credit-errors">{errorMessageCredits}</div>
+      <div>
+        <div className="col-md-3">
+          <input className="oc-input"
+            onChange={this.handleChangedCreditor}
+            type="text"
+            id="oc-creditName-input"
+            autoComplete="off"
+            placeholder="name"></input>
+        </div>
+        <div className="col-md-6">
+          <input className="oc-input"
+            onChange={this.handleChangedCreditorUrl}
+            type="text"
+            id="oc-creditUrl-input"
+            autoComplete="off"
+            placeholder="optional url"></input>
+        </div>
+        <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>ADD</button></div>
+      </div>
     </div>
   </div>
 
@@ -660,15 +761,9 @@ preview : function() {
       <DocumentTitle title={config.title + ' | ' + title} />
       <div className="col-lg-8 col-lg-offset-2">
         <div>
-          <h1 className="oc-white">
-            {title} <small className="white">preview</small>
+          <h1 className="oc-pink">
+            {title} <small className="oc-preview-tag">preview</small>
           </h1>
-          <h2 className="oc-white">
-            Here's your story!
-          </h2>
-          <p className="white">
-            Please review your scenario. If everything is fine, please submit it.
-          </p>
         </div>
       </div>
       <ScenarioTableView scenario={this.state} />

@@ -62,6 +62,8 @@ var api_routes = {
   'forgot-password'            : prefixes.users + '/forgot-password',
   'update-password'            : prefixes.users + '/update-password',
   'user-update-viablility'     : prefixes.users + '/:uuid/update-viablility',
+  'set_favorite'               : prefixes.users + '/:uuid/set_favorite',
+  'remove_favorite'            : prefixes.users + '/:uuid/remove_favorite',
 
   //
   'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',

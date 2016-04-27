@@ -88,7 +88,7 @@ var ScenarioView = React.createClass({
 
         </div>
         {this.userIsLoggedIn() ? starRating : starRating}
-        <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
+        <Feedback scenario={this.state} evaluations={typeof userEvaluations === 'undefined' ? null : userEvaluations}></Feedback>
         <div className="row">
           <div className="form-group">
             <div className="oc-macro-content oc-scenario-controls">

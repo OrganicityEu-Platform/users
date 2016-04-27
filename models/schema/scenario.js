@@ -10,13 +10,18 @@ var scenario = mongoose.Schema({
   image       : { type: String                  }, // the image
   thumbnail   : { type: String                  }, // the thumbnail
   credit      : { type: String                  }, // the credit
+  credits     : { type: [{
+    creditor: String,
+    creditorUrl: String}]                       },
   copyright   : { type: String                  }, // the copyrght
   timestamp   : { type: Date, default: Date.now }, // set when created
+  editor     : { type: String, required: false  }, // set when updated
+  editor_timestamp   : { type: Date, required: false }, // set when updated
   actors      : { type: [String]                }, // tags (comma-separated)
   sectors     : { type: [String]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
   dataSources : { type: [String]                }, // uuids of data source type
-  score       : { type: Object                }, // score
+  score       : { type: Object                  }, // score
 });
 
 scenario.index(

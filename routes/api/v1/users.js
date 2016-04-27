@@ -416,6 +416,48 @@ module.exports = function(router, passport) {
     }
   );
 
+  router.post(api.route('set_favorite'), [isLoggedIn], function(req, res, next) {
+
+    console.log(req.body);
+
+    User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
+      if (err) {
+        return next(err);
+      } else {
+        user.favorites.push(req.body.scenario);
+        user.save(function(err) {
+          console.log(user);
+          res.status(200).send('OK - favorite set');
+        });
+      }
+    });
+
+  });
+
+  router.patch(api.route('remove_favorite'), [isLoggedIn], function(req, res, next) {
+
+    console.log(req.body);
+
+    User.findOne({ 'uuid' :  req.params.uuid }, function(err, user) {
+      if (err) {
+        return next(err);
+      } else {
+        var index = user.favorites.indexOf(req.body.scenario);
+
+        if (index > -1) {
+          user.favorites.splice(index, 1);
+          user.save(function(err) {
+            console.log(user);
+            res.status(200).send('OK - removed set');
+          });
+        } else {
+          res.status(404).send('Favorite not found');
+        }
+      }
+    });
+
+  });
+
   // =============================================================================
   // UNLINK ACCOUNTS =============================================================
   // =============================================================================

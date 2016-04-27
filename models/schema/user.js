@@ -6,6 +6,7 @@ var user = mongoose.Schema({
   name     : String,
   location : String,
   gender   : String,
+  favorites: [String],
   roles    : [String],
   profession : [String],
   professionTitle : String,

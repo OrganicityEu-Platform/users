@@ -15,6 +15,8 @@ import ScenarioRating     from './ScenarioRating.jsx';
 
 import SectorIcon         from '../SectorIcon.jsx';
 
+import Favorite        from './Favorite.jsx';
+
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 import I18nMixin          from '../i18n/I18nMixin.jsx';
@@ -22,6 +24,35 @@ import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin, I18nMixin],
+  handleCreditClick: function(i, creditorUrl) {
+    window.open(creditorUrl, '_blank');
+  },
+  handleCredits: function() {
+
+      return this.props.scenario.credits.map(function(credit, i){
+        var creditLink;
+        if (!credit.creditorUrl) {
+          creditLink = <span className="oc-credit-wrapper">
+            <span
+              className="oc-credit-no-link">
+              {credit.creditor}
+            </span>
+            {this.props.scenario.credits.length === i + 1 ? null : ","}
+          </span>;
+        }else {
+          creditLink = <span className="oc-credit-wrapper">
+            <span
+              onClick={this.handleCreditClick.bind(this, i, credit.creditorUrl)}
+              className="oc-credit-with-link">
+              {credit.creditor}
+            </span>
+            {this.props.scenario.credits.length === i + 1 ? null : ","}
+          </span>;
+        }
+        return creditLink;
+      }, this);
+
+  },
   render: function() {
     if (!this.props.scenario) {
       return null;
@@ -51,13 +82,13 @@ var ScenarioTableView = React.createClass({
     }
 
     var credit;
-    if (this.props.scenario.credit) {
+    if (this.props.scenario.credits && this.props.scenario.credits.length > 0) {
       credit = (
         <div className="col-md-3">
           <div className="scenario-ast-wrapper">
             <span className="scenario-ast">Credit:</span>
             <span className="scenario-ast-items">
-              {this.props.scenario.credit}
+              {this.handleCredits()}
             </span>
             <br>
             </br>
@@ -78,6 +109,24 @@ var ScenarioTableView = React.createClass({
     var evaluationsCnt = 0;
     if (this.props.scenario.score && this.props.scenario.score.numOfEvaluations) {
       evaluationsCnt = this.props.scenario.score.numOfEvaluations;
+    }
+
+    var editor = null;
+
+    if(this.props.scenario.editor) {
+
+      editor = (
+        <div>
+          <span className="scenario-article-publisher">
+            Edited by <UserAvatar uuid={this.props.scenario.editor} />
+          </span>
+          <span className="scenario-article-timestamp">
+            { this.props.scenario.timestamp ?
+              <TimeAgo date={this.props.scenario.editor_timestamp} />
+                : '' }
+          </span>
+        </div>
+      )
     }
 
     return (
@@ -118,9 +167,14 @@ var ScenarioTableView = React.createClass({
                     </div>
                   </div>
                   <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
+                    <div className="col-lg-12">
+                      <Favorite
+                        scenario={this.props.scenario.uuid}
+                        />
+                    </div>
                     <div className="col-lg-12 scenario-article-indicator-wrapper">
                       <ScenarioIndicator
-                        evaluations={userEvaluations}
+                        evaluations={userEvaluations === 'undefined' ? null : userEvaluations}
                         scenario={this.props.scenario}
                         showEvalText={true} />
                     </div>
@@ -131,15 +185,15 @@ var ScenarioTableView = React.createClass({
                         <div>
                           <span className="scenario-article-publisher">
                             {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
-                        </span>
-                        <span className="scenario-article-timestamp">
-                          { this.props.scenario.timestamp ?
-                            <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
-                            : '' }
+                          </span>
+                          <span className="scenario-article-timestamp">
+                            { this.props.scenario.timestamp ?
+                              <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
+                                : '' }
                           </span>
                         </div>
-                    </div>
-
+                        {editor}
+                        </div>
                       <div className="scenario-article-summary-wrapper">
                         <p className="scenario-article-summary">
                           {this.props.scenario.summary}
@@ -184,6 +238,7 @@ var ScenarioTableView = React.createClass({
                         </div>
                       </div>
                       {credit}
+
                     </div>
                   </div>
                   <footer className="scenario-article-footer">

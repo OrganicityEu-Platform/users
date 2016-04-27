@@ -1,5 +1,6 @@
 var ui = require('./ui_routes.js');
 var config = require('./config/config.js');
+var ga = require('./config/ga.js');
 
 module.exports = '' +
 '<!DOCTYPE html>' +
@@ -20,6 +21,14 @@ module.exports = '' +
 '    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>' +
 '  <![endif]-->' +
 '  <script src="' + ui.asset('static/js/App.js') + '"></script>' +
+'  <script>' +
+'    (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){' +
+'    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),' +
+'    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)' +
+'    })(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');' +
+'    ga(\'create\', \'' + ga.id + '\', \'auto\');';
+'    ga(\'send\', \'pageview\');';
+'  </script>';
 '</head>' +
 '<body>' +
 '</body>' +
