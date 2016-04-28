@@ -141,7 +141,7 @@ var Scaffold = React.createClass({
       <NavItemLink
         key="scenarioList"
         to="scenarioList"
-        className="navbar-button"
+        className="navbar-button all-uppercase"
         id="navbar-explore-btn">{this.i18n('explore', 'EXPLORE')}</NavItemLink>
     );
     linksLeft.push(
@@ -149,7 +149,7 @@ var Scaffold = React.createClass({
         key="scenarioCreate"
         to="scenarioCreate"
         onClick={this.clickedCreate}
-        className="navbar-button"
+        className="navbar-button all-uppercase"
         id="navbar-create-btn">{this.i18n('create', 'CREATE')}</NavItemLink>
     );
 
