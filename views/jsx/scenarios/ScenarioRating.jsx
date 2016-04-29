@@ -138,7 +138,7 @@ var ScenarioRating = React.createClass({
   },
   getIcons: function(){
     return this.state.icons.map(function(icon, i){
-      return <span>
+      return <span key={i}>
         <img
           className={this.props.className}
           src={ui.asset('static/img/'.concat(this.state.icons[i]))}
