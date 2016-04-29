@@ -27,21 +27,20 @@ var LanguageSwitcher = React.createClass({
 		// Spanish menuitem
 		if (this.isCurrentLanguage('es-ES')) {
 		  flag = ES;
-	      var miEs = <MenuItem eventKey="es-ES" active><img src={ES} className="lang-flag" ></img>ES Espaniol</MenuItem>
+	      var miEs = <MenuItem eventKey="es-ES" active><img src={ES} className="lang-flag" ></img>Espaniol</MenuItem>
 		} else {
-	      var miEs = <MenuItem eventKey="es-ES"><img src={ES} className="lang-flag" ></img>ES Espaniol</MenuItem>
+	      var miEs = <MenuItem eventKey="es-ES"><img src={ES} className="lang-flag" ></img>Espaniol</MenuItem>
 		}
 
+		var title = <span><img src={flag} className="lang-flag" ></img> {this.currentLanguageDisplayName()}</span>;
+
 		return (
-		  <div>
-			<img src={flag} className="lang-flag" id="lang-flag-nav" ></img>
-			<DropdownButton bsStyle="link"
-							title={'ES ' +this.currentLanguageDisplayName()}
+			<DropdownButton navItem={true}
+							title={title}
 							id="lang-dropdown" onSelect={this.handleClick} >
 		      {miEn}
 		      {miEs}
 		    </DropdownButton>
-		  </div>
 	    );
 	}
 });
