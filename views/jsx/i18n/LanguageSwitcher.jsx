@@ -35,7 +35,10 @@ var LanguageSwitcher = React.createClass({
 		var title = <span><img src={flag} className="lang-flag" ></img> {this.currentLanguageDisplayName()}</span>;
 
 		return (
-			<DropdownButton navItem={true}
+			<DropdownButton key="langswitch"
+							className="nav-lang-btn"
+							navItem={true}
+			                bsStyle="link"
 							title={title}
 							id="lang-dropdown" onSelect={this.handleClick} >
 		      {miEn}

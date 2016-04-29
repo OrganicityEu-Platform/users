@@ -183,6 +183,7 @@ var Scaffold = React.createClass({
         );
         linksRight.push(
           <DropdownButton
+            key="adminmenu"
             className="oc-admin-links"
             title={this.i18n('admin', 'admin')}>
             {adminLinks}
@@ -221,8 +222,9 @@ var Scaffold = React.createClass({
         </NavItemLink>
       );
     }
+
     linksRight.push(
-      <li className="nav-lang-btn"><LanguageSwitcher /></li>
+      <LanguageSwitcher />
     );
 
     return (
