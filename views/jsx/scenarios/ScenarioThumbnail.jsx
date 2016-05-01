@@ -15,7 +15,11 @@ var Link = Router.Link;
 var ScenarioThumbnail = React.createClass({
 
   mixins: [Router.Navigation],
-
+  getInitialState: function(){
+    return {
+      image: this.props.scenario.thumbnail,
+    };
+  },
   render: function() {
     var sectors = this.props.scenario.sectors.slice(0, 3).join(', ');
     var actors = this.props.scenario.actors.slice(0, 3).join(', ');
@@ -44,8 +48,10 @@ var ScenarioThumbnail = React.createClass({
     }
 
     var thumbnail;
-    if (this.props.scenario.thumbnail) {
+    if (this.state.image) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
+    }else {
+      thumbnail = <span className={"oc-thumbnail-no-image"}><i className="fa fa-picture-o"></i> This scenario has no image.</span>;
     }
 
     return (
@@ -96,7 +102,7 @@ var ScenarioThumbnail = React.createClass({
               <span>Sectors: {sectors}</span>
               <span>Tools: {tools}</span>
             </span>
-            <div className={sector_colour_overlay}>
+            <div className={this.state.image ? sector_colour_overlay : "oc-thumbnail-no-image"}>
               {thumbnail}
             </div>
           </Link>
