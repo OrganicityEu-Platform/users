@@ -22,6 +22,7 @@ import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx';
 import UploadImage          from '../UploadImage.jsx';
 import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 import config               from '../../../config/config.js';
 import DocumentTitle        from 'react-document-title';
@@ -29,7 +30,7 @@ import DocumentTitle        from 'react-document-title';
 import lang                 from '../../../lang/en.js'
 
 var ScenarioEditView = React.createClass({
-  mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin, FlashQueue.Mixin],
+  mixins : [Router.Navigation, Router.State, LoadingMixin, UserIsLoggedInMixin, FlashQueue.Mixin, I18nMixin],
   predefinedSectors: [
     'public', 'transport', 'agriculture',
     'energy', 'retail', 'healthcare',
@@ -496,7 +497,9 @@ form : function() {
     );
   }
 
-  var pageTitle = this.editMode() ? 'Edit your scenario' : 'Share your scenario for our future cities';
+  var edit = this.i18n('Create.edit', 'Edit your scenario');
+  var share = this.i18n('Create.share', 'Share your scenario for our future cities');
+  var pageTitle = this.editMode() ? edit : share;
 
   return (
     <div className="row oc-form-group-view">
@@ -505,15 +508,15 @@ form : function() {
         <h1 className="oc-pink">
           {pageTitle}
         </h1>
-        <h2 className="pink">Mandatory fields</h2>
+        <h2 className="pink">{this.i18n('Create.mandatory_fields', 'Mandatory fields')}</h2>
         <form className="form-horizontal">
           <div className="form-group oc-form-group oc-edit-group">
             <label
               className="control-label col-sm-3"
               htmlFor="title">
-              Title <ValidationIndicator valid={this.props.isValid('title')}/>
+              {this.i18n('Create.title', 'Title')} <ValidationIndicator valid={this.props.isValid('title')}/>
             <span className="oc-form-group-info">
-              {lang.ScenarioEditView.titleInfo}
+              {this.i18n('Create.titleInfo', 'Keep it short and sweet.')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -527,7 +530,7 @@ form : function() {
               value={this.state.title}
               onChange={this.handleChangedTitle} />
             <span className="oc-char-remain">
-              {ScenarioConfig.max.title - this.state.title.length} characters remaining
+              {ScenarioConfig.max.title - this.state.title.length} {this.i18n('Create.characters_remaining', 'characters remaining')}
             </span>
             {errorMessageTitle}
           </div>
@@ -536,9 +539,9 @@ form : function() {
           <label
             className="control-label col-sm-3"
             htmlFor="summary">
-            Summary <ValidationIndicator valid={this.props.isValid('summary')}/>
+            {this.i18n('Create.summary', 'Summary')} <ValidationIndicator valid={this.props.isValid('summary')}/>
           <span className="oc-form-group-info">
-            {lang.ScenarioEditView.summaryInfo}
+            {this.i18n('Create.summaryInfo', 'If you could explain it in a tweet, what would you say?')}
           </span>
         </label>
         <div className="col-sm-9">
@@ -551,7 +554,7 @@ form : function() {
             value={this.state.summary}
             onChange={this.handleChangedSummary} />
           <span className="oc-char-remain">
-            {ScenarioConfig.max.summary - this.state.summary.length} characters remaining
+            {ScenarioConfig.max.summary - this.state.summary.length} {this.i18n('Create.characters_remaining', 'characters remaining')}
           </span>
           {errorMessageSummary}
         </div>
@@ -560,8 +563,9 @@ form : function() {
         <label
           className="control-label col-sm-3"
           htmlFor="narrative">
-          Narrative <ValidationIndicator valid={this.props.isValid('narrative')}/>
+          {this.i18n('Create.narrative', 'Narrative')} <ValidationIndicator valid={this.props.isValid('narrative')}/>
         <span className="oc-form-group-info">
+          {this.i18n('Create.narrativeInfo', 'Explain your idea as brief as you like. Include details or references.')}
           {lang.ScenarioEditView.narrativeInfo}
         </span>
       </label>
@@ -574,7 +578,7 @@ form : function() {
           value={this.state.narrative}
           onChange={this.handleChangedNarrative} />
         <span className="oc-char-remain">
-          {ScenarioConfig.max.narrative - this.state.narrative.length} characters remaining
+          {ScenarioConfig.max.narrative - this.state.narrative.length} {this.i18n('Create.characters_remaining', 'characters remaining')}
         </span>
         {errorMessageNarrative}
       </div>
@@ -583,9 +587,9 @@ form : function() {
       <label
         className="control-label col-sm-3"
         htmlFor="sectors">
-        Sectors <ValidationIndicator valid={this.props.isValid('selectedSectors')}/>
+        {this.i18n('Create.sectors', 'Sectors')} <ValidationIndicator valid={this.props.isValid('selectedSectors')}/>
       <span className="oc-form-group-info">
-        {lang.ScenarioEditView.sectorsInfo}
+        {this.i18n('Create.sectorsInfo', 'Areas where your idea belongs. This would mean “retail” for an idea around shopping or “cultural” for a scenario around art or literature.')}
       </span>
     </label>
     <div className="col-sm-9">
@@ -597,35 +601,35 @@ form : function() {
         />
       {errorMessageSelectedSectors}
       <div className="new-sector-suggest">
-        Suggest new sectors:
+        {this.i18n('Create.suggest_new_sectors', 'Suggest new sectors')}:
         <TagField
           id="createEditSearchFormSectors"
-          placeholder="Write your sector if it’s different"
+          placeholder={this.i18n('Create.sector_placeholder', 'Write your sector if it’s different')}
           tags={this.state.newSectors}
           doEdit={true}
-          clearText={"clear all sectors"}
+          clearText={this.i18n('Create.clear_all_sectors', 'clear all sectors')}
           onChange={this.handleNewSector}
           />
       </div>
     </div>
   </div>
-  <h2 className="pink">Optional fields</h2>
+  <h2 className="pink">{this.i18n('Create.optional_fields', 'Optional fields')}</h2>
   <div className="form-group oc-form-group oc-edit-group">
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
-      Participants
+      {this.i18n('Create.participants', 'Participants')}
       <span className="oc-form-group-info">
-        {lang.ScenarioEditView.actorsInfo}
+        {this.i18n('Create.actorsInfo', 'People involved in making your idea happen or those affected by the scenario. For example, “citizen”, “business”, “student”, “policy maker”...')}
       </span>
     </label>
     <div className="col-sm-9">
       <TagField
         id="createEditSearchFormActors"
-        placeholder="List the type of people involved"
+        placeholder={this.i18n('Create.participants_placeholder', 'List the type of people involved')}
         tags={this.state.actors}
         doEdit={true}
-        clearText={"clear all participants"}
+        clearText={this.i18n('Create.clear_all_participants', 'clear all participants')}
         onChange={this.handleChangedActors}
         />
     </div>
@@ -635,27 +639,27 @@ form : function() {
     <label
       className="control-label col-sm-3"
       htmlFor="sectors">
-      Tools
+      {this.i18n('Create.tools', 'Tools')}
       <span className="oc-form-group-info">
-        {lang.ScenarioEditView.toolsInfo}
+        {this.i18n('Create.toolsInfo', 'Products, devices, instruments, methods that will be used to make your idea a reality. Think of “smart phone” or “sensors”. You can also include the ones in the OrganiCity toolkit.')}
       </span>
     </label>
     <div className="col-sm-9">
       <TagField
         id="createEditSearchFormDevices"
-        placeholder="List products, devices and methods needed"
+        placeholder={this.i18n('Create.tools_placeholder', 'List products, devices and methods needed')}
         tags={this.state.devices}
         doEdit={true}
-        clearText={"clear all tools"}
+        clearText={this.i18n('Create.clear_all_tools', 'clear all tools')}
         onChange={this.handleChangedDevices} />
     </div>
   </div>
 
   <div className="form-group oc-form-group oc-edit-group">
     <label className="control-label col-sm-3">
-      Image
+      {this.i18n('Create.image', 'Image')}
       <span className="oc-form-group-info">
-        {lang.ScenarioEditView.imageuploadInfo}
+        {this.i18n('Create.imageuploadInfo', 'Upload an image that symbolises your idea (a sketch, a visualisation...). Use a JPEG or PNG with a minimum width of 600px.')}
       </span>
     </label>
     <div className="col-sm-9">
@@ -673,9 +677,9 @@ form : function() {
     <label
       className="control-label col-sm-3"
       htmlFor="copyright">
-      Image origin
+      {this.i18n('Create.image_origin', 'Image origin')}
       <span className="oc-form-group-info">
-        {lang.ScenarioEditView.imageCopyrightInfo}
+      {this.i18n('Create.imageCopyrightInfo', 'Copyright: Name the author or paste the URL of where you got it.')}
       </span>
     </label>
     <div className="col-sm-9">
@@ -694,8 +698,9 @@ form : function() {
     <label
       className="control-label col-sm-3"
       htmlFor="credit">
-      Credit
+      {this.i18n('Create.credit', 'Credit')}
       <span className="oc-form-group-info">
+        {this.i18n('Create.creditInfo', 'Those who contributed to the scenario.')}
         {lang.ScenarioEditView.creditInfo}
       </span>
     </label>
@@ -721,7 +726,8 @@ form : function() {
             type="text"
             id="oc-creditName-input"
             autoComplete="off"
-            placeholder="name"></input>
+            placeholder={this.i18n('Create.name_placeholder', 'name')}>
+          </input>
         </div>
         <div className="col-md-6">
           <input className="oc-input"
@@ -729,9 +735,11 @@ form : function() {
             type="text"
             id="oc-creditUrl-input"
             autoComplete="off"
-            placeholder="optional url"></input>
+            placeholder={this.i18n('Create.optional_url_placeholder', 'optional url')}></input>
         </div>
-        <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>ADD</button></div>
+        <div className="col-md-3"><button className="oc-button oc-add-credit-btn" onClick={this.addCredit}>
+          {this.i18n('Create.add', 'ADD')}
+        </button></div>
       </div>
     </div>
   </div>
@@ -741,8 +749,9 @@ form : function() {
       <button
         type="button"
         className="oc-button"
-        onClick={this.clickedPreview}
-        >PREVIEW</button>
+        onClick={this.clickedPreview}>
+        {this.i18n('Create.preview', 'PREVIEW')}
+      </button>
     </div>
   </div>
 </form>
@@ -754,7 +763,9 @@ preview : function() {
 
   var btnText = this.editMode() ? 'SUBMIT UPDATED SCENARIO' : 'SUBMIT NEW SCENARIO';
 
-  var title = this.editMode() ? 'Edit your scenario' : 'Share your scenario for our future cities';
+  var edit = this.i18n('Create.edit', 'Edit your scenario');
+  var share = this.i18n('Create.share', 'Share your scenario for our future cities');
+  var title = this.editMode() ? edit : share;
 
   return (
     <div>
