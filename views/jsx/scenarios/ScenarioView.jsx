@@ -6,11 +6,8 @@ import ReactDisqusThread    from 'react-disqus-thread';
 import ScenarioTableView    from './ScenarioTableView.jsx';
 
 import ScenarioEditButton   from './ScenarioEditButton.jsx';
-import ScenarioEvalButton   from './ScenarioEvalButton.jsx';
-import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
-import EvalCom              from './EvalCom.jsx';
-import EvalButton           from './EvalButton.jsx';
+import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 
 import api                  from '../../../api_routes.js';
 import Message              from '../Message.jsx';

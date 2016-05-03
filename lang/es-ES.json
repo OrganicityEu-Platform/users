@@ -30,6 +30,10 @@
 	search_all_scenarios: 'ES Search all scenarios',
 	scenarios: 'ES Scenarios',
 	posted_by: 'ES Posted by:',
+    no_image: 'ES This scenario has no image.',
+	participants: 'ES Participants',
+    sectors: 'ES Sectors',
+    tools: 'ES Tools',
 
 	Reports : {
 		posted_by: 'ES Posted by:',
@@ -80,6 +84,7 @@
 	footer4: 'ES Sign up for updates',
 	blog: 'ES Blog',
 	events: 'ES Events',
+    privacy_policy: 'ES Privacy policy',
 	contact_us: 'ES Contact us',
 	copyright: 'ES Copyright',
 	oc_2015: 'ES OrganiCity 2015',

@@ -6,7 +6,11 @@ var ui_routes = {
   'root'                   : '/?',
   'home'                   : '/?',
 
+  // contact
   'contactUs' : '/contactUs/?',
+
+  // privacy policy
+  'privacy'          : '/privacy/?',
 
   // scenario routes
   'scenarioList'           : '/scenarios/?',

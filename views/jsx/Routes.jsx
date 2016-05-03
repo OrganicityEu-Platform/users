@@ -23,6 +23,8 @@ import Profile               from './auth/Profile.jsx';
 import UserListView          from './auth/UserListView.jsx';
 import UserEditView          from './auth/UserEditView.jsx';
 
+import PrivacyPolicy         from './PrivacyPolicy.jsx';
+
 import QuestionnaireEditView from './admin/QuestionnaireEditView.jsx';
 
 import ui                    from '../../ui_routes.js';
@@ -52,6 +54,7 @@ var routes = (
     <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />
     <Route name="forgot-password"     path={ui.route('forgot-password')}     handler={ForgotPassword}        />
     <Route name="contactUs"           path={ui.route('contactUs')}           handler={ContactUs}             />
+    <Route name="privacy"       path={ui.route('privacy')}       handler={PrivacyPolicy}         />
   </Route>
 );
 

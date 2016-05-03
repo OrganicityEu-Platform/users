@@ -1039,3 +1039,31 @@ and (min-width : 800px) {
     cursor: hand;
     color: @oc-meta-grey;
 }
+
+.oc-privacy-doc {
+  background-color: @oc-white;
+  .oc-macro-content;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.oc-privacy-link {
+  .oc-link;
+  .pink;
+  cursor: pointer;
+  cursor: hand;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.oc-thumbnail-no-image {
+  color: #999;
+  .oc-bold;
+  padding-left: 8px;
+  padding-top: 5px;
+  padding-bottom: 8px;
+  >i {
+    padding-right: 5px;
+  }
+}

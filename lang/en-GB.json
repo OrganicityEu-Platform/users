@@ -30,6 +30,10 @@
 	search_all_scenarios: 'Search all scenarios',
 	scenarios: 'Scenarios',
 	posted_by: 'Posted by:',
+    no_image: 'This scenario has no image.',
+    participants: 'Participants',
+    sectors: 'Sectors',
+    tools: 'Tools',
 
 	Reports : {
 		posted_by: 'Posted by:',
@@ -80,6 +84,7 @@
 	footer4: 'Sign up for updates',
 	blog: 'Blog',
 	events: 'Events',
+    privacy_policy: 'Privacy policy',
 	contact_us: 'Contact us',
 	copyright: 'Copyright',
 	oc_2015: 'OrganiCity 2015',

@@ -22,6 +22,9 @@ var FooterLarge = React.createClass({
   clickHandler: function () {
     this.transitionTo('signup');
   },
+  handlePrivacy: function() {
+    this.transitionTo('privacy');
+  },
   render: function() {
     return (
       <div className="row oc-footer-large">
@@ -48,12 +51,13 @@ var FooterLarge = React.createClass({
           </div>
           <div className="col-lg-4 white oc-footer-col" id="resources-col">
             <p className="oc-footer-title">{this.i18n('footer2', 'More about OrganiCity')}</p>
-            <span><a className="white" href={organicityLink}>{this.i18n('footer3', 'OrganiCity.eu')}</a></span>
+            <span><a className="white oc-link" href={organicityLink}>{this.i18n('footer3', 'OrganiCity.eu')}</a></span>
             <span onClick={this.clickHandler} className="oc-link">
               {this.i18n('footer4', 'Sign up for updates')}
             </span>
-            <span><a className="white" href={organicityBlog}>{this.i18n('blog', 'Blog')}</a></span>
-            <span><a className="white" href={organicityEvents}>{this.i18n('events', 'Events')}</a></span>
+            <span><a className="white oc-link" href={organicityBlog}>{this.i18n('blog', 'Blog')}</a></span>
+            <span><a className="white oc-link" href={organicityEvents}>{this.i18n('events', 'Events')}</a></span>
+            <span className="oc-link oc-link" onClick={this.handlePrivacy}>{this.i18n('privacy_policy', 'Privacy policy')}</span>
           </div>
           <div className="col-lg-5 white oc-footer-col" id="oc-footer-contact-col">
             <p className="oc-footer-title">
