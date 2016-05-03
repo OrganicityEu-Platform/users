@@ -227,4 +227,15 @@
 		add: 'ES ADD',
 		preview: 'ES PREVIEW',
 	},
+
+	Signup : {
+		signup: 'ES Sign up',
+		share_ideas: 'ES Share ideas, discuss and',
+		connect_with: 'es connect with other innovators.',
+		email: 'es email',
+		password: 'es password with at least at least 6 characters',
+        repeat_password: 'es repeat password',
+		have_account: 'ES Already have an account?',
+        login: 'ES Log in',
+	},
 }
