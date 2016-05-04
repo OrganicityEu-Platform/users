@@ -13,6 +13,8 @@ const DEFAULT_LANG = "en-GB";
 var I18nMixin = {
   getInitialState: function() {
     var currentLang;
+    // list of all language codes
+    var languageCodes = ['en-GB', 'es-ES'];
     // key-value map for all languages
     var data = {};
     data.enGB = require('../../../lang/en-GB.json');
@@ -29,7 +31,7 @@ var I18nMixin = {
       // survive, use default  (eg. iOS private mode)
     }
 
-    return { "currentLang": currentLang, "langdata": data };
+    return { "currentLang": currentLang, "langdata": data, "languageCodes": languageCodes };
   },
 
   setCurrentLanguage: function(language) {
@@ -38,7 +40,7 @@ var I18nMixin = {
     } catch (exp) {
     }
     this.setState({currentLang: language});
-    location.reload(); // TODO Shouldnt React be able to do this ???
+    location.reload();
   },
 
   isCurrentLanguage: function(language) {
@@ -49,37 +51,9 @@ var I18nMixin = {
     }
   },
 
-  // currentLanguageDisplayName: function() {
-  //   switch (this.state.currentLang) {
-  //     case 'es-ES':
-  //       return 'Espaniol';
-  //     case 'en-GB':
-  //     default:
-  //       return 'English';
-  //   }
-  // },
-
   // 'es-ES' -> 'Espaniol'
   languageDisplayName: function(languageCode) {
-    try {
-     var lang;
-     var val;
-     // Find language
-     switch (languageCode) {
-       case 'es-ES':
-         lang = this.state.langdata.esES;
-         break;
-       case 'en-GB':
-       default:
-         lang = this.state.langdata.enGB;
-     }
-     // Lookup language display name in language file
-     if (lang && lang['Meta']) {
-       return lang['Meta']['language_name'];
-     }
-    } catch (exp) {
-    }
-    return '';
+    return this.lookup(languageCode, 'Meta.language_name', '');
   },
 
   /**
@@ -92,37 +66,43 @@ var I18nMixin = {
    * 'created_by'
    */
   i18n: function(key, defaultValue) {
-     try {
-       var lang;
-       var val;
-       // Find language
-       switch (this.state.currentLang) {
-         case 'es-ES':
-           lang = this.state.langdata.esES;
-           break;
-         case 'en-GB':
-         default:
-           lang = this.state.langdata.enGB;
-       }
-       // Key format (0 or 1 dot)
-       if (key) {
-         if (key.match(/\w+\.\w+/)) {
-           var key1 = key.split(".")[0];
-           var key2 = key.split(".")[1];
-           val = lang[key1][key2];
-         } else {
-           val = lang[key];
-         }
-       }
-       //
-       if (val) {
-         return val;
-       } else {
-         return defaultValue;
-       }
-     } catch (exp) {
-       return defaultValue;
-     }
+    return this.lookup(this.state.currentLang, key, defaultValue);
+  },
+
+  lookup: function(languageCode, key, defaultValue) {
+    try {
+      var lang;
+      var val;
+      // Find language file (or rather: json)
+      switch (languageCode) {
+        case 'es-ES':
+          lang = this.state.langdata.esES;
+          break;
+        case 'en-GB':
+        default:
+          lang = this.state.langdata.enGB;
+      }
+      // Key format (0 or 1 dot)
+      if (key) {
+        if (key.match(/\w+\.\w+/)) {
+          var key1 = key.split(".")[0];
+          var key2 = key.split(".")[1];
+          val = lang[key1][key2];
+        } else {
+          val = lang[key];
+        }
+      }
+      //
+      if (val) {
+        return val;
+      } else {
+        return defaultValue;
+      }
+    } catch (exp) {
+      console.log('Error:');
+      console.log(exp);
+      return defaultValue;
+    }
   },
 
   // For formatting TimeAgo.

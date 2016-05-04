@@ -14,22 +14,22 @@ var LanguageSwitcher = React.createClass({
 	},
 
 	render: function() {
-		const EN = ui.asset('static/img/flags/en.svg');
-		const ES = ui.asset('static/img/flags/es.svg');
 		var flag = '';
-		// English menuitem
-		if (this.isCurrentLanguage('en-GB')) {
-		  flag = EN;
-	      var miEn = <MenuItem eventKey="en-GB" active><img src={EN} className="lang-flag" ></img>{this.languageDisplayName('en-GB')}</MenuItem>
-		} else {
-	      var miEn = <MenuItem eventKey="en-GB"><img src={EN} className="lang-flag" ></img>{this.languageDisplayName('en-GB')}</MenuItem>
-		}
-		// Spanish menuitem
-		if (this.isCurrentLanguage('es-ES')) {
-		  flag = ES;
-	      var miEs = <MenuItem eventKey="es-ES" active><img src={ES} className="lang-flag" ></img>{this.languageDisplayName('es-ES')}</MenuItem>
-		} else {
-	      var miEs = <MenuItem eventKey="es-ES"><img src={ES} className="lang-flag" ></img>{this.languageDisplayName('es-ES')}</MenuItem>
+		var mitems = [];
+		
+		for (var i = 0; i < this.state.languageCodes.length; i++) {
+			var lc = this.state.languageCodes[i];
+			var currentFlag = ui.asset(this.lookup(lc, 'Meta.flag_url', ''));
+			var isCurrent = this.isCurrentLanguage(lc);
+			if (isCurrent) {
+				flag = currentFlag;
+			}
+	      	var mi = (
+	      		<MenuItem eventKey={lc} active={isCurrent}>
+	      			<img src={currentFlag} className="lang-flag" ></img>
+	      			{this.languageDisplayName(lc)}
+	      		</MenuItem>);
+	      	mitems.push(mi);
 		}
 
 		var title = <span><img src={flag} className="lang-flag" ></img> {this.i18n('Meta.language_name', '')}</span>;
@@ -41,8 +41,7 @@ var LanguageSwitcher = React.createClass({
 			                bsStyle="link"
 							title={title}
 							id="lang-dropdown" onSelect={this.handleClick} >
-		      {miEn}
-		      {miEs}
+			 	{mitems}
 		    </DropdownButton>
 	    );
 	}

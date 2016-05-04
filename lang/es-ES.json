@@ -1,6 +1,7 @@
 {
     Meta : {
         language_name: 'Espaniol',
+        flag_url: 'static/img/flags/es.svg',
     },
     
     created_by: 'Creado por',
