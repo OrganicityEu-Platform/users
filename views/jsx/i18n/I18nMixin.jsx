@@ -49,14 +49,37 @@ var I18nMixin = {
     }
   },
 
-  currentLanguageDisplayName: function() {
-    switch (this.state.currentLang) {
-      case 'es-ES':
-        return 'Espaniol';
-      case 'en-GB':
-      default:
-        return 'English';
+  // currentLanguageDisplayName: function() {
+  //   switch (this.state.currentLang) {
+  //     case 'es-ES':
+  //       return 'Espaniol';
+  //     case 'en-GB':
+  //     default:
+  //       return 'English';
+  //   }
+  // },
+
+  // 'es-ES' -> 'Espaniol'
+  languageDisplayName: function(languageCode) {
+    try {
+     var lang;
+     var val;
+     // Find language
+     switch (languageCode) {
+       case 'es-ES':
+         lang = this.state.langdata.esES;
+         break;
+       case 'en-GB':
+       default:
+         lang = this.state.langdata.enGB;
+     }
+     // Lookup language display name in language file
+     if (lang && lang['Meta']) {
+       return lang['Meta']['language_name'];
+     }
+    } catch (exp) {
     }
+    return '';
   },
 
   /**

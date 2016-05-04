@@ -1,4 +1,8 @@
 {
+    Meta : {
+        language_name: 'English',
+    },
+
     created_by: 'Created by',
     views: 'Views',
     comments: 'Comments',

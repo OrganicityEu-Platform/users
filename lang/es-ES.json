@@ -1,4 +1,8 @@
 {
+    Meta : {
+        language_name: 'Espaniol',
+    },
+    
     created_by: 'Creado por',
     views: 'ES views',
     comments: 'ES comments',

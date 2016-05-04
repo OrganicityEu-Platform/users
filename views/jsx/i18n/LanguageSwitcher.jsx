@@ -20,19 +20,19 @@ var LanguageSwitcher = React.createClass({
 		// English menuitem
 		if (this.isCurrentLanguage('en-GB')) {
 		  flag = EN;
-	      var miEn = <MenuItem eventKey="en-GB" active><img src={EN} className="lang-flag" ></img>English</MenuItem>
+	      var miEn = <MenuItem eventKey="en-GB" active><img src={EN} className="lang-flag" ></img>{this.languageDisplayName('en-GB')}</MenuItem>
 		} else {
-	      var miEn = <MenuItem eventKey="en-GB"><img src={EN} className="lang-flag" ></img>English</MenuItem>
+	      var miEn = <MenuItem eventKey="en-GB"><img src={EN} className="lang-flag" ></img>{this.languageDisplayName('en-GB')}</MenuItem>
 		}
 		// Spanish menuitem
 		if (this.isCurrentLanguage('es-ES')) {
 		  flag = ES;
-	      var miEs = <MenuItem eventKey="es-ES" active><img src={ES} className="lang-flag" ></img>Espaniol</MenuItem>
+	      var miEs = <MenuItem eventKey="es-ES" active><img src={ES} className="lang-flag" ></img>{this.languageDisplayName('es-ES')}</MenuItem>
 		} else {
-	      var miEs = <MenuItem eventKey="es-ES"><img src={ES} className="lang-flag" ></img>Espaniol</MenuItem>
+	      var miEs = <MenuItem eventKey="es-ES"><img src={ES} className="lang-flag" ></img>{this.languageDisplayName('es-ES')}</MenuItem>
 		}
 
-		var title = <span><img src={flag} className="lang-flag" ></img> {this.currentLanguageDisplayName()}</span>;
+		var title = <span><img src={flag} className="lang-flag" ></img> {this.i18n('Meta.language_name', '')}</span>;
 
 		return (
 			<DropdownButton key="langswitch"
