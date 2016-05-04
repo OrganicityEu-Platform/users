@@ -11,6 +11,8 @@
     eval_this_scenario: 'Evaluate this scenario',
     i_like: 'I like...',
     i_dislike: 'I dislike...',
+    thankyou_feedback: 'Thank you for your feedback',
+    feedback_received: 'Feedback received',
     send_feedback: 'SEND FEEDBACK',
     explore: 'EXPLORE',
     create: 'CREATE',

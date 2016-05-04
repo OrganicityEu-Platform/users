@@ -125,7 +125,7 @@ var Feedback = React.createClass({
           },
           success: () => {
             this.setState({show: false});
-            this.flash('success', 'Thank you for your feedback', 150000);
+            this.flash('success', this.i18n('thankyou_feedback', 'Thank you for your feedback'), 150000);
           }
         });
       }
@@ -141,7 +141,7 @@ var Feedback = React.createClass({
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">
             <h3>
-              Feedback recieved
+              {this.i18n('feedback_received', 'Feedback received')}
             </h3>
             <span>
               {this.getUserFeedback()}

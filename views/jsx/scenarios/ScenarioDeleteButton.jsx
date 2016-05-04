@@ -7,11 +7,12 @@ import UserHasRoleMixin   from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin from '../UserIsCreatorMixin.jsx';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 
 var ScenarioDeleteButton = React.createClass({
-  mixins: [UserHasRoleMixin, UserIsCreatorMixin, LoadingMixin],
+  mixins: [UserHasRoleMixin, UserIsCreatorMixin, LoadingMixin, I18nMixin],
   handleClick: function() {
     var sure = window.confirm('Are you sure you want to delete this version of the scenario?');
     if (sure) {
@@ -44,7 +45,7 @@ var ScenarioDeleteButton = React.createClass({
         return (
           <button className="oc-button"
             disabled={this.isLoading() ? 'loading' : ''}
-            onClick={this.handleClick}>DELETE</button>
+            onClick={this.handleClick}>{this.i18n('Admin.delete', 'DELETE')}</button>
         );
       }
     }
