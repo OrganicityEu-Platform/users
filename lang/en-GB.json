@@ -27,7 +27,9 @@
 	about: 'About',
 	reports: 'Reports',
 	profile: 'Profile',
+    logout: 'Logout',
 	log_out: 'Log out',
+    logging_you_out: 'Logging you out...',
 	log_in: 'Log in',
 	join_community: 'join the community to',
 	explore_share_discuss: 'explore, share and discuss',
@@ -110,6 +112,8 @@
 	notice: 'NOTICE',
 
 	login_successful: 'Login successful.',
+    logout_successful: 'Logout successful!',
+    logout_fail: 'Logout failed',
 	email: 'email',
 	password: 'password',
 	need_an_account: 'Need an account?',

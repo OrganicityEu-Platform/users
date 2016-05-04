@@ -4,6 +4,7 @@ import Router               from 'react-router';
 
 import UserIsLoggedInMixin  from '../UserIsLoggedInMixin.jsx'
 import LoadingMixin         from '../LoadingMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 import FlashQueue           from '../FlashQueue.jsx';
 
 import api                  from '../../../api_routes.js';
@@ -18,7 +19,6 @@ import UserJoi      from '../../../models/joi/user.js';
 import Message      from '../Message.jsx';
 
 import DocumentTitle      from 'react-document-title';
-import I18nMixin from '../i18n/I18nMixin.jsx';
 
 var Link = Router.Link;
 

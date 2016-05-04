@@ -27,7 +27,9 @@
 	about: 'ES About',
 	reports: 'ES Reports',
 	profile: 'ES profile',
+	logout: 'ES Logout',
 	log_out: 'ES log out',
+	logging_you_out: 'ES Logging you out...',
 	log_in: 'ES log in',
 	join_community: 'es join the community to',
 	explore_share_discuss: 'es explore, share and discuss',
@@ -110,6 +112,8 @@
 	notice: 'ES NOTICE',
 
 	login_successful: 'ES Login successful.',
+    logout_successful: 'ES Logout successful!',
+    logout_fail: 'ES Logout failed',
 	email: 'ES email',
 	password: 'ES password',
 	need_an_account: 'ES Need an account?',
