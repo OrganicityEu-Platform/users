@@ -20,7 +20,7 @@ module.exports = function(router, passport) {
       }));
     });
   });
-  router.get(api.route('feedback_by_scenario'), [isLoggedIn], function(req, res) {
+  router.get(api.route('feedback_by_scenario'), function(req, res) {
     Feedback.find({'scenario.uuid': req.params.uuid}, function(err, feedback) {
       if (err) {
         console.log(err);
@@ -29,7 +29,7 @@ module.exports = function(router, passport) {
       return res.status(HttpStatus.OK).send(feedback);
     });
   });
-  router.post(api.route('feedback_list'), [isLoggedIn], function(req, res, next) {
+  router.post(api.route('feedback_list'), function(req, res, next) {
     var feedback = new Feedback(req.body);
     feedback.uuid = uuid.v4();
     feedback.save(function(err) {
@@ -41,7 +41,7 @@ module.exports = function(router, passport) {
     });
 
   });
-  router.get(api.route('feedback_by_user'), [isLoggedIn], function(req, res) {
+  router.get(api.route('feedback_by_user'), function(req, res) {
     Feedback.find({ user : req.params.uuid }, function(err, feedback) {
       if (err) {
         console.log(err);

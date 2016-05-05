@@ -2,9 +2,11 @@ import $                    from 'jquery';
 import ui                   from '../../../ui_routes.js';
 import api                  from '../../../api_routes.js';
 import React                from 'react';
+import TimeAgo              from 'react-timeago';
+import FlashQueue           from '../FlashQueue.jsx';
+import UserAvatar           from '../users/UserAvatar.jsx';
 import ValidationIndicator  from '../ValidationIndicator.jsx'
 
-import FlashQueue           from '../FlashQueue.jsx';
 import LoadingMixin         from '../LoadingMixin.jsx';
 import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
@@ -54,51 +56,51 @@ var Feedback = React.createClass({
     var url = api.reverse('feedback_by_scenario', { uuid : this.state.scenario.uuid });
     $.ajax(url, {
       dataType: 'json',
-      success : this.handleUserFeedback
+      success : (feedback) => this.setState({
+        userFeedback: feedback
+      })
     });
   },
-  handleUserFeedback: function(feedback){
-    var e;
-    for(e = 0; e < feedback.length; e++) {
-      var tick = {
-        user: feedback[e].user,
-        like: feedback[e].like,
-        dislike: feedback[e].dislike
-        // TODO: add timestamp in api
-      };
-      var tock =
-      <div>
-        <span className="oc-feedback-user-label">
-          <span className="pink">
-            {feedback[e].user}
-          </span>
-          <span> said</span>
-        </span>
-
-        <p>
-          <img
-            className="oc-feedback-arrow"
-            src={ui.asset('static/img/icon-09.png')}/>
-          {feedback[e].like}
-        </p>
-        <p>
-          <img
-            className="oc-feedback-arrow"
-            src={ui.asset('static/img/icon-10.png')}/>
-          {feedback[e].dislike}
-        </p>
-      </div>
-      ;
-      this.state.userFeedback.push(tock);
-    }
-    this.setState(this.state);
-  },
   getUserFeedback: function() {
-    return this.state.userFeedback.map(function(feedback, i){
-      return <div>
-        {feedback}
-      </div>;
-    }, this);
+    if(this.state.userFeedback.length === 0) {
+      return <div>This scenario has not recieved any feedback yet.</div>;
+    }else {
+      return this.state.userFeedback.map(function(feedback, i){
+        console.log("uuu: " + JSON.stringify(feedback));
+        return <div className="oc-feedback" key={i}>
+          <span className="oc-feedback-user-label">
+            {feedback.user === 'Anonymous' ?
+              <span>
+                <span className="gray">Anonymous</span><span> said:</span>
+                <span className="oc-feedback-timestamp">
+                  {feedback.timestamp ? <TimeAgo date={feedback.timestamp}/> : <span className="gray">No date</span>}
+                </span>
+              </span>
+              :
+              <span>
+                <span><UserAvatar uuid={feedback.user}/> said:</span>
+
+                  <span className="oc-feedback-timestamp">
+                    {feedback.timestamp ? <TimeAgo date={feedback.timestamp}/> : <span className="gray">No date</span>}
+                  </span>
+              </span>
+            }
+          </span>
+          <p>
+            <img
+              className="oc-feedback-arrow"
+              src={ui.asset('static/img/icon-09.png')}/>
+            {feedback.like}
+          </p>
+          <p>
+            <img
+              className="oc-feedback-arrow"
+              src={ui.asset('static/img/icon-10.png')}/>
+            {feedback.dislike}
+          </p>
+        </div>;
+      }, this);
+    }
   },
   handleSubmit: function() {
 
@@ -139,9 +141,9 @@ var Feedback = React.createClass({
       <div className="row">
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">
-            <h3>
+            <h2 className="pink">
               Feedback recieved
-            </h3>
+            </h2>
             <span>
               {this.getUserFeedback()}
             </span>
@@ -158,9 +160,9 @@ var Feedback = React.createClass({
           <div className="oc-macro-content">
             <div className="oc-feedback-wrapper">
               <div>
-                <h3>
+                <h2 className="pink">
                   Evaluate this scenario
-                </h3>
+                </h2>
                 </div>
                 <form className="form-horizontal">
                   <div

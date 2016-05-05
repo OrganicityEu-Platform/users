@@ -5,6 +5,7 @@ var schema = mongoose.Schema({
   user      : { type: String, required: true    }, // UUID of user that provided the feedback
   like      : { type: String, required: true    },
   dislike   : { type: String, required: true    },
+  timestamp : { type: Date                      }, // set when created
   scenario  : {
     uuid    : { type: String, required: true    }, // UUID of the scenario that is being evaluated
     version : { type: Number, required: true    }, // version of the scenario that is being evaluated

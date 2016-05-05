@@ -71,7 +71,7 @@ var Favorite = React.createClass({
           </div>:
       <div onClick={this.setFavorite} className="oc-tableview-bookmark-wrapper">
         <i className="fa fa-bookmark-o oc-tableview-bookmark-icon"></i>
-        <span> Bookmark</span>
+        <span> Bookmark scenario</span>
         </div>;
     }
 });

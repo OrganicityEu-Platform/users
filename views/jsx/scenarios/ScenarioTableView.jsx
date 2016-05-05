@@ -19,8 +19,10 @@ import Favorite        from './Favorite.jsx';
 
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
+import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
+
 var ScenarioTableView = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, UserIsCreatorMixin],
   handleCreditClick: function(i, creditorUrl) {
     window.open(creditorUrl, '_blank');
   },
@@ -163,19 +165,26 @@ var ScenarioTableView = React.createClass({
                       </p>
                     </div>
                   </div>
+                  <br />
                   <div className="col-lg-8 col-lg-pull-4 scenario-article-header-left-bottom">
-                    <div className="col-lg-12">
-                      <Favorite
-                        scenario={this.props.scenario.uuid}
-                        />
-                    </div>
-                    <div className="col-lg-12 scenario-article-indicator-wrapper">
-                      <ScenarioIndicator
-                        evaluations={userEvaluations}
-                        scenario={this.props.scenario}
-                        showEvalText={true} />
-                    </div>
+
                     <div className="scenario-article-heading-wrapper">
+                      <div className="col-lg-12 scenario-article-indicator-wrapper">
+                        <span>
+                          {this.userIsCreator(this.props.scenario) ?
+                            null :
+                              <ScenarioRating
+                              scenario={this.props.scenario}
+                              enabled={true}
+                              className={"oc-article-rate-star"}
+                              />}
+                          {this.userIsCreator(this.props.scenario) ?
+                              null :
+                              <Favorite
+                              scenario={this.props.scenario.uuid}
+                              />}
+                        </span>
+                      </div>
                       <h2 className="scenario-article-title">
                         {this.props.scenario.title}
                       </h2>

@@ -75,12 +75,9 @@ var ScenarioThumbnail = React.createClass({
                 <div className="oc-thumbnail-rating-wrapper">
                   <ScenarioRating
                     scenario={this.props.scenario}
-                    className={"oc-thumbnail-star"} />
+                    className={"oc-thumbnail-star"}
+                    doSimple={true} />
                 </div>
-                <ScenarioIndicator
-                  evaluations={userEvaluations}
-                  scenario={this.props.scenario}
-                  showEvalText={true} />
               </span>
               <h3 className="scenario-thumbnail-title">
                 {this.props.scenario.title}

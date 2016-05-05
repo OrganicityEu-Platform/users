@@ -92,6 +92,7 @@ a:hover {
   //background-repeat: no-repeat;
   //background-size: 100%;
   //background-position: center top;
+  background-color: lightgrey;
 }
 
 .ocTable {
@@ -231,10 +232,9 @@ input[type="submit"] {
   .scenario-article-widget-data {
     float: left;
   }
-}
-
-.scenario-article-summary-wrapper {
-  padding-right: 15px;
+  .scenario-article-indicator-wrapper {
+    padding-top: 15px;
+  }
 }
 
 .oc-home-view-footer {
@@ -327,7 +327,7 @@ and (max-width : 1400px) {
   }
   .scenario-article-widget-data {
     padding-left: 0;
-    padding-right: 0;
+    padding-right: 70px;
   }
   .oc-page-wrapper {
     width: 100% !important;
@@ -801,9 +801,11 @@ and (min-width : 800px) {
   margin: 0;
 }
 
-.scenario-article-indicator-wrapper #scenarioIndicator {
-  float: left;
-  padding-top: 15px;
+.scenario-article-indicator-wrapper {
+  padding-left: 5px;
+  #scenarioIndicator {
+    padding-top: 6px;
+  }
 }
 
 .oc-thumbnail-rating-wrapper {
@@ -812,13 +814,19 @@ and (min-width : 800px) {
 
 #scenarioIndicator > i {
   font-size: 22px;
-  padding-top: 8px;
-  padding-right: 5px;
+  padding-right: 8px;
+  vertical-align: top;
+}
+
+.oc-feedback {
+  background: @oc-white;
+  padding: 15px 15px 5px 15px;
+  margin-bottom: 15px;
+
 }
 
 .oc-feedback-wrapper {
-  background-color: @oc-white;
-  padding: 15px 15px 15px 25px;
+  padding: 0;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -830,10 +838,6 @@ and (min-width : 800px) {
 
 .oc-feedback-text {
   min-height: 85px;
-}
-
-#oc-like-text-wrapper {
-  padding-bottom: 0 !important;
 }
 
 .oc-feedback-label-text {
@@ -873,6 +877,7 @@ and (min-width : 800px) {
 .oc-feedback-label-icon {
   height: 40px;
   padding-right: 15px;
+  padding-bottom: 5px;
 }
 
 .oc-feedback-arrow {
@@ -883,7 +888,6 @@ and (min-width : 800px) {
 .oc-feedback-user-label {
   padding-bottom: 12px;
   display: inline-block;
-  padding-top: 20px;
 }
 
 .oc-feedback-success-msg {
@@ -899,10 +903,11 @@ and (min-width : 800px) {
 }
 
 .oc-article-rate-star {
-  height: 30px;
+  height: 23px;
   margin-right: 8px;
   cursor: pointer;
   cursor: hand;
+  margin-left: -3px;
 }
 
 .oc-article-star-rating-wrapper {
@@ -1026,6 +1031,13 @@ and (min-width : 800px) {
   font-size: 25px;
   .pink;
   vertical-align: middle;
+  padding-right: 8px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.oc-tableview-bookmark-wrapper {
+  padding-top: 8px;
 }
 
 .oc-tableview-bookmark-wrapper > span {
@@ -1060,4 +1072,8 @@ and (min-width : 800px) {
   >i {
     padding-right: 5px;
   }
+}
+
+.oc-feedback-timestamp {
+  display: block;
 }

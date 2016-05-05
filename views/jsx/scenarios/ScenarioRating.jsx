@@ -21,7 +21,9 @@ var ScenarioRating = React.createClass({
       enabled: this.props.enabled ? this.props.enabled : false,
       scenario: this.props.scenario ? this.props.scenario : null,
       userRating: [],
-      showThanks: false
+      hover: false,
+      showThanks: false,
+      doSimple: this.props.doSimple ? this.props.doSimple : false,
     };
   },
   componentWillMount: function() {
@@ -136,22 +138,75 @@ var ScenarioRating = React.createClass({
       this.setState(this.state);
     }
   },
+  doHover: function() {
+    if(!this.state.doMeta) {
+      this.setState({
+        hover: true
+      });
+    }
+    console.log(this.state.hover);
+  },
   getIcons: function(){
     return this.state.icons.map(function(icon, i){
-      return <span>
-        <img
-          className={this.props.className}
-          src={ui.asset('static/img/'.concat(this.state.icons[i]))}
-          onClick={this.handleClick.bind(this, i)}
-          />
-      </span>;
+      if(this.state.doSimple) {
+        return <span>
+          <img
+            className={this.props.className}
+            src={ui.asset('static/img/'.concat(this.state.icons[i]))}
+            onClick={this.handleClick.bind(this, i)}
+            />
+        </span>;
+      }
+      if(this.state.doMeta) {
+        return <span>
+          <img
+            className={this.props.className}
+            src={ui.asset('static/img/'.concat(this.state.icons[i]))}
+            />
+        </span>;
+      }
+      if(this.state.hover) {
+        return <span>
+          <img
+            className={this.props.className}
+            src={ui.asset('static/img/'.concat(this.state.icons[i]))}
+            onClick={this.handleClick.bind(this, i)}
+            />
+        </span>;
+      } else if(i < 1 ) {
+        return <span>
+          <img
+            className={this.props.className}
+            src={ui.asset('static/img/'.concat(this.state.icons[0]))}
+            />
+        </span>;
+      }
     }, this);
   },
+  noHover: function() {
+    this.setState({hover: false});
+  },
   render: function() {
+
+    if(this.state.doSimple) {
+      return (
+        <div>
+          {this.getIcons()}
+        </div>
+      );
+    }
+
     return (
       <div>
-        {this.getIcons()}
-        {this.state.enabled && this.state.showThanks ? null : null}
+        {this.state.doMeta ?
+          this.getIcons() :
+          <span
+            className="gray"
+            onMouseLeave={this.noHover}
+            onMouseOver={this.doHover}>
+            {this.getIcons()}
+            Rate scenario
+          </span>}
       </div>
     );
   }
