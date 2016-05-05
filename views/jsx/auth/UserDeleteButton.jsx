@@ -3,9 +3,10 @@ import React        from 'react';
 import api          from '../../../api_routes.js';
 
 import LoadingMixin from '../LoadingMixin.jsx';
+import I18nMixin    from '../i18n/I18nMixin.jsx';
 
 var UserDeleteButton = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, I18nMixin],
   handleClick: function() {
     var sure = window.confirm(
       'Are you sure you want to delete the account of ' + this.props.user.name +
@@ -30,7 +31,7 @@ var UserDeleteButton = React.createClass({
     return (
       <button className="oc-button"
         disabled={this.isLoading() ? 'disabled' : ''}
-        onClick={this.handleClick}>DELETE</button>
+        onClick={this.handleClick}>{this.i18n('Admin.delete', 'DELETE')}</button>
     );
   }
 });

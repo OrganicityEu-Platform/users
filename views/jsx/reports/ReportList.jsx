@@ -2,9 +2,8 @@ import $                  from 'jquery';
 import React              from 'react';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
-// import ScenarioListItem   from './ScenarioListItem.jsx';
-// import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 import ReportThumbnails   from './ReportThumbnails.jsx';
 import Router             from 'react-router';
 import TagField           from '../form-components/TagField.jsx';
@@ -20,7 +19,8 @@ import config             from '../../../config/config.js';
 import DocumentTitle      from 'react-document-title';
 
 var ReportList = React.createClass({
-  mixins: [Router.Navigation, LoadingMixin],
+  mixins: [Router.Navigation, LoadingMixin, I18nMixin],
+
   getInitialState: function() {
     return {
       refresh : false,
@@ -158,59 +158,75 @@ var ReportList = React.createClass({
     // this.reload(true);
   },
   render: function() {
-
-    // if (this.isLoading()) {
-    //   return (<Loading message="Loading reports. Please wait." size="2"/>);
-    // }
-
     var counter = null;
     if (this.state.search.q) {
       counter = (
         <h2 className="oc-white">
-          Your search yields to {this.state.reports.length} reports!
+          {this.i18n('Reports.your_search_yields_to', 'Your search yields to')} {this.state.reports.length} {this.i18n('Reports.reports', 'reports!')}
         </h2>
       );
     } else {
       counter = (
         <h2 className="oc-white">
-          Here you can explore {this.state.reportCounter} reports!
+          {this.i18n('Reports.here_you_can_explore', 'Here you can explore')} {this.state.reportCounter} {this.i18n('Reports.reports', 'reports!')}
         </h2>
       );
     }
 
+    var tabTitle = config.title + ' | ' +
+        this.i18n('Reports.admin',' Admin') + ' | ' +
+        this.i18n('Reports.report_list',' Report List');
+
     return (
       <div className="scenario-list col-lg-8 col-lg-offset-2">
-        <DocumentTitle title={config.title + ' | Admin | Report List'} />
+        <DocumentTitle title={tabTitle} />
+        <h1 className="oc-pink">
+          {this.i18n('Reports.explore_reports', 'Explore reports')}
+        </h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
-            <form className="scenario-list-search-form" onSubmit={this.handleSearch}>
-
+            <form
+              className="scenario-list-search-form"
+              onSubmit={this.handleSearch}>
               <div className="form-group" id="oc-search-form">
                 <div className="input-group">
-                 <input type="text" className="form-control oc-search-field" id="reportListSearchFormQ" placeholder="search reports..." name="q" disabled={this.isLoading() ? 'disabled' : ''}
-                 value={this.state.search.q}
-                 onChange={this.handleUpdatedSearchTerm}/>
-                 <span className="input-group-btn">
-                   <button type="submit"
-                     value="Search"
-                     disabled={this.isLoading() ? 'disabled' : ''}
-                     className="btn btn-primary" id="oc-search-btn"><span className="fa fa-search"></span></button>
-                 </span>
+                  <input
+                    type="text"
+                    id="reportListSearchFormQ"
+                    className="oc-input-extra"
+                    placeholder={this.i18n('Reports.search_reports', "search reports...")}
+                    name="q"
+                    disabled={this.isLoading() ? 'disabled' : ''}
+                    value={this.state.search.q}
+                    onChange={this.handleUpdatedSearchTerm}/>
+                  <span className="input-group-btn">
+                    <button
+                      type="submit"
+                      value="Search"
+                      disabled={this.isLoading() ? 'disabled' : ''}
+                      className="btn btn-primary"
+                      id="oc-search-btn">
+                      <span className="fa fa-search">
+                      </span>
+                    </button>
+                  </span>
                 </div>
-
-                </div>
+              </div>
 
               <Accordion>
                 <Panel
-                  header={<span><span className="oc-bold white">filter tags</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
+                  header={<span><span className="oc-bold white">{this.i18n('Reports.filter_tags', 'filter tags')}</span><i id="oc-search-desc-icon" className="fa fa-sort-desc white"></i></span>}
                   eventKey="1"
                   className="oc-filters-panel">
-                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i> Seeing too many reports? Narrow your search by using the tags below.</div>
+                  <div className="oc-filters-info"><i className="fa fa-info-circle"></i>
+                    {this.i18n('Reports.too_many_reports', 'Seeing too many reports? Narrow your search by using the tags below.')}
+                  
+                  </div>
                   <div className="form-group">
                     <TagField
                       id="reportListSearchFormAreas"
                       tags={this.state.search.areas}
-                      placeholder="Add area tags"
+                      placeholder={this.i18n('Reports.add__tags', 'Add area tags')}
                       onChange={this.handleUpdatedAreas}
                       data={['Global', 'UK', 'DK', 'BE', 'NL', 'BR', 'Copenhagen (DK)', 'EU', 'London (UK)', 'Barcelona (ES)', 'Boston (US)', 'Amsterdam (NL)']}
                       suggestionsLabel="suggestions"
@@ -222,7 +238,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormDomains"
                       tags={this.state.search.domains}
-                      placeholder="Add domain tags"
+                      placeholder={this.i18n('Reports.add_domain_tags', 'Add domain tags')}
                       onChange={this.handleUpdatedDomains}
                       data={['Energy', 'Environment', 'Resources', 'Mobility', 'Living', 'ICT']}
                       suggestionsLabel="suggestions"
@@ -234,7 +250,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormOrganizations"
                       tags={this.state.search.organizations}
-                      placeholder="Add organization tags"
+                      placeholder={this.i18n('Reports.add_org_tags', 'Add organization tags')}
                       onChange={this.handleUpdatedOrganizations}
                       data={['UK Department for Business', 'Innovation & Skills', 'BIS', 'City of London', 'European Parliament', 'European Commission', 'The Climate Group', 'EUROCITIES', 'URBACT']}
                       suggestionsLabel="suggestions"
@@ -246,7 +262,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormOrgtypes"
                       tags={this.state.search.orgtypes}
-                      placeholder="Add organization type tags"
+                      placeholder={this.i18n('Reports.add_orgtype_tags', 'Add organization type tags')}
                       onChange={this.handleUpdatedOrgtypes}
                       data={['National public institution', 'Universities', 'Non-profit organisations', 'NGOs', 'Foundations', 'Research centres', 'Charities']}
                       suggestionsLabel="suggestions"
@@ -258,7 +274,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormTypes"
                       tags={this.state.search.types}
-                      placeholder="Add report type tags"
+                      placeholder={this.i18n('Reports.add_report_type_tags', 'Add report type tags')}
                       onChange={this.handleUpdatedTypes}
                       data={['Research paper', 'Background paper', 'Catalogue', 'Summit report', 'Scoping paper', 'White paper', 'Brochure', 'Survey']}
                       suggestionsLabel="suggestions"
@@ -270,7 +286,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormApproaches"
                       tags={this.state.search.approaches}
-                      placeholder="Add approach tags"
+                      placeholder={this.i18n('Reports.add_approach_tags', 'Add approach tags')}
                       onChange={this.handleUpdatedApproaches}
                       data={['Vertical', 'Holistic']}
                       suggestionsLabel="suggestions"
@@ -282,7 +298,7 @@ var ReportList = React.createClass({
                     <TagField
                       id="reportListSearchFormTags"
                       tags={this.state.search.tags}
-                      placeholder="Add report tags"
+                      placeholder={this.i18n('Reports.add_report_tags', 'Add report tags')}
                       onChange={this.handleUpdatedTags}
                       data={['Smart', 'Water', 'Market', 'Management', 'Energy', 'Cities', 'City', 'Transport', 'Waste', 'Technology', 'Data']}
                       suggestionsLabel="suggestions"

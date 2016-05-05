@@ -7,6 +7,7 @@ import SocialmediaLogin from './SocialmediaLogin.jsx';
 
 import FlashQueue       from '../FlashQueue.jsx';
 import LoadingMixin     from '../LoadingMixin.jsx';
+import I18nMixin        from '../i18n/I18nMixin.jsx';
 
 // Input validation
 import validation       from 'react-validation-mixin';
@@ -21,7 +22,7 @@ var Link = Router.Link;
 var Navigation = Router.Navigation;
 
 var Signup = React.createClass({
-  mixins: [Navigation, FlashQueue.Mixin, LoadingMixin],
+  mixins: [Navigation, FlashQueue.Mixin, LoadingMixin, I18nMixin],
   getInitialState : function() {
     return {
       email : '',
@@ -88,15 +89,17 @@ var Signup = React.createClass({
   },
   render : function() {
 
+    var title = config.title + ' | ' + this.i18n('Signup.signup', 'Sign up');
+
     return (
       <form>
-        <DocumentTitle title={config.title + ' | Sign up'} />
+        <DocumentTitle title={title} />
         <div className="row">
           <div className="oc-signup-wrapper col-sm-4 col-sm-offset-4">
-            <h1 className="oc-pink oc-login-signup-title">Sign up</h1>
+            <h1 className="oc-pink oc-login-signup-title">{this.i18n('Signup.signup', 'Sign up')}</h1>
               <p className="oc-signup-description">
-                <span>Share ideas, discuss and</span>
-                <span>connect with other innovators.</span>
+                <span>{this.i18n('Signup.share_ideas', 'Share ideas, discuss and')}</span>
+                <span>{this.i18n('Signup.connect_with', 'connect with other innovators.')}</span>
               </p>
             <div className="social-logins-wrapper">
               <SocialmediaLogin/>
@@ -104,7 +107,7 @@ var Signup = React.createClass({
             <div className="form-group">
               <input type="text"
                 className="oc-input"
-                placeholder="email"
+                placeholder={this.i18n('Signup.email', 'email')}
                 name="email"
                 value={this.state.email}
                 disabled={this.isLoading() ? 'disabled' : ''}
@@ -114,7 +117,7 @@ var Signup = React.createClass({
             <div className="form-group">
               <input type="password"
                 className="oc-input"
-                placeholder="password with at least at least 6 characters"
+                placeholder={this.i18n('Signup.password', 'password with at least at least 6 characters')}
                 name="password"
                 value={this.state.password}
                 disabled={this.isLoading() ? 'disabled' : ''}
@@ -124,7 +127,7 @@ var Signup = React.createClass({
             <div className="form-group">
               <input type="password"
                 className="oc-input"
-                placeholder="repeat password"
+                placeholder={this.i18n('Signup.repeat_password', 'repeat password')}
                 name="password_repeat"
                 disabled={this.isLoading() ? 'disabled' : ''}
                 value={this.state.password_repeat}
@@ -132,11 +135,14 @@ var Signup = React.createClass({
               <Message type="danger" messages={this.props.getValidationMessages('password_repeat')} />
             </div>
             <button type="submit"
-              className="oc-button"
+              className="oc-button all-uppercase"
               disabled={this.isLoading() ? 'disabled' : ''}
-              onClick={this.handleSubmit}>SIGN UP</button>
+              onClick={this.handleSubmit}>{this.i18n('Signup.signup', 'SIGN UP')}</button>
             <div className="oc-signup-help-wrapper">
-              <span className="signup-help">Already have an account? <Link to="login">Log in</Link></span>
+              <span className="signup-help">{this.i18n('Signup.have_account', 'Already have an account?')}
+                &nbsp;
+                <Link to="login">{this.i18n('Signup.login', 'Log in')}</Link>
+              </span>
             </div>
           </div>
         </div>

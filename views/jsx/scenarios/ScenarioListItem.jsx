@@ -3,11 +3,14 @@ import ScenarioEditButton   from './ScenarioEditButton.jsx';
 import ScenarioDeleteButton from './ScenarioDeleteButton.jsx';
 import UserAvatar           from '../users/UserAvatar.jsx';
 import TimeAgo              from 'react-timeago';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var ScenarioListItem = React.createClass({
+  mixins: [I18nMixin],
+
   render: function() {
     return (
       <tr className="scenarioListItem">
@@ -20,7 +23,7 @@ var ScenarioListItem = React.createClass({
         <td className="scenarioListItemTimestamp">
 
           { this.props.scenario.timestamp ?
-                <TimeAgo date={this.props.scenario.timestamp} /> : ''
+                <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} /> : ''
           }
         </td>
         <td><UserAvatar uuid={this.props.scenario.creator} /></td>

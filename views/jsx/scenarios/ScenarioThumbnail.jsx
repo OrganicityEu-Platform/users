@@ -8,13 +8,14 @@ import ellipsis           from '../../../util/ellipsis.js';
 import Score              from '../Score.jsx';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
 import ScenarioRating     from './ScenarioRating.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var ScenarioThumbnail = React.createClass({
 
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, I18nMixin],
   getInitialState: function(){
     return {
       image: this.props.scenario.thumbnail,
@@ -51,7 +52,7 @@ var ScenarioThumbnail = React.createClass({
     if (this.state.image) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
     }else {
-      thumbnail = <span className={"oc-thumbnail-no-image"}><i className="fa fa-picture-o"></i> This scenario has no image.</span>;
+      thumbnail = <span className={"oc-thumbnail-no-image"}><i className="fa fa-picture-o"></i> {this.i18n('no_image', 'This scenario has no image.')}</span>;
     }
 
     return (
@@ -68,9 +69,11 @@ var ScenarioThumbnail = React.createClass({
             <header className="scenario-thumbnail-header">
               <span>
                 <span className="scenario-thumbnail-timestamp">
-                  { this.props.scenario.timestamp ?
-                    <TimeAgo date={this.props.scenario.timestamp} />
-                    : '' }
+                  {
+                    this.props.scenario.timestamp ?
+                    <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
+                    : ''
+                  }
                 </span>
                 <div className="oc-thumbnail-rating-wrapper">
                   <ScenarioRating
@@ -83,7 +86,7 @@ var ScenarioThumbnail = React.createClass({
                 {this.props.scenario.title}
               </h3>
               <span className="scenario-thumbnail-publisher-wrapper">
-                <span className="meta">Posted by: </span>
+                <span className="meta">{this.i18n('posted_by', 'Posted by:')} </span>
                 <span className="scenario-thumbnail-publisher">
                   <UserAvatar uuid={this.props.scenario.creator}
                     name={this.props.scenario.creatorName} />
@@ -95,9 +98,9 @@ var ScenarioThumbnail = React.createClass({
             </p>
 
             <span className="scenario-thumbnail-sat-wrapper">
-              <span>Participants: {actors}</span>
-              <span>Sectors: {sectors}</span>
-              <span>Tools: {tools}</span>
+              <span>{this.i18n('participants', 'Participants')}: {actors}</span>
+              <span>{this.i18n('sectors', 'Sectors')}: {sectors}</span>
+              <span>{this.i18n('tools', 'Tools')}: {tools}</span>
             </span>
             <div className={this.state.image ? sector_colour_overlay : "oc-thumbnail-no-image"}>
               {thumbnail}

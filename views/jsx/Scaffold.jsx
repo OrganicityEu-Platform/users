@@ -13,13 +13,15 @@ import ui                  from '../../ui_routes.js';
 
 import Signup              from './auth/Signup.jsx';
 import CookiePrompt        from './CookiePrompt.jsx';
+import LanguageSwitcher    from './i18n/LanguageSwitcher.jsx';
+import I18nMixin           from './i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
 var Scaffold = React.createClass({
-  mixins : [UserIsLoggedInMixin, Router.State, UserHasRoleMixin],
+  mixins : [UserIsLoggedInMixin, Router.State, UserHasRoleMixin, I18nMixin],
   getInitialState: function() {
     return {
       currentUser : undefined,
@@ -139,16 +141,16 @@ var Scaffold = React.createClass({
       <NavItemLink
         key="scenarioList"
         to="scenarioList"
-        className="navbar-button"
-        id="navbar-explore-btn">EXPLORE</NavItemLink>
+        className="navbar-button all-uppercase"
+        id="navbar-explore-btn">{this.i18n('explore', 'EXPLORE')}</NavItemLink>
     );
     linksLeft.push(
       <NavItemLink
         key="scenarioCreate"
         to="scenarioCreate"
         onClick={this.clickedCreate}
-        className="navbar-button"
-        id="navbar-create-btn">CREATE</NavItemLink>
+        className="navbar-button all-uppercase"
+        id="navbar-create-btn">{this.i18n('create', 'CREATE')}</NavItemLink>
     );
 
     if (this.userIsLoggedIn()) {
@@ -157,32 +159,33 @@ var Scaffold = React.createClass({
           <NavItemLink
             key="users"
             className="dropdown-items"
-            to="admin_userList">Users</NavItemLink>
+            to="admin_userList">{this.i18n('users', 'Users')}</NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="questionnaire"
             className="dropdown-items"
-            to="admin_questionnaire">Questionnaire</NavItemLink>
+            to="admin_questionnaire">{this.i18n('questionnaire', 'Questionnaire')}</NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="sysinfo"
             className="dropdown-items"
             to="sysinfo"
-            data-about>About</NavItemLink>
+            data-about>{this.i18n('about', 'About')}</NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="reportList"
             to="reportList"
             className="dropdown-items"
-            id="">Reports</NavItemLink>
+            id="">{this.i18n('reports', 'Reports')}</NavItemLink>
         );
         linksRight.push(
           <DropdownButton
+            key="adminmenu"
             className="oc-admin-links"
-            title="admin">
+            title={this.i18n('admin', 'admin')}>
             {adminLinks}
           </DropdownButton>
         );
@@ -191,13 +194,13 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="profile"
           className="nav-profile-btn"
-          to="profile">profile</NavItemLink>
+          to="profile">{this.i18n('profile', 'profile')}</NavItemLink>
       );
       linksRight.push(
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">log out</NavItemLink>
+          className="nav-logout-btn">{this.i18n('log_out', 'log out')}</NavItemLink>
       );
     } else {
       /*
@@ -215,10 +218,15 @@ var Scaffold = React.createClass({
           to="login"
           onClick={this.clickedLogin}
           className="nav-login-btn">
-          log in
+          {this.i18n('log_in', 'log in')}
         </NavItemLink>
       );
     }
+
+    linksRight.push(
+      <LanguageSwitcher />
+    );
+
     return (
       <div className={this.handleClass()}>
         <div className="row oc-navbar-wrapper">

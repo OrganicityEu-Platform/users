@@ -27,7 +27,7 @@ var ScenarioView = React.createClass({
     return null;
   },
   componentDidMount: function() {
-  
+
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
     var showEval = null;
 

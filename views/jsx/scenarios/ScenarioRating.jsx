@@ -144,7 +144,6 @@ var ScenarioRating = React.createClass({
         hover: true
       });
     }
-    console.log(this.state.hover);
   },
   getIcons: function(){
     return this.state.icons.map(function(icon, i){

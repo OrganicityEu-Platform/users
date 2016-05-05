@@ -6,12 +6,13 @@ import api               from '../../../api_routes.js';
 import TagField          from '../form-components/TagField.jsx';
 
 import LoadingMixin      from '../LoadingMixin.jsx';
+import I18nMixin         from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
 
 var UserAccountsTable = React.createClass({
-  mixins: [UserHasRoleMixin, LoadingMixin],
+  mixins: [UserHasRoleMixin, LoadingMixin, I18nMixin],
   getInitialState: function() {
     return null;
   },
@@ -40,7 +41,7 @@ var UserAccountsTable = React.createClass({
         {this.accountFields[account].map((field) => {
           return (
             <div key={this.state.uuid + '_' + account + '_' + field}>
-              <b>{ field }:</b> {this.state[account][field]}<br/>
+              <b>{ this.i18n('Admin.'+field, field) }: </b> {this.state[account][field]}<br/>
             </div>
           );
         })}

@@ -16,11 +16,12 @@ import { Accordion, Panel } from 'react-bootstrap';
 
 import config               from '../../../config/config.js';
 import DocumentTitle        from 'react-document-title';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var Link = Router.Link;
 
 var ScenarioList = React.createClass({
-  mixins: [Router.Navigation, LoadingMixin],
+  mixins: [Router.Navigation, LoadingMixin, I18nMixin],
   getInitialState: function() {
     return {
       refresh : false,
@@ -134,9 +135,9 @@ var ScenarioList = React.createClass({
     }
     var scenarios = (
       <div className="scenario-list">
-        <DocumentTitle title={config.title + ' | Explore'} />
+        <DocumentTitle title={config.title + ' | ' + this.i18n('explore', 'Explore')} />
         <h1 className="oc-pink">
-          Explore scenarios
+          {this.i18n('explore_scenarios', 'Explore scenarios')}
         </h1>
         <div className="row">
           <div className="col-md-12" id="oc-search-box">
@@ -149,7 +150,7 @@ var ScenarioList = React.createClass({
                     type="text"
                     id="scenarioListSearchFormQ"
                     className="oc-input-extra"
-                    placeholder="Search all scenarios"
+                    placeholder={this.i18n('search_all_scenarios', 'Search all scenarios')}
                     autoComplete="off"
                     name="q"
                     disabled={this.isLoading() ? 'disabled' : ''}

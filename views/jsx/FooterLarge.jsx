@@ -1,6 +1,7 @@
 import React      from 'react';
 import ui         from '../../ui_routes.js';
 import ContactUs  from './ContactUs.jsx';
+import I18nMixin  from './i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 var Link = Router.Link;
@@ -17,7 +18,7 @@ var organicityBlog = "http://organicity.eu/blog/";
 var organicityEvents = "http://organicity.eu/events/";
 
 var FooterLarge = React.createClass({
-  mixins: [Router.Navigation],
+  mixins: [Router.Navigation, I18nMixin],
   clickHandler: function () {
     this.transitionTo('signup');
   },
@@ -29,7 +30,7 @@ var FooterLarge = React.createClass({
       <div className="row oc-footer-large">
         <div className="oc-macro-content oc-footer-inner-wrapper">
           <div className="col-lg-3 white oc-footer-col" id="follow-col">
-            <p className="oc-footer-title">Follow us</p>
+            <p className="oc-footer-title">{this.i18n('follow_us', 'Follow us')}</p>
             <span className="oc-social-links-wrapper">
               <a href={twitter}>
                 <i className="fa fa-twitter oc-footer-social-link"></i>
@@ -44,29 +45,29 @@ var FooterLarge = React.createClass({
                 src={ui.asset('static/img/logo_eu.png')} />
             </div>
             <span className="oc-logo-text">
-              This project has received funding from the European Union's Horizon 2020 research and innovation program under the grant agreement No. 645198.
+              {this.i18n('footer1', 'This project has received funding from the European Union\'s Horizon 2020 research and innovation program under the grant agreement No. 645198.')}
             </span>
 
           </div>
           <div className="col-lg-4 white oc-footer-col" id="resources-col">
-            <p className="oc-footer-title">More about OrganiCity</p>
-            <span><a className="white oc-link" href={organicityLink}>OrganiCity.eu</a></span>
+            <p className="oc-footer-title">{this.i18n('footer2', 'More about OrganiCity')}</p>
+            <span><a className="white oc-link" href={organicityLink}>{this.i18n('footer3', 'OrganiCity.eu')}</a></span>
             <span onClick={this.clickHandler} className="oc-link">
-              Sign up for updates
+              {this.i18n('footer4', 'Sign up for updates')}
             </span>
-            <span><a className="white oc-link" href={organicityBlog}>Blog</a></span>
-            <span><a className="white oc-link" href={organicityEvents}>Events</a></span>
-            <span className="oc-link oc-link" onClick={this.handlePrivacy}>Privacy policy</span>
+            <span><a className="white oc-link" href={organicityBlog}>{this.i18n('blog', 'Blog')}</a></span>
+            <span><a className="white oc-link" href={organicityEvents}>{this.i18n('events', 'Events')}</a></span>
+            <span className="oc-link oc-link" onClick={this.handlePrivacy}>{this.i18n('privacy_policy', 'Privacy policy')}</span>
           </div>
           <div className="col-lg-5 white oc-footer-col" id="oc-footer-contact-col">
             <p className="oc-footer-title">
-              Contact us
+              {this.i18n('contact_us', 'Contact us')}
             </p>
             <ContactUs currentUser={this.props.currentUser} />
           </div>
         </div>
         <div className="white oc-footer-copy-right-wrapper">
-          <span>Copyright <i className="fa fa-copyright"></i> OrganiCity 2015</span>
+          <span>{this.i18n('copyright', 'Copyright')} <i className="fa fa-copyright"></i> {this.i18n('oc_2015', 'OrganiCity 2015')}</span>
         </div>
       </div>
     );

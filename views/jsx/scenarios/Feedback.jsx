@@ -11,10 +11,11 @@ import LoadingMixin         from '../LoadingMixin.jsx';
 import UserHasRoleMixin     from '../UserHasRoleMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 
 var Feedback = React.createClass({
-  mixins : [UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin],
+  mixins : [UserHasRoleMixin, LoadingMixin, UserIsLoggedInMixin, UserIsCreatorMixin, FlashQueue.Mixin, I18nMixin],
   getInitialState: function() {
     return {
       show: true,
@@ -66,7 +67,6 @@ var Feedback = React.createClass({
       return <div>This scenario has not recieved any feedback yet.</div>;
     }else {
       return this.state.userFeedback.map(function(feedback, i){
-        console.log("uuu: " + JSON.stringify(feedback));
         return <div className="oc-feedback" key={i}>
           <span className="oc-feedback-user-label">
             {feedback.user === 'Anonymous' ?
@@ -126,7 +126,7 @@ var Feedback = React.createClass({
           },
           success: () => {
             this.setState({show: false});
-            this.flash('success', 'Thank you for your feedback', 150000);
+            this.flash('success', this.i18n('thankyou_feedback', 'Thank you for your feedback'), 150000);
           }
         });
       }
@@ -134,15 +134,15 @@ var Feedback = React.createClass({
   },
   render: function() {
 
-    var likeText = "I like...";
-    var dislikeText = "I dislike...";
+    var likeText = this.i18n('i_like', 'I like...');
+    var dislikeText = this.i18n('i_dislike', 'I dislike...');
 
     if(this.userIsCreator(this.state.scenario) || this.userHasRole('admin')) {return(
       <div className="row">
         <div className="oc-macro-content">
           <div className="oc-feedback-wrapper">
             <h2 className="pink">
-              Feedback recieved
+              {this.i18n('feedback_received', 'Feedback received')}
             </h2>
             <span>
               {this.getUserFeedback()}
@@ -161,7 +161,7 @@ var Feedback = React.createClass({
             <div className="oc-feedback-wrapper">
               <div>
                 <h2 className="pink">
-                  Evaluate this scenario
+                  {this.i18n('eval_this_scenario', 'Evaluate this scenario')}
                 </h2>
                 </div>
                 <form className="form-horizontal">
@@ -216,7 +216,7 @@ var Feedback = React.createClass({
                   className="oc-button"
                   id="oc-submit-feedback"
                   onClick={() => this.handleSubmit()}>
-                  SEND FEEDBACK
+                  {this.i18n('send_feedback', 'SEND FEEDBACK')}
                 </button>
               </div>
               <div className="col-sm-4">
