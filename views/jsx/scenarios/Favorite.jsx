@@ -23,7 +23,7 @@ var Favorite = React.createClass({
   },
   componentWillMount: function() {
     if (this.userIsLoggedIn()) {
-      var index = currentUser.favorites ? currentUser.favorites.indexOf(this.props.scenario): [];
+      var index = currentUser.favorites ? currentUser.favorites.indexOf(this.props.scenario): -1;
       if (index > -1) {
         this.state.userHasFavorited = true;
         this.setState(this.state);
