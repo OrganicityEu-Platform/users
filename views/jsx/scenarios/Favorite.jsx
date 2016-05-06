@@ -4,6 +4,7 @@ import api                  from '../../../api_routes.js';
 import React                from 'react';
 
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 {/*
   this component awllows to:
@@ -14,7 +15,7 @@ import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 */}
 
 var Favorite = React.createClass({
-  mixins : [UserIsLoggedInMixin],
+  mixins : [UserIsLoggedInMixin, I18nMixin],
   getInitialState: function() {
     return {
       userHasFavorited: false
@@ -67,11 +68,11 @@ var Favorite = React.createClass({
     return this.state.userHasFavorited ?
       <div onClick={this.removeFavorite} className="oc-tableview-bookmark-wrapper">
         <i className="fa fa-bookmark oc-tableview-bookmark-icon"></i>
-          <span> Remove bookmark</span>
+          <span>{this.i18n('remove_bookmark', 'Remove bookmark')}</span>
           </div>:
       <div onClick={this.setFavorite} className="oc-tableview-bookmark-wrapper">
         <i className="fa fa-bookmark-o oc-tableview-bookmark-icon"></i>
-        <span> Bookmark scenario</span>
+        <span>{this.i18n('bookmark_scenario', 'Bookmark scenario')}</span>
         </div>;
     }
 });

@@ -64,7 +64,7 @@ var Feedback = React.createClass({
   },
   getUserFeedback: function() {
     if(this.state.userFeedback.length === 0) {
-      return <div>This scenario has not recieved any feedback yet.</div>;
+      return <div>{this.i18n('no_feedback_received', 'This scenario has not recieved any feedback yet.')}</div>;
     }else {
       return this.state.userFeedback.map(function(feedback, i){
         return <div className="oc-feedback" key={i}>

@@ -21,8 +21,10 @@ import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 
+import I18nMixin            from '../i18n/I18nMixin.jsx';
+
 var ScenarioTableView = React.createClass({
-  mixins: [LoadingMixin, UserIsCreatorMixin],
+  mixins: [LoadingMixin, UserIsCreatorMixin, I18nMixin],
   handleCreditClick: function(i, creditorUrl) {
     window.open(creditorUrl, '_blank');
   },
@@ -31,7 +33,7 @@ var ScenarioTableView = React.createClass({
       return this.props.scenario.credits.map(function(credit, i){
         var creditLink;
         if (!credit.creditorUrl) {
-          creditLink = <span className="oc-credit-wrapper">
+          creditLink = <span key={i} className="oc-credit-wrapper">
             <span
               className="oc-credit-no-link">
               {credit.creditor}
@@ -39,7 +41,7 @@ var ScenarioTableView = React.createClass({
             {this.props.scenario.credits.length === i + 1 ? null : ","}
           </span>;
         }else {
-          creditLink = <span className="oc-credit-wrapper">
+          creditLink = <span key={i} className="oc-credit-wrapper">
             <span
               onClick={this.handleCreditClick.bind(this, i, credit.creditorUrl)}
               className="oc-credit-with-link">
@@ -68,7 +70,7 @@ var ScenarioTableView = React.createClass({
       image = undefined;
     }
 
-    var sector_colour = this.props.scenario.sectors[0];
+    var sector_colour = this.props.scenario.sectors ? this.props.scenario.sectors[0]: 'generic_sector';
     var sector_colour_marker;
     var article_image_overlay;
     if (sector_colour) {
@@ -79,11 +81,11 @@ var ScenarioTableView = React.createClass({
     }
 
     var credit;
-    if (this.props.scenario.credits.length > 0) {
+    if (this.props.scenario.credits && this.props.scenario.credits.length > 0) {
       credit = (
         <div className="col-md-3">
           <div className="scenario-ast-wrapper">
-            <span className="scenario-ast">Credit:</span>
+            <span className="scenario-ast">{this.i18n('credit', 'credit')}:</span>
             <span className="scenario-ast-items">
               {this.handleCredits()}
             </span>
@@ -93,7 +95,6 @@ var ScenarioTableView = React.createClass({
         </div>
       );
     }
-
     var copyright;
     if (this.props.scenario.copyright) {
       copyright = (
@@ -115,11 +116,11 @@ var ScenarioTableView = React.createClass({
       editor = (
         <div>
           <span className="scenario-article-publisher">
-            Edited by <UserAvatar uuid={this.props.scenario.editor} />
+            {this.i18n('edited_by', 'Edited by')} <UserAvatar uuid={this.props.scenario.editor} />
           </span>
           <span className="scenario-article-timestamp">
             { this.props.scenario.timestamp ?
-              <TimeAgo date={this.props.scenario.editor_timestamp} />
+              <TimeAgo date={this.props.scenario.editor_timestamp} formatter={this.i18nFormatter} />
                 : '' }
           </span>
         </div>
@@ -143,7 +144,7 @@ var ScenarioTableView = React.createClass({
                   <Counter
                     scope="scenarios"
                     className="scenario-article-views"
-                    id={this.props.scenario.uuid} />  views
+                    id={this.props.scenario.uuid} />  {this.i18n('views', 'views')}
                   </p>
                   <p className="scenario-article-widget-data-comments">
                     <i className="fa fa-comment-o">
@@ -151,12 +152,12 @@ var ScenarioTableView = React.createClass({
                     <Comments
                       scope="scenarios"
                       className="scenario-article-comments"
-                      id={this.props.scenario.uuid} />  comments
+                      id={this.props.scenario.uuid} />  {this.i18n('comments', 'comments')}
                     </p>
                     <p className="scenario-article-widget-data-evaluations">
                       <i className="fa fa-check-square-o">
                       </i>
-                      <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> evaluations
+                      <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> {this.i18n('evaluations', 'evaluations')}
                       </p>
                       <p>
                         <ScenarioRating doMeta={true} className={"oc-article-star"} scenario={this.props.scenario} />
@@ -170,16 +171,16 @@ var ScenarioTableView = React.createClass({
                       <div className="col-lg-12 scenario-article-indicator-wrapper">
                         <span>
                           {this.userIsCreator(this.props.scenario) ?
+                              null :
+                              <Favorite
+                              scenario={this.props.scenario.uuid}
+                              />}
+                          {this.userIsCreator(this.props.scenario) ?
                             null :
                               <ScenarioRating
                               scenario={this.props.scenario}
                               enabled={true}
                               className={"oc-article-rate-star"}
-                              />}
-                          {this.userIsCreator(this.props.scenario) ?
-                              null :
-                              <Favorite
-                              scenario={this.props.scenario.uuid}
                               />}
                         </span>
                       </div>
@@ -188,13 +189,13 @@ var ScenarioTableView = React.createClass({
                       </h2>
                         <div>
                           <span className="scenario-article-publisher">
-                            Created by <UserAvatar uuid={this.props.scenario.creator} />
-                          </span>
-                          <span className="scenario-article-timestamp">
-                            { this.props.scenario.timestamp ?
-                              <TimeAgo date={this.props.scenario.timestamp} />
-                                : '' }
-                          </span>
+                           {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
+                         </span>
+                         <span className="scenario-article-timestamp">
+                           { this.props.scenario.timestamp ?
+                             <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
+                               : '' }
+                         </span>
                         </div>
                         {editor}
                         </div>
@@ -213,7 +214,7 @@ var ScenarioTableView = React.createClass({
                     <div className="scenario-article-meta">
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Participants:</span>
+                          <span className="scenario-ast">{this.i18n('participants', 'Participants')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.actors ? this.props.scenario.actors.join(', ') : ''}
                           </span>
@@ -223,7 +224,7 @@ var ScenarioTableView = React.createClass({
                       </div>
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Sectors:</span>
+                          <span className="scenario-ast">{this.i18n('sectors', 'Sectors')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.sectors ? this.props.scenario.sectors.join(', ') : ''}
                           </span>
@@ -233,7 +234,7 @@ var ScenarioTableView = React.createClass({
                       </div>
                       <div className="col-md-3">
                         <div className="scenario-ast-wrapper">
-                          <span className="scenario-ast">Tools:</span>
+                          <span className="scenario-ast">{this.i18n('tools', 'Tools')}:</span>
                           <span className="scenario-ast-items">
                             {this.props.scenario.devices ? this.props.scenario.devices.join(', ') : ''}
                           </span>
@@ -242,7 +243,6 @@ var ScenarioTableView = React.createClass({
                         </div>
                       </div>
                       {credit}
-
                     </div>
                   </div>
                   <footer className="scenario-article-footer">

@@ -21,6 +21,8 @@ import ScenarioRating       from './ScenarioRating.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 
+import I18nMixin            from '../i18n/I18nMixin.jsx';
+
 var ScenarioView = React.createClass({
   mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin],
   getInitialState: function() {
@@ -58,7 +60,7 @@ var ScenarioView = React.createClass({
 
     return (
       <div>
-        <DocumentTitle title={config.title + ' | Sceanrio | ' + this.state.title} />
+        <DocumentTitle title={config.title + ' | Scenario | ' + this.state.title} />
         <div className="row">
           <ScenarioTableView scenario={this.state} />
         </div>

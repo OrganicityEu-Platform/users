@@ -11,7 +11,9 @@ const DEFAULT_LANG = "en-GB";
 
 //
 var I18nMixin = {
+
   getInitialState: function() {
+
     var currentLang;
     // list of all language codes
     var languageCodes = ['en-GB', 'es-ES'];
@@ -58,7 +60,7 @@ var I18nMixin = {
 
   /**
    * Translates string (key) based on current language.
-   * 
+   *
    * Key can contain zero or one dot.
    * Eg:
    * 'Profile.save'
@@ -78,7 +80,6 @@ var I18nMixin = {
         case 'es-ES':
           lang = this.state.langdata.esES;
           break;
-        case 'en-GB':
         default:
           lang = this.state.langdata.enGB;
       }

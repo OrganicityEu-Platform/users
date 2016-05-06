@@ -5,11 +5,12 @@ import api                 from '../../../api_routes.js';
 
 import LoadingMixin        from '../LoadingMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var Router = require('react-router');
 
 var ScenarioRating = React.createClass({
-  mixins: [LoadingMixin, UserIsLoggedInMixin, Router.Navigation],
+  mixins: [LoadingMixin, UserIsLoggedInMixin, Router.Navigation, I18nMixin],
   getInitialState: function() {
     return {
       rating: null,
@@ -196,7 +197,7 @@ var ScenarioRating = React.createClass({
     }
 
     return (
-      <div>
+      <div className="oc-ratings-wrapper">
         {this.state.doMeta ?
           this.getIcons() :
           <span
@@ -204,7 +205,7 @@ var ScenarioRating = React.createClass({
             onMouseLeave={this.noHover}
             onMouseOver={this.doHover}>
             {this.getIcons()}
-            Rate scenario
+            {this.i18n('rate_scenario', 'Rate scenario')}
           </span>}
       </div>
     );
