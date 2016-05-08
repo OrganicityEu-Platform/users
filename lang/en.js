@@ -51,8 +51,6 @@ module.exports = {
           article12point_a_2: 'communication to him in an intelligible form of the data undergoing processing and of any available information as to their source,',
           article12point_a_3: 'knowledge of the logic involved in any automatic processing of data concerning him at least in the case of the automated decisions referred to in Article 15 (1);',
         article12point_b: 'as appropriate the rectification, erasure or blocking of data the processing of which does not comply with the provisions of this Directive, in particular because of the incomplete or inaccurate nature of the data;',
-        article12point_c: 'notification to third parties to whom the data have been disclosed of any rectification, erasure or blocking carried out in compliance with (b), unless this proves impossible or involves a disproportionate effort.',
-
-
+        article12point_c: 'notification to third parties to whom the data have been disclosed of any rectification, erasure or blocking carried out in compliance with (b), unless this proves impossible or involves a disproportionate effort.'
   }
 };

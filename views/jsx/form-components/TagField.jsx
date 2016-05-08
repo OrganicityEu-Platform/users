@@ -6,8 +6,8 @@ var TagField = React.createClass({
     return {
       tags            : this.props.tags ? this.props.tags : [],
       tagsString      : this.props.tags ? this.props.tags.join(', ') : '',
-      data            : this.props.data ? this.props.data : [],
-      suggestions     : [],
+      data            : this.props.data ? this.props.data : [], // the suggestion data [STRING]
+      suggestions     : [], // leave this empty (this is the suggestion data that gets rendered and is generated in this view from the data prop)
       reset           : null,
       inputLabel      : '',
       doEdit          : this.props.doEdit ? this.props.doEdit : false

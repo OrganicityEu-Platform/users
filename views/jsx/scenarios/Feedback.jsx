@@ -64,105 +64,122 @@ var Feedback = React.createClass({
   },
   getUserFeedback: function() {
     if(this.state.userFeedback.length === 0) {
-      return <div>{this.i18n('no_feedback_received', 'This scenario has not recieved any feedback yet.')}</div>;
+      return <div>
+        {this.i18n('no_feedback_received', 'This scenario has not recieved any feedback yet.')}
+      </div>;
     }else {
       return this.state.userFeedback.map(function(feedback, i){
         return <div className="oc-feedback" key={i}>
           <span className="oc-feedback-user-label">
             {feedback.user === 'Anonymous' ?
               <span>
-                <span className="gray">Anonymous</span><span> said:</span>
+                <span className="gray">Anonymous</span>
+                <span> said:</span>
                 <span className="oc-feedback-timestamp">
-                  {feedback.timestamp ? <TimeAgo date={feedback.timestamp}/> : <span className="gray">No date</span>}
+                  {feedback.timestamp ?
+                    <TimeAgo date={feedback.timestamp}/>
+                    :
+                    <span className="gray">
+                      No date
+                    </span>
+                  }
                 </span>
               </span>
               :
               <span>
-                <span><UserAvatar uuid={feedback.user}/> said:</span>
+                <span>
+                  <UserAvatar uuid={feedback.user}/> said:
+                  </span>
 
                   <span className="oc-feedback-timestamp">
-                    {feedback.timestamp ? <TimeAgo date={feedback.timestamp}/> : <span className="gray">No date</span>}
+                    {feedback.timestamp ?
+                      <TimeAgo date={feedback.timestamp}/>
+                      :
+                      <span className="gray">
+                        No date
+                      </span>
+                    }
                   </span>
-              </span>
-            }
-          </span>
-          <p>
-            <img
-              className="oc-feedback-arrow"
-              src={ui.asset('static/img/icon-09.png')}/>
-            {feedback.like}
-          </p>
-          <p>
-            <img
-              className="oc-feedback-arrow"
-              src={ui.asset('static/img/icon-10.png')}/>
-            {feedback.dislike}
-          </p>
-        </div>;
-      }, this);
-    }
-  },
-  handleSubmit: function() {
-
-    if(this.state.likeText && this.state.dislikeText) {
-      if(this.state.likeText !== "" && this.state.dislikeText !== "") {
-        var url = api.reverse("feedback_list");
-        var feedback = {
-          user: currentUser ? currentUser.uuid : "Anonymous",
-          like: this.state.likeText,
-          dislike: this.state.dislikeText,
-          scenario: {
-            uuid: this.state.scenario.uuid,
-            version: this.state.scenario.version
-          }
-        };
-        $.ajax(url, {
-          dataType: 'json',
-          contentType: 'application/json',
-          data: JSON.stringify(feedback),
-          method: 'POST',
-          error : (xhr, textStatus, errorThrown) => {
-            console.log(errorThrown);
-          },
-          success: () => {
-            this.setState({show: false});
-            this.flash('success', this.i18n('thankyou_feedback', 'Thank you for your feedback'), 150000);
-          }
-        });
-      }
-    }
-  },
-  render: function() {
-
-    var likeText = this.i18n('i_like', 'I like...');
-    var dislikeText = this.i18n('i_dislike', 'I dislike...');
-
-    if(this.userIsCreator(this.state.scenario) || this.userHasRole('admin')) {return(
-      <div className="row">
-        <div className="oc-macro-content">
-          <div className="oc-feedback-wrapper">
-            <h2 className="pink">
-              {this.i18n('feedback_received', 'Feedback received')}
-            </h2>
-            <span>
-              {this.getUserFeedback()}
+                </span>
+              }
             </span>
-          </div>
-        </div>
-      </div>
-    );}
-    if(this.state.hasEvaluated){return(
-      null
-    );}
-    if(this.state.show) {
-      return(
+            <p>
+              <img
+                className="oc-feedback-arrow"
+                src={ui.asset('static/img/icon-09.png')}/>
+              {feedback.like}
+            </p>
+            <p>
+              <img
+                className="oc-feedback-arrow"
+                src={ui.asset('static/img/icon-10.png')}/>
+              {feedback.dislike}
+            </p>
+          </div>;
+        }, this);
+      }
+    },
+    handleSubmit: function() {
+
+      if(this.state.likeText && this.state.dislikeText) {
+        if(this.state.likeText !== "" && this.state.dislikeText !== "") {
+          var url = api.reverse("feedback_list");
+          var feedback = {
+            user: currentUser ? currentUser.uuid : "Anonymous",
+            like: this.state.likeText,
+            dislike: this.state.dislikeText,
+            scenario: {
+              uuid: this.state.scenario.uuid,
+              version: this.state.scenario.version
+            }
+          };
+          $.ajax(url, {
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(feedback),
+            method: 'POST',
+            error : (xhr, textStatus, errorThrown) => {
+              console.log(errorThrown);
+            },
+            success: () => {
+              this.setState({show: false});
+              this.flash('success', this.i18n('thankyou_feedback', 'Thank you for your feedback'), 150000);
+            }
+          });
+        }
+      }
+    },
+    render: function() {
+
+      var likeText = this.i18n('i_like', 'I like...');
+      var dislikeText = this.i18n('i_dislike', 'I dislike...');
+
+      if(this.userIsCreator(this.state.scenario) || this.userHasRole('admin')) {return(
         <div className="row">
           <div className="oc-macro-content">
             <div className="oc-feedback-wrapper">
-              <div>
-                <h2 className="pink">
-                  {this.i18n('eval_this_scenario', 'Evaluate this scenario')}
-                </h2>
+              <h2 className="pink">
+                {this.i18n('feedback_received', 'Feedback received')}
+              </h2>
+              <span>
+                {this.getUserFeedback()}
+              </span>
+            </div>
+          </div>
+        </div>
+      );}
+      if(this.state.hasEvaluated){return(
+        null
+      );}
+      if(this.state.show) {
+        return(
+          <div className="row">
+            <div className="oc-macro-content">
+              <div className="oc-feedback-wrapper">
+                <div>
+                  <h2 className="pink">
+                    {this.i18n('eval_this_scenario', 'Evaluate this scenario')}
+                  </h2>
                 </div>
                 <form className="form-horizontal">
                   <div

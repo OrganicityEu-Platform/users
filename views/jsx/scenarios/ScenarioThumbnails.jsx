@@ -9,8 +9,27 @@ var sceanriosCounterStyle = {
 
 var ScenarioThumbnails = React.createClass({
   mixins: [I18nMixin],
+  getInitialState: function() {
+    return {
+      limit: this.props.limit ? this.props.limit : null,
+    };
+  },
+  handleLoadMore: function() {
+    var increment = (this.state.limit + this.state.limit) > this.props.scenarios.length ?
+    this.props.scenarios.length - this.state.limit : this.state.limit;
 
+    this.setState({limit: this.state.limit + increment});
+  },
   render: function() {
+
+    var loadMore = this.state.limit ?
+    this.props.scenarios.length > this.state.limit ?
+    <button onClick={() => this.handleLoadMore()}>
+      load more
+    </button>
+    :
+    null:
+    null;
 
     if (!this.props.scenarios) {
       return null;
@@ -27,17 +46,33 @@ var ScenarioThumbnails = React.createClass({
 
     return (
       <div>
-      {counter}
+        {counter}
         <div className="row scenario-thumbnails">
-        {
-          this.props.scenarios.map(
-            (scenario) => <ScenarioThumbnail key={scenario.uuid} scenario={scenario} onChange={this.reload}/>
-          )
-        }
+          {
+            this.state.limit ?
+            this.props.scenarios.map(
+              (scenario, i) => {  return i <= this.state.limit ?
+                <ScenarioThumbnail
+                  key={scenario.uuid}
+                  scenario={scenario}
+                  onChange={this.reload}/>
+                :
+                null}
+              )
+              :
+              this.props.scenarios.map(
+                (scenario) =>
+                <ScenarioThumbnail
+                  key={scenario.uuid}
+                  scenario={scenario}
+                  onChange={this.reload}/>
+              )
+            }
+          </div>
+          {loadMore}
         </div>
-      </div>
-    );
-  }
-});
+      );
+    }
+  });
 
-export default ScenarioThumbnails;
+  export default ScenarioThumbnails;
