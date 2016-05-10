@@ -21,7 +21,7 @@ var ScenarioThumbnails = React.createClass({
   getInitialState: function() {
     return {
       limit: this.props.limit ? this.props.limit : null,
-      increment: 10
+      increment: 15
     };
   },
   handleLoadMore: function() {
@@ -42,8 +42,8 @@ var ScenarioThumbnails = React.createClass({
 
     var loadMore = this.state.limit ?
     this.props.scenarios.length > this.state.limit ?
-    <button onClick={() => this.handleLoadMore()}>
-      load more
+    <button className="oc-button" onClick={() => this.handleLoadMore()}>
+      LOAD MORE
     </button>
     :
     null:
@@ -88,7 +88,7 @@ var ScenarioThumbnails = React.createClass({
               )
             }
           </div>
-          {loadMore}
+          <div id="oc-explore-load-more-btn">{loadMore}</div>
         </div>
       );
     }

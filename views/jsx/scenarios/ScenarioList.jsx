@@ -174,7 +174,7 @@ var ScenarioList = React.createClass({
         </div>
         <ScenarioThumbnails
           scenarios={this.state.scenarios}
-          limit={10}
+          limit={15}
           counter={false} />
       </div>
     );
