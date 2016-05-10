@@ -1,3 +1,4 @@
+
 import React  from 'react';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 import I18nMixin  from '../i18n/I18nMixin.jsx';
