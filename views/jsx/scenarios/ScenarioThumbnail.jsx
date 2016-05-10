@@ -1,4 +1,3 @@
-
 import TimeAgo            from 'react-timeago';
 import api                from '../../../api_routes.js';
 import ui                 from '../../../ui_routes.js';
@@ -56,8 +55,7 @@ var ScenarioThumbnail = React.createClass({
     }
 
     return (
-      <div className="col-md-4">
-        <div className="well scenario-thumbnail">
+        <div className="scenario-thumbnail">
           <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
             <div>
               <div className={sector_colour_marker}>
@@ -107,7 +105,6 @@ var ScenarioThumbnail = React.createClass({
             </div>
           </Link>
         </div>
-      </div>
     );
   }
 });
