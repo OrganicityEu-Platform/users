@@ -1,4 +1,3 @@
-
 import React  from 'react';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 import I18nMixin  from '../i18n/I18nMixin.jsx';
@@ -14,7 +13,7 @@ var sceanriosCounterStyle = {
 var packeryOptions = {
   transitionDuration: '0.4s',
   itemSelector: '.scenario-thumbnail',
-  gutter: 0
+  gutter: 10
 };
 
 var ScenarioThumbnails = React.createClass({
@@ -64,7 +63,7 @@ var ScenarioThumbnails = React.createClass({
     }
 
     return (
-      <div>
+      <div className="row">
         <div
           ref="oc-scenario-thumbnails-pack"
           className="oc-scenario-thumbnails-pack">
