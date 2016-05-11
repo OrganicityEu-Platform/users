@@ -10,10 +10,10 @@ var sceanriosCounterStyle = {
   textAlign: 'center'
 };
 
+// http://packery.metafizzy.co/options.html
 var packeryOptions = {
   transitionDuration: '0.4s',
-  itemSelector: '.scenario-thumbnail',
-  gutter: 10
+  itemSelector: '.scenario-thumbnail'
 };
 
 var ScenarioThumbnails = React.createClass({

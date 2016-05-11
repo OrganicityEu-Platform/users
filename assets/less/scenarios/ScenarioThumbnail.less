@@ -4,13 +4,6 @@
 @import "../oc_fonts.less";
 @import "../../../node_modules/bootstrap/less/bootstrap.less";
 
-.scenario-thumbnails {
- -moz-column-width: 21em;
- -webkit-column-width: 21em;
- -moz-column-gap: 1.5em;
- -webkit-column-gap:1.5em;
-}
-
 .scenario-thumbnail-image-wrapper {
   margin-bottom: 0 !important;
   min-height: 180px;
@@ -44,9 +37,18 @@
   background-color: @oc-white;
   text-align: left;
   border: 0;
-  .make-md-column(3.86);
+  .make-md-column(4);
   .make-xs-column(12);
   padding: 0 !important;
+  border: 15px solid @oc-background-color;
+}
+
+@media (max-width: @screen-xs-max) {
+  .scenario-thumbnail {
+    border: 0;
+    border-top: 15px solid @oc-background-color;
+  }
+
 }
 
 .scenario-thumbnail a {
