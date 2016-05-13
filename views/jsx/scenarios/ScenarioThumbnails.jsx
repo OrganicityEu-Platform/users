@@ -20,23 +20,12 @@ var ScenarioThumbnails = React.createClass({
   mixins: [I18nMixin, PackeryMixin("oc-scenario-thumbnails-pack", packeryOptions)],
   getInitialState: function() {
     return {
-      limit: this.props.limit ? this.props.limit : null,
+      limit: this.props.limit ? this.props.limit - 1 : null,
       increment: 15
     };
   },
   handleLoadMore: function() {
     this.setState({limit: this.state.limit + this.state.increment});
-  },
-  renderThumbnails: function() {
-    var e;
-    for(e = 0; e <= this.props.scenarios; e++){
-      return(
-        <ScenarioThumbnail
-          key={scenarios[e].scenario.uuid}
-          scenario={scenarios[e]}
-          onChange={this.reload}/>
-      );
-    }
   },
   render: function() {
 

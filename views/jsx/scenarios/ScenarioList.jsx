@@ -156,22 +156,14 @@ var ScenarioList = React.createClass({
                     disabled={this.isLoading() ? 'disabled' : ''}
                     value={this.state.search.q}
                     onChange={this.handleUpdatedSearchTerm}/>
-                  <span className="input-group-btn">
-                    <button
-                      type="submit"
-                      value="Search"
-                      disabled={this.isLoading() ? 'disabled' : ''}
-                      className="btn btn-primary"
-                      id="oc-search-btn">
-                      <span className="fa fa-search">
+                  <span className="fa fa-search oc-search-form-search-icon">
                       </span>
-                    </button>
-                  </span>
                 </div>
               </div>
             </form>
           </div>
         </div>
+        {/* <div className="miu"><span>Your search for {'"' + this.state.search.q + '"'} yields {this.state.scenarioCounter} scenarios.</span></div> */}
         <ScenarioThumbnails
           scenarios={this.state.scenarios}
           limit={15}

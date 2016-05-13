@@ -719,7 +719,10 @@ var Profile = React.createClass({
             {localAccount}
 
             <h2 className="pink">{this.i18n('Profile.your_scenarios', 'Your scenarios')}</h2>
-            <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
+            <div className="col-lg-12">
+              <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
+            </div>
+
 
           </form>
         </div>

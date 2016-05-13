@@ -92,7 +92,7 @@ a:hover {
   //background-repeat: no-repeat;
   //background-size: 100%;
   //background-position: center top;
-  //background-color: lightgray;
+  background-color: @oc-background-color;
 }
 
 .ocTable {
@@ -233,6 +233,11 @@ input[type="submit"] {
   .scenario-article-indicator-wrapper {
     padding-top: 15px;
   }
+
+  .oc-search-form {
+    .make-xs-column(12);
+  }
+
 }
 
 .oc-home-view-footer {
@@ -347,6 +352,25 @@ and (max-width : 750px) {
   }
   .oc-tableview-bookmark-wrapper {
     padding-bottom: 10px;
+  }
+}
+
+@media only screen
+and (max-width : 1000px)
+and (min-width : 780px) {
+  .scenario-thumbnail {
+    .make-xs-column(6);
+  }
+  #oc-search-form {
+    .make-xs-column(6);
+    .make-xs-column-offset(6);
+  }
+}
+
+@media only screen
+and (max-width : 780px) {
+  .scenario-thumbnail {
+    .make-xs-column(12);
   }
 }
 
@@ -511,12 +535,6 @@ and (min-width : 800px) {
   display: none;
 }
 
-#scenarioListSearchFormActors_wrapper,
-#scenarioListSearchFormSectors_wrapper,
-#scenarioListSearchFormDevices_wrapper {
-
-}
-
 #scenarioListSearchFormActors,
 #scenarioListSearchFormSectors,
 #scenarioListSearchFormDevices {
@@ -533,14 +551,14 @@ and (min-width : 800px) {
 #scenarioListSearchFormQ {
   margin-top: 0px;
   margin-bottom: 0px;
-  border-bottom: 2px solid @oc-dark-grey;
+  border-bottom: 2px solid @oc-magenta;
   background: 0;
   color: @oc-dark-grey !important;
 }
 
 #reportListSearchFormQ:focus,
 #scenarioListSearchFormQ:focus {
-  border-bottom: 2px solid @oc-dark-grey !important;
+  //border-bottom: 2px solid @oc-dark-grey !important;
   color: @oc-dark-grey;
   font-size: 16px;
 }
@@ -579,7 +597,6 @@ and (min-width : 800px) {
   border: 1px solid @oc-dark-grey;
 }
 
-
 .oc-sug {
   color: @oc-meta-grey;
   padding-right: 15px;
@@ -603,23 +620,13 @@ and (min-width : 800px) {
 }
 
 #oc-search-form {
-  .make-md-column(3.5);
-  .make-md-column-offset(8.5);
+  .make-md-column(4);
+  .make-md-column-offset(8);
   margin-bottom: 50px;
   margin-top: 20px;
-}
-
-.scenario-list-search-form .panel-group {
-
-}
-
-.scenario-list-search-form .panel-group,
-.scenario-list-search-form .form-group {
-
-}
-
-.oc-filters-panel .panel-collapse > div {
-  border: none !important;
+  .input-group {
+    width: 100%;
+  }
 }
 
 #oc-search-desc-icon {
@@ -655,6 +662,7 @@ and (min-width : 800px) {
 
 .oc-navbar-wrapper {
   background: @oc-magenta;
+  .make-row();
 }
 
 .oc-form-group {
@@ -1072,11 +1080,26 @@ and (min-width : 800px) {
   padding-left: 8px;
   padding-top: 5px;
   padding-bottom: 8px;
+  padding-right: 18px;
   >i {
     padding-right: 5px;
   }
+
 }
 
 .oc-feedback-timestamp {
   display: block;
+}
+.scenario-article-publisher-wrapper {
+  padding-left: 10px;
+}
+
+.oc-search-form-search-icon {
+  float: right;
+  margin-right: 6px;
+  margin-top: -28px;
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  color: @oc-magenta;
 }

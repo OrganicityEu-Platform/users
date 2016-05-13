@@ -152,8 +152,7 @@ var ScenarioTableView = React.createClass({
                   <Counter
                     scope="scenarios"
                     className="scenario-article-views"
-                    id={this.props.scenario.uuid} />
-                  {this.i18n('views', 'views')}
+                    id={this.props.scenario.uuid} /> {this.i18n('views', 'views')}
                 </p>
                 <p className="scenario-article-widget-data-comments">
                   <i className="fa fa-comment-o">
@@ -161,14 +160,12 @@ var ScenarioTableView = React.createClass({
                   <Comments
                     scope="scenarios"
                     className="scenario-article-comments"
-                    id={this.props.scenario.uuid} />
-                  {this.i18n('comments', 'comments')}
+                    id={this.props.scenario.uuid} /> {this.i18n('comments', 'comments')}
                 </p>
                 <p className="scenario-article-widget-data-evaluations">
                   <i className="fa fa-check-square-o">
                   </i>
-                  <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} />
-                  {this.i18n('evaluations', 'evaluations')}
+                  <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> {this.i18n('evaluations', 'evaluations')}
                 </p>
                 <p>
                   <ScenarioRating
@@ -204,18 +201,20 @@ var ScenarioTableView = React.createClass({
                   {this.props.scenario.title}
                 </h2>
                 <div>
+                <div className="scenario-article-publisher-wrapper">
                   <span className="scenario-article-publisher">
-                    {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
-                </span>
-                <span className="scenario-article-timestamp">
-                  { this.props.scenario.timestamp ?
-                    <TimeAgo
-                      date={this.props.scenario.timestamp}
-                      formatter={this.i18nFormatter} />
-                    : '' }
+                      {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
                   </span>
+                  <span className="scenario-article-timestamp">
+                    { this.props.scenario.timestamp ?
+                      <TimeAgo
+                        date={this.props.scenario.timestamp}
+                        formatter={this.i18nFormatter} />
+                      : '' }
+                    </span>
+                    {editor}
+                  </div>
                 </div>
-                {editor}
               </div>
               <div className="scenario-article-summary-wrapper">
                 <p className="scenario-article-summary">

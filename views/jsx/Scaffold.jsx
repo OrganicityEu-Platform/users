@@ -44,18 +44,18 @@ var Scaffold = React.createClass({
     });
   },
   getUserEvaluations: function() {
-      var url = api.reverse('feedback_by_user', { uuid : currentUser.uuid });
-      $.ajax(url, {
-        dataType: 'json',
-        success : this.setEvaluations,
-        error : (xhr, textStatus, errorThrown) => {
-          if (xhr.status === 401) {
-            this.onLogout();
-          } else {
-            this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
-          }
+    var url = api.reverse('feedback_by_user', { uuid : currentUser.uuid });
+    $.ajax(url, {
+      dataType: 'json',
+      success : this.setEvaluations,
+      error : (xhr, textStatus, errorThrown) => {
+        if (xhr.status === 401) {
+          this.onLogout();
+        } else {
+          this.flashOnAjaxError(url, 'Error retrieving evaluated scenarios for current user')(xhr, textStatus, errorThrown);
         }
-      });
+      }
+    });
   },
   setEvaluations: function(evaluations) {
     window.userEvaluations = evaluations;
@@ -83,17 +83,17 @@ var Scaffold = React.createClass({
     });
   },
   handleClass: function() {
+    // use this to change to change/animate background image on route change
     var currentRoute = this.getRoutes()[this.getRoutes().length - 1].name;
     if (currentRoute != 'home') {
       return (
-        'container oc-page-wrapper' // set no/new hero here if needed or reposition/animate hero (append className="animate-area")
+        'oc-page-wrapper container'
       );
     }else {
       return (
-        'container oc-page-wrapper'
+        'oc-page-wrapper container'
       );
     }
-
   },
   routeName: function() {
     return this.getRoutes()[this.getRoutes().length - 1].name;
@@ -142,7 +142,9 @@ var Scaffold = React.createClass({
         key="scenarioList"
         to="scenarioList"
         className="navbar-button all-uppercase"
-        id="navbar-explore-btn">{this.i18n('explore', 'EXPLORE')}</NavItemLink>
+        id="navbar-explore-btn">
+        {this.i18n('explore', 'EXPLORE')}
+      </NavItemLink>
     );
     linksLeft.push(
       <NavItemLink
@@ -150,7 +152,9 @@ var Scaffold = React.createClass({
         to="scenarioCreate"
         onClick={this.clickedCreate}
         className="navbar-button all-uppercase"
-        id="navbar-create-btn">{this.i18n('create', 'CREATE')}</NavItemLink>
+        id="navbar-create-btn">
+        {this.i18n('create', 'CREATE')}
+      </NavItemLink>
     );
 
     if (this.userIsLoggedIn()) {
@@ -159,27 +163,35 @@ var Scaffold = React.createClass({
           <NavItemLink
             key="users"
             className="dropdown-items"
-            to="admin_userList">{this.i18n('users', 'Users')}</NavItemLink>
+            to="admin_userList">
+            {this.i18n('users', 'Users')}
+          </NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="questionnaire"
             className="dropdown-items"
-            to="admin_questionnaire">{this.i18n('questionnaire', 'Questionnaire')}</NavItemLink>
+            to="admin_questionnaire">
+            {this.i18n('questionnaire', 'Questionnaire')}
+          </NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="sysinfo"
             className="dropdown-items"
             to="sysinfo"
-            data-about>{this.i18n('about', 'About')}</NavItemLink>
+            data-about>
+            {this.i18n('about', 'About')}
+          </NavItemLink>
         );
         adminLinks.push(
           <NavItemLink
             key="reportList"
             to="reportList"
             className="dropdown-items"
-            id="">{this.i18n('reports', 'Reports')}</NavItemLink>
+            >
+            {this.i18n('reports', 'Reports')}
+          </NavItemLink>
         );
         linksRight.push(
           <DropdownButton
@@ -194,71 +206,79 @@ var Scaffold = React.createClass({
         <NavItemLink
           key="profile"
           className="nav-profile-btn"
-          to="profile">{this.i18n('profile', 'profile')}</NavItemLink>
+          to="profile">
+          {this.i18n('profile', 'profile')}
+        </NavItemLink>
       );
       linksRight.push(
         <NavItemLink
           key="logout"
           to="logout"
-          className="nav-logout-btn">{this.i18n('log_out', 'log out')}</NavItemLink>
+          className="nav-logout-btn">
+          {this.i18n('log_out', 'log out')}
+        </NavItemLink>
       );
     } else {
       /*
       linksRight.push(
-        <NavItemLink
-          key="signup"
-          to="signup"
-          onClick={this.clickedSignup}
-          className="nav-signup-btn">sign up</NavItemLink>
-      );
-      */
-      linksRight.push(
-        <NavItemLink
-          key="login"
-          to="login"
-          onClick={this.clickedLogin}
-          className="nav-login-btn">
-          {this.i18n('log_in', 'log in')}
-        </NavItemLink>
-      );
-    }
-
-    linksRight.push(
-      <LanguageSwitcher />
+      <NavItemLink
+      key="signup"
+      to="signup"
+      onClick={this.clickedSignup}
+      className="nav-signup-btn">sign up</NavItemLink>
     );
-
-    return (
-      <div className={this.handleClass()}>
-        <div className="row oc-navbar-wrapper">
-          <div className="col-lg-8 col-lg-offset-2">
-            <Navbar
-              brand={<Link to="home"><img src={ui.asset('static/img/oc-nav-header.png')}/></Link>}
-              toggleNavKey={0}>
-              <CollapsibleNav eventKey={0}>
-                <span className="oc-left-links-wrapper">
-                  <Nav navbar>
-                    {linksLeft}
-                  </Nav>
-                </span>
-                <Nav navbar right>
-                  {linksRight.reverse()}
-                </Nav>
-              </CollapsibleNav>
-            </Navbar>
-          </div>
-        </div>
-        <div className="oc-inner-page-wrapper">
-          <FlashQueue.Queue messages={this.props.messages}/>
-          {router}
-          <CookiePrompt />
-        </div>
-
-        <div className="oc-footers">
-          <FooterLarge currentUser={this.state.currentUser}/>
-        </div>
-      </div>
+    */
+    linksRight.push(
+      <NavItemLink
+        key="login"
+        to="login"
+        onClick={this.clickedLogin}
+        className="nav-login-btn">
+        {this.i18n('log_in', 'log in')}
+      </NavItemLink>
     );
   }
+
+  linksRight.push(
+    <LanguageSwitcher />
+  );
+
+  return (
+    <div className={this.handleClass()}>
+      <div className="oc-navbar-wrapper">
+        <div className="oc-macro-content">
+          <Navbar
+            brand={
+              <Link to="home">
+                <img src={ui.asset('static/img/oc-nav-header.png')}/>
+              </Link>
+            }
+            toggleNavKey={0}>
+            <CollapsibleNav eventKey={0}>
+              <span className="oc-left-links-wrapper">
+                <Nav navbar>
+                  {linksLeft}
+                </Nav>
+              </span>
+              <Nav navbar right>
+                {linksRight.reverse()}
+              </Nav>
+            </CollapsibleNav>
+          </Navbar>
+        </div>
+      </div>
+      <div className="oc-inner-page-wrapper">
+        <FlashQueue.Queue messages={this.props.messages}/>
+        {router}
+        <CookiePrompt />
+      </div>
+
+      <div className="oc-footers">
+        <FooterLarge currentUser={this.state.currentUser}/>
+      </div>
+    </div>
+  );
+}
 });
 
 export default Scaffold;
