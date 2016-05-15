@@ -1,24 +1,27 @@
-import React                    from 'react';
-import TimeAgo                  from 'react-timeago';
-import startsWithPolyfill       from 'string.prototype.startswith';
-import ui                       from '../../../ui_routes.js';
+import React              from 'react';
+import TimeAgo            from 'react-timeago';
+import startsWithPolyfill from 'string.prototype.startswith';
+import ui                 from '../../../ui_routes.js';
 
-import UserAvatar               from '../users/UserAvatar.jsx';
-import Counter                  from '../Counter.jsx';
-import Score                    from '../Score.jsx';
-import Comments                 from '../Comments.jsx';
-import ScenarioEvalButton       from './ScenarioEvalButton.jsx';
-import api                      from '../../../api_routes.js';
-import ScenarioIndicator        from './ScenarioIndicator.jsx';
-import ScenarioRating           from './ScenarioRating.jsx';
+import UserAvatar         from '../users/UserAvatar.jsx';
+import Counter            from '../Counter.jsx';
+import Score              from '../Score.jsx';
+import Comments           from '../Comments.jsx';
+import ScenarioEvalButton from './ScenarioEvalButton.jsx';
+import api                from '../../../api_routes.js';
+import ScenarioIndicator  from './ScenarioIndicator.jsx';
+import LoadingMixin       from '../LoadingMixin.jsx';
+import ScenarioRating     from './ScenarioRating.jsx';
 
-import SectorIcon               from '../SectorIcon.jsx';
-import Favorite                 from './Favorite.jsx';
+import SectorIcon         from '../SectorIcon.jsx';
+
+import Favorite        from './Favorite.jsx';
+
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
-import UserIsCreatorMixin       from '../UserIsCreatorMixin.jsx';
-import LoadingMixin             from '../LoadingMixin.jsx';
-import I18nMixin                from '../i18n/I18nMixin.jsx';
+import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
+
+import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var ScenarioTableView = React.createClass({
   mixins: [LoadingMixin, UserIsCreatorMixin, I18nMixin],
@@ -26,6 +29,7 @@ var ScenarioTableView = React.createClass({
     window.open(creditorUrl, '_blank');
   },
   handleCredits: function() {
+
     return this.props.scenario.credits.map(function(credit, i){
       var creditLink;
       if (!credit.creditorUrl) {
@@ -52,9 +56,9 @@ var ScenarioTableView = React.createClass({
       }
       return creditLink;
     }, this);
+
   },
   render: function() {
-    
     if (!this.props.scenario) {
       return null;
     }
@@ -62,14 +66,12 @@ var ScenarioTableView = React.createClass({
     var image = this.props.scenario.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
       image = (
-        <div className={article_image_overlay}>
-          <img
-            src={ui.asset(this.props.scenario.image)}
-            width="100%"/>
-        </div>
+        <img
+          src={ui.asset(this.props.scenario.image)}
+          width="100%"/>
       );
     } else {
-      image = null;
+      image = undefined;
     }
 
     var sector_colour = this.props.scenario.sectors ? this.props.scenario.sectors[0]: 'generic_sector';
@@ -150,8 +152,7 @@ var ScenarioTableView = React.createClass({
                   <Counter
                     scope="scenarios"
                     className="scenario-article-views"
-                    id={this.props.scenario.uuid} />
-                  {this.i18n('views', 'views')}
+                    id={this.props.scenario.uuid} /> {this.i18n('views', 'views')}
                 </p>
                 <p className="scenario-article-widget-data-comments">
                   <i className="fa fa-comment-o">
@@ -159,14 +160,12 @@ var ScenarioTableView = React.createClass({
                   <Comments
                     scope="scenarios"
                     className="scenario-article-comments"
-                    id={this.props.scenario.uuid} />
-                  {this.i18n('comments', 'comments')}
+                    id={this.props.scenario.uuid} /> {this.i18n('comments', 'comments')}
                 </p>
                 <p className="scenario-article-widget-data-evaluations">
                   <i className="fa fa-check-square-o">
                   </i>
-                  <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} />
-                  {this.i18n('evaluations', 'evaluations')}
+                  <ScenarioEvaluationsCount uuid={this.props.scenario.uuid} /> {this.i18n('evaluations', 'evaluations')}
                 </p>
                 <p>
                   <ScenarioRating
@@ -202,8 +201,8 @@ var ScenarioTableView = React.createClass({
                   {this.props.scenario.title}
                 </h2>
                 <div>
-                  <div className="scenario-article-publisher-wrapper">
-                    <span className="scenario-article-publisher">
+                <div className="scenario-article-publisher-wrapper">
+                  <span className="scenario-article-publisher">
                       {this.i18n('created_by', 'Created by')} <UserAvatar uuid={this.props.scenario.creator} />
                   </span>
                   <span className="scenario-article-timestamp">
@@ -225,21 +224,9 @@ var ScenarioTableView = React.createClass({
             </div>
           </header>
           <div className="scenario-article-section">
-            {image ?
-              <div className={article_image_overlay}>
-                {image}
-              </div>
-              :
-              <div>
-                <div className="scenario-article-no-img-wrapper">
-                  <span>
-                    <i className="fa fa-picture-o">
-                    </i>
-                    {this.i18n('no_image', 'This scenario has no image.')}
-                  </span>
-                </div>
-              </div>
-            }
+            <div className={article_image_overlay}>
+              {image}
+            </div>
             {copyright}
             <div className="scenario-article-meta">
               <div className="col-md-3">
