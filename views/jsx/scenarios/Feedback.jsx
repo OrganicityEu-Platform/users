@@ -28,7 +28,7 @@ var Feedback = React.createClass({
     };
   },
   componentWillMount: function() {
-    if(this.userHasEvaluated(this.state.evaluations)) {
+    if(this.props.evaluations && this.userHasEvaluated(this.state.evaluations)) {
       this.setState({hasEvaluated: true});
     }
   },

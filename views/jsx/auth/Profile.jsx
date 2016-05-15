@@ -335,11 +335,7 @@ var Profile = React.createClass({
     }
 
     if (!this.state.profile) {
-      return (
-        <div>
-          Loading!
-        </div>
-      );
+        return this.renderLoading();
     }
 
     var errorMessageName = null;

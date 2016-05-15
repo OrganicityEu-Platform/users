@@ -37,10 +37,7 @@ var Counter = React.createClass({
 
   },
   render: function() {
-    if (this.state.loading) {
-      return <span>Loading...</span>;
-    }
-
+    if (this.state.loading) { return <span>?</span>; }
     return (<span>{this.state.counter}</span>);
   }
 });

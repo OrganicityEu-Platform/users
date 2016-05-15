@@ -18,18 +18,18 @@ import DocumentTitle        from 'react-document-title';
 import Feedback             from './Feedback.jsx';
 import ScenarioRating       from './ScenarioRating.jsx';
 
-import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
-
+import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
+import LoadingMixin       from '../LoadingMixin.jsx';
 import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var ScenarioView = React.createClass({
-  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin],
+  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin, LoadingMixin],
   getInitialState: function() {
     return null;
   },
   componentDidMount: function() {
-
+    this.loading();
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
     var showEval = null;
 
@@ -39,6 +39,7 @@ var ScenarioView = React.createClass({
       success: (scenario) => {
         if (this.isMounted()) {
           this.setState(scenario);
+          this.loaded();
         }
       },
       error: (jqXHR, textStatus, errorThrown) => {
@@ -53,6 +54,10 @@ var ScenarioView = React.createClass({
       return null;
     }
 
+    if (this.isLoading()) {
+      return this.renderLoading();
+    }
+
     if (this.state.error) {
       var message = (this.state.error.status + ': ' + this.state.error.statusText);
       return (<Message type="danger" message={message} />);
@@ -64,7 +69,7 @@ var ScenarioView = React.createClass({
         <div className="row">
           <ScenarioTableView scenario={this.state} />
         </div>
-        <Feedback scenario={this.state} evaluations={userEvaluations}></Feedback>
+        <Feedback scenario={this.state}></Feedback>
         <div className="row">
           <div className="form-group">
             <div className="oc-macro-content oc-scenario-controls">

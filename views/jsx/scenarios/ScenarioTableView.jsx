@@ -10,17 +10,14 @@ import Comments           from '../Comments.jsx';
 import ScenarioEvalButton from './ScenarioEvalButton.jsx';
 import api                from '../../../api_routes.js';
 import ScenarioIndicator  from './ScenarioIndicator.jsx';
-import LoadingMixin       from '../LoadingMixin.jsx';
 import ScenarioRating     from './ScenarioRating.jsx';
 
 import SectorIcon         from '../SectorIcon.jsx';
-
 import Favorite        from './Favorite.jsx';
-
 import ScenarioEvaluationsCount from '../ScenarioEvaluationsCount.jsx';
 
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
-
+import LoadingMixin       from '../LoadingMixin.jsx';
 import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var ScenarioTableView = React.createClass({
@@ -66,12 +63,22 @@ var ScenarioTableView = React.createClass({
     var image = this.props.scenario.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
       image = (
-        <img
-          src={ui.asset(this.props.scenario.image)}
-          width="100%"/>
+        <div className={article_image_overlay}>
+          <img
+            src={ui.asset(this.props.scenario.image)}
+            width="100%"/>
+        </div>
       );
     } else {
-      image = undefined;
+      image = (
+        <div className="scenario-article-no-img-wrapper">
+          <span>
+            <i className="fa fa-picture-o"></i>
+            {this.i18n('no_image', 'This scenario has no image.')}
+          </span>
+        </div>
+
+      );
     }
 
     var sector_colour = this.props.scenario.sectors ? this.props.scenario.sectors[0]: 'generic_sector';
@@ -224,9 +231,7 @@ var ScenarioTableView = React.createClass({
             </div>
           </header>
           <div className="scenario-article-section">
-            <div className={article_image_overlay}>
               {image}
-            </div>
             {copyright}
             <div className="scenario-article-meta">
               <div className="col-md-3">

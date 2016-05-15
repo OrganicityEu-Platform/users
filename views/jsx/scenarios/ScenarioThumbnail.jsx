@@ -51,7 +51,7 @@ var ScenarioThumbnail = React.createClass({
     if (this.state.image) {
       thumbnail = (<img src={ui.asset(this.props.scenario.thumbnail)} width="100%"/>);
     }else {
-      thumbnail = <span className={"oc-thumbnail-no-image"}><i className="fa fa-picture-o"></i> {this.i18n('no_image', 'This scenario has no image.')}</span>;
+      thumbnail = <span><i className="fa fa-picture-o"></i> {this.i18n('no_image', 'This scenario has no image.')}</span>;
     }
 
     return (
