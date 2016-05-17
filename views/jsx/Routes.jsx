@@ -43,7 +43,7 @@ var routes = (
     <Route name="reportView"          path={ui.route('reportView')}          handler={ReportView}            />
     <Route name="userView"            path={ui.route('userView')}            handler={UserView}              />
     <Route name="scenarioEvalView"    path={ui.route('scenarioEvalView')}    handler={ScenarioEvalView}      />
-    <Route name="login"               path={ui.route('login')}               handler={Login}         />
+    <Route name="login"               path={ui.route('login')}               handler={LoginExternal}         />
     <Route name="loginInternal"       path={ui.route('login-internal')}      handler={Login}                 />
     <Route name="signup"              path={ui.route('signup')}              handler={Signup}                />
     <Route name="profile"             path={ui.route('profile')}             handler={Profile}               />
