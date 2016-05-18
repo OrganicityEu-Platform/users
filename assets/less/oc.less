@@ -1182,10 +1182,15 @@ and (min-width : 800px) {
 
   .oc-canvas-pack {
     .xl, .l, .s, .m, .l-special, .s-special, .m-special, .xl-special {
-      width: auto;
       height: auto;
       padding: 8px;
       border-radius: 2px;
     }
   }
+}
+
+.oc-canvas-wrapper {
+  .make-lg-column(7);
+  .make-lg-column-offset(2.5);
+  display: block;
 }
