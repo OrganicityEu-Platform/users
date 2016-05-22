@@ -296,8 +296,8 @@ clickedPrevious : function() {
 },
 clickedPreview : function() {
 
-  console.log(this.currentStep());
-
+  //console.log(this.currentStep());
+  window.scrollTo(0, 0);
   // Trim, as soon the button is clicked
   this.setState({
     btnClickedOnce: true,
@@ -445,7 +445,6 @@ getCredits: function() {
           }
           this.setState({}); // Rerender to show errors
         } else {
-          this.flash('info', 'Please review your scenario. If everything is fine, please submit it.', 20000);
           //console.log('Input validation successful!');
           if (onvalidate) {
             onvalidate();

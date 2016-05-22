@@ -50,6 +50,11 @@
     sectors: 'Sectors',
     tools: 'Tools',
 
+  Flash : {
+    on_delete_scenario: 'Scenario has been removed.',
+    on_undo_scenario: 'Scenario has been set to previous version.'
+  },
+
 	Reports : {
 		posted_by: 'Posted by:',
 		created_by: 'Created by',

@@ -13,7 +13,7 @@ var Router = require('react-router');
 
 var ScenarioDeleteButton = React.createClass({
   mixins: [UserHasRoleMixin, UserIsCreatorMixin, LoadingMixin, I18nMixin],
-  handleClick: function() {
+  handleClick: function(p) {
     var sure = window.confirm('Are you sure you want to delete this version of the scenario?');
     if (sure) {
       this.loading();
@@ -23,6 +23,15 @@ var ScenarioDeleteButton = React.createClass({
         error: this.loadingError(url, 'Error trying to delete scenario'),
         success: (result) => {
           this.loaded();
+
+          if(p === 'delete') {
+            this.props.handleDelete();
+          }
+
+          if(p === 'undo') {
+            this.props.handleUndo();
+          }
+
           if (typeof this.props.onChange == 'function') {
             this.props.onChange();
           }
@@ -35,16 +44,22 @@ var ScenarioDeleteButton = React.createClass({
       var version = this.props.scenario.version;
       if(version > 1) {
         return (
-          <button className="oc-button"
+          <button
+            className="oc-button"
             disabled={this.isLoading() ? 'loading' : ''}
-            onClick={this.handleClick}>{this.i18n('Admin.undo_to_previous', 'UNDO TO PREVIOUS VERSION')}</button>
-      //onClick={this.handleClick}>UNDO TO VERSION {version-1}</button>
+            onClick={() => this.handleClick('undo') }>
+            {this.i18n('Admin.undo_to_previous', 'UNDO TO PREVIOUS VERSION')}
+          </button>
+          //onClick={this.handleClick}>UNDO TO VERSION {version-1}</button>
         );
       } else {
         return (
-          <button className="oc-button"
+          <button
+            className="oc-button"
             disabled={this.isLoading() ? 'loading' : ''}
-            onClick={this.handleClick}>{this.i18n('Admin.delete', 'DELETE')}</button>
+            onClick={() => this.handleClick('delete')}>
+            {this.i18n('Admin.delete', 'DELETE')}
+          </button>
         );
       }
     }

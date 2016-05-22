@@ -20,25 +20,29 @@ import ScenarioRating       from './ScenarioRating.jsx';
 
 import UserIsLoggedInMixin  from './../UserIsLoggedInMixin.jsx';
 import UserIsCreatorMixin   from '../UserIsCreatorMixin.jsx';
-import LoadingMixin       from '../LoadingMixin.jsx';
+import LoadingMixin         from '../LoadingMixin.jsx';
+import FlashQueue           from '../FlashQueue.jsx';
 import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var ScenarioView = React.createClass({
-  mixins: [Router.Navigation, UserIsCreatorMixin, UserIsLoggedInMixin, LoadingMixin],
+  mixins: [UserIsCreatorMixin, UserIsLoggedInMixin, LoadingMixin, FlashQueue.Mixin, Router.Navigation],
   getInitialState: function() {
     return null;
   },
   componentDidMount: function() {
     this.loading();
+    this.getScenario();
+  },
+  getScenario: function() {
     var url = api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid });
     var showEval = null;
-
     $.ajax({
       dataType: 'json',
       url: url,
       success: (scenario) => {
         if (this.isMounted()) {
           this.setState(scenario);
+          this.setState({undo: true});
           this.loaded();
         }
       },
@@ -49,18 +53,38 @@ var ScenarioView = React.createClass({
       }
     });
   },
+  handleDelete: function() {
+    this.setState({deleted: true});
+    this.transitionTo('scenarioCreate');
+    this.flash('success', 'DELETED SCENARIO', 5000);
+  },
+  handleUndo: function() {
+    // TODO: compare PREVIOUS scenario state with current and print CHANGES to flash
+    this.getScenario();
+    if(this.state.undo) {
+      this.flash('success', 'UNDID CHANGES' /* + CHANGES*/ , 5000);
+    }
+  },
   render: function() {
+
+    if (this.state.deleted) {
+      return null;
+    }
+
     if (this.state === null) {
       return null;
     }
 
     if (this.isLoading()) {
+      if (this.state.error) {
+        var message = (this.state.error.status + ': ' + this.state.error.statusText);
+        return (
+          <div className="oc-macro-content">
+            <Message type="danger" message={message} />
+          </div>
+        );
+      }
       return this.renderLoading();
-    }
-
-    if (this.state.error) {
-      var message = (this.state.error.status + ': ' + this.state.error.statusText);
-      return (<Message type="danger" message={message} />);
     }
 
     return (
@@ -69,15 +93,23 @@ var ScenarioView = React.createClass({
         <div className="row">
           <ScenarioTableView scenario={this.state} />
         </div>
-        <Feedback scenario={this.state}></Feedback>
+        <Feedback scenario={this.state}>
+        </Feedback>
         <div className="row">
           <div className="form-group">
             <div className="oc-macro-content oc-scenario-controls">
-              <div className="col-sm-4"><ScenarioEditButton scenario={this.state}/></div>
+              <div className="col-sm-4">
+                <ScenarioEditButton scenario={this.state}/>
+              </div>
               <div className="col-sm-4">
 
               </div>
-              <div className="col-sm-4"><ScenarioDeleteButton scenario={this.state}/></div>
+              <div className="col-sm-4">
+                <ScenarioDeleteButton
+                  handleUndo={this.handleUndo}
+                  handleDelete={this.handleDelete}
+                  scenario={this.state}/>
+              </div>
             </div>
           </div>
         </div>
