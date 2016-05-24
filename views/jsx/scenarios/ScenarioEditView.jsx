@@ -361,7 +361,9 @@ clickedSubmit : function() {
     var method = this.editMode() ? 'PUT' : 'POST';
     var url    = this.editMode() ? api.reverse('scenario_by_uuid', { uuid : this.props.params.uuid })
     : api.reverse('scenario_list');
-    var successMessage = this.editMode() ? 'Sceanrio updated successfully.' : 'Sceanrio created successfully';
+    var successMessage = this.editMode() ?
+      this.i18n('Flash.on_update_scenario', 'Scenario updated successfully.') :
+      this.i18n('Flash.on_create_scenario', 'Scenario created successfully.');
     var errorMessage = this.editMode() ? 'Error while updating a scenario.' : 'Error while creating a scenario';
 
     this.loading();
@@ -433,11 +435,13 @@ getCredits: function() {
           }
 
           if (errorFields.length > 1) {
-            this.flash('danger', errorFields + ' fields are not valid.', 10000);
+            var fieldsError = this.i18n('Flash.on_error_multiple_fields', 'fields are not valid.');
+            this.flash('danger', errorFields + ' ' + fieldsError, 10000);
           }
 
           if (errorFields.length === 1) {
-            this.flash('danger', errorFields + ' field is not valid.', 10000);
+            var fieldError = this.i18n('Flash.on_error_single_field', 'field is not valid.');
+            this.flash('danger', errorFields + ' ' + fieldError, 10000);
           }
 
           if (onerror) {
@@ -781,7 +785,9 @@ getCredits: function() {
 },
 preview : function() {
 
-  var btnText = this.editMode() ? 'SUBMIT UPDATED SCENARIO' : 'SUBMIT NEW SCENARIO';
+  var btnText = this.editMode() ?
+  this.i18n('Button.submit_updated_scenario', 'SUBMIT UPDATED SCEARIO') :
+  this.i18n('Button.submit_new_scenario', 'SUBMIT NEW SCEARIO');
 
   var edit = this.i18n('Create.edit', 'Edit your scenario');
   var share = this.i18n('Create.share', 'Share your scenario for our future cities');
@@ -807,7 +813,7 @@ preview : function() {
           <button
             type="button"
             className="oc-button"
-            onClick={this.clickedPrevious}>EDIT</button>
+            onClick={this.clickedPrevious}>{this.i18n('Admin.edit', 'EDIT')}</button>
         </div>
         <div className="col-sm-3">
           <button

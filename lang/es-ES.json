@@ -50,6 +50,18 @@
     sectors: 'Sectores',
     tools: 'Herramientas',
 
+    Flash : {
+      on_delete_scenario: 'ES Scenario has been removed.',
+      on_undo_scenario: 'ES Scenario has been set to previous version.',
+      on_create_scenario: 'ES Scenario created successfully.',
+      on_update_scenario: 'ES Scenario updated successfully.',
+      on_error_multiple_fields: 'ES fields are not valid.',
+      on_error_single_field: 'ES field is not valid.'
+    },
+    Button : {
+      submit_new_scenario: 'ES SUBMIT NEW SCENARIO',
+      submit_updated_scenario: 'ES SUBMIT UPDATED SCENARIO'
+    },
 	Reports : {
 		posted_by: 'Publicado por:',
 		created_by: 'Creado por',

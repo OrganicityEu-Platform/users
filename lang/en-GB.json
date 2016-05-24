@@ -52,9 +52,16 @@
 
   Flash : {
     on_delete_scenario: 'Scenario has been removed.',
-    on_undo_scenario: 'Scenario has been set to previous version.'
+    on_undo_scenario: 'Scenario has been set to previous version.',
+    on_create_scenario: 'Scenario created successfully.',
+    on_update_scenario: 'Scenario updated successfully.',
+    on_error_multiple_fields: 'fields are not valid.',
+    on_error_single_field: 'field is not valid.'
   },
-
+  Button : {
+    submit_new_scenario: 'SUBMIT NEW SCENARIO',
+    submit_updated_scenario: 'SUBMIT UPDATED SCENARIO'
+  },
 	Reports : {
 		posted_by: 'Posted by:',
 		created_by: 'Created by',

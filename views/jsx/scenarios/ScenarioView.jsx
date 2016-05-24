@@ -25,7 +25,7 @@ import FlashQueue           from '../FlashQueue.jsx';
 import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 var ScenarioView = React.createClass({
-  mixins: [UserIsCreatorMixin, UserIsLoggedInMixin, LoadingMixin, FlashQueue.Mixin, Router.Navigation],
+  mixins: [UserIsCreatorMixin, UserIsLoggedInMixin, I18nMixin, LoadingMixin, FlashQueue.Mixin, Router.Navigation],
   getInitialState: function() {
     return null;
   },
@@ -56,12 +56,14 @@ var ScenarioView = React.createClass({
   handleDelete: function() {
     this.setState({deleted: true});
     this.transitionTo('scenarioCreate');
-    this.flash('success', 'DELETED SCENARIO', 5000);
+    var flashDel = this.i18n('Flash.on_delete_scenario', 'Scenario has been removed.');
+    this.flash('success', flashDel, 5000);
   },
   handleUndo: function() {
     // TODO: compare PREVIOUS scenario state with current and print CHANGES to flash
     this.getScenario();
     if(this.state.undo) {
+      var flashUndo = this.i18n('Flash.on_undo_scenario', 'Scenario has been set to previous version.');
       this.flash('success', 'UNDID CHANGES' /* + CHANGES*/ , 5000);
     }
   },
