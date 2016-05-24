@@ -64,7 +64,7 @@ var ScenarioView = React.createClass({
     this.getScenario();
     if(this.state.undo) {
       var flashUndo = this.i18n('Flash.on_undo_scenario', 'Scenario has been set to previous version.');
-      this.flash('success', 'UNDID CHANGES' /* + CHANGES*/ , 5000);
+      this.flash('success', flashUndo /* + CHANGES*/ , 5000);
     }
   },
   render: function() {
