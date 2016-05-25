@@ -3,8 +3,6 @@ import React                from 'react';
 
 import LoadingMixin         from '../LoadingMixin.jsx';
 
-import ScenarioListItem     from './ScenarioListItem.jsx';
-import ScenarioThumbnail    from './ScenarioThumbnail.jsx';
 import ScenarioThumbnails   from './ScenarioThumbnails.jsx';
 import Router               from 'react-router';
 import TagField             from '../form-components/TagField.jsx';

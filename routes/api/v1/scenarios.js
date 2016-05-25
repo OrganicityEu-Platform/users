@@ -310,6 +310,12 @@ module.exports = function(router, passport) {
       params.filter.creator = req.query.creator;
     }
 
+    if (req.query.bundle) {
+      params.filter.uuid = {
+        $in : req.query.bundle
+      };
+    }
+
     if (req.query.sectors) {
       params.filter.sectors = {
         $all : req.query.sectors.split(',').map(trimString)

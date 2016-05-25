@@ -31,6 +31,7 @@ import Select               from 'react-select';
 import login                from '../../../config/login.js';
 import I18nMixin            from '../i18n/I18nMixin.jsx';
 
+import BookmarkedScenarios  from '../scenarios/BookmarkedScenarios.jsx';
 
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin, I18nMixin],
@@ -90,6 +91,7 @@ var Profile = React.createClass({
         e.publicEmail = profile.publicEmail;
         e.publicWebsite = profile.publicWebsite;
         e.dirty = false;
+        e.favorites = profile.favorites;
         e.profession = (profile.profession) ? profile.profession : [];
         e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
 
@@ -107,6 +109,7 @@ var Profile = React.createClass({
 
       }
     });
+
   },
   routeName: function() {
     var routeName = this.getRoutes()[this.getRoutes().length - 1].name;
@@ -718,8 +721,7 @@ var Profile = React.createClass({
             <div className="col-lg-12">
               <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
             </div>
-
-
+            <BookmarkedScenarios bundle={this.state.profile.favorites}/>
           </form>
         </div>
       </div>
