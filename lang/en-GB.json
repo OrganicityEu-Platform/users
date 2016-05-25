@@ -18,6 +18,7 @@
     eval_this_scenario: 'Evaluate this scenario',
     i_like: 'I like...',
     i_dislike: 'I dislike...',
+    none_authored: 'You have not published any scenarios yet.',
     thankyou_feedback: 'Thank you for your feedback',
     feedback_received: 'Feedback received',
     'no_feedback_received': 'This scenario has not recieved any feedback yet.',
@@ -61,6 +62,10 @@
   Button : {
     submit_new_scenario: 'SUBMIT NEW SCENARIO',
     submit_updated_scenario: 'SUBMIT UPDATED SCENARIO'
+  },
+  Bookmark : {
+    title: 'Bookmarked scenarios',
+    no_bookmarks: 'You have not bookmarked any scenarios.'
   },
 	Reports : {
 		posted_by: 'Posted by:',

@@ -299,20 +299,20 @@ var Profile = React.createClass({
       if (this.state.dirty) {
         this.props.validate((error) => {
           if (!error) {
-              this.loading();
-              var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
-              $.ajax(url, {
-                type : 'PATCH',
-                data : JSON.stringify(this.getProfile()),
-                contentType : 'application/json',
-                error : this.loadingError(url, 'Error updating user profile'),
-                success : () => {
-                  this.loadingSuccess('Profile succesfully updated!', {
-                    dirty : false,
-                    btnClickedOnce: false
-                  });
-                }
-              });
+            this.loading();
+            var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
+            $.ajax(url, {
+              type : 'PATCH',
+              data : JSON.stringify(this.getProfile()),
+              contentType : 'application/json',
+              error : this.loadingError(url, 'Error updating user profile'),
+              success : () => {
+                this.loadingSuccess('Profile succesfully updated!', {
+                  dirty : false,
+                  btnClickedOnce: false
+                });
+              }
+            });
           } else {
             console.log('Validation error:', error);
           }
@@ -338,7 +338,7 @@ var Profile = React.createClass({
     }
 
     if (!this.state.profile) {
-        return this.renderLoading();
+      return this.renderLoading();
     }
 
     var errorMessageName = null;
@@ -349,12 +349,36 @@ var Profile = React.createClass({
     var errorMessageProfession = null;
 
     if (this.state.btnClickedOnce) {
-      errorMessageName = (<Message type="danger" messages={this.props.getValidationMessages('name')} />);
-      errorMessageGender = (<Message type="danger" messages={this.props.getValidationMessages('gender')} />);
-      errorMessageRoles = (<Message type="danger" messages={this.props.getValidationMessages('roles')} />);
-      errorMessagePassword = (<Message type="danger" messages={this.props.getValidationMessages('local.password')} />);
-      errorMessagePasswordRepeat = (<Message type="danger" messages={this.props.getValidationMessages('local.password_repeat')} />);
-      errorMessageProfession = (<Message type="danger" messages={this.props.getValidationMessages('profession')} />);
+      errorMessageName = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('name')} />
+      );
+      errorMessageGender = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('gender')} />
+      );
+      errorMessageRoles = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('roles')} />
+      );
+      errorMessagePassword = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('local.password')} />
+      );
+      errorMessagePasswordRepeat = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('local.password_repeat')} />
+      );
+      errorMessageProfession = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('profession')} />
+      );
     }
 
     var localAccount = null;
@@ -364,15 +388,21 @@ var Profile = React.createClass({
       localAccount = (
         <div>
           <DocumentTitle title={config.title + ' | Profile '} />
-          <h2 className="pink">{this.i18n('Profile.account_settings', 'Account settings')}</h2>
+          <h2 className="pink">
+            {this.i18n('Profile.account_settings', 'Account settings')}
+          </h2>
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3 first-letter-uppercase" htmlFor="email">{this.i18n('Profile.email', 'Email')}
+            <label
+              className="control-label col-sm-3 first-letter-uppercase"
+              htmlFor="email">
+              {this.i18n('Profile.email', 'Email')}
               <span className="oc-form-group-info">
                 {this.i18n('Profile.emailInfo', 'Sign-in details')}
               </span>
             </label>
             <div className="col-sm-9">
-              <input type="text"
+              <input
+                type="text"
                 className="oc-input"
                 name="email"
                 disabled="disabled"
@@ -381,365 +411,424 @@ var Profile = React.createClass({
           </div>
 
           <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="password">{this.i18n('Profile.password', 'Password')} <ValidationIndicator valid={this.props.isValid('local.password')}/>
-              <span className="oc-form-group-info">
-                {this.i18n('Profile.passwordInfo', 'Type a new password for your login. The password must contain at least 6 characters.')}
-              </span>
-            </label>
-            <div className="col-sm-9">
-               <input type="password"
-                className="oc-input"
-                name="password"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPassword} />
-              {errorMessagePassword}
-            </div>
-          </div>
-
-          <div className="form-group oc-form-group oc-edit-group">
-            <label className="control-label col-sm-3" htmlFor="password_repeat">{this.i18n('Profile.password_repeat', 'Password Repeat')} <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
-              <span className="oc-form-group-info">
-                {this.i18n('Profile.passwordRepeatInfo', 'If you have selected a new password, please repeat it here.')}
-              </span>
-            </label>
-            <div className="col-sm-9">
-              <input type="password"
-                className="oc-input"
-                name="password_repeat"
-                disabled={this.isLoading() ? 'disabled' : ''}
-                onChange={this.handleChangedPasswordRepeat} />
-              {errorMessagePasswordRepeat}
-            </div>
-          </div>
-        </div>
-
-      );
-    }
-
-    var roles = null;
-
-    if(this.userHasRole('admin') || this.state.profile.roles.length > 0) {
-
-      // Only show the indicator, if admin
-      var roleIndicator = null;
-      if (this.userHasRole('admin')) {
-        roleIndicator = (<ValidationIndicator valid={this.props.isValid('roles')}/>);
-      }
-
-      roles = (
-        <div className="form-group oc-form-group oc-edit-group">
-          <label className="control-label col-sm-3" htmlFor="name">{this.i18n('Profile.roles', 'Roles')} {roleIndicator}
+            <label
+              className="control-label col-sm-3"
+              htmlFor="password">
+              {this.i18n('Profile.password', 'Password')} <ValidationIndicator valid={this.props.isValid('local.password')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.rolesInfo', 'The roles you have in this scenario tool. For example, you could be a moderator.')}
+              {this.i18n('Profile.passwordInfo', 'Type a new password for your login. The password must contain at least 6 characters.')}
             </span>
           </label>
           <div className="col-sm-9">
-            <TagField
-              disabled={this.userHasRole('admin') ? false : true}
-              key={this.state.profile.uuid + '_roles'}
-              tags={this.state.profile.roles}
-              loading={this.isLoading()}
-              onChange={this.handleChangedRoles} />
-            {errorMessageRoles}
+            <input
+              type="password"
+              className="oc-input"
+              name="password"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              onChange={this.handleChangedPassword} />
+            {errorMessagePassword}
           </div>
         </div>
-      );
-    }
-
-     //icon-eye-open icon-eye-close
-
-    function socialLink(name, icon) {
-
-      return null; // Disable social links
-
-      var unlink = function(name) {
-        return function(evt) {
-          evt.preventDefault();
-
-          $.ajax(api.reverse('disconnect_' + name, { uuid : that.state.profile.uuid }), {
-            error: (xhr, textStatus, errorThrown) => {
-              console.log('ERROR');
-            },
-            success : (profile) => {
-              var newState = {};
-              newState[name] = {
-                public : false,
-                id : undefined
-              };
-
-              console.log(newState);
-              that.setState(newState);
-            }
-          });
-        }
-      }
-
-      var changeVisability = function(name, e) {
-        return function (evt) {
-          evt.preventDefault();
-
-          var b = !e.public;
-          console.log('Change visability for ', name, 'to', b);
-
-          var data = {};
-          data[name] = { public : b}
-
-          $.ajax(api.reverse('user-update-viablility', { uuid : that.state.profile.uuid }), {
-            type : 'PATCH',
-            data : JSON.stringify(data),
-            contentType : 'application/json',
-            error: (xhr, textStatus, errorThrown) => {
-              console.log('ERROR');
-            },
-            success : (profile) => {
-              var newState = {};
-              newState[name] = that.state[name];
-              newState[name].public = !e.public;
-              console.log(newState);
-              that.setState(newState);
-            }
-          });
-        }
-      }
-
-      // Disable linking
-      if(!login[name]) return null;
-
-      var e = that.state[name];
-      if(e && e.id) {
-        return (
-          <div>
-            <button type="button" className="oc-link-social-unlink" onClick={unlink(name)}>
-              Unlink <span className={icon}/>
-            </button>
-            <button type="button" className="oc-link-social" onClick={changeVisability(name, e)} title="Show this on your public profile">
-              <span className={e.public ? "fa fa-eye" : "fa fa-eye-slash"}/>
-            </button>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            <a className="oc-link-social-link" href={api.reverse('auth_' + name)}>
-              Link with <span className={icon}></span>
-            </a>
-          </div>
-        );
-      }
-    }
-
-    var linkTwitter = socialLink('twitter', 'fa fa-twitter');
-    var linkFacebook = socialLink('facebook', 'fa fa-facebook');
-    var linkGoogle = socialLink('google', 'fa fa-google-plus');
-    var linkGithub = socialLink('github', 'fa fa-github');
-
-    var socialLinks = (
-      <div>
-        <h2 className="pink">Social links</h2>
 
         <div className="form-group oc-form-group oc-edit-group">
-          <label className="control-label col-sm-3" htmlFor="name">Social links
-            <span className="oc-form-group-info">
-              {lang.Profile.socialInfo}
-            </span>
-          </label>
-          <div className="col-sm-9">
-            {linkTwitter}
-            {linkFacebook}
-            {linkGoogle}
-            {linkGithub}
-          </div>
+          <label
+            className="control-label col-sm-3"
+            htmlFor="password_repeat">
+            {this.i18n('Profile.password_repeat', 'Password Repeat')} <ValidationIndicator valid={this.props.isValid('local.password_repeat')}/>
+          <span className="oc-form-group-info">
+            {this.i18n('Profile.passwordRepeatInfo', 'If you have selected a new password, please repeat it here.')}
+          </span>
+        </label>
+        <div className="col-sm-9">
+          <input
+            type="password"
+            className="oc-input"
+            name="password_repeat"
+            disabled={this.isLoading() ? 'disabled' : ''}
+            onChange={this.handleChangedPasswordRepeat} />
+          {errorMessagePasswordRepeat}
         </div>
       </div>
+    </div>
+
+  );
+}
+
+var roles = null;
+
+if(this.userHasRole('admin') || this.state.profile.roles.length > 0) {
+
+  // Only show the indicator, if admin
+  var roleIndicator = null;
+  if (this.userHasRole('admin')) {
+    roleIndicator = (
+      <ValidationIndicator valid={this.props.isValid('roles')}/>
     );
+  }
 
-    socialLinks = null;
+  roles = (
+    <div className="form-group oc-form-group oc-edit-group">
+      <label
+        className="control-label col-sm-3"
+        htmlFor="name">
+        {this.i18n('Profile.roles', 'Roles')} {roleIndicator}
+        <span className="oc-form-group-info">
+          {this.i18n('Profile.rolesInfo', 'The roles you have in this scenario tool. For example, you could be a moderator.')}
+        </span>
+      </label>
+      <div className="col-sm-9">
+        <TagField
+          disabled={this.userHasRole('admin') ? false : true}
+          key={this.state.profile.uuid + '_roles'}
+          tags={this.state.profile.roles}
+          loading={this.isLoading()}
+          onChange={this.handleChangedRoles} />
+        {errorMessageRoles}
+      </div>
+    </div>
+  );
+}
 
-    var options = [
-      { value: 'Academic', label: 'Academic' },
-      { value: 'Artist', label: 'Artist' },
-      { value: 'Business owner', label: 'Business owner' },
-      { value: 'Designer', label: 'Designer' },
-      { value: 'Developer', label: 'Developer' },
-      { value: 'Entrepreneur', label: 'Entrepreneur' },
-      { value: 'Government', label: 'Government' },
-      { value: 'Manager', label: 'Manager' },
-      { value: 'Policy maker', label: 'Policy maker' },
-      { value: 'Researcher', label: 'Researcher' },
-      { value: 'Student (school)', label: 'Student (school)' },
-      { value: 'Student (university)', label: 'Student (university)' },
-      { value: 'Technology expert', label: 'Technology expert' },
-      { value: 'Urbanist', label: 'Urbanist' },
-      { value: 'Other', label: 'Other' },
-    ];
+//icon-eye-open icon-eye-close
 
+function socialLink(name, icon) {
+
+  return null; // Disable social links
+
+  var unlink = function(name) {
+    return function(evt) {
+      evt.preventDefault();
+
+      $.ajax(api.reverse('disconnect_' + name, { uuid : that.state.profile.uuid }), {
+        error: (xhr, textStatus, errorThrown) => {
+          console.log('ERROR');
+        },
+        success : (profile) => {
+          var newState = {};
+          newState[name] = {
+            public : false,
+            id : undefined
+          };
+
+          console.log(newState);
+          that.setState(newState);
+        }
+      });
+    }
+  }
+
+  var changeVisability = function(name, e) {
+    return function (evt) {
+      evt.preventDefault();
+
+      var b = !e.public;
+      console.log('Change visability for ', name, 'to', b);
+
+      var data = {};
+      data[name] = { public : b}
+
+      $.ajax(api.reverse('user-update-viablility', { uuid : that.state.profile.uuid }), {
+        type : 'PATCH',
+        data : JSON.stringify(data),
+        contentType : 'application/json',
+        error: (xhr, textStatus, errorThrown) => {
+          console.log('ERROR');
+        },
+        success : (profile) => {
+          var newState = {};
+          newState[name] = that.state[name];
+          newState[name].public = !e.public;
+          console.log(newState);
+          that.setState(newState);
+        }
+      });
+    }
+  }
+
+  // Disable linking
+  if(!login[name]) return null;
+
+  var e = that.state[name];
+  if(e && e.id) {
     return (
-      <div className="row oc-form-group-view">
-        <div className="oc-macro-content">
-          <h1 className="oc-pink">{this.i18n('Profile.public_profile', 'Public profile')}</h1>
-          <h4 className="oc-profile-info">
-            {this.i18n('Profile.your_profile_allows', 'Your profile allows you to connect, share and discuss ideas with others')}
-          </h4>
-          <form className="form-horizontal">
+      <div>
+        <button
+          type="button"
+          className="oc-link-social-unlink"
+          onClick={unlink(name)}>
+          Unlink <span className={icon}/>
+      </button>
+      <button
+        type="button"
+        className="oc-link-social"
+        onClick={changeVisability(name, e)}
+        title="Show this on your public profile">
+        <span className={e.public ? "fa fa-eye" : "fa fa-eye-slash"}/>
+      </button>
+    </div>
+  );
+} else {
+  return (
+    <div>
+      <a
+        className="oc-link-social-link"
+        href={api.reverse('auth_' + name)}>
+        Link with <span className={icon}></span>
+    </a>
+  </div>
+);
+}
+}
 
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">
-                {this.i18n('Profile.my_name', 'My name')} <ValidationIndicator valid={this.props.isValid('name')}/>
-                <span className="oc-form-group-info">
-                  {this.i18n('Profile.nameInfo', 'Use your real name or a nickname.')}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <input
-                  type="text"
-                  className="oc-input"
-                  id="name"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.name_or_nick', 'Name or nickname')}
-                  value={this.state.profile.name}
-                  onChange={this.handleChangedName} />
-                {errorMessageName}
-              </div>
-            </div>
+var linkTwitter = socialLink('twitter', 'fa fa-twitter');
+var linkFacebook = socialLink('facebook', 'fa fa-facebook');
+var linkGoogle = socialLink('google', 'fa fa-google-plus');
+var linkGithub = socialLink('github', 'fa fa-github');
 
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="location">{this.i18n('Profile.my_location', 'My location')}
-                <span className="oc-form-group-info">
-                  {this.i18n('Profile.locationInfo', '')}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <input
-                  type="text"
-                  className="oc-input"
-                  id="location"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.location_placeholder', 'I\'m at...')}
-                  value={this.state.profile.location}
-                  onChange={this.handleChangedLocation} />
-              </div>
-            </div>
+var socialLinks = (
+  <div>
+    <h2 className="pink">
+      Social links
+    </h2>
 
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="profession">{this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
-                <span className="oc-form-group-info">
-                  {this.i18n('Profile.professionInfo', '')}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <Select
-                  name="form-field-name"
-                  value={this.state.profile.profession}
-                  options={options}
-                  placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
-                  onChange={this.handleChangedProfession}
-                  multi={true}/>
-                <input
-                  type="text"
-                  className="oc-input"
-                  id="profession"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
-                  value={this.state.profile.professionTitle}
-                  onChange={this.handleChangedProfessionTitle} />
-                {errorMessageProfession}
-              </div>
-            </div>
+    <div className="form-group oc-form-group oc-edit-group">
+      <label
+        className="control-label col-sm-3"
+        htmlFor="name">
+        Social links
+        <span className="oc-form-group-info">
+          {lang.Profile.socialInfo}
+        </span>
+      </label>
+      <div className="col-sm-9">
+        {linkTwitter}
+        {linkFacebook}
+        {linkGoogle}
+        {linkGithub}
+      </div>
+    </div>
+  </div>
+);
 
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="gender">{this.i18n('Profile.gender', 'My gender')} <ValidationIndicator valid={this.props.isValid('gender')}/>
-                <span className="oc-form-group-info">
-                  {this.i18n('Profile.genderInfo', 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.')}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <input type="radio"
-                  name="gender"
-                  value="m"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'm'}
-                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_m', 'Male')}<br/>
-                <input type="radio"
-                  name="gender"
-                  value="f"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'f'}
-                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_f', 'Female')}<br/>
-                <input type="radio"
-                  name="gender"
-                  value="o"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  checked={this.state.profile.gender === 'o'}
-                  onChange={this.handleChangedGender} /> {this.i18n('Profile.gender_o', 'Other')}<br/>
-                {errorMessageGender}
-              </div>
-            </div>
+socialLinks = null;
 
-            {roles}
+var options = [
+  { value: 'Academic', label: 'Academic' },
+  { value: 'Artist', label: 'Artist' },
+  { value: 'Business owner', label: 'Business owner' },
+  { value: 'Designer', label: 'Designer' },
+  { value: 'Developer', label: 'Developer' },
+  { value: 'Entrepreneur', label: 'Entrepreneur' },
+  { value: 'Government', label: 'Government' },
+  { value: 'Manager', label: 'Manager' },
+  { value: 'Policy maker', label: 'Policy maker' },
+  { value: 'Researcher', label: 'Researcher' },
+  { value: 'Student (school)', label: 'Student (school)' },
+  { value: 'Student (university)', label: 'Student (university)' },
+  { value: 'Technology expert', label: 'Technology expert' },
+  { value: 'Urbanist', label: 'Urbanist' },
+  { value: 'Other', label: 'Other' },
+];
 
-            <div className="form-group oc-form-group oc-edit-group">
-              <label className="control-label col-sm-3" htmlFor="name">{this.i18n('Profile.public_contact', 'Public contact')}
-                <span className="oc-form-group-info">
-                  {this.i18n('Profile.public_contact_info', '')}
-                </span>
-              </label>
-              <div className="col-sm-9">
-                <input
-                  type="text"
-                  className="oc-input"
-                  id="name"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
-                  value={this.state.profile.publicEmail}
-                  onChange={this.handleChangedpublicEmail} /><br/>
-                <input
-                  type="text"
-                  className="oc-input"
-                  id="name"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.website', 'website')}
-                  value={this.state.profile.publicWebsite}
-                  onChange={this.handleChangedpublicWebSite} /><br/>
-              </div>
-            </div>
+return (
+  <div className="row oc-form-group-view">
+    <div className="oc-macro-content">
+      <h1 className="oc-pink">
+        {this.i18n('Profile.public_profile', 'Public profile')}
+      </h1>
+      <h4 className="oc-profile-info">
+        {this.i18n('Profile.your_profile_allows', 'Your profile allows you to connect, share and discuss ideas with others')}
+      </h4>
+      <form className="form-horizontal">
 
-            <div className="form-group">
-              <div className="oc-save-profile-btn-wrapper">
-                <button
-                  type="button"
-                  className="oc-button"
-                  disabled={this.isLoading() ? 'disabled' : ''}
-                  onClick={this.handleSubmit}
-                >{this.i18n('Profile.save', 'SAVE PROFILE')}</button>
-              </div>
-            </div>
-
-            {socialLinks}
-            {localAccount}
-
-            <h2 className="pink">{this.i18n('Profile.your_scenarios', 'Your scenarios')}</h2>
-            <div className="col-lg-12">
-              <ScenariosNewest creator={this.state.profile.uuid} counter={true}/>
-            </div>
-            <BookmarkedScenarios bundle={this.state.profile.favorites}/>
-          </form>
+        <div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
+            htmlFor="name">
+            {this.i18n('Profile.my_name', 'My name')} <ValidationIndicator valid={this.props.isValid('name')}/>
+          <span className="oc-form-group-info">
+            {this.i18n('Profile.nameInfo', 'Use your real name or a nickname.')}
+          </span>
+        </label>
+        <div className="col-sm-9">
+          <input
+            type="text"
+            className="oc-input"
+            id="name"
+            disabled={this.isLoading() ? 'disabled' : ''}
+            placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.name_or_nick', 'Name or nickname')}
+            value={this.state.profile.name}
+            onChange={this.handleChangedName} />
+          {errorMessageName}
         </div>
       </div>
-    );
 
-  },
-  getValidatorData: function() {
-    var profile = this.getProfile();
+      <div className="form-group oc-form-group oc-edit-group">
+        <label
+          className="control-label col-sm-3"
+          htmlFor="location">
+          {this.i18n('Profile.my_location', 'My location')}
+          <span className="oc-form-group-info">
+            {this.i18n('Profile.locationInfo', '')}
+          </span>
+        </label>
+        <div className="col-sm-9">
+          <input
+            type="text"
+            className="oc-input"
+            id="location"
+            disabled={this.isLoading() ? 'disabled' : ''}
+            placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.location_placeholder', 'I\'m at...')}
+            value={this.state.profile.location}
+            onChange={this.handleChangedLocation} />
+        </div>
+      </div>
 
-    if (profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
-      profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
-    }
+      <div className="form-group oc-form-group oc-edit-group">
+        <label
+          className="control-label col-sm-3"
+          htmlFor="profession">
+          {this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
+        <span className="oc-form-group-info">
+          {this.i18n('Profile.professionInfo', '')}
+        </span>
+      </label>
+      <div className="col-sm-9">
+        <Select
+          name="form-field-name"
+          value={this.state.profile.profession}
+          options={options}
+          placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
+          onChange={this.handleChangedProfession}
+          multi={true}/>
+        <input
+          type="text"
+          className="oc-input"
+          id="profession"
+          disabled={this.isLoading() ? 'disabled' : ''}
+          placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
+          value={this.state.profile.professionTitle}
+          onChange={this.handleChangedProfessionTitle} />
+        {errorMessageProfession}
+      </div>
+    </div>
 
-    console.log('Profile to submit: ', profile);
+    <div className="form-group oc-form-group oc-edit-group">
+      <label
+        className="control-label col-sm-3"
+        htmlFor="gender">
+        {this.i18n('Profile.gender', 'My gender')} <ValidationIndicator valid={this.props.isValid('gender')}/>
+      <span className="oc-form-group-info">
+        {this.i18n('Profile.genderInfo', 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.')}
+      </span>
+    </label>
+    <div className="col-sm-9">
+      <input
+        type="radio"
+        name="gender"
+        value="m"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        checked={this.state.profile.gender === 'm'}
+        onChange={this.handleChangedGender} />
+      {this.i18n('Profile.gender_m', 'Male')}
+      <br/>
+      <input
+        type="radio"
+        name="gender"
+        value="f"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        checked={this.state.profile.gender === 'f'}
+        onChange={this.handleChangedGender} />
+      {this.i18n('Profile.gender_f', 'Female')}
+      <br/>
+      <input
+        type="radio"
+        name="gender"
+        value="o"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        checked={this.state.profile.gender === 'o'}
+        onChange={this.handleChangedGender} />
+      {this.i18n('Profile.gender_o', 'Other')}
+      <br/>
+      {errorMessageGender}
+    </div>
+  </div>
 
-    return profile;
-  },
-  validatorTypes: UserJoi.profileClient
+  {roles}
+
+  <div className="form-group oc-form-group oc-edit-group">
+    <label
+      className="control-label col-sm-3"
+      htmlFor="name">
+      {this.i18n('Profile.public_contact', 'Public contact')}
+      <span className="oc-form-group-info">
+        {this.i18n('Profile.public_contact_info', '')}
+      </span>
+    </label>
+    <div className="col-sm-9">
+      <input
+        type="text"
+        className="oc-input"
+        id="name"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
+        value={this.state.profile.publicEmail}
+        onChange={this.handleChangedpublicEmail} />
+      <br/>
+      <input
+        type="text"
+        className="oc-input"
+        id="name"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.website', 'website')}
+        value={this.state.profile.publicWebsite}
+        onChange={this.handleChangedpublicWebSite} />
+      <br/>
+    </div>
+  </div>
+
+  <div className="form-group">
+    <div className="oc-save-profile-btn-wrapper">
+      <button
+        type="button"
+        className="oc-button"
+        disabled={this.isLoading() ? 'disabled' : ''}
+        onClick={this.handleSubmit}
+        >
+        {this.i18n('Profile.save', 'SAVE PROFILE')}
+      </button>
+    </div>
+  </div>
+
+  {socialLinks}
+  {localAccount}
+
+  <h2 className="pink">
+    {this.i18n('Profile.your_scenarios', 'Your scenarios')}
+  </h2>
+
+  <ScenariosNewest
+    creator={this.state.profile.uuid}
+    counter={true}/>
+  <BookmarkedScenarios bundle={this.state.profile.favorites}/>
+</form>
+</div>
+</div>
+);
+
+},
+getValidatorData: function() {
+  var profile = this.getProfile();
+
+  if (profile.local && (this.state.profile.password || this.state.profile.password_repeat)) {
+    profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
+  }
+
+  console.log('Profile to submit: ', profile);
+
+  return profile;
+},
+validatorTypes: UserJoi.profileClient
 });
 
 export default validation(strategy)(Profile);

@@ -1,37 +1,71 @@
-import React from 'react';
+import React                from 'react';
 import api                  from '../../../api_routes.js';
 import $                    from 'jquery';
+
 import ScenarioThumbnails   from './ScenarioThumbnails.jsx';
 
+import I18nMixin            from '../i18n/I18nMixin.jsx';
+
 var BookmarkedScenarios = React.createClass({
+  mixins: [I18nMixin],
   getInitialState: function() {
     return {
       scenarios: []
     };
   },
   componentDidMount: function() {
-    var options = {
-      bundle: this.props.bundle // [""] of uuids
-    };
 
-    var url = api.reverse('scenario_list', options);
+    if(this.props.bundle.length > 0) {
 
-    $.ajax(url, {
-      dataType : 'json',
-      success : (scenarios) => {
-        this.setState({
-          scenarios: scenarios
-        });
-      }
-    });
+      var options = {
+        bundle: this.props.bundle // [""] of uuids
+      };
+
+      var url = api.reverse('scenario_list', options);
+
+      $.ajax(url, {
+        dataType : 'json',
+        success : (scenarios) => {
+          this.setState({
+            scenarios: scenarios
+          });
+        }
+      });
+    }
   },
   render: function() {
-    return(<div>
-      <h2 className="pink">Bookmarked Scenarios</h2>
-      <ScenarioThumbnails
-        scenarios={this.state.scenarios}
-        counter={false} />
-    </div>);
+
+    var text = {
+      title: this.i18n('Bookmark.title', 'You have not bookmarked any scenarios.'),
+      no_bookmarks: this.i18n('Bookmark.no_bookmarks', 'You have not bookmarked any scenarios.')
+    };
+
+    return(
+      <div>
+        {this.state.scenarios.length > 0 ?
+          <div>
+            <h2 className="pink">
+              {text.title}
+            </h2>
+            <div className="col-lg-12">
+              <ScenarioThumbnails
+                scenarios={this.state.scenarios}
+                limit={15}
+                counter={false} />
+            </div>
+          </div>
+          :
+          <div>
+            <h2 className="pink">
+              {text.title}
+            </h2>
+            <span>
+              {text.no_bookmarks}
+            </span>
+          </div>
+        }
+      </div>
+    );
   }
 });
 

@@ -1,9 +1,8 @@
-import React  from 'react';
+import React              from 'react';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
-import I18nMixin  from '../i18n/I18nMixin.jsx';
 
-
-import PackeryMixin from 'react-packery-mixin';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
+import PackeryMixin       from 'react-packery-mixin';
 
 // FIXME: move to less
 var sceanriosCounterStyle = {
