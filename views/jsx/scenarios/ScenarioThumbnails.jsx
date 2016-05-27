@@ -2,21 +2,21 @@ import React              from 'react';
 import ScenarioThumbnail  from './ScenarioThumbnail.jsx';
 
 import I18nMixin          from '../i18n/I18nMixin.jsx';
-import PackeryMixin       from 'react-packery-mixin';
+import MasonryMixin       from 'react-masonry-mixin';
 
 // FIXME: move to less
 var sceanriosCounterStyle = {
   textAlign: 'center'
 };
 
-// http://packery.metafizzy.co/options.html
-var packeryOptions = {
+var masonryOptions = {
   transitionDuration: '0.4s',
   itemSelector: '.scenario-thumbnail'
+
 };
 
 var ScenarioThumbnails = React.createClass({
-  mixins: [I18nMixin, PackeryMixin("oc-scenario-thumbnails-pack", packeryOptions)],
+  mixins: [I18nMixin, MasonryMixin(React)('oc-scenario-thumbnails-pack', masonryOptions)],
   getInitialState: function() {
     return {
       limit: this.props.limit ? this.props.limit - 1 : null,
@@ -30,7 +30,9 @@ var ScenarioThumbnails = React.createClass({
 
     var loadMore = this.state.limit ?
     this.props.scenarios.length > this.state.limit ?
-    <button className="oc-button" onClick={() => this.handleLoadMore()}>
+    <button
+      className="oc-button"
+      onClick={() => this.handleLoadMore()}>
       LOAD MORE
     </button>
     :
@@ -76,7 +78,9 @@ var ScenarioThumbnails = React.createClass({
               )
             }
           </div>
-          <div id="oc-explore-load-more-btn">{loadMore}</div>
+          <div id="oc-explore-load-more-btn">
+            {loadMore}
+          </div>
         </div>
       );
     }

@@ -17,7 +17,7 @@ var HomeView = React.createClass({
             <HomeViewHeader />
           </div>
           <div className="oc-canvas-wrapper">
-            <ScenariosCanvas />
+            {/* <ScenariosCanvas /> */}
           </div>
           <HomeViewFooter />
         </div>
