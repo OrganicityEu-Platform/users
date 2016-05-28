@@ -7,6 +7,7 @@ var prefixes = {
   'scenarios'      : '/api/v1/scenarios',
   'ratings'        : '/api/v1/ratings',
   'feedback'       : '/api/v1/feedback',
+  'statistic'      : '/api/v1/statistic',
   'actors'         : '/api/v1/actors',
   'sectors'        : '/api/v1/sectors',
   'devices'        : '/api/v1/devices',
@@ -67,6 +68,9 @@ var api_routes = {
 
   //
   'upload_thumbnail'           : prefixes.upload + '/thumbnail/?',
+
+  //
+  'statistics'                  : prefixes.statistic + '/?',
 
   // reports routes
   'report_list'                : prefixes.reports + '/?',

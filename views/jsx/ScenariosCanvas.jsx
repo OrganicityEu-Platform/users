@@ -1,6 +1,6 @@
 import ui    from '../../ui_routes.js';
 import React  from 'react';
-import PackeryMixin from 'react-packery-mixin';
+//import PackeryMixin from 'react-packery-mixin';
 
 var packeryOptions = {
   transitionDuration: '0.4s',
@@ -10,7 +10,7 @@ var packeryOptions = {
 
 var ScenariosCanvas = React.createClass({
 
-  mixins: [PackeryMixin("oc-canvas-pack", packeryOptions)],
+  //mixins: [PackeryMixin("oc-canvas-pack", packeryOptions)],
 
   getInitialState: function() {
     return {

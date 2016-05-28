@@ -12,7 +12,7 @@ var HomeViewFooter = React.createClass({
     return (
       <div className="oc-macro-content oc-home-view-footer-wrapper">
           <div className="oc-home-view-footer">
-            <ScenariosNewest limit="6" counter={false}/>
+            <ScenariosNewest limit="6" title={"Latest scenarios"} counter={false}/>
           </div>
           <div id="oc-home-view-footer-explore-btn-wrapper">
             <Link to="scenarioList">

@@ -22,11 +22,12 @@ var ScenariosNewest = React.createClass({
       creator : this.props.creator,
       sortBy : 'timestamp',
       sortDir : 'DESC',
-      limit : this.props.limit
+      limit : this.props.limit,
+
     };
 
     var url = api.reverse('scenario_list', options);
-
+    console.log(url);
     $.ajax(url, {
       dataType : 'json',
       error : this.loadingError(url, 'Error loading newest scenarios'),
@@ -50,7 +51,7 @@ var ScenariosNewest = React.createClass({
     return (
       <div>
         {this.props.title ?
-          <h1 className="oc-pink">this.props.title</h1>
+          <h1 className="oc-pink">{this.props.title}</h1>
           : null}
           {this.props.creator ? this.state.scenarios.length === 0 ?
             <span>

@@ -54,7 +54,7 @@ var routes = (
     <Route name="admin_questionnaire" path={ui.route('admin_questionnaire')} handler={QuestionnaireEditView} />
     <Route name="forgot-password"     path={ui.route('forgot-password')}     handler={ForgotPassword}        />
     <Route name="contactUs"           path={ui.route('contactUs')}           handler={ContactUs}             />
-    <Route name="privacy"       path={ui.route('privacy')}       handler={PrivacyPolicy}         />
+    <Route name="privacy"             path={ui.route('privacy')}             handler={PrivacyPolicy}         />
   </Route>
 );
 
