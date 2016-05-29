@@ -56,54 +56,56 @@ var ScenarioThumbnail = React.createClass({
 
     return (
         <div className="scenario-thumbnail">
-          <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
-            <div>
-              <div className={sector_colour_marker}>
-                <span className="scenario-thumbnail-marker-score">
-                  <img className="oc-tag-icon" src={ui.asset('static/img/'.concat(sector_icon))}/>
-                </span>
-              </div>
-            </div>
-            <header className="scenario-thumbnail-header">
-              <span>
-                <span className="scenario-thumbnail-timestamp">
-                  {
-                    this.props.scenario.timestamp ?
-                    <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
-                    : ''
-                  }
-                </span>
-                <div className="oc-thumbnail-rating-wrapper">
-                  <ScenarioRating
-                    scenario={this.props.scenario}
-                    className={"oc-thumbnail-star"}
-                    doSimple={true} />
+          <div className="scenario-thumbnail-inner-wrapper">
+            <Link to="scenarioView" params={{ uuid: this.props.scenario.uuid }}>
+              <div>
+                <div className={sector_colour_marker}>
+                  <span className="scenario-thumbnail-marker-score">
+                    <img className="oc-tag-icon" src={ui.asset('static/img/'.concat(sector_icon))}/>
+                  </span>
                 </div>
-              </span>
-              <h3 className="scenario-thumbnail-title">
-                {this.props.scenario.title}
-              </h3>
-              <span className="scenario-thumbnail-publisher-wrapper">
-                <span className="meta">{this.i18n('posted_by', 'Posted by:')} </span>
-                <span className="scenario-thumbnail-publisher">
-                  <UserAvatar uuid={this.props.scenario.creator}
-                    name={this.props.scenario.creatorName} />
+              </div>
+              <header className="scenario-thumbnail-header">
+                <span>
+                  <span className="scenario-thumbnail-timestamp">
+                    {
+                      this.props.scenario.timestamp ?
+                      <TimeAgo date={this.props.scenario.timestamp} formatter={this.i18nFormatter} />
+                      : ''
+                    }
+                  </span>
+                  <div className="oc-thumbnail-rating-wrapper">
+                    <ScenarioRating
+                      scenario={this.props.scenario}
+                      className={"oc-thumbnail-star"}
+                      doSimple={true} />
+                  </div>
                 </span>
-              </span>
-            </header>
-            <p className="scenario-thumbnail-summary">
-              {summary}
-            </p>
+                <h3 className="scenario-thumbnail-title">
+                  {this.props.scenario.title}
+                </h3>
+                <span className="scenario-thumbnail-publisher-wrapper">
+                  <span className="meta">{this.i18n('posted_by', 'Posted by:')} </span>
+                  <span className="scenario-thumbnail-publisher">
+                    <UserAvatar uuid={this.props.scenario.creator}
+                      name={this.props.scenario.creatorName} />
+                  </span>
+                </span>
+              </header>
+              <p className="scenario-thumbnail-summary">
+                {summary}
+              </p>
 
-            <span className="scenario-thumbnail-sat-wrapper">
-              <span>{this.i18n('participants', 'Participants')}: {actors}</span>
-              <span>{this.i18n('sectors', 'Sectors')}: {sectors}</span>
-              <span>{this.i18n('tools', 'Tools')}: {tools}</span>
-            </span>
-            <div className={this.state.image ? sector_colour_overlay : "oc-thumbnail-no-image"}>
-              {thumbnail}
-            </div>
-          </Link>
+              <span className="scenario-thumbnail-sat-wrapper">
+                <span>{this.i18n('participants', 'Participants')}: {actors}</span>
+                <span>{this.i18n('sectors', 'Sectors')}: {sectors}</span>
+                <span>{this.i18n('tools', 'Tools')}: {tools}</span>
+              </span>
+              <div className={this.state.image ? sector_colour_overlay : "oc-thumbnail-no-image"}>
+                {thumbnail}
+              </div>
+            </Link>
+          </div>
         </div>
     );
   }
