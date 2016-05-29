@@ -9,10 +9,13 @@ var Link = Router.Link;
 var HomeViewFooter = React.createClass({
   mixins: [Router.Navigation, I18nMixin],
   render: function() {
+
+    var latestTitle = this.i18n('latest_scenarios', 'Latest scenarios');
+
     return (
       <div className="oc-macro-content oc-home-view-footer-wrapper">
           <div className="oc-home-view-footer">
-            <ScenariosNewest limit="6" title={"Latest scenarios"} counter={false}/>
+            <ScenariosNewest limit="6" title={latestTitle} counter={false}/>
           </div>
           <div id="oc-home-view-footer-explore-btn-wrapper">
             <Link to="scenarioList">

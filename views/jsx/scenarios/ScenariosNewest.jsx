@@ -51,7 +51,7 @@ var ScenariosNewest = React.createClass({
     return (
       <div>
         {this.props.title ?
-          <h1 className="oc-pink">{this.props.title}</h1>
+          <h2 className="oc-pink">{this.props.title}</h2>
           : null}
           {this.props.creator ? this.state.scenarios.length === 0 ?
             <span>

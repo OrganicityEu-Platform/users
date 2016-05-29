@@ -4,9 +4,10 @@ import $                  from 'jquery';
 import api                from '../../../api_routes.js';
 
 import LoadingMixin       from '../LoadingMixin.jsx';
+import I18nMixin          from '../i18n/I18nMixin.jsx';
 
 var ScenarioEco = React.createClass({
-  mixins: [LoadingMixin],
+  mixins: [LoadingMixin, I18nMixin],
   getInitialState: function () {
     return {
       items: [],
@@ -52,10 +53,10 @@ var ScenarioEco = React.createClass({
                 className="oc-eco-item-icon"
                 src={ui.asset('static/img/'.concat(item._id.concat('_icon.svg')))}/>
               <span className={"oc-eco-item-text" + " " + item._id + "_colour_txt"}>
-                {item._id.toUpperCase()}
+                {this.i18n(item._id, item._id).toUpperCase()}
               </span>
               <span>
-                {item.count} scenarios
+                {item.count} {this.i18n('scenarios', 'scenarios')}
               </span>
             </div>
           )
@@ -68,10 +69,10 @@ var ScenarioEco = React.createClass({
                 className="oc-eco-item-icon"
                 src={ui.asset('static/img/'.concat(item.concat('_icon.svg')))}/>
               <span className={"oc-eco-item-text" + " " + item + "_colour_txt"}>
-                {item.toUpperCase()}
+                {this.i18n(item, item).toUpperCase()}
               </span>
               <span>
-                0 scenarios
+                0 {this.i18n('scenarios', 'scenarios')}
               </span>
             </div>
           )
