@@ -33,7 +33,7 @@ var TagField = React.createClass({
           }
         }
         if (check) {
-          this.state.tags.push(evt.target.value);
+          this.state.tags.push(evt.target.value.toLowerCase());
           this.props.onChange(this.state.tags);
           this.state.suggestions = [];
         }
