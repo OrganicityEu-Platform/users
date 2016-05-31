@@ -95,11 +95,10 @@ var ScenarioThumbnail = React.createClass({
               <p className="scenario-thumbnail-summary">
                 {summary}
               </p>
-
               <span className="scenario-thumbnail-sat-wrapper">
-                <span>{this.i18n('participants', 'Participants')}: {actors}</span>
-                <span>{this.i18n('sectors', 'Sectors')}: {sectors}</span>
-                <span>{this.i18n('tools', 'Tools')}: {tools}</span>
+                {actors ? <span>{this.i18n('participants', 'Participants')}: {actors}</span> : null}
+                {sectors ? <span>{this.i18n('sectors', 'Sectors')}: {sectors}</span> : null}
+                {tools ? <span>{this.i18n('tools', 'Tools')}: {tools}</span> : null}
               </span>
               <div className={this.state.image ? sector_colour_overlay : "oc-thumbnail-no-image"}>
                 {thumbnail}

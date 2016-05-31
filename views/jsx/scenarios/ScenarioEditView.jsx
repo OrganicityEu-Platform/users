@@ -669,7 +669,52 @@ getCredits: function() {
           onChange={this.handleChangedDevices} />
       </div>
     </div>
-
+    <div className="form-group oc-form-group oc-edit-group">
+      <label
+        className="control-label col-sm-3"
+        htmlFor="credit">
+        {this.i18n('Create.credit', 'Credit')}
+        <span className="oc-form-group-info">
+          {this.i18n('Create.creditInfo', 'Those who contributed to the scenario.')}
+          {lang.ScenarioEditView.creditInfo}
+        </span>
+      </label>
+      <div className="oc-credit-form-wrapper">
+        {this.getCredits()}
+        <div className="oc-credit-errors">
+          {errorMessageCredits}
+        </div>
+        <div>
+          <div className="col-md-3">
+            <input
+              className="oc-input"
+              onChange={this.handleChangedCreditor}
+              type="text"
+              id="oc-creditName-input"
+              autoComplete="off"
+              placeholder={this.i18n('Create.name_placeholder', 'name')}>
+            </input>
+          </div>
+          <div className="col-md-6">
+            <input
+              className="oc-input"
+              onChange={this.handleChangedCreditorUrl}
+              type="text"
+              id="oc-creditUrl-input"
+              autoComplete="off"
+              placeholder={this.i18n('Create.optional_url_placeholder', 'optional url')}>
+            </input>
+          </div>
+          <div className="col-md-3">
+            <button
+              className="oc-button oc-add-credit-btn"
+              onClick={this.addCredit}>
+              {this.i18n('Create.add', 'ADD')}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div className="form-group oc-form-group oc-edit-group">
       <label className="control-label col-sm-3">
         {this.i18n('Create.image', 'Image')}
@@ -708,66 +753,6 @@ getCredits: function() {
           onChange={this.handleChangedCopyright} />
       </div>
     </div>
-
-    <div className="form-group oc-form-group oc-edit-group">
-      <label
-        className="control-label col-sm-3"
-        htmlFor="credit">
-        {this.i18n('Create.credit', 'Credit')}
-        <span className="oc-form-group-info">
-          {this.i18n('Create.creditInfo', 'Those who contributed to the scenario.')}
-          {lang.ScenarioEditView.creditInfo}
-        </span>
-      </label>
-      {/*
-        <div className="col-sm-9">
-        <input
-        type="text"
-        className="oc-input"
-        name="credit"
-        id="credit"
-        value={JSON.stringify(this.state.credits)}
-        onChange={this.handleChangedCredits} />
-      </div>
-      */}
-
-      <div className="oc-credit-form-wrapper">
-        {this.getCredits()}
-        <div className="oc-credit-errors">
-          {errorMessageCredits}
-        </div>
-        <div>
-          <div className="col-md-3">
-            <input
-              className="oc-input"
-              onChange={this.handleChangedCreditor}
-              type="text"
-              id="oc-creditName-input"
-              autoComplete="off"
-              placeholder={this.i18n('Create.name_placeholder', 'name')}>
-            </input>
-          </div>
-          <div className="col-md-6">
-            <input
-              className="oc-input"
-              onChange={this.handleChangedCreditorUrl}
-              type="text"
-              id="oc-creditUrl-input"
-              autoComplete="off"
-              placeholder={this.i18n('Create.optional_url_placeholder', 'optional url')}>
-            </input>
-          </div>
-          <div className="col-md-3">
-            <button
-              className="oc-button oc-add-credit-btn"
-              onClick={this.addCredit}>
-              {this.i18n('Create.add', 'ADD')}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div className="form-group">
       <div className="oc-create-edit-preview-btn-wrapper">
         <button
