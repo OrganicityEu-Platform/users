@@ -3,7 +3,7 @@
 // view-source:http://localhost:8080/organicity-scenario-tool/api/v1/auth/currentUser
 //
 // Import reports:
-// Copy files (entire "101reports" subfolder) to tmp
+// Copy image files (entire "101reports" subfolder) to tmp: "gulp 101reports"
 // In a shell, type:
 // cd organicity/node-scenario-tool/scripts/101reports
 // node import-reports-csv.js <uuid> reports.csv
@@ -62,8 +62,14 @@ var parser = parse({delimiter: ';'}, function(err, data) {
   // The first line
   for (var i = 1 ; i < data.length; i++) {
 
-    console.log('Import report ' + i + ' of ' + (data.length - 1));
+    // print progress
+    if (i > 1) {
+      process.stdout.clearLine();  // clear current text
+      process.stdout.cursorTo(0);  // move cursor to beginning of line
+    }
+    process.stdout.write('Import report ' + i + ' of ' + (data.length - 1));
 
+    // build object
     var s = {};
     s.version = 1;
     s.uuid = uuid.v4();
@@ -79,6 +85,7 @@ var parser = parse({delimiter: ';'}, function(err, data) {
     s.approaches = data[i][8];
     s.tags = cleanTags(data[i][9]);
     s.abstract = ellipsis(data[i][10], ReportConfig.max.abstract - 5);
+    s.url = data[i][11];
 
     // Import thumbnail
     s.thumbnail = 'tmp/101reports/600px/' + i + '_600px.jpg';
@@ -91,11 +98,12 @@ var parser = parse({delimiter: ';'}, function(err, data) {
       if (err) {
         console.error('ERROR', err);
       } else {
-        console.log('Import done!');
+        // console.log('Import done!');
       }
     });
   }
-
+  console.log('.');
+  console.log('Hit Ctrl+C');
 });
 
 fs.createReadStream(file).pipe(parser);

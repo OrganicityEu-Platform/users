@@ -183,6 +183,20 @@ gulp.task('static', function() {
     }));
 });
 
+http://localhost:8080/organicity-scenario-tool/tmp/101reports/covers/44.cover.jpg
+gulp.task('101reports', function() {
+  var src = './scripts/101reports/101reports/**';
+  var dst = './tmp/101reports';
+  return gulp.src(src)
+    .pipe(newer(dst))
+    .pipe(cache('static'))
+    .pipe(gulp.dest(dst))
+    .pipe(livereload())
+    .pipe(notify(function(file) {
+      gutil.log('Copied', file.relative);
+    }));
+});
+
 gulp.task('jscs', function() {
   return gulp.src(watches.jscs)
     .pipe(cache('jscs'))

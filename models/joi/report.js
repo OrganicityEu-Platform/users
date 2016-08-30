@@ -1,4 +1,4 @@
-var Joi             = require('joi');
+var Joi           = require('joi');
 var ReportConfig  = require('../../config/report.js');
 
 var report = {};
@@ -30,9 +30,8 @@ report.preview = {
 };
 
 report.submit = {
-  title       : joiTitle,
-  abstract    : joiAbstract,
-
+  title         : joiTitle,
+  abstract      : joiAbstract,
   domains       : Joi.array().label('Domains').items(Joi.string()),
   areas         : Joi.array().label('Areas').items(Joi.string()),
   organizations : Joi.array().label('Organizations').items(Joi.string()),
@@ -40,10 +39,11 @@ report.submit = {
   types         : Joi.array().label('Report Types').items(Joi.string()),
   approaches    : Joi.array().label('Approaches').items(Joi.string()),
   tags          : Joi.array().label('Report tags').items(Joi.string()),
-  credit      : Joi.string().trim().min(1).label('Credit').optional(),
-  copyright   : Joi.string().trim().min(1).label('Copyright').optional(),
-  thumbnail   : Joi.string().regex(/^uploads\/|^tmp\//),
-  image       : Joi.string().regex(/^uploads\/|^tmp\//)
+  credit        : Joi.string().trim().min(1).label('Credit').optional(),
+  copyright     : Joi.string().trim().min(1).label('Copyright').optional(),
+  thumbnail     : Joi.string().regex(/^uploads\/|^tmp\//),
+  image         : Joi.string().regex(/^uploads\/|^tmp\//),
+  credit        : Joi.string().trim().label('URL').optional()
 };
 
 report.createOrUpdate = {
