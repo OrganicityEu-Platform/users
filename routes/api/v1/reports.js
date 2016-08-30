@@ -40,7 +40,8 @@ var reportProjection = {
   orgtypes     : 1,
   types        : 1,
   approaches   : 1,
-  tags         : 1
+  tags         : 1,
+  url          : 1
 };
 
 var fieldsInUpdate = [
@@ -56,7 +57,8 @@ var fieldsInUpdate = [
   'orgtypes',
   'types',
   'approaches',
-  'tags'
+  'tags',
+	'url'
 ];
 
 /**
@@ -143,7 +145,8 @@ module.exports = function(router, passport) {
         'orgtypes'     : { '$first' : '$orgtypes'     },
         'types'        : { '$first' : '$types'        },
         'approaches'   : { '$first' : '$approaches'   },
-        'tags'         : { '$first' : '$tags'         }
+        'tags'         : { '$first' : '$tags'         },
+        'url'          : { '$first' : '$url'          }
       }
     };
 

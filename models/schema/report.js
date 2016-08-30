@@ -19,7 +19,7 @@ var report = mongoose.Schema({
   types        : { type: [String]                }, // tags (comma-separated)
   approaches   : { type: [String]                }, // tags (comma-separated)
   tags         : { type: [String]                }, // tags (comma-separated)
-  url          : { type: String                  }, // url
+  url          : { type: String                  }, // link to report
 });
 
 report.index(

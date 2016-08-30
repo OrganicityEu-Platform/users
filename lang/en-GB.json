@@ -111,6 +111,7 @@
 		add_report_type_tags: 'Add report type tags',
 		add_approach_tags: 'Add approach tags',
 		add_report_tags: 'Add report tags',
+		report: 'Report',
 	},
 
 	cookie1: 'OrganiCity Scenarios uses cookies to give you an enhanced experience.',

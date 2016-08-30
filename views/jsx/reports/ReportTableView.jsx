@@ -60,6 +60,17 @@ var ReportTableView = React.createClass({
     if (this.props.report.score && this.props.report.score.numOfEvaluations) {
       evaluationsCnt = this.props.report.score.numOfEvaluations;
     }
+		
+		var url;
+		if (this.props.report.url) {
+			url = (
+				<a href={this.props.report.url} data-toggle="tooltip" title={this.props.report.url}>
+					Link
+					&nbsp;&nbsp;
+					<i className="fa fa-external-link"></i>
+				</a>
+			)
+		}
 
     return (
       <div className="col-lg-8 col-lg-offset-2">
@@ -101,6 +112,7 @@ var ReportTableView = React.createClass({
           </div>
           {copyright}
           <div className="scenario-article-meta">
+						<div className="row">
             <div className="col-md-3">
               <div className="scenario-ast-wrapper">
                 <span className="scenario-ast">
@@ -137,7 +149,19 @@ var ReportTableView = React.createClass({
             </div>
 
             {credit}
-            
+						
+						</div>
+						<div className="row">
+						<div className="col-md-3 clearfix">
+							<div className="scenario-ast-wrapper">
+								<span className="scenario-ast">{this.i18n('Reports.report', 'Report')}:</span>
+								<span className="scenario-ast-items">
+									{url}
+								</span><br></br>
+							</div>
+						</div>
+						</div>
+
           </div>
         </div>
         <footer className="scenario-article-footer"></footer>

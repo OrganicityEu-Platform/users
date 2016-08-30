@@ -111,6 +111,7 @@
 		add_report_type_tags: 'Añadir etiquetas de tipo de informe',
 		add_approach_tags: 'Añadir etiquetas de enfoque',
 		add_report_tags: 'Añadir etiquetas de informe',
+		report: 'Referencia',
 	},
 
 	cookie1: 'Escenarios OrganiCity emplea cookies para permitirte experimentar una mejor navegación.',

@@ -43,7 +43,7 @@ report.submit = {
   copyright     : Joi.string().trim().min(1).label('Copyright').optional(),
   thumbnail     : Joi.string().regex(/^uploads\/|^tmp\//),
   image         : Joi.string().regex(/^uploads\/|^tmp\//),
-  credit        : Joi.string().trim().label('URL').optional()
+  url           : Joi.string().trim().label('URL').optional(),
 };
 
 report.createOrUpdate = {
