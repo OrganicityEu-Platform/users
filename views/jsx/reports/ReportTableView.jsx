@@ -21,7 +21,7 @@ var ReportTableView = React.createClass({
 
     var image = this.props.report.image;
     if (image && (image.startsWith('uploads/') || image.startsWith('tmp/'))) {
-      image = (<img src={ui.asset(this.props.report.image)} className="report-img"/>);
+      image = (<img src={ui.asset(this.props.report.image)} className="report-img img-thumbnail"/>);
     } else {
       image = undefined;
     }
@@ -65,8 +65,7 @@ var ReportTableView = React.createClass({
 		if (this.props.report.url) {
 			url = (
 				<a href={this.props.report.url} data-toggle="tooltip" title={this.props.report.url} className="report-article-url">
-					{this.props.report.url}
-					<i className="fa fa-external-link"></i>
+					{this.props.report.url} <i className="fa fa-external-link"></i>
 				</a>
 			)
 		}
