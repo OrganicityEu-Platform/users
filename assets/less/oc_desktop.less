@@ -18,7 +18,7 @@
 
 
 @media (min-width: 768px) {
-  ul.nav.navbar-nav {
+	ul.nav.navbar-nav {
     float: none;
     display: inline-block;
   }
@@ -141,4 +141,27 @@
     padding-bottom: 0px;
     color: @oc-magenta;
   }
+}
+
+@media (max-width: 767px) {
+	.report-img {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+	#report-article-image {
+    margin-left: 25px;
+    margin-right: 25px;
+	}
+	#report-article-image, .report-article-meta {
+		width: ~"calc(50% - 25px)";
+		float: left;
+	}
+	.report-img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+.report-article-url > i {
+	margin-left: 10px;
 }
