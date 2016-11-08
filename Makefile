@@ -13,4 +13,5 @@ deploy:
 	npm install
 	gulp build
 	mkdir -p logs
-	forever restart -o logs/out.log -e logs/err.log app.js
+	/etc/init.d/oc-scenarios restart 
+
