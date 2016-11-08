@@ -7,7 +7,7 @@
 
 export NAME=oc-scenarios
 export SOURCE_DIR=/opt/scenarios
-export SCRIPT=app
+export SCRIPT=app.js
 export LOG_DIR=/var/log/organicity
 export PROCESSES_DIR=/opt/processes
 export PID_PATH="$PROCESSES_DIR/$NAME.pid"

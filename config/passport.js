@@ -634,7 +634,8 @@ module.exports = function(passport) {
 
         // unpack access token.
         var profile = jwtDecode(token);
-        console.log('profile', profile.resource_access);
+        console.log('profile', profile);
+        console.log('roles', profile.resource_access);
         var roles = profile.resource_access.scenarios ? profile.resource_access.scenarios.roles : [];
         // check if the user is already logged in
         if (!req.user) {
