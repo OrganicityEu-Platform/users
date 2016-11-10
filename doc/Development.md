@@ -1,10 +1,10 @@
 # Development
 
-follow the [installation instructions](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/doc/Install.md) first, before you continue here.
+follow the [installation instructions](https://github.com/OrganicityEu-Platform/scenarios/blob/master/doc/Install.md) first, before you continue here.
 
 ## Directory structure
 
-* See [README](https://git.itm.uni-luebeck.de/organicity/node-scenario-tool/blob/master/README.md)
+* See [README](https://github.com/OrganicityEu-Platform/scenarios/blob/master/README.md)
 
 ## gulp tasks
 

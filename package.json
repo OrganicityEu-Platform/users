@@ -5,7 +5,7 @@
   "license": "TODO",
   "repository": {
     "type": "git",
-    "url": "https://git.itm.uni-luebeck.de/organicity/node-scenario-tool"
+    "url": "https://github.com/OrganicityEu-Platform/scenarios.git"
   },
   "devDependencies": {
     "babel-eslint": "~6.0.2",

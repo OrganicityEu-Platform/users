@@ -111,7 +111,7 @@ mongod --version # v3.0.7 (CentOS)
 ## Get, install and run project
 
 ```
-git clone git@git.itm.uni-luebeck.de:organicity/node-scenario-tool.git
+git clone git@github.com:OrganicityEu-Platform/scenarios.git
 cd node-scenario-tool
 npm install
 ```
