@@ -9,6 +9,7 @@ import TagField             from '../form-components/TagField.jsx';
 import api                  from '../../../api_routes.js';
 import ui                   from '../../../ui_routes.js';
 import Tags                 from '../Tags.jsx';
+import SectorSelector       from '../SectorSelector.jsx';
 
 import { Accordion, Panel } from 'react-bootstrap';
 
@@ -26,9 +27,9 @@ var ScenarioList = React.createClass({
       scenarios: [],
       search: {
         q       : this.props.query.q,
-        actors  : this.props.query.actors ? this.props.query.actors.split(',') : null,
-        sectors : this.props.query.sectors ? this.props.query.sectors.split(',') : null,
-        devices : this.props.query.devices ? this.props.query.devices.split(',') : null
+        actors  : this.props.query.actors ? this.props.query.actors.split(',') : [],
+        sectors : this.props.query.sectors ? this.props.query.sectors.split(',') : [],
+        devices : this.props.query.devices ? this.props.query.devices.split(',') : []
       },
       sortBy : this.props.query.sortBy,
       sortDir : this.props.query.sortDir
@@ -108,6 +109,16 @@ var ScenarioList = React.createClass({
       devices : this.state.search.devices ? this.state.search.devices.join(',') : null
     });
   },
+  handleSectorSelector: function(selectedSectors) {
+    console.log(selectedSectors);
+    var sectors = [];
+    Array.prototype.push.apply(sectors, selectedSectors);
+    Array.prototype.push.apply(sectors, this.state.newSectors);
+
+    this.state.search.sectors = sectors;
+    this.setState(this.state);
+    this.reload(true);
+  },
   componentWillReceiveProps: function(nextProps) {
 
     this.state.sortBy = nextProps.query.sortBy;
@@ -115,6 +126,21 @@ var ScenarioList = React.createClass({
     this.setState(this.state);
     //this.reload(true);
   },
+  predefinedSectors: [
+    'public', 'transport', 'agriculture',
+    'energy', 'retail', 'healthcare',
+    'cultural', 'environment'
+  ],
+  sectorIcons: [
+    'fa fa-users public_colour oc-tag-icon',
+    'fa fa-bus transport_colour oc-tag-icon',
+    'fa fa-leaf agriculture_colour oc-tag-icon',
+    'fa fa-lightbulb-o energy_colour oc-tag-icon',
+    'fa fa-tags retail_colour oc-tag-icon',
+    'fa fa-medkit healthcare_colour oc-tag-icon',
+    'fa fa-university cultural_colour oc-tag-icon',
+    'fa fa-tree environment_colour oc-tag-icon',
+  ],
   render: function() {
 
     var counter = null;
@@ -138,6 +164,12 @@ var ScenarioList = React.createClass({
           {this.i18n('explore_scenarios', 'Explore scenarios')}
         </h1>
         <div className="row">
+        <SectorSelector
+          onChange={this.handleSectorSelector}
+          sectors={this.predefinedSectors}
+          sectorIcons={this.sectorIcons}
+          selected={this.state.search.sectors}
+          />
           <div className="col-md-12" id="oc-search-box">
             <form
               className="scenario-list-search-form"
