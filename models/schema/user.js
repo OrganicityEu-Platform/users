@@ -3,16 +3,24 @@ var bcrypt   = require('bcrypt-nodejs');
 
 var user = mongoose.Schema({
   uuid     : String,
-  name     : String,
   location : String,
   gender   : String,
-  favorites: [String],
-  roles    : [String],
+  roles    : [String], // ???
   profession : [String],
+  interests : [String],
+  birthdate : Date,
   professionTitle : String,
   publicEmail : String,
   publicWebsite : String,
   avatar   : String, // REMOVE
+  oauth2           : {
+    id           : String,
+    token        : String,
+    username     : String,
+    displayName  : String,
+    public       : { type: Boolean, default: false }
+  },
+  /*
   local            : {
     email        : String,
     password     : String,
@@ -57,15 +65,10 @@ var user = mongoose.Schema({
     name         : String,
     public       : { type: Boolean, default: false }
   },
-  oauth2           : {
-    id           : String,
-    token        : String,
-    username     : String,
-    displayName  : String,
-    public       : { type: Boolean, default: false }
-  },
+  */
 });
 
+/*
 // generate a hash
 user.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -75,8 +78,9 @@ user.methods.generateHash = function(password) {
 user.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
+*/
 
-// checks if password is valid
+// Remove internal data from json
 user.methods.json = function() {
 
   var o = this.toObject();

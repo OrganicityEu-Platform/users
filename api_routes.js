@@ -27,6 +27,7 @@ var api_routes = {
   'currentUser'                : prefixes.auth + '/currentUser',
   'local-login'                : prefixes.auth + '/local-login',
   'signup'                     : prefixes.auth + '/signup',
+
   'auth_facebook'              : prefixes.auth + '/facebook',
   'auth_twitter'               : prefixes.auth + '/twitter',
   'auth_google'                : prefixes.auth + '/google',
@@ -40,6 +41,7 @@ var api_routes = {
   'connect_disqus'             : prefixes.auth + '/disqus',
   'connect_oauth2'             : prefixes.auth + '/oauth2',
   'connect_local-signup'       : prefixes.auth + '/local',
+
   'login'                      : prefixes.auth + '/login',
   'logout'                     : prefixes.auth + '/logout',
   'callback_facebook'          : prefixes.auth + '/facebook/callback',

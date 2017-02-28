@@ -125,6 +125,7 @@ cd config/
 cp config.localhost.js config.js
 cp database.localhost.js database.js
 cp auth.localhost.js auth.js
+cp ga.localhost.js ga.js
 ```
 
 ### config.js - OAuth

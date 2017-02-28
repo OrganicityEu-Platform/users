@@ -9,12 +9,23 @@ module.exports = function(router, passport) {
   // Must be here, because we do not have passport var earlier
   var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
+  // PROFIL
   router.get(api.route('currentUser'), [isLoggedIn], function(req, res) {
-    res.json(req.user.json());
+
+    // If this function is reached, the user was added to the local mongo database
+
+    // STEP ONE:
+
+    //console.log('req.user: ', req.user);
+    //res.json(req.user.json());
+    return res.status(200).json({});
   });
 
   var authSuccess = function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
     res.redirect(ui.route('profile'));
+    //console.log('SUCC');
   };
   var authCallbacks = {
     successRedirect : authSuccess, // redirect to the secure profile section
@@ -28,6 +39,7 @@ module.exports = function(router, passport) {
     res.status(204).send();
   });
 
+  /*
   // process the login form
   router.post(
     api.route('local-login'), [validate(UserJoi.emailAndPasswordServer)], function(req, res, next) {
@@ -84,18 +96,20 @@ module.exports = function(router, passport) {
         });
       })(req, res, next);
     });
-
+    */
   // =============================================================================
   // LOGIN USING OAUTH / OPEN ID CONNECT PROVIDERS ===============================
   // =============================================================================
 
   var authProviders = ['facebook', 'twitter', 'google', 'github', 'disqus', 'oauth2'];
   var authScopes = {
+    /*
     'facebook' : { scope : ['email'] },
     'twitter'  : { scope : ['profile', 'email'] },
     'google'   : { scope : ['profile', 'email'] },
     'github'   : { scope : ['profile', 'email'] },
     'disqus'   : { scope : ['read', 'write', 'email'] },
+    */
     'oauth2'   : { scope : ['profile', 'email'] },
   };
 

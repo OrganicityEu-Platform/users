@@ -164,9 +164,11 @@ module.exports = function(router, passport) {
   });
 
   router.get(api.route('user_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {
+    /*
     findUser(req.params.uuid, res, next, function(user) {
       res.json(user);
     });
+    */
   });
 
   router.patch(

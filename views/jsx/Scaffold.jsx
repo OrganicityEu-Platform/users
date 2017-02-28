@@ -136,7 +136,7 @@ var Scaffold = React.createClass({
     var linksLeft = [];
     var linksRight = [];
     var adminLinks = [];
-
+/*
     linksLeft.push(
       <NavItemLink
         key="scenarioList"
@@ -156,8 +156,9 @@ var Scaffold = React.createClass({
         {this.i18n('create', 'CREATE')}
       </NavItemLink>
     );
-
+*/
     if (this.userIsLoggedIn()) {
+/*
       if (this.userHasRole('admin')) {
         adminLinks.push(
           <NavItemLink
@@ -167,41 +168,8 @@ var Scaffold = React.createClass({
             {this.i18n('users', 'Users')}
           </NavItemLink>
         );
-        adminLinks.push(
-          <NavItemLink
-            key="questionnaire"
-            className="dropdown-items"
-            to="admin_questionnaire">
-            {this.i18n('questionnaire', 'Questionnaire')}
-          </NavItemLink>
-        );
-        adminLinks.push(
-          <NavItemLink
-            key="sysinfo"
-            className="dropdown-items"
-            to="sysinfo"
-            data-about>
-            {this.i18n('about', 'About')}
-          </NavItemLink>
-        );
-        adminLinks.push(
-          <NavItemLink
-            key="reportList"
-            to="reportList"
-            className="dropdown-items"
-            >
-            {this.i18n('reports', 'Reports')}
-          </NavItemLink>
-        );
-        linksRight.push(
-          <DropdownButton
-            key="adminmenu"
-            className="oc-admin-links"
-            title={this.i18n('admin', 'admin')}>
-            {adminLinks}
-          </DropdownButton>
-        );
       }
+*/
       linksRight.push(
         <NavItemLink
           key="profile"
