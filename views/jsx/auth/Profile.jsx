@@ -33,6 +33,8 @@ import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 import BookmarkedScenarios  from '../scenarios/BookmarkedScenarios.jsx';
 
+import moment               from 'moment';
+
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin, I18nMixin],
   getInitialState: function() {
@@ -89,6 +91,7 @@ var Profile = React.createClass({
         e.avatar = profile.avatar;
         e.location = profile.location;
         e.country = profile.country;
+        e.birthday = profile.birthday;
         e.publicEmail = profile.publicEmail;
         e.publicWebsite = profile.publicWebsite;
         e.dirty = false;
@@ -242,6 +245,26 @@ var Profile = React.createClass({
       }
     });
   },
+  handleChangedBirthday: function(evt) {
+
+    var m = moment.utc(evt.target.value + "T00:00:00Z");
+    var d = m.toISOString();
+    
+    console.log('birthday:', d);
+
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        birthday : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('birthday');
+      }
+    });
+  },
   handleChangedPassword : function(evt) {
 
     this.setState({
@@ -280,6 +303,7 @@ var Profile = React.createClass({
       name: this.state.profile.name,
       gender: this.state.profile.gender,
       location: this.state.profile.location,
+      birthday: this.state.profile.birthday,
       country: this.state.profile.country,
       profession: this.state.profile.profession,
       professionTitle : this.state.profile.professionTitle,
@@ -721,7 +745,7 @@ return (
           </label>
           <div className="col-sm-9">
             <input
-              type="text"
+              type="date"
               className="oc-input"
               id="name"
               disabled={this.isLoading() ? 'disabled' : ''}
