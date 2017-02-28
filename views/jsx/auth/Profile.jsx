@@ -35,6 +35,38 @@ import BookmarkedScenarios  from '../scenarios/BookmarkedScenarios.jsx';
 
 import moment               from 'moment';
 
+import { CountryDropdown }  from 'react-country-region-selector';
+
+var countries = require('country-list')();
+
+var options = [
+  { value: 'Academic', label: 'Academic' },
+  { value: 'Artist', label: 'Artist' },
+  { value: 'Business owner', label: 'Business owner' },
+  { value: 'Designer', label: 'Designer' },
+  { value: 'Developer', label: 'Developer' },
+  { value: 'Entrepreneur', label: 'Entrepreneur' },
+  { value: 'Government', label: 'Government' },
+  { value: 'Manager', label: 'Manager' },
+  { value: 'Policy maker', label: 'Policy maker' },
+  { value: 'Researcher', label: 'Researcher' },
+  { value: 'Student (school)', label: 'Student (school)' },
+  { value: 'Student (university)', label: 'Student (university)' },
+  { value: 'Technology expert', label: 'Technology expert' },
+  { value: 'Urbanist', label: 'Urbanist' },
+  { value: 'Other', label: 'Other' },
+];
+
+var optionsCountries = [];
+var codes = countries.getCodes();
+for (var i = 0; i < codes.length; i++) { 
+  var o = {
+    value: codes[i], // ISO 2-digit code from ISO 3166-alpha-2
+    label: countries.getName(codes[i])
+  }
+  optionsCountries.push(o);
+}
+
 var Profile = React.createClass({
   mixins: [Router.Navigation, Router.State, LoadingMixin, UserHasRoleMixin, UserIsLoggedInMixin, I18nMixin],
   getInitialState: function() {
@@ -189,11 +221,11 @@ var Profile = React.createClass({
       }
     });
   },
-  handleChangedCountry: function(evt) {
+  handleChangedCountry: function(country) {
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        country : evt.target.value
+        country : country
       })
     }, () => {
       if (this.state.btnClickedOnce) {
@@ -248,14 +280,13 @@ var Profile = React.createClass({
   handleChangedBirthday: function(evt) {
 
     var m = moment.utc(evt.target.value + "T00:00:00Z");
-    var d = m.toISOString();
-    
-    console.log('birthday:', d);
+    var birthdayInIsoUtc = m.toISOString();
+    console.log('birthday:', birthdayInIsoUtc);
 
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        birthday : evt.target.value
+        birthday : birthdayInIsoUtc
       })
     }, () => {
       if (this.state.btnClickedOnce) {
@@ -300,17 +331,17 @@ var Profile = React.createClass({
   getProfile : function() {
 
     var profile = {
-      name: this.state.profile.name,
+//      name: this.state.profile.name,
       gender: this.state.profile.gender,
-      location: this.state.profile.location,
-      birthday: this.state.profile.birthday,
-      country: this.state.profile.country,
+      location: (this.state.profile.location === '') ? undefined : this.state.profile.location,
+      birthday: (this.state.profile.birthday === '') ? undefined : this.state.profile.birthday,
+      country: (this.state.profile.country === '') ? undefined : this.state.profile.country,
       profession: this.state.profile.profession,
-      professionTitle : this.state.profile.professionTitle,
-      publicEmail: this.state.profile.publicEmail,
-      publicWebsite: this.state.profile.publicWebsite,
+      professionTitle : (this.state.profile.professionTitle === '') ? undefined : this.state.profile.professionTitle,
+      publicEmail: (this.state.profile.publicEmail === '') ? undefined : this.state.profile.publicEmail,
+      publicWebsite: (this.state.profile.publicWebsite === '') ? undefined : this.state.profile.publicWebsite,
     };
-
+    
     if (this.state.profile.local) {
       profile.local = {};
     }
@@ -353,6 +384,7 @@ var Profile = React.createClass({
                 });
               }
             });
+            console.log('Validation succesful');
           } else {
             console.log('Validation error:', error);
           }
@@ -387,6 +419,7 @@ var Profile = React.createClass({
     var errorMessagePassword = null;
     var errorMessagePasswordRepeat = null;
     var errorMessageProfession = null;
+    var errorMessageCountry = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageName = (
@@ -418,6 +451,11 @@ var Profile = React.createClass({
         <Message
           type="danger"
           messages={this.props.getValidationMessages('profession')} />
+      );
+      errorMessageCountry = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('country')} />
       );
     }
 
@@ -652,24 +690,6 @@ var socialLinks = (
 
 socialLinks = null;
 
-var options = [
-  { value: 'Academic', label: 'Academic' },
-  { value: 'Artist', label: 'Artist' },
-  { value: 'Business owner', label: 'Business owner' },
-  { value: 'Designer', label: 'Designer' },
-  { value: 'Developer', label: 'Developer' },
-  { value: 'Entrepreneur', label: 'Entrepreneur' },
-  { value: 'Government', label: 'Government' },
-  { value: 'Manager', label: 'Manager' },
-  { value: 'Policy maker', label: 'Policy maker' },
-  { value: 'Researcher', label: 'Researcher' },
-  { value: 'Student (school)', label: 'Student (school)' },
-  { value: 'Student (university)', label: 'Student (university)' },
-  { value: 'Technology expert', label: 'Technology expert' },
-  { value: 'Urbanist', label: 'Urbanist' },
-  { value: 'Other', label: 'Other' },
-];
-
 /*
         <div className="form-group oc-form-group oc-edit-group">
           <label
@@ -709,12 +729,21 @@ return (
           <label
             className="control-label col-sm-3"
             htmlFor="location">
-            {this.i18n('Profile.my_location', 'My location')}
+            {this.i18n('Profile.my_location', 'My location')} <ValidationIndicator valid={this.props.isValid('country')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.locationInfo', 'Where are you located?')} 
+              {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you!')} 
             </span>
           </label>
           <div className="col-sm-9">
+            <Select
+              name="country"
+              value={this.state.profile.country}
+              options={optionsCountries}
+              placeholder={this.i18n('Profile.country_placeholder', 'My country')}
+              onChange={this.handleChangedCountry}
+              multi={false}
+              />
+            {errorMessageCountry}
             <input
               type="text"
               className="oc-input"
@@ -723,14 +752,6 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.location_placeholder', 'My city')}
               value={this.state.profile.location}
               onChange={this.handleChangedLocation} />
-            <input
-              type="text"
-              className="oc-input"
-              id="country"
-              disabled={this.isLoading() ? 'disabled' : ''}
-              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.country_placeholder', 'My country')}
-              value={this.state.profile.country}
-              onChange={this.handleChangedCountry} />
           </div>
         </div>
 
@@ -738,9 +759,9 @@ return (
           <label
             className="control-label col-sm-3"
             htmlFor="name">
-            {this.i18n('Profile.my_birthday', 'My Birthday')}
+            {this.i18n('Profile.my_birthday', 'My birthday')}
             <span className="oc-form-group-info">
-              {this.i18n('Profile.my_birthday_info', 'When is your birthday?')}
+              {this.i18n('Profile.my_birthday_info', 'When is your birthday? This helps experimenters to find you!')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -750,7 +771,7 @@ return (
               id="name"
               disabled={this.isLoading() ? 'disabled' : ''}
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.birthday', 'Select birthday')}
-              value={this.state.profile.birthday}
+              value={this.state.profile.birthday ? this.state.profile.birthday.substr(0, 10) : undefined }
               onChange={this.handleChangedBirthday} />
           </div>
         </div>              
@@ -761,26 +782,26 @@ return (
             htmlFor="profession">
             {this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.professionInfo', '')}
+              {this.i18n('Profile.professionInfo', 'What is your proffession?')}
             </span>
           </label>
           <div className="col-sm-9">
             <Select
-              name="form-field-name"
+              name="profession"
               value={this.state.profile.profession}
               options={options}
               placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
               onChange={this.handleChangedProfession}
               multi={true}/>
+            {errorMessageProfession}
             <input
               type="text"
               className="oc-input"
-              id="profession"
+              id="profession2"
               disabled={this.isLoading() ? 'disabled' : ''}
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
               value={this.state.profile.professionTitle}
               onChange={this.handleChangedProfessionTitle} />
-            {errorMessageProfession}
           </div>
         </div>
 
@@ -845,7 +866,6 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
               value={this.state.profile.publicEmail}
               onChange={this.handleChangedpublicEmail} />
-            <br/>
             <input
               type="text"
               className="oc-input"

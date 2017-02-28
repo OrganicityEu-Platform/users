@@ -69,17 +69,23 @@ user.updatePasswordServer = {
 };
 
 user.profile = {
+  /*
   name   : Joi.string().label('Name'),
+  */
   gender : Joi.string().valid('m', 'f', 'o').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
+  /*
   roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
     { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
   ),
   local : {
     password: joiPassword.optional().allow('')
   },
+  */
+  birthday: Joi.date().iso().label('Birthday').optional(),
   location : Joi.string().trim().min(1).label('Location').optional(),
+  country : Joi.string().trim().min(1).label('Country').required(),
   profession : Joi.array().min(1).label('Profession').items(Joi.string()),
   professionTitle : Joi.string().allow('').optional(),
   publicEmail : Joi.string().optional(),
@@ -95,6 +101,6 @@ user.profileServer = {
 
 // React side needs to check the repeated password as well!
 user.profileClient = user.profile;
-user.profileClient.local.password_repeat = joiPasswordRepeat.optional();
+//user.profileClient.local.password_repeat = joiPasswordRepeat.optional();
 
 module.exports = user;

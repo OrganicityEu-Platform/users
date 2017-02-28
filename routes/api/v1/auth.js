@@ -13,12 +13,16 @@ module.exports = function(router, passport) {
   router.get(api.route('currentUser'), [isLoggedIn], function(req, res) {
 
     // If this function is reached, the user was added to the local mongo database
-
     // STEP ONE:
 
-    //console.log('req.user: ', req.user);
-    //res.json(req.user.json());
-    return res.status(200).json({});
+    console.log('req.user: ', req.user);
+    var json = req.user.json();
+    var o = {
+      uuid : json.uuid
+    };
+
+    return res.json(o);
+    //return res.status(200).json({});
   });
 
   var authSuccess = function(req, res) {

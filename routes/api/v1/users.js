@@ -227,6 +227,8 @@ module.exports = function(router, passport) {
 
           console.log(req.body);
 
+          return res.status(200).send('OK');
+
           if (req.body.local && req.body.local.password) {
             user.local.password = user.generateHash(req.body.local.password);
           }
