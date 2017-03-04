@@ -225,10 +225,41 @@ module.exports = function(router, passport) {
 
         handleUpload(req.body.avatar, next, function(path) {
 
-          console.log(req.body);
+          console.log('PATCH:', req.body);
 
-          return res.status(200).send('OK');
+          if (req.body.hasOwnProperty('city')) {
+            user.city = req.body.city;
+          }
 
+          if (req.body.hasOwnProperty('country')) {
+            user.country = req.body.country;
+          }
+
+          if (req.body.hasOwnProperty('profession')) {
+            user.profession = req.body.profession;
+          }
+
+          if (req.body.hasOwnProperty('professionTitle')) {
+            user.professionTitle = req.body.professionTitle;
+          }
+
+          if (req.body.hasOwnProperty('interests')) {
+            user.interests = req.body.interests;
+          }
+
+          if (req.body.hasOwnProperty('gender')) {
+            user.gender = req.body.gender;
+          }
+
+          if (req.body.hasOwnProperty('publicEmail')) {
+            user.publicEmail = req.body.publicEmail;
+          }
+
+          if (req.body.hasOwnProperty('publicWebsite')) {
+            user.publicWebsite = req.body.publicWebsite;
+          }
+
+          /*
           if (req.body.local && req.body.local.password) {
             user.local.password = user.generateHash(req.body.local.password);
           }
@@ -241,15 +272,6 @@ module.exports = function(router, passport) {
             user.location = req.body.location;
           }
 
-          if (req.body.hasOwnProperty('professionTitle')) {
-            user.professionTitle = req.body.professionTitle;
-          }
-
-          // If set, gender will never be emty due to validation
-          if (req.body.gender) {
-            user.gender = req.body.gender;
-          }
-
           // If set, roles will never be emty due to validation
           if (req.body.roles) {
             user.roles = req.body.roles;
@@ -259,17 +281,12 @@ module.exports = function(router, passport) {
             user.profession = req.body.profession;
           }
 
-          if (req.body.publicEmail) {
-            user.publicEmail = req.body.publicEmail;
-          }
 
-          if (req.body.publicWebsite) {
-            user.publicWebsite = req.body.publicWebsite;
-          }
 
           if (path) {
             user.avatar = path;
           }
+          */
 
           user.save(function(err) {
             if (err) {

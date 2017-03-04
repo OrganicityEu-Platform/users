@@ -2,16 +2,24 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 var user = mongoose.Schema({
-  uuid     : String,
-  location : String,
-  gender   : String,
+  uuid            : String,
+
+  // ------------------------------
+
+  city            : String,
+  country         : String,
+  profession      : [String],
+  professionTitle : String,
+  interests       : [String],
+  gender          : String,
+  publicEmail     : String,
+  publicWebsite   : String,
+
+  // ------------------------------
+
   roles    : [String], // ???
-  profession : [String],
   interests : [String],
   birthdate : Date,
-  professionTitle : String,
-  publicEmail : String,
-  publicWebsite : String,
   avatar   : String, // REMOVE
   oauth2           : {
     id           : String,

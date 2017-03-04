@@ -39,7 +39,7 @@ import { CountryDropdown }  from 'react-country-region-selector';
 
 var countries = require('country-list')();
 
-var options = [
+var optionsProfession = [
   { value: 'Academic', label: 'Academic' },
   { value: 'Artist', label: 'Artist' },
   { value: 'Business owner', label: 'Business owner' },
@@ -56,6 +56,11 @@ var options = [
   { value: 'Urbanist', label: 'Urbanist' },
   { value: 'Other', label: 'Other' },
 ];
+
+var optionsInterests = [
+  { value: 'Transport', label: 'Transport' },
+  { value: 'Energy', label: 'Energy' }
+]
 
 var optionsCountries = [];
 var codes = countries.getCodes();
@@ -113,24 +118,31 @@ var Profile = React.createClass({
         console.log('XHR:', profile);
 
         var e = {};
+        e.city = profile.city;
+        e.country = profile.country;
+        e.profession = (profile.profession) ? profile.profession : [];
+        e.interests = (profile.interests) ? profile.interests : [];
+        e.gender = profile.gender;
+        e.publicEmail = profile.publicEmail;
+        e.publicWebsite = profile.publicWebsite;
+
+        // -----------------------
+
         e.name = (profile.name) ? profile.name : '';
-        e.gender = (profile.gender) ? profile.gender : '';
         e.roles = (profile.roles) ? profile.roles : [];
         if (profile.local) {
           e.local = profile.local;
         }
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
-        e.location = profile.location;
-        e.country = profile.country;
+        e.firstName = profile.firstName;
+        e.lastName = profile.lastName;
         e.birthday = profile.birthday;
-        e.publicEmail = profile.publicEmail;
-        e.publicWebsite = profile.publicWebsite;
+        e.email = (profile.email) ? profile.email : undefined;
         e.dirty = false;
         e.favorites = profile.favorites;
-        e.profession = (profile.profession) ? profile.profession : [];
-        e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
 
+        e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
         this.loaded({profile: e}, () => {
           // Initial validate to show validation indicators
           this.props.validate();
@@ -179,6 +191,20 @@ var Profile = React.createClass({
       }
     });
   },
+  handleChangedEmail: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        email : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('email');
+      }
+    });
+  },
   handleChangedpublicWebSite: function(evt) {
     this.setState({
       dirty : true,
@@ -207,17 +233,45 @@ var Profile = React.createClass({
       }
     });
   },
-  handleChangedLocation: function(evt) {
+  handleChangedCity: function(evt) {
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        location : evt.target.value
+        city : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('location');
+        this.props.validate('city');
+      }
+    });
+  },
+  handleChangedFirstName: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        firstName : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('firstName');
+      }
+    });
+  },
+  handleChangedLastName: function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        lastName : evt.target.value
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('lastName');
       }
     });
   },
@@ -277,6 +331,20 @@ var Profile = React.createClass({
       }
     });
   },
+  handleChangedInterests: function(interests) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        interests : (interests === '') ? [] : interests.split(",")
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('interests');
+      }
+    });
+  },
   handleChangedBirthday: function(evt) {
 
     var m = moment.utc(evt.target.value + "T00:00:00Z");
@@ -331,15 +399,20 @@ var Profile = React.createClass({
   getProfile : function() {
 
     var profile = {
-//      name: this.state.profile.name,
-      gender: this.state.profile.gender,
-      location: (this.state.profile.location === '') ? undefined : this.state.profile.location,
-      birthday: (this.state.profile.birthday === '') ? undefined : this.state.profile.birthday,
+      city: (this.state.profile.city === '') ? undefined : this.state.profile.city,
       country: (this.state.profile.country === '') ? undefined : this.state.profile.country,
       profession: this.state.profile.profession,
       professionTitle : (this.state.profile.professionTitle === '') ? undefined : this.state.profile.professionTitle,
+      interests: this.state.profile.interests,
+      gender: this.state.profile.gender,
       publicEmail: (this.state.profile.publicEmail === '') ? undefined : this.state.profile.publicEmail,
       publicWebsite: (this.state.profile.publicWebsite === '') ? undefined : this.state.profile.publicWebsite,
+
+//      name: this.state.profile.name,
+      birthday: (this.state.profile.birthday === '') ? undefined : this.state.profile.birthday,
+      firstName: (this.state.profile.firstName === '') ? undefined : this.state.profile.firstName,
+      lastName: (this.state.profile.lastName === '') ? undefined : this.state.profile.lastName,
+      email: (this.state.profile.email === '') ? undefined : this.state.profile.email,
     };
     
     if (this.state.profile.local) {
@@ -420,6 +493,10 @@ var Profile = React.createClass({
     var errorMessagePasswordRepeat = null;
     var errorMessageProfession = null;
     var errorMessageCountry = null;
+    var errorMessageFirstName = null;
+    var errorMessageLastName = null;
+    var errorMessageEmail = null;
+    var erroressagePublicEmail = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageName = (
@@ -456,6 +533,26 @@ var Profile = React.createClass({
         <Message
           type="danger"
           messages={this.props.getValidationMessages('country')} />
+      );
+      errorMessageFirstName = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('firstName')} />
+      );
+      errorMessageLastName = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('lastName')} />
+      );
+      errorMessageEmail = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('email')} />
+      );
+      erroressagePublicEmail = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('publicEmail')} />
       );
     }
 
@@ -534,7 +631,7 @@ var Profile = React.createClass({
 
 var roles = null;
 
-if(this.userHasRole('admin') || this.state.profile.roles.length > 0) {
+if(this.userHasRole('admin') || (this.state.profile.roles && this.state.profile.roles.length > 0)) {
 
   // Only show the indicator, if admin
   var roleIndicator = null;
@@ -728,8 +825,61 @@ return (
         <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
+            htmlFor="firstName">
+            {this.i18n('Profile.my_name', 'Your name')} <ValidationIndicator valid={this.props.isValid('lastName') && this.props.isValid('firstName')}/>
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.RealNameInfo', 'What\'s your real name?')}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="text"
+              className="oc-input"
+              id="firstName"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.firstName_placeholder', 'first name')}
+              value={this.state.profile.firstName}
+              onChange={this.handleChangedFirstName} />
+            {errorMessageFirstName}
+            <input
+              type="text"
+              className="oc-input"
+              id="lastName"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.lastName_placeholder', 'last name')}
+              value={this.state.profile.lastName}
+              onChange={this.handleChangedLastName} />
+            {errorMessageLastName}
+          </div>
+        </div>
+
+        <div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
+            htmlFor="email">
+            {this.i18n('Profile.mail', 'Your email')} <ValidationIndicator valid={this.props.isValid('email')}/>
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.mailInfo', 'This is the internal email which we need to be able to contact you.')} 
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="text"
+              className="oc-input"
+              id="email"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email_placeholder', 'email')}
+              value={this.state.profile.email}
+              onChange={this.handleChangedEmail} />
+            {errorMessageEmail}
+          </div>
+        </div>
+
+        <div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
             htmlFor="location">
-            {this.i18n('Profile.my_location', 'My location')} <ValidationIndicator valid={this.props.isValid('country')}/>
+            {this.i18n('Profile.my_location', 'Your location')} <ValidationIndicator valid={this.props.isValid('country')}/>
             <span className="oc-form-group-info">
               {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you!')} 
             </span>
@@ -739,7 +889,7 @@ return (
               name="country"
               value={this.state.profile.country}
               options={optionsCountries}
-              placeholder={this.i18n('Profile.country_placeholder', 'My country')}
+              placeholder={this.i18n('Profile.country_placeholder', 'country')}
               onChange={this.handleChangedCountry}
               multi={false}
               />
@@ -747,11 +897,11 @@ return (
             <input
               type="text"
               className="oc-input"
-              id="location"
+              id="city"
               disabled={this.isLoading() ? 'disabled' : ''}
-              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.location_placeholder', 'My city')}
-              value={this.state.profile.location}
-              onChange={this.handleChangedLocation} />
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.city_placeholder', 'city')}
+              value={this.state.profile.city}
+              onChange={this.handleChangedCity} />
           </div>
         </div>
 
@@ -759,7 +909,7 @@ return (
           <label
             className="control-label col-sm-3"
             htmlFor="name">
-            {this.i18n('Profile.my_birthday', 'My birthday')}
+            {this.i18n('Profile.my_birthday', 'Your birthday')}
             <span className="oc-form-group-info">
               {this.i18n('Profile.my_birthday_info', 'When is your birthday? This helps experimenters to find you!')}
             </span>
@@ -775,41 +925,12 @@ return (
               onChange={this.handleChangedBirthday} />
           </div>
         </div>              
-              
-        <div className="form-group oc-form-group oc-edit-group">
-          <label
-            className="control-label col-sm-3"
-            htmlFor="profession">
-            {this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
-            <span className="oc-form-group-info">
-              {this.i18n('Profile.professionInfo', 'What is your proffession?')}
-            </span>
-          </label>
-          <div className="col-sm-9">
-            <Select
-              name="profession"
-              value={this.state.profile.profession}
-              options={options}
-              placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
-              onChange={this.handleChangedProfession}
-              multi={true}/>
-            {errorMessageProfession}
-            <input
-              type="text"
-              className="oc-input"
-              id="profession2"
-              disabled={this.isLoading() ? 'disabled' : ''}
-              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
-              value={this.state.profile.professionTitle}
-              onChange={this.handleChangedProfessionTitle} />
-          </div>
-        </div>
 
         <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
             htmlFor="gender">
-            {this.i18n('Profile.gender', 'My gender')} <ValidationIndicator valid={this.props.isValid('gender')}/>
+            {this.i18n('Profile.gender', 'Your gender')} <ValidationIndicator valid={this.props.isValid('gender')}/>
             <span className="oc-form-group-info">
               {this.i18n('Profile.genderInfo', 'Which describes how you think of yourself? This will help us with EU statistics and won’t show in your profile.')}
             </span>
@@ -846,15 +967,64 @@ return (
           </div>
         </div>
 
+        <div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
+            htmlFor="profession">
+            {this.i18n('Profile.profession', 'What do you do?')} <ValidationIndicator valid={this.props.isValid('profession')}/>
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.professionInfo', 'What is your proffession?')}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <Select
+              name="profession"
+              value={this.state.profile.profession}
+              options={optionsProfession}
+              placeholder={this.i18n('Profile.profession_placeholder1', 'Select...')}
+              onChange={this.handleChangedProfession}
+              multi={true}/>
+            {errorMessageProfession}
+            <input
+              type="text"
+              className="oc-input"
+              id="profession2"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.profession_placeholder2', 'Specific title and/or field...')}
+              value={this.state.profile.professionTitle}
+              onChange={this.handleChangedProfessionTitle} />
+          </div>
+        </div>
+
+        <div className="form-group oc-form-group oc-edit-group">
+            <label
+              className="control-label col-sm-3"
+              htmlFor="interests">
+              {this.i18n('Profile.interests', 'Your interests')}
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.interestsInfo', 'What are your interests?')}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <Select
+              name="interests"
+              value={this.state.profile.interests}
+              options={optionsInterests}
+              placeholder={this.i18n('Profile.interests_placeholder', 'Select...')}
+              onChange={this.handleChangedInterests}
+              multi={true}/>
+          </div>
+        </div>
+
         {roles}
 
         <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
             htmlFor="name">
-            {this.i18n('Profile.public_contact', 'Public contact')}
+            {this.i18n('Profile.public_contact', 'Your public contact')}
             <span className="oc-form-group-info">
-              {this.i18n('Profile.public_contact_info', '')}
+              {this.i18n('Profile.public_contact_info', '')} (optional) This informations will be shown on your public profile.
             </span>
           </label>
           <div className="col-sm-9">
@@ -866,6 +1036,7 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
               value={this.state.profile.publicEmail}
               onChange={this.handleChangedpublicEmail} />
+            {erroressagePublicEmail}
             <input
               type="text"
               className="oc-input"

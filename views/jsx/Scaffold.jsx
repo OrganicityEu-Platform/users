@@ -170,6 +170,41 @@ var Scaffold = React.createClass({
         );
       }
 */
+
+/*
+      linksRight.push(
+        <NavItemLink
+          key="coCreation"
+          className="nav-profile-btn"
+          to="profile">
+          {this.i18n('coCreation', 'Co-Creation')}
+        </NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
+          key="federatedIdentity"
+          className="nav-profile-btn"
+          to="profile">
+          {this.i18n('federatedIdentity', 'Federated Identities')}
+        </NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
+          key="authenticator"
+          className="nav-profile-btn"
+          to="profile">
+          {this.i18n('authenticator', 'Authenticator')}
+        </NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
+          key="password"
+          className="nav-profile-btn"
+          to="profile">
+          {this.i18n('password2', 'Password')}
+        </NavItemLink>
+      );
+*/
       linksRight.push(
         <NavItemLink
           key="profile"

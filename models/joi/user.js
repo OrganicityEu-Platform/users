@@ -69,13 +69,18 @@ user.updatePasswordServer = {
 };
 
 user.profile = {
-  /*
-  name   : Joi.string().label('Name'),
-  */
+  city : Joi.string().trim().min(1).label('City').optional(),
+  country : Joi.string().trim().min(1).label('Country').required(),
+  profession : Joi.array().min(1).label('Profession').items(Joi.string()),
+  professionTitle : Joi.string().allow('').optional(),
+  interests : Joi.array().min(1).label('Interests').items(Joi.string()),
   gender : Joi.string().valid('m', 'f', 'o').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
+  publicEmail : Joi.string().email().optional(),
+  publicWebsite : Joi.string().optional(),
   /*
+  name   : Joi.string().label('Name'),
   roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
     { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
   ),
@@ -83,13 +88,10 @@ user.profile = {
     password: joiPassword.optional().allow('')
   },
   */
-  birthday: Joi.date().iso().label('Birthday').optional(),
-  location : Joi.string().trim().min(1).label('Location').optional(),
-  country : Joi.string().trim().min(1).label('Country').required(),
-  profession : Joi.array().min(1).label('Profession').items(Joi.string()),
-  professionTitle : Joi.string().allow('').optional(),
-  publicEmail : Joi.string().optional(),
-  publicWebsite : Joi.string().optional()
+  firstName   : Joi.string().label('First Name').required(),
+  lastName   : Joi.string().label('Last Name').required(),
+  email : Joi.string().email().required(), // VALIDATE TYPE MAIL !!!
+  birthday: Joi.date().iso().label('Birthday').optional()
 };
 
 user.profileServer = {

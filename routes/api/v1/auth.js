@@ -18,7 +18,15 @@ module.exports = function(router, passport) {
     console.log('req.user: ', req.user);
     var json = req.user.json();
     var o = {
-      uuid : json.uuid
+      uuid :              json.uuid,
+      city:               json.city,
+      country:            json.country,
+      profession:         json.profession,
+      professionTitle:    json.professionTitle,
+      interests:          json.interests,
+      gender:             json.gender,
+      publicEmail:        json.publicEmail,
+      publicWebsite:      json.publicWebsite,
     };
 
     return res.json(o);
