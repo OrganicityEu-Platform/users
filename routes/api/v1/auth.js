@@ -1,8 +1,19 @@
-var api        = require('../../../api_routes.js');
-var ui         = require('../../../ui_routes.js');
-var UserJoi    = require('../../../models/joi/user.js');
+var api         = require('../../../api_routes.js');
+var ui          = require('../../../ui_routes.js');
+var UserJoi     = require('../../../models/joi/user.js');
 
-var validate   = require('express-validation');
+var validate    = require('express-validation');
+
+var config      = require('../../../config/config.js');
+var httpClient  =  require('../../../lib/HTTPClient.js');
+
+var createError = function(error, description) {
+  var o = {
+    error: error,
+    description: description
+  };
+  return JSON.stringify(o);
+};
 
 module.exports = function(router, passport) {
 
@@ -14,23 +25,83 @@ module.exports = function(router, passport) {
 
     // If this function is reached, the user was added to the local mongo database
     // STEP ONE:
+    var userdata_mongo = req.user.json();
+    console.log('1) Got User data from Mongo');
+    console.log('userdata_mongo: ', userdata_mongo);
 
-    console.log('req.user: ', req.user);
-    var json = req.user.json();
-    var o = {
-      uuid :              json.uuid,
-      city:               json.city,
-      country:            json.country,
-      profession:         json.profession,
-      professionTitle:    json.professionTitle,
-      interests:          json.interests,
-      gender:             json.gender,
-      publicEmail:        json.publicEmail,
-      publicWebsite:      json.publicWebsite,
+    // GET TOKEN
+
+    var optionsCall = {
+      protocol: config.accounts_token_endpoint.protocol,
+      host: config.accounts_token_endpoint.host,
+      port: config.accounts_token_endpoint.port,
+      path: config.accounts_token_endpoint.path,
+      method: 'POST',
+      headers: {
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      }
     };
 
-    return res.json(o);
-    //return res.status(200).json({});
+    var payload = 'grant_type=client_credentials&client_id=' +
+      config.client_id +
+      '&client_secret=' +
+      config.client_secret;
+
+    console.log('2) Got User data from Keycloak');
+    httpClient.sendData(optionsCall, payload, res, function(status, responseText, headers) {
+      var token = JSON.parse(responseText);
+      var access_token = token.access_token;
+
+      var optionsCall2 = {
+        protocol: config.accounts_token_endpoint.protocol,
+        host: config.accounts_token_endpoint.host,
+        port: config.accounts_token_endpoint.port,
+        path: '/permissions/users/' + req.user.oauth2.id,
+        method: 'GET',
+        headers : {
+          'Authorization' : 'Bearer ' + access_token,
+          'Accept' : 'application/json'
+        }
+      };
+
+      httpClient.sendData(optionsCall2, undefined, res, function(status, responseText, headers) {
+        //console.log('responseText2', responseText);
+        var userdata_keycloak = JSON.parse(responseText);
+
+        var o = {
+          // Keycloak
+          firstName:          userdata_keycloak.firstName,
+          lastName:           userdata_keycloak.lastName,
+          email:              userdata_keycloak.email,
+          username:           userdata_keycloak.name,
+
+          // Mongo
+          uuid :              userdata_mongo.uuid,
+          city:               userdata_mongo.city,
+          country:            userdata_mongo.country,
+          profession:         userdata_mongo.profession,
+          professionTitle:    userdata_mongo.professionTitle,
+          interests:          userdata_mongo.interests,
+          gender:             userdata_mongo.gender,
+          publicEmail:        userdata_mongo.publicEmail,
+          publicWebsite:      userdata_mongo.publicWebsite,
+        };
+
+        return res.status(200).json(o);
+      },  function(status, resp) {
+        console.log('Internal error message. Status: ', status, 'Response: ', resp);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
+      });
+
+    },function(status, resp) {
+      console.error('ERROR!');
+      console.log('Internal error message. Status: ', status, 'Response: ', resp);
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
+    });
   });
 
   var authSuccess = function(req, res) {

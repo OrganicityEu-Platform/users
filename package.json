@@ -122,7 +122,8 @@
     "react-validation-mixin": "5.3.4",
     "string.prototype.startswith": "^0.2.0",
     "unirest": "~0.4.2",
-    "url-assembler": "^1.2.4"
+    "url-assembler": "^1.2.4",
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "precommit": "gulp lint",
