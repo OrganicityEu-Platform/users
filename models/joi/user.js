@@ -69,30 +69,34 @@ user.updatePasswordServer = {
 };
 
 user.profile = {
-  city : Joi.string().trim().min(1).label('City').optional(),
+  // Mongo
+  city : Joi.string().trim().allow(null).label('City').optional(),
   country : Joi.string().trim().min(1).label('Country').required(),
   profession : Joi.array().min(1).label('Profession').items(Joi.string()),
-  professionTitle : Joi.string().allow('').optional(),
-  interests : Joi.array().min(1).label('Interests').items(Joi.string()),
+  professionTitle : Joi.string().allow(null).optional(),
+  interests : Joi.array().min(0).label('Interests').items(Joi.string()),
   gender : Joi.string().valid('m', 'f', 'o').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
-  publicEmail : Joi.string().email().optional(),
-  publicWebsite : Joi.string().optional(),
-  /*
-  name   : Joi.string().label('Name'),
-  roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
-    { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
-  ),
-  local : {
-    password: joiPassword.optional().allow('')
-  },
-  */
+  publicEmail : Joi.string().allow(null).trim().allow('').email().optional(),
+  publicWebsite : Joi.string().allow(null).trim().allow('').optional(),
+  birthday: Joi.date().allow(null).iso().label('Birthday').optional(),
+
+  // Keycloak
+  username   : Joi.string().label('Name').required(),
   firstName   : Joi.string().label('First Name').required(),
   lastName   : Joi.string().label('Last Name').required(),
   email : Joi.string().email().required(), // VALIDATE TYPE MAIL !!!
-  birthday: Joi.date().iso().label('Birthday').optional()
 };
+
+/*
+roles  : Joi.array().items(Joi.string().valid('admin', 'moderator')).label('Roles').options(
+  { language: { any: { allowOnly: 'must be `admin` and/or `moderator`' } } }
+),
+local : {
+  password: joiPassword.optional().allow('')
+},
+*/
 
 user.profileServer = {
   options : {

@@ -1,4 +1,4 @@
-var config            = require('../../../config/config.js');
+var config        = require('../../../config/config.js');
 
 var User          = require('../../../models/schema/user.js');
 var api           = require('../../../api_routes.js');
@@ -16,6 +16,8 @@ var configAuth    = require('../../../config/auth.js');
 
 var uuid          = require('node-uuid');
 var mailer        = require('nodemailer');
+
+var commons       = require('./commons');
 
 module.exports = function(router, passport) {
 
@@ -211,7 +213,7 @@ module.exports = function(router, passport) {
 
   router.patch(
     api.route('user_by_uuid'),
-    [isLoggedIn, isUserOrAdmin, validate(UserJoi.profileServer)],
+    [isLoggedIn, isUserOrAdmin, validate(UserJoi.profileServer), commons.getAccessToken],
     function(req, res, next) {
 
       // Non admin user cannot edit the roles
@@ -228,7 +230,7 @@ module.exports = function(router, passport) {
           console.log('PATCH:', req.body);
 
           if (req.body.hasOwnProperty('city')) {
-            user.city = req.body.city;
+            user.city = (req.body.city === null) ? undefined : req.body.city;
           }
 
           if (req.body.hasOwnProperty('country')) {
@@ -240,7 +242,7 @@ module.exports = function(router, passport) {
           }
 
           if (req.body.hasOwnProperty('professionTitle')) {
-            user.professionTitle = req.body.professionTitle;
+            user.professionTitle = (req.body.professionTitle === null) ? undefined : req.body.professionTitle;
           }
 
           if (req.body.hasOwnProperty('interests')) {
@@ -252,11 +254,15 @@ module.exports = function(router, passport) {
           }
 
           if (req.body.hasOwnProperty('publicEmail')) {
-            user.publicEmail = req.body.publicEmail;
+            user.publicEmail = (req.body.publicEmail === null) ? undefined : req.body.publicEmail;
           }
 
           if (req.body.hasOwnProperty('publicWebsite')) {
-            user.publicWebsite = req.body.publicWebsite;
+            user.publicWebsite = (req.body.publicWebsite === null) ? undefined : req.body.publicWebsite;
+          }
+
+          if (req.body.hasOwnProperty('birthday')) {
+            user.birthday = (req.body.birthday === null) ? undefined : req.body.birthday;
           }
 
           /*
@@ -287,6 +293,8 @@ module.exports = function(router, passport) {
             user.avatar = path;
           }
           */
+
+          console.log('Save user:', user);
 
           user.save(function(err) {
             if (err) {

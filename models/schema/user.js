@@ -2,10 +2,12 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 var user = mongoose.Schema({
+  // Mongo internal
   uuid            : String,
 
   // ------------------------------
-
+  // User data from MongoDB
+  // ------------------------------
   city            : String,
   country         : String,
   profession      : [String],
@@ -14,12 +16,18 @@ var user = mongoose.Schema({
   gender          : String,
   publicEmail     : String,
   publicWebsite   : String,
+  birthday : Date,
 
+  // ------------------------------
+  // User data from KeyCloak
+  // ------------------------------
+  // username
+  // firstName
+  // lastName
+  // email
   // ------------------------------
 
   roles    : [String], // ???
-  interests : [String],
-  birthdate : Date,
   avatar   : String, // REMOVE
   oauth2           : {
     id           : String,

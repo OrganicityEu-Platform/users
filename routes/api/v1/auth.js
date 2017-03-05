@@ -5,7 +5,9 @@ var UserJoi     = require('../../../models/joi/user.js');
 var validate    = require('express-validation');
 
 var config      = require('../../../config/config.js');
-var httpClient  =  require('../../../lib/HTTPClient.js');
+var httpClient  = require('../../../lib/HTTPClient.js');
+
+var commons     = require('./commons');
 
 var createError = function(error, description) {
   var o = {
@@ -21,87 +23,62 @@ module.exports = function(router, passport) {
   var isLoggedIn = require('../../../models/isLoggedIn.js')(passport);
 
   // PROFIL
-  router.get(api.route('currentUser'), [isLoggedIn], function(req, res) {
+  router.get(api.route('currentUser'), [isLoggedIn], commons.getAccessToken, function(req, res) {
 
-    // If this function is reached, the user was added to the local mongo database
+    // If this function is reached,
+    // a) the user was added to the local mongo database
+    // b) the token was aqcuired to get the user data from keycloak
+
     // STEP ONE:
     var userdata_mongo = req.user.json();
     console.log('1) Got User data from Mongo');
     console.log('userdata_mongo: ', userdata_mongo);
 
-    // GET TOKEN
-
     var optionsCall = {
       protocol: config.accounts_token_endpoint.protocol,
       host: config.accounts_token_endpoint.host,
       port: config.accounts_token_endpoint.port,
-      path: config.accounts_token_endpoint.path,
-      method: 'POST',
-      headers: {
-        'Content-Type' : 'application/x-www-form-urlencoded'
+      path: '/permissions/users/' + req.user.oauth2.id,
+      method: 'GET',
+      headers : {
+        'Authorization' : 'Bearer ' + req.access_token,
+        'Accept' : 'application/json'
       }
     };
 
-    var payload = 'grant_type=client_credentials&client_id=' +
-      config.client_id +
-      '&client_secret=' +
-      config.client_secret;
+    httpClient.sendData(optionsCall, undefined, res, function(status, responseText, headers) {
+      //console.log('responseText2', responseText);
+      var userdata_keycloak = JSON.parse(responseText);
 
-    console.log('2) Got User data from Keycloak');
-    httpClient.sendData(optionsCall, payload, res, function(status, responseText, headers) {
-      var token = JSON.parse(responseText);
-      var access_token = token.access_token;
+      var o = {
+        uuid :              userdata_mongo.uuid,
 
-      var optionsCall2 = {
-        protocol: config.accounts_token_endpoint.protocol,
-        host: config.accounts_token_endpoint.host,
-        port: config.accounts_token_endpoint.port,
-        path: '/permissions/users/' + req.user.oauth2.id,
-        method: 'GET',
-        headers : {
-          'Authorization' : 'Bearer ' + access_token,
-          'Accept' : 'application/json'
-        }
+        // Mongo
+        city:               userdata_mongo.city,
+        country:            userdata_mongo.country,
+        profession:         userdata_mongo.profession,
+        professionTitle:    userdata_mongo.professionTitle,
+        interests:          userdata_mongo.interests,
+        gender:             userdata_mongo.gender,
+        publicEmail:        userdata_mongo.publicEmail,
+        publicWebsite:      userdata_mongo.publicWebsite,
+        birthday:           userdata_mongo.birthday,
+
+        // Keycloak
+        firstName:          userdata_keycloak.firstName,
+        lastName:           userdata_keycloak.lastName,
+        email:              userdata_keycloak.email,
+        username:           userdata_keycloak.name,
       };
 
-      httpClient.sendData(optionsCall2, undefined, res, function(status, responseText, headers) {
-        //console.log('responseText2', responseText);
-        var userdata_keycloak = JSON.parse(responseText);
-
-        var o = {
-          // Keycloak
-          firstName:          userdata_keycloak.firstName,
-          lastName:           userdata_keycloak.lastName,
-          email:              userdata_keycloak.email,
-          username:           userdata_keycloak.name,
-
-          // Mongo
-          uuid :              userdata_mongo.uuid,
-          city:               userdata_mongo.city,
-          country:            userdata_mongo.country,
-          profession:         userdata_mongo.profession,
-          professionTitle:    userdata_mongo.professionTitle,
-          interests:          userdata_mongo.interests,
-          gender:             userdata_mongo.gender,
-          publicEmail:        userdata_mongo.publicEmail,
-          publicWebsite:      userdata_mongo.publicWebsite,
-        };
-
-        return res.status(200).json(o);
-      },  function(status, resp) {
-        console.log('Internal error message. Status: ', status, 'Response: ', resp);
-        res.statusCode = 500;
-        res.setHeader('Content-Type', 'application/json');
-        res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
-      });
-
-    },function(status, resp) {
-      console.error('ERROR!');
+      return res.status(200).json(o);
+    },  function(status, resp) {
       console.log('Internal error message. Status: ', status, 'Response: ', resp);
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
       res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
     });
+
   });
 
   var authSuccess = function(req, res) {

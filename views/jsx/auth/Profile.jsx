@@ -121,28 +121,29 @@ var Profile = React.createClass({
         e.city = profile.city;
         e.country = profile.country;
         e.profession = (profile.profession) ? profile.profession : [];
+        e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
         e.interests = (profile.interests) ? profile.interests : [];
         e.gender = profile.gender;
         e.publicEmail = profile.publicEmail;
         e.publicWebsite = profile.publicWebsite;
+        e.birthday = profile.birthday;
 
-        // -----------------------
+        e.username = (profile.username) ? profile.username : '';
+        e.firstName = profile.firstName;
+        e.lastName = profile.lastName;
+        e.email = (profile.email) ? profile.email : undefined;
 
-        e.name = (profile.name) ? profile.name : '';
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
         e.roles = (profile.roles) ? profile.roles : [];
         if (profile.local) {
           e.local = profile.local;
         }
         e.uuid = profile.uuid;
         e.avatar = profile.avatar;
-        e.firstName = profile.firstName;
-        e.lastName = profile.lastName;
-        e.birthday = profile.birthday;
-        e.email = (profile.email) ? profile.email : undefined;
         e.dirty = false;
         e.favorites = profile.favorites;
 
-        e.professionTitle = (profile.professionTitle) ? profile.professionTitle : '';
         this.loaded({profile: e}, () => {
           // Initial validate to show validation indicators
           this.props.validate();
@@ -167,13 +168,13 @@ var Profile = React.createClass({
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
-        name : evt.target.value
+        username : evt.target.value
       })
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('name');
+        this.props.validate('username');
       }
     });
   },
@@ -347,8 +348,12 @@ var Profile = React.createClass({
   },
   handleChangedBirthday: function(evt) {
 
-    var m = moment.utc(evt.target.value + "T00:00:00Z");
-    var birthdayInIsoUtc = m.toISOString();
+    if(evt.target.value == '') {
+      var birthdayInIsoUtc = '';
+    } else {
+      var m = moment.utc(evt.target.value + "T00:00:00Z");
+      var birthdayInIsoUtc = m.toISOString();
+    }
     console.log('birthday:', birthdayInIsoUtc);
 
     this.setState({
@@ -399,20 +404,20 @@ var Profile = React.createClass({
   getProfile : function() {
 
     var profile = {
-      city: (this.state.profile.city === '') ? undefined : this.state.profile.city,
-      country: (this.state.profile.country === '') ? undefined : this.state.profile.country,
+      city: (!this.state.profile.city) ? null : this.state.profile.city,
+      country: this.state.profile.country,
       profession: this.state.profile.profession,
-      professionTitle : (this.state.profile.professionTitle === '') ? undefined : this.state.profile.professionTitle,
+      professionTitle: (!this.state.profile.professionTitle) ? null : this.state.profile.professionTitle,
       interests: this.state.profile.interests,
       gender: this.state.profile.gender,
-      publicEmail: (this.state.profile.publicEmail === '') ? undefined : this.state.profile.publicEmail,
-      publicWebsite: (this.state.profile.publicWebsite === '') ? undefined : this.state.profile.publicWebsite,
+      publicEmail: (!this.state.profile.publicEmail) ? null : this.state.profile.publicEmail,
+      publicWebsite: (!this.state.profile.publicWebsite) ? null : this.state.profile.publicWebsite,
+      birthday: (!this.state.profile.birthday) ? null : this.state.profile.birthday,
 
-//      name: this.state.profile.name,
-      birthday: (this.state.profile.birthday === '') ? undefined : this.state.profile.birthday,
-      firstName: (this.state.profile.firstName === '') ? undefined : this.state.profile.firstName,
-      lastName: (this.state.profile.lastName === '') ? undefined : this.state.profile.lastName,
-      email: (this.state.profile.email === '') ? undefined : this.state.profile.email,
+      username: this.state.profile.username,
+      firstName: this.state.profile.firstName,
+      lastName: this.state.profile.lastName,
+      email: this.state.profile.email,
     };
     
     if (this.state.profile.local) {
@@ -787,30 +792,6 @@ var socialLinks = (
 
 socialLinks = null;
 
-/*
-        <div className="form-group oc-form-group oc-edit-group">
-          <label
-            className="control-label col-sm-3"
-            htmlFor="name">
-            {this.i18n('Profile.my_name', 'My name')} <ValidationIndicator valid={this.props.isValid('name')}/>
-            <span className="oc-form-group-info">
-              {this.i18n('Profile.nameInfo', 'Use your real name or a nickname.')}
-            </span>
-          </label>
-          <div className="col-sm-9">
-            <input
-              type="text"
-              className="oc-input"
-              id="name"
-              disabled={this.isLoading() ? 'disabled' : ''}
-              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.name_or_nick', 'Name or nickname')}
-              value={this.state.profile.name}
-              onChange={this.handleChangedName} />
-            {errorMessageName}
-          </div>
-        </div>
-*/
-
 return (
   <div className="row oc-form-group-view">
     <div className="oc-macro-content">
@@ -821,7 +802,30 @@ return (
         {this.i18n('Profile.your_profile_allows', 'Your profile allows you to connect, share and discuss ideas with others')}
       </h4>
       <form className="form-horizontal">
-        
+
+
+        <div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
+            htmlFor="username">
+            {this.i18n('Profile.my_username', 'My username')} <ValidationIndicator valid={this.props.isValid('username')}/>
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.usernameInfo', 'Your nickname')}
+            </span>
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="text"
+              className="oc-input"
+              id="username"
+              disabled={this.isLoading() ? 'disabled' : ''}
+              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.username', 'nickname')}
+              value={this.state.profile.username}
+              onChange={this.handleChangedName} />
+            {errorMessageName}
+          </div>
+        </div>
+
         <div className="form-group oc-form-group oc-edit-group">
           <label
             className="control-label col-sm-3"
