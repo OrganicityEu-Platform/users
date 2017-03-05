@@ -18,7 +18,7 @@ var scenario = mongoose.Schema({
   editor     : { type: String, required: false  }, // set when updated
   editor_timestamp   : { type: Date, required: false }, // set when updated
   actors      : { type: [String]                }, // tags (comma-separated)
-  sectors     : { type: [String]                }, // tags (comma-separated)
+  sectors     : { type: [{type: String, trim: true}]                }, // tags (comma-separated)
   devices     : { type: [String]                }, // tags (comma-separated)
   dataSources : { type: [String]                }, // uuids of data source type
   score       : { type: Object                  }, // score

@@ -1,8 +1,13 @@
 # OrganiCity Scenario Tool
 
-Please note the main [documentation folder](doc/) under `doc/`.
+## Branches
+
+* `master` contains the main develeopment branch
+* `prod` contains the branch, which is currenty deployed, see https://scenarios.organicity.eu/
 
 ## Directory structure
+
+Please note the main [documentation folder](doc/) under `doc/`.
 
 ```
 PROJECT_ROOT
