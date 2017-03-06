@@ -35,8 +35,6 @@ import BookmarkedScenarios  from '../scenarios/BookmarkedScenarios.jsx';
 
 import moment               from 'moment';
 
-import { CountryDropdown }  from 'react-country-region-selector';
-
 var countries = require('country-list')();
 
 var optionsProfession = [

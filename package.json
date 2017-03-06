@@ -60,6 +60,7 @@
     "bootstrap": "^3.3.5",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.1",
+    "country-list": "^1.1.0",
     "cron": "~1.0.9",
     "csv-parse": "^1.0.0",
     "ejs": "~0.8.8",
