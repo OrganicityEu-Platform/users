@@ -49,7 +49,7 @@ module.exports = function(router, passport) {
         'oauth2.id' : 1,
         age: {
           $divide: [
-            {$subtract: [new Date(), $birthday] },
+            {$subtract: [new Date(), '$birthday'] },
             (365 * 24 * 60 * 60 * 1000)
           ]
         }
