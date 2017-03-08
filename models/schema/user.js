@@ -147,7 +147,7 @@ var User = mongoose.model('User', user);
 User.excludeFields = {
   '_id'            : 0,
   '__v'            : 0,
-  'local.password' : 0
+  'local.password' : 0,
 };
 
 module.exports = User;

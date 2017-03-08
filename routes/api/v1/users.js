@@ -28,12 +28,106 @@ module.exports = function(router, passport) {
   // Routes
   // ###############################################################
 
-  router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
+  //router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
+  router.get(api.route('users'), function(req, res, next) {
 
-    User.find({}, User.excludeFields, function(err, users) {
+    var pipeline = [];
+    var match = {};
+
+    // Calculate the age first and project the needed attributes
+    var calculateAge = {
+      $project: {
+        _id: 0,
+        city: 1,
+        country: 1,
+        gender: 1,
+        profession: 1,
+        professionTitle: 1,
+        interests: 1,
+        publicEmail: 1,
+        publicWebsite : 1,
+        'oauth2.id' : 1,
+        age: {
+          $divide: [
+            {$subtract: [new Date(), $birthday] },
+            (365 * 24 * 60 * 60 * 1000)
+          ]
+        }
+      }
+    };
+    pipeline.push(calculateAge);
+
+    if (req.query.ageFrom && isNaN(req.query.ageFrom)) {
+      throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
+    }
+
+    if (req.query.ageTo && isNaN(req.query.ageTo)) {
+      throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
+    }
+
+    // Filter by age
+    if (req.query.ageFrom && req.query.ageTo) {
+      match.age = {
+        $gte : parseInt(req.query.ageFrom),
+        $lte : parseInt(req.query.ageTo) + 0.999
+      };
+    }
+
+    // Filter by gender
+    if (req.query.gender) {
+      if (req.query.gender !== 'm' && req.query.gender !== 'f' && req.query.gender !== 'o') {
+        throw 'request parameter "gender" is not "f", "m" or "o": "' + req.query.gender + '"';
+      }
+      match.gender = req.query.gender;
+    }
+
+    // Filter by interests
+    if (req.query.interests) {
+      var interests = Array.isArray(req.query.interests) ? req.query.interests : [req.query.interests];
+      match.interests = {
+        $all : interests
+      };
+    }
+
+    // Filter by profession
+    if (req.query.profession) {
+      var profession = Array.isArray(req.query.profession) ? req.query.profession : [req.query.profession];
+      match.profession = {
+        $all : profession
+      };
+    }
+
+    // Filter by profession
+    if (req.query.city) {
+      match.city = req.query.city;
+    }
+
+    // Filter by profession
+    if (req.query.country) {
+      match.country = req.query.country;
+    }
+
+    // Add match, if more than one was added
+    if (Object.keys(match).length > 0) {
+      var filterByMatch = {
+        $match : match
+      };
+      pipeline.push(filterByMatch);
+    }
+
+    // Filter the users
+    User.aggregate(pipeline, function(err, users) {
       if (err) {
         return next(err);
       } else {
+
+        // Postprocessing: Age to full integer!
+        for (var i = 0; i < users.length; i++) {
+          users[i].age = parseInt(users[i].age);
+        }
+
+        // ROUND AGE
+
         res.format({
           'application/json': function() {
             res.json(users);
