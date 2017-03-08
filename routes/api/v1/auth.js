@@ -26,7 +26,7 @@ module.exports = function(router, passport) {
   router.get(api.route('currentUser'), [isLoggedIn], commons.getAccessToken, function(req, res) {
 
     // If this function is reached,
-    // a) the user was added to the local mongo database
+    // a) the user was added to the local mongo database and the user data was updated
     // b) the token was aqcuired to get the user data from keycloak
 
     // STEP ONE:
@@ -34,50 +34,52 @@ module.exports = function(router, passport) {
     console.log('1) Got User data from Mongo');
     console.log('userdata_mongo: ', userdata_mongo);
 
-    var optionsCall = {
-      protocol: config.accounts_token_endpoint.protocol,
-      host: config.accounts_token_endpoint.host,
-      port: config.accounts_token_endpoint.port,
-      path: '/permissions/users/' + req.user.oauth2.id,
-      method: 'GET',
-      headers : {
-        'Authorization' : 'Bearer ' + req.access_token,
-        'Accept' : 'application/json'
-      }
+    //var optionsCall = {
+    //  protocol: config.accounts_token_endpoint.protocol,
+    //  host: config.accounts_token_endpoint.host,
+    //  port: config.accounts_token_endpoint.port,
+    //  path: '/permissions/users/' + req.user.sub,
+    //  method: 'GET',
+    //  headers : {
+    //    'Authorization' : 'Bearer ' + req.access_token,
+    //    'Accept' : 'application/json'
+    //  }
+    //};
+
+    //httpClient.sendData(optionsCall, undefined, res, function(status, responseText, headers) {
+    //console.log('responseText2', responseText);
+    //var userdata_keycloak = JSON.parse(responseText);
+
+    var o = {
+      uuid :              userdata_mongo.uuid,
+
+      // Mongo
+      city:               userdata_mongo.city,
+      country:            userdata_mongo.country,
+      profession:         userdata_mongo.profession,
+      professionTitle:    userdata_mongo.professionTitle,
+      interests:          userdata_mongo.interests,
+      gender:             userdata_mongo.gender,
+      publicEmail:        userdata_mongo.publicEmail,
+      publicWebsite:      userdata_mongo.publicWebsite,
+      birthday:           userdata_mongo.birthday,
+
+      // Keycloak
+      sub:                userdata_mongo.sub,
+      firstName:          userdata_mongo.firstName,
+      lastName:           userdata_mongo.lastName,
+      email:              userdata_mongo.email,
+      username:           userdata_mongo.username,
     };
 
-    httpClient.sendData(optionsCall, undefined, res, function(status, responseText, headers) {
-      //console.log('responseText2', responseText);
-      var userdata_keycloak = JSON.parse(responseText);
+    return res.status(200).json(o);
 
-      var o = {
-        uuid :              userdata_mongo.uuid,
-
-        // Mongo
-        city:               userdata_mongo.city,
-        country:            userdata_mongo.country,
-        profession:         userdata_mongo.profession,
-        professionTitle:    userdata_mongo.professionTitle,
-        interests:          userdata_mongo.interests,
-        gender:             userdata_mongo.gender,
-        publicEmail:        userdata_mongo.publicEmail,
-        publicWebsite:      userdata_mongo.publicWebsite,
-        birthday:           userdata_mongo.birthday,
-
-        // Keycloak
-        firstName:          userdata_keycloak.firstName,
-        lastName:           userdata_keycloak.lastName,
-        email:              userdata_keycloak.email,
-        username:           userdata_keycloak.name,
-      };
-
-      return res.status(200).json(o);
-    },  function(status, resp) {
-      console.log('Internal error message. Status: ', status, 'Response: ', resp);
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'application/json');
-      res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
-    });
+    //},  function(status, resp) {
+    //  console.log('Internal error message. Status: ', status, 'Response: ', resp);
+    //  res.statusCode = 500;
+    //  res.setHeader('Content-Type', 'application/json');
+    //  res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
+    //});
 
   });
 

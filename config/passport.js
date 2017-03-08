@@ -640,32 +640,18 @@ module.exports = function(passport) {
         // check if the user is already logged in
         // if (!req.user) {
         User.findOne({
-          'oauth2.id': profile.sub
+          'sub': profile.sub
         }, function(err, user) {
           if (err) {
             return done(err);
           }
           if (user) {
 
-            console.log('User found');
-
-            // if there is a user id already but no token (user was linked at one point and then removed)
-            if (!user.oauth2.token) {
-
-              console.log('User has no token!');
-
-              user.oauth2.id = profile.sub;
-              user.oauth2.token = token;
-              //user.oauth2.name = profile.name;
-              //user.oauth2.email = profile.email;
-              user.roles = roles;
-            } else {
-              console.log('user is known, refreshing data.');
-
-              //user.oauth2.name = profile.name;
-              //user.oauth2.email = profile.email;
-              user.roles = roles;
-            }
+            console.log('User found. Update user wrt the user token...');
+            user.username = profile.preferred_username;
+            user.email = profile.email;
+            user.firstName = profile.given_name;
+            user.lastName = profile.family_name;
 
             user.save(function(err) {
               if (err) {
@@ -676,15 +662,15 @@ module.exports = function(passport) {
           } else {
 
             console.log('Create new user!');
-
+            console.log('profile');
             var newUser = new User();
             newUser.uuid = uuid.v4();
 
-            newUser.oauth2.id = profile.sub;
-            newUser.oauth2.token = token;
-            //newUser.oauth2.name = profile.name;
-            //newUser.oauth2.email = profile.email;
-            newUser.roles = roles;
+            newUser.sub = profile.sub;
+            newUser.username = profile.preferred_username;
+            newUser.email = profile.email;
+            newUser.firstName = profile.given_name;
+            newUser.lastName = profile.family_name;
 
             newUser.save(function(err) {
               if (err) {
@@ -695,28 +681,7 @@ module.exports = function(passport) {
             });
           }
         });
-        /*
-        } else {
 
-          console.log('Link new user!');
-
-          // user already exists and is logged in, we have to link accounts
-          var user = req.user; // pull the user out of the session
-
-          user.oauth2.id = profile.sub;
-          user.oauth2.token = token;
-          user.oauth2.name = profile.name;
-          user.oauth2.email = profile.email;
-          user.roles = roles;
-
-          user.save(function(err) {
-            if (err) {
-              return done(err);
-            }
-            return done(null, user);
-          });
-        }
-        */
       });
     }
   ));

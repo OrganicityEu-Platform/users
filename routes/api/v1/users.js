@@ -38,6 +38,8 @@ module.exports = function(router, passport) {
     var calculateAge = {
       $project: {
         _id: 0,
+
+        // Mongo
         city: 1,
         country: 1,
         gender: 1,
@@ -46,7 +48,14 @@ module.exports = function(router, passport) {
         interests: 1,
         publicEmail: 1,
         publicWebsite : 1,
-        'oauth2.id' : 1,
+
+        // Keycloak
+        sub : 1,
+        firstName : 1,
+        lastName : 1,
+        email : 1,
+        username : 1,
+
         age: {
           $divide: [
             {$subtract: [new Date(), '$birthday'] },
@@ -97,9 +106,24 @@ module.exports = function(router, passport) {
       };
     }
 
-    // Filter by profession
+    // Filter by city
     if (req.query.city) {
       match.city = req.query.city;
+    }
+
+    // Filter by username
+    if (req.query.username) {
+      match.username = req.query.username;
+    }
+
+    // Filter by email
+    if (req.query.email) {
+      match.email = req.query.email;
+    }
+
+    // Filter by profession
+    if (req.query.sub) {
+      match.sub = req.query.sub;
     }
 
     // Filter by profession
@@ -359,30 +383,27 @@ module.exports = function(router, passport) {
             user.birthday = (req.body.birthday === null) ? undefined : req.body.birthday;
           }
 
+          // KEYCLOAK
+
+          if (req.body.hasOwnProperty('email')) {
+            user.email = req.body.email;
+          }
+
+          if (req.body.hasOwnProperty('username')) {
+            user.username = req.body.username;
+          }
+
+          if (req.body.hasOwnProperty('firstName')) {
+            user.firstName = req.body.firstName;
+          }
+
+          if (req.body.hasOwnProperty('lastName')) {
+            user.lastName = req.body.lastName;
+          }
+
+          // TODO: UPDATE USER DATA ALSO IN KEYCLOAK
+
           /*
-          if (req.body.local && req.body.local.password) {
-            user.local.password = user.generateHash(req.body.local.password);
-          }
-
-          if (req.body.hasOwnProperty('name')) {
-            user.name = req.body.name;
-          }
-
-          if (req.body.hasOwnProperty('location')) {
-            user.location = req.body.location;
-          }
-
-          // If set, roles will never be emty due to validation
-          if (req.body.roles) {
-            user.roles = req.body.roles;
-          }
-
-          if (req.body.profession) {
-            user.profession = req.body.profession;
-          }
-
-
-
           if (path) {
             user.avatar = path;
           }

@@ -19,6 +19,16 @@ var user = mongoose.Schema({
   birthday : Date,
 
   // ------------------------------
+  // Synced data data from KeyCloak
+  // ------------------------------
+
+  sub             : String,
+  username        : String,
+  firstName       : String,
+  lastName        : String,
+  email           : String,
+
+  // ------------------------------
   // User data from KeyCloak
   // ------------------------------
   // username
