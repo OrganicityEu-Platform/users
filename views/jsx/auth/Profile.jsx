@@ -62,7 +62,7 @@ var optionsInterests = [
 
 var optionsCountries = [];
 var codes = countries.getCodes();
-for (var i = 0; i < codes.length; i++) { 
+for (var i = 0; i < codes.length; i++) {
   var o = {
     value: codes[i], // ISO 2-digit code from ISO 3166-alpha-2
     label: countries.getName(codes[i])
@@ -287,7 +287,7 @@ var Profile = React.createClass({
         this.props.validate('country');
       }
     });
-  },  
+  },
   handleChangedGender: function(evt) {
     this.setState({
       dirty : true,
@@ -349,8 +349,19 @@ var Profile = React.createClass({
     if(evt.target.value == '') {
       var birthdayInIsoUtc = '';
     } else {
+      var pattern = "YYYY-MM-DDTHH:mm:ss.SSSZ"
+      var m = moment(evt.target.value, pattern, true);
+      if(m.isValid()) {
+        var birthdayInIsoUtc = m.toISOString();
+      }
+      /*
       var m = moment.utc(evt.target.value + "T00:00:00Z");
-      var birthdayInIsoUtc = m.toISOString();
+      if(m.isValid()) {
+        var birthdayInIsoUtc = m.toISOString();
+      } else {
+        var birthdayInIsoUtc = evt.target.value;
+      }
+      */
     }
     console.log('birthday:', birthdayInIsoUtc);
 
@@ -417,7 +428,7 @@ var Profile = React.createClass({
       lastName: this.state.profile.lastName,
       email: this.state.profile.email,
     };
-    
+
     if (this.state.profile.local) {
       profile.local = {};
     }
@@ -489,7 +500,7 @@ var Profile = React.createClass({
       return this.renderLoading();
     }
 
-    var errorMessageName = null;
+    var errorMessageUserName = null;
     var errorMessageGender = null;
     var errorMessageRoles = null;
     var errorMessagePassword = null;
@@ -502,10 +513,10 @@ var Profile = React.createClass({
     var erroressagePublicEmail = null;
 
     if (this.state.btnClickedOnce) {
-      errorMessageName = (
+      errorMessageUserName = (
         <Message
           type="danger"
-          messages={this.props.getValidationMessages('name')} />
+          messages={this.props.getValidationMessages('username')} />
       );
       errorMessageGender = (
         <Message
@@ -820,7 +831,7 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.username', 'nickname')}
               value={this.state.profile.username}
               onChange={this.handleChangedName} />
-            {errorMessageName}
+            {errorMessageUserName}
           </div>
         </div>
 
@@ -861,7 +872,7 @@ return (
             htmlFor="email">
             {this.i18n('Profile.mail', 'Your email')} <ValidationIndicator valid={this.props.isValid('email')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.mailInfo', 'This is the internal email which we need to be able to contact you.')} 
+              {this.i18n('Profile.mailInfo', 'This is the internal email which we need to be able to contact you.')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -883,7 +894,7 @@ return (
             htmlFor="location">
             {this.i18n('Profile.my_location', 'Your location')} <ValidationIndicator valid={this.props.isValid('country')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you!')} 
+              {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you!')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -911,7 +922,7 @@ return (
           <label
             className="control-label col-sm-3"
             htmlFor="name">
-            {this.i18n('Profile.my_birthday', 'Your birthday')}
+            {this.i18n('Profile.my_birthday', 'Your birthday')} <ValidationIndicator valid={this.props.isValid('birthday')}/>
             <span className="oc-form-group-info">
               {this.i18n('Profile.my_birthday_info', 'When is your birthday? This helps experimenters to find you!')}
             </span>
@@ -926,7 +937,7 @@ return (
               value={this.state.profile.birthday ? this.state.profile.birthday.substr(0, 10) : undefined }
               onChange={this.handleChangedBirthday} />
           </div>
-        </div>              
+        </div>
 
         <div className="form-group oc-form-group oc-edit-group">
           <label

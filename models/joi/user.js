@@ -71,10 +71,10 @@ user.updatePasswordServer = {
 user.profile = {
   // Mongo
   city : Joi.string().trim().allow(null).label('City').optional(),
-  country : Joi.string().trim().min(1).label('Country').required(),
+  country : Joi.string().trim().label('Country').required(),
   profession : Joi.array().min(1).label('Profession').items(Joi.string()),
   professionTitle : Joi.string().allow(null).optional(),
-  interests : Joi.array().min(0).label('Interests').items(Joi.string()),
+  interests : Joi.array().min(1).label('Interests').items(Joi.string()),
   gender : Joi.string().valid('m', 'f', 'o').label('Gender').options(
     { language: { any: { allowOnly: 'must be Male or Female' } } }
   ),
