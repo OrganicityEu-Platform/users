@@ -29,7 +29,7 @@ module.exports = {
       console.log('Internal error message. Status: ', status, 'Response: ', resp);
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
-      res.send(createError('InternalServerError', 'An Internal Server Error happended!'));
+      res.send('An Internal Server Error happended!'); // FIXME: use OC createError
     });
   }
 };

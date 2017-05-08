@@ -17,7 +17,27 @@ var configAuth    = require('../../../config/auth.js');
 var uuid          = require('node-uuid');
 var mailer        = require('nodemailer');
 
+var redis         = require('redis').createClient();
+
 var commons       = require('./commons');
+
+var availableRoles = ['experimenter', 'administrator'];
+
+var cron = require('cron');
+
+var getUserRoles = function() {
+  for (var role in availableRoles) {
+    console.log(new Date());
+    console.log('Get users with role ' + availableRoles[role]);
+
+    // TODO: Call users endpoint to get the subs with the corresponding ID
+  }
+};
+
+var job = cron.job('*/5 * * * * *', getUserRoles);
+//job.start();
+// Run the first getting roles
+getUserRoles();
 
 module.exports = function(router, passport) {
 
@@ -31,137 +51,198 @@ module.exports = function(router, passport) {
   //router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
   router.get(api.route('users'), function(req, res, next) {
 
-    var pipeline = [];
-    var match = {};
+    // Get Roles from redis
+    var roles_redis = {};
+    var done = 0;
+    for (var j = 0; j < availableRoles.length; j++) {
+      var role = availableRoles[j];
+      redis.get('user.roles.' + role , (function(role) {
+        return function(err, reply) {
+          done++;
+          if (err || !reply) {
+            console.log('Role ' + role + ' not found in redis!');
+          } else {
+            roles_redis[role] = JSON.parse(reply);
+            console.log('Role ' + role + ' found in redis!');
+          }
+          if (done === availableRoles.length) {
+            postProcess();
+          }
+        };
+      })(role));
+    }
 
-    // Calculate the age first and project the needed attributes
-    var calculateAge = {
-      $project: {
-        _id: 0,
+    var postProcess = function() {
 
-        // Mongo
-        city: 1,
-        country: 1,
-        gender: 1,
-        profession: 1,
-        professionTitle: 1,
-        interests: 1,
-        publicEmail: 1,
-        publicWebsite : 1,
+      var pipeline = [];
 
-        // Keycloak
-        sub : 1,
-        firstName : 1,
-        lastName : 1,
-        email : 1,
-        username : 1,
+      // Calculate the age first and project the needed attributes
+      var calculateAge = {
+        $project: {
+          _id: 0,
 
-        age: {
-          $divide: [
-            {$subtract: [new Date(), '$birthday'] },
-            (365 * 24 * 60 * 60 * 1000)
-          ]
+          // Mongo
+          city: 1,
+          country: 1,
+          gender: 1,
+          profession: 1,
+          professionTitle: 1,
+          interests: 1,
+          publicEmail: 1,
+          publicWebsite : 1,
+
+          // Keycloak
+          sub : 1,
+          firstName : 1,
+          lastName : 1,
+          email : 1,
+          username : 1,
+
+          age: {
+            $divide: [
+              {$subtract: [new Date(), '$birthday'] },
+              (365 * 24 * 60 * 60 * 1000)
+            ]
+          }
         }
+      };
+      pipeline.push(calculateAge);
+
+      if (req.query.ageFrom && isNaN(req.query.ageFrom)) {
+        throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
       }
-    };
-    pipeline.push(calculateAge);
 
-    if (req.query.ageFrom && isNaN(req.query.ageFrom)) {
-      throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
-    }
-
-    if (req.query.ageTo && isNaN(req.query.ageTo)) {
-      throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
-    }
-
-    // Filter by age
-    if (req.query.ageFrom && req.query.ageTo) {
-      match.age = {
-        $gte : parseInt(req.query.ageFrom),
-        $lte : parseInt(req.query.ageTo) + 0.999
-      };
-    }
-
-    // Filter by gender
-    if (req.query.gender) {
-      if (req.query.gender !== 'm' && req.query.gender !== 'f' && req.query.gender !== 'o') {
-        throw 'request parameter "gender" is not "f", "m" or "o": "' + req.query.gender + '"';
+      if (req.query.ageTo && isNaN(req.query.ageTo)) {
+        throw 'request parameter "ageFrom" is not a valid number: "' + req.query.ageFrom + '"';
       }
-      match.gender = req.query.gender;
-    }
 
-    // Filter by interests
-    if (req.query.interests) {
-      var interests = Array.isArray(req.query.interests) ? req.query.interests : [req.query.interests];
-      match.interests = {
-        $all : interests
-      };
-    }
-
-    // Filter by profession
-    if (req.query.profession) {
-      var profession = Array.isArray(req.query.profession) ? req.query.profession : [req.query.profession];
-      match.profession = {
-        $all : profession
-      };
-    }
-
-    // Filter by city
-    if (req.query.city) {
-      match.city = req.query.city;
-    }
-
-    // Filter by username
-    if (req.query.username) {
-      match.username = req.query.username;
-    }
-
-    // Filter by email
-    if (req.query.email) {
-      match.email = req.query.email;
-    }
-
-    // Filter by profession
-    if (req.query.sub) {
-      match.sub = req.query.sub;
-    }
-
-    // Filter by profession
-    if (req.query.country) {
-      match.country = req.query.country;
-    }
-
-    // Add match, if more than one was added
-    if (Object.keys(match).length > 0) {
-      var filterByMatch = {
-        $match : match
-      };
-      pipeline.push(filterByMatch);
-    }
-
-    // Filter the users
-    User.aggregate(pipeline, function(err, users) {
-      if (err) {
-        return next(err);
-      } else {
-
-        // Postprocessing: Age to full integer!
-        for (var i = 0; i < users.length; i++) {
-          users[i].age = parseInt(users[i].age);
-        }
-
-        // ROUND AGE
-
-        res.format({
-          'application/json': function() {
-            res.json(users);
-          },
-          'default': function() {
-            res.send(406, 'Not Acceptable');
+      // Filter by age
+      if (req.query.ageFrom && req.query.ageTo) {
+        pipeline.push({
+          $match : { age :
+            {
+              $gte : parseInt(req.query.ageFrom),
+              $lte : parseInt(req.query.ageTo) + 0.999
+            }
           }
         });
       }
-    });
+
+      // Filter by gender
+      if (req.query.gender) {
+        if (req.query.gender !== 'm' && req.query.gender !== 'f' && req.query.gender !== 'o') {
+          throw 'request parameter "gender" is not "f", "m" or "o": "' + req.query.gender + '"';
+        }
+        pipeline.push({
+          $match : { gender : req.query.gender }
+        });
+      }
+
+      // Filter by interests
+      if (req.query.interests) {
+        var interests = Array.isArray(req.query.interests) ? req.query.interests : [req.query.interests];
+        pipeline.push({
+          $match : { interests : interests }
+        });
+      }
+
+      // Filter by profession
+      if (req.query.profession) {
+        var profession = Array.isArray(req.query.profession) ? req.query.profession : [req.query.profession];
+        pipeline.push({
+          $match : { profession : profession }
+        });
+      }
+
+      // Filter by role
+      if (req.query.role) {
+        var roles_query = Array.isArray(req.query.role) ? req.query.role : [req.query.role];
+        for (var j = 0; j < roles_query.length; j++) {
+          var role = roles_query[j];
+          var subs = roles_redis[role] || [];
+          pipeline.push({
+            $match : {
+              sub : {
+                $in : subs
+              }
+            }
+          });
+        }
+      }
+
+      // Filter by city
+      if (req.query.city) {
+        pipeline.push({
+          $match : { city : req.query.city }
+        });
+      }
+
+      // Filter by username
+      if (req.query.username) {
+        pipeline.push({
+          $match : { username : req.query.username }
+        });
+      }
+
+      // Filter by email
+      if (req.query.email) {
+        pipeline.push({
+          $match : { email : req.query.email }
+        });
+      }
+
+      // Filter by sub
+      if (req.query.sub) {
+        pipeline.push({
+          $match : { sub : req.query.sub }
+        });
+      }
+
+      // Filter by country
+      if (req.query.country) {
+        pipeline.push({
+          $match : { country : req.query.country }
+        });
+      }
+
+      console.log(pipeline);
+
+      // Filter the users
+      User.aggregate(pipeline, function(err, users) {
+        if (err) {
+          return next(err);
+        } else {
+          // Postprocess all users
+
+          // Postprocessing
+          for (var i = 0; i < users.length; i++) {
+            // Convert age to full integer
+            users[i].age = parseInt(users[i].age);
+
+            // Add roles from redis to all found users
+            users[i].roles = [];
+            for (var key in roles_redis) {
+              var hasRole = roles_redis[key].some(function(id) {
+                return (id === users[i].sub);
+              });
+              if (hasRole) {
+                users[i].roles.push(key);
+              }
+            }
+          }
+
+          res.format({
+            'application/json': function() {
+              res.json(users);
+            },
+            'default': function() {
+              res.send(406, 'Not Acceptable');
+            }
+          });
+        }
+      }); // aggregate
+    };
+
   });
 
   var findUser = function(uuid, res, next, success) {
