@@ -21,6 +21,8 @@ var redis         = require('redis').createClient();
 
 var commons       = require('./commons');
 
+var redis_prefix = 'userapi.roles.';
+
 var availableRoles = [
   'experimenter',
   'administrator',
@@ -102,7 +104,9 @@ var getUserRoles = function() {
             res.on('end', function() {
               //console.log(role);
               console.log(res.statusCode + ' for get users with role ' + role);
-              redis.set('userapi.roles.' + role , str);
+              if (res.statusCode === 200) {
+                redis.set(redis_prefix + role , str);
+              }
             });
           });
           req.end();
@@ -138,7 +142,7 @@ module.exports = function(router, passport) {
     var done = 0;
     for (var j = 0; j < availableRoles.length; j++) {
       var role = availableRoles[j];
-      redis.get('userapi.roles.' + role , (function(role) {
+      redis.get(redis_prefix + role , (function(role) {
         return function(err, reply) {
           done++;
           if (err || !reply) {
@@ -223,8 +227,13 @@ module.exports = function(router, passport) {
       // Filter by interests
       if (req.query.interests) {
         var interests = Array.isArray(req.query.interests) ? req.query.interests : [req.query.interests];
+        console.log(interests);
         pipeline.push({
-          $match : { interests : interests }
+          $match : {
+            interests : {
+              $all: interests
+            }
+          }
         });
       }
 
@@ -232,7 +241,11 @@ module.exports = function(router, passport) {
       if (req.query.profession) {
         var profession = Array.isArray(req.query.profession) ? req.query.profession : [req.query.profession];
         pipeline.push({
-          $match : { profession : profession }
+          $match : {
+            profession : {
+              $all : profession
+            }
+          }
         });
       }
 
