@@ -81,6 +81,7 @@ var getUserRoles = function() {
     for (var index in availableRoles) {
       var role = availableRoles[index];
       (function(role) {
+        console.time(redis_prefix + role);
         //console.log('Get users with role ' + role);
         return function() {
           var options = {
@@ -103,6 +104,7 @@ var getUserRoles = function() {
 
             res.on('end', function() {
               //console.log(role);
+              console.timeEnd(redis_prefix + role);
               console.log(res.statusCode + ' for get users with role ' + role);
               if (res.statusCode === 200) {
                 redis.set(redis_prefix + role , str);
@@ -112,6 +114,7 @@ var getUserRoles = function() {
           req.end();
 
           req.on('error', function(e) {
+            console.timeEnd(redis_prefix + role);
             console.error(e);
           });
         };
