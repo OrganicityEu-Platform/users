@@ -253,8 +253,8 @@ module.exports = function(router, passport) {
       }
 
       // Filter by role
-      if (req.query.role) {
-        var roles_query = Array.isArray(req.query.role) ? req.query.role : [req.query.role];
+      if (req.query.roles) {
+        var roles_query = Array.isArray(req.query.roles) ? req.query.roles : [req.query.roles];
         for (var j = 0; j < roles_query.length; j++) {
           var role = roles_query[j];
           var subs = roles_redis[role] || [];
