@@ -37,7 +37,10 @@ var cron = require('cron');
 
 var https = require('https');
 
-var getUserRoles = function() {
+var getToken = function(callback) {
+
+  console.time('Get token');
+  console.log(callback);
 
   var payload = 'grant_type=client_credentials' +
     '&client_id=' + config.client_id +
@@ -54,8 +57,6 @@ var getUserRoles = function() {
     }
   };
 
-  var token = undefined;
-
   // Call roles endpoint to get the subs for the corresponding role name
   var req = https.request(options, function(res) {
     var str = '';
@@ -66,8 +67,8 @@ var getUserRoles = function() {
     res.on('end', function() {
       //console.log(res.statusCode);
       var json = JSON.parse(str);
-      token = json.access_token;
-      getSubs();
+      console.timeEnd('Get token');
+      callback(json.access_token);
     });
   });
   req.write(payload);
@@ -76,11 +77,20 @@ var getUserRoles = function() {
   req.on('error', function(e) {
     console.error(e);
   });
+};
 
-  var getSubs = function() {
+var getUserRoles = function() {
+
+  console.log('getUserRoles');
+
+  var getSubs = function(token) {
+
+    console.log('getSubs');
+
     for (var index in availableRoles) {
       var role = availableRoles[index];
       (function(role) {
+        console.log('GET ' + redis_prefix + role);
         console.time(redis_prefix + role);
         //console.log('Get users with role ' + role);
         return function() {
@@ -121,6 +131,8 @@ var getUserRoles = function() {
       })(role)();
     }
   }; // getSubs
+
+  getToken(getSubs);
 };
 
 var job = cron.job('*/60 * * * * *', getUserRoles);
@@ -460,6 +472,64 @@ module.exports = function(router, passport) {
 
       res.json(p);
     });
+  });
+
+  router.get(api.route('user_interests'), [isLoggedIn], function(req, res, next) {
+
+    var getInterests = function(token) {
+      // Authorization token with role site-manager:dictionary-user
+      var options = {
+        host: 'facilitymanager.organicity.eu',
+        path: '/v1/dictionary/userinterests',
+        port: 443,
+        method: 'GET',
+        headers: {
+          Authorization: ' Bearer ' + token,
+          Accept: 'application/json'
+        }
+      };
+
+      // Call roles endpoint to get the subs for the corresponding role name
+      var req = https.request(options, function(res2) {
+        var str = '';
+        res2.on('data', function(chunk) {
+          str += chunk;
+        });
+
+        res2.on('end', function() {
+          console.log(str);
+          if (res.statusCode === 200) {
+            var json = JSON.parse(str);
+            var interests = [];
+            for (var i = 0; i < json.length; i++) {
+              interests.push({
+                value : json[i].name,
+                label : json[i].name
+              });
+            }
+            res.json(interests);
+          } else {
+            res.send(500, 'Internal Server Error');
+          }
+          /*
+          //console.log(role);
+          console.timeEnd(redis_prefix + role);
+          console.log(res.statusCode + ' for get users with role ' + role);
+            redis.set(redis_prefix + role , str);
+          }
+          */
+        });
+      });
+      req.end();
+
+      req.on('error', function(e) {
+        console.timeEnd(redis_prefix + role);
+        console.error(e);
+        res.send(500, 'Internal Server Error');
+      });
+    };
+
+    getToken(getInterests);
   });
 
   router.get(api.route('user_by_uuid'), [isLoggedIn, isUserOrAdmin], function(req, res, next) {

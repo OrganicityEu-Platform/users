@@ -1,5 +1,6 @@
 module.exports = function(passport) {
   return function(req, res, next) {
+    console.log('FOO');
     if (req.user.hasRole(['admin'])) {
       return next();
     } else if (req.user.uuid === req.params.uuid) {

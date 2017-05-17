@@ -33,6 +33,8 @@ import I18nMixin            from '../i18n/I18nMixin.jsx';
 
 import BookmarkedScenarios  from '../scenarios/BookmarkedScenarios.jsx';
 
+import UserInterests        from '../users/UserInterests.jsx';
+
 import moment               from 'moment';
 
 var countries = require('country-list')();
@@ -55,10 +57,7 @@ var optionsProfession = [
   { value: 'Other', label: 'Other' },
 ];
 
-var optionsInterests = [
-  { value: 'Transport', label: 'Transport' },
-  { value: 'Energy', label: 'Energy' }
-]
+
 
 var optionsCountries = [];
 var codes = countries.getCodes();
@@ -147,13 +146,14 @@ var Profile = React.createClass({
           this.props.validate();
         });
 
+        /*
         this.setState({
           google: profile.google,
           facebook: profile.facebook,
           twitter: profile.twitter,
           github: profile.github,
         });
-
+        */
       }
     });
 
@@ -1019,13 +1019,10 @@ return (
             </span>
           </label>
           <div className="col-sm-9">
-            <Select
-              name="interests"
-              value={this.state.profile.interests}
-              options={optionsInterests}
-              placeholder={this.i18n('Profile.interests_placeholder', 'Select...')}
+            <UserInterests
               onChange={this.handleChangedInterests}
-              multi={true}/>
+              value={this.state.profile.interests}
+            />
           </div>
         </div>
 

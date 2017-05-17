@@ -53,6 +53,7 @@ var api_routes = {
 
   // users routes
   'users'                      : prefixes.users + '/?',
+  'user_interests'             : prefixes.users + '/userinterests',
   'user_info'                  : prefixes.users + '/info/:uuid/?',
   'user_by_uuid'               : prefixes.users + '/:uuid/?',
   'user_thumbnail'             : prefixes.users + '/:uuid/thumbnail/?',
