@@ -123,7 +123,10 @@ var Profile = React.createClass({
         e.gender = profile.gender;
         e.publicEmail = profile.publicEmail;
         e.publicWebsite = profile.publicWebsite;
+
         e.birthday = profile.birthday;
+        e.birthdayRaw = (profile.birthday) ? e.birthday.substr(0, 10) : undefined;
+        e.birthdayValid = true;
 
         e.username = (profile.username) ? profile.username : '';
         e.firstName = profile.firstName;
@@ -346,35 +349,35 @@ var Profile = React.createClass({
   },
   handleChangedBirthday: function(evt) {
 
-    if(evt.target.value == '') {
-      var birthdayInIsoUtc = '';
-    } else {
-      var pattern = "YYYY-MM-DDTHH:mm:ss.SSSZ"
-      var m = moment(evt.target.value, pattern, true);
-      if(m.isValid()) {
-        var birthdayInIsoUtc = m.toISOString();
+    //console.log('handleChangedBirthday', evt.target.value);
+
+    var birthdayInIsoUtc = null;
+    var isValid = false;
+    if(evt.target.value !== '') {
+      var date = evt.target.value + "T00:00:00.000Z";
+      var pattern = "YYYY-MM-DDTHH:mm:ss.SSSZ";
+      var m = moment(date, pattern, true);
+      isValid = m.isValid();
+      if(isValid) {
+        birthdayInIsoUtc = m.toISOString();
       }
-      /*
-      var m = moment.utc(evt.target.value + "T00:00:00Z");
-      if(m.isValid()) {
-        var birthdayInIsoUtc = m.toISOString();
-      } else {
-        var birthdayInIsoUtc = evt.target.value;
-      }
-      */
     }
+
     console.log('birthday:', birthdayInIsoUtc);
+    console.log('birthdayValid:', isValid);
 
     this.setState({
       dirty : true,
       profile : $.extend(this.state.profile, {
+        birthdayRaw : evt.target.value,
+        birthdayValid : isValid,
         birthday : birthdayInIsoUtc
       })
     }, () => {
       if (this.state.btnClickedOnce) {
         this.props.validate();
       } else {
-        this.props.validate('birthday');
+        this.props.validate('birthdayValid');
       }
     });
   },
@@ -922,19 +925,19 @@ return (
           <label
             className="control-label col-sm-3"
             htmlFor="name">
-            {this.i18n('Profile.my_birthday', 'Your birthday')} <ValidationIndicator valid={this.props.isValid('birthday')}/>
+            {this.i18n('Profile.my_birthday', 'Your birthday')} <ValidationIndicator valid={this.props.isValid('birthdayValid')}/>
             <span className="oc-form-group-info">
               {this.i18n('Profile.my_birthday_info', 'When is your birthday? This helps experimenters to find you!')}
             </span>
           </label>
           <div className="col-sm-9">
             <input
-              type="date"
+              type="text"
               className="oc-input"
-              id="name"
+              id="birthday"
               disabled={this.isLoading() ? 'disabled' : ''}
-              placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.birthday', 'Select birthday')}
-              value={this.state.profile.birthday ? this.state.profile.birthday.substr(0, 10) : undefined }
+              placeholder={this.isLoading() ? 'Loading...' : 'YYYY-MM-DD'}
+              value={this.state.profile.birthdayRaw}
               onChange={this.handleChangedBirthday} />
           </div>
         </div>
@@ -1100,7 +1103,10 @@ getValidatorData: function() {
     profile.local.password_repeat = (this.state.profile.password_repeat) ? this.state.profile.password_repeat : '';
   }
 
-  console.log('Profile to submit: ', profile);
+  // Add birthday check
+  profile.birthdayValid = this.state.profile.birthdayValid;
+
+  console.log('Profile to validate: ', profile);
 
   return profile;
 },
