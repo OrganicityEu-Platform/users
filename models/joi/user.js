@@ -107,8 +107,11 @@ user.profileServer = {
 
 // React side needs to check the repeated password as well!
 user.profileClient = user.profile;
-user.profileClient.birthdayValid = Joi.boolean().invalid(false);
+user.profileClient.birthdayValid = Joi.boolean().valid(true).required().options(
+  { language: { any: { allowOnly: 'must be YYYY-MM-DD' }, label: 'Birthday' } }
+),
 
 //user.profileClient.local.password_repeat = joiPasswordRepeat.optional();
 
 module.exports = user;
+

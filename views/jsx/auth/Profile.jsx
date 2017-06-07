@@ -126,7 +126,7 @@ var Profile = React.createClass({
 
         e.birthday = profile.birthday;
         e.birthdayRaw = (profile.birthday) ? e.birthday.substr(0, 10) : undefined;
-        e.birthdayValid = true;
+        e.birthdayValid = (profile.birthday) ? true : false;
 
         e.username = (profile.username) ? profile.username : '';
         e.firstName = profile.firstName;
@@ -513,7 +513,8 @@ var Profile = React.createClass({
     var errorMessageFirstName = null;
     var errorMessageLastName = null;
     var errorMessageEmail = null;
-    var erroressagePublicEmail = null;
+    var errorMessagePublicEmail = null;
+    var errorMessageBirthday = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageUserName = (
@@ -566,10 +567,15 @@ var Profile = React.createClass({
           type="danger"
           messages={this.props.getValidationMessages('email')} />
       );
-      erroressagePublicEmail = (
+      errorMessagePublicEmail = (
         <Message
           type="danger"
           messages={this.props.getValidationMessages('publicEmail')} />
+      );
+      errorMessageBirthday = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('birthdayValid')} />
       );
     }
 
@@ -939,6 +945,7 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : 'YYYY-MM-DD'}
               value={this.state.profile.birthdayRaw}
               onChange={this.handleChangedBirthday} />
+            {errorMessageBirthday}
           </div>
         </div>
 
@@ -1049,7 +1056,7 @@ return (
               placeholder={this.isLoading() ? 'Loading...' : this.i18n('Profile.email', 'email')}
               value={this.state.profile.publicEmail}
               onChange={this.handleChangedpublicEmail} />
-            {erroressagePublicEmail}
+            {errorMessagePublicEmail}
             <input
               type="text"
               className="oc-input"
@@ -1087,12 +1094,10 @@ return (
   <h2 className="pink">
     {this.i18n('Profile.your_scenarios', 'Your scenarios')}
   </h2>
-
   <ScenariosNewest
     creator={this.state.profile.uuid}
     counter={true}/>
   <BookmarkedScenarios bundle={this.state.profile.favorites}/>
-
 */
 
 },
