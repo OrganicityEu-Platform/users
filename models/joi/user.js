@@ -68,7 +68,31 @@ user.updatePasswordServer = {
   }
 };
 
-user.profile = {
+user.profileClientSchema = {
+  // Mongo
+  city            : Joi.string().trim().allow(null).label('City').optional(),
+  country         : Joi.string().trim().label('Country').required(),
+  profession      : Joi.array().min(1).label('Profession').items(Joi.string()),
+  professionTitle : Joi.string().allow(null).optional(),
+  interests       : Joi.array().min(1).label('Interests').items(Joi.string()),
+  gender          : Joi.string().valid('m', 'f', 'o').label('Gender').options(
+    { language: { any: { allowOnly: 'must be Male or Female' } } }
+  ),
+  publicEmail     : Joi.string().allow(null).trim().allow('').email().optional(),
+  publicWebsite   : Joi.string().allow(null).trim().allow('').optional(),
+  birthday        : Joi.date().iso().label('Birthday').required(),
+
+  // Keycloak
+  username        : Joi.string().label('Name').required(),
+  firstName       : Joi.string().label('First Name').required(),
+  lastName        : Joi.string().label('Last Name').required(),
+  email           : Joi.string().email().required(), // VALIDATE TYPE MAIL !!!
+  birthdayValid   : Joi.boolean().valid(true).required().options(
+    { language: { any: { allowOnly: 'must be YYYY-MM-DD' }, label: 'Birthday' } }
+  )
+};
+
+user.profileServerSchema = {
   // Mongo
   city            : Joi.string().trim().allow(null).label('City').optional(),
   country         : Joi.string().trim().label('Country').required(),
@@ -98,20 +122,19 @@ local : {
 },
 */
 
+// CLIENT
+user.profileClient = user.profileClientSchema;
+
+// SERVER
 user.profileServer = {
   options : {
     allowUnknownBody: false
   },
-  body: user.profile
+  body: user.profileServerSchema
 };
 
-// React side needs to check the repeated password as well!
-user.profileClient = user.profile;
-user.profileClient.birthdayValid = Joi.boolean().valid(true).required().options(
-  { language: { any: { allowOnly: 'must be YYYY-MM-DD' }, label: 'Birthday' } }
-),
-
-//user.profileClient.local.password_repeat = joiPasswordRepeat.optional();
+console.log('user.profileClient', user.profileClient.birthdayValid);
+console.log('user.profileServer', user.profileServer.body.birthdayValid);
 
 module.exports = user;
 
