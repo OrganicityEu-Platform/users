@@ -617,7 +617,7 @@ module.exports = function(router, passport) {
           }; // handleAddParticipantRole
 
           // TODO: UPDATE USER DATA ALSO IN KEYCLOAK
-          var saveUser = () => {
+          var saveUser = function() {
             console.log('Save user:', user);
             user.save(function(err) {
               if (err) {
