@@ -37,6 +37,8 @@ import UserInterests        from '../users/UserInterests.jsx';
 
 import moment               from 'moment';
 
+import Toggle from 'react-toggle'
+
 var countries = require('country-list')();
 
 var optionsProfession = [
@@ -132,6 +134,8 @@ var Profile = React.createClass({
         e.firstName = profile.firstName;
         e.lastName = profile.lastName;
         e.email = (profile.email) ? profile.email : undefined;
+
+				e.participant = profile.participant;
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -413,6 +417,20 @@ var Profile = React.createClass({
       }
     });
   },
+  handleParticipant : function(evt) {
+    this.setState({
+      dirty : true,
+      profile : $.extend(this.state.profile, {
+        participant : evt.target.checked
+      })
+    }, () => {
+      if (this.state.btnClickedOnce) {
+        this.props.validate();
+      } else {
+        this.props.validate('participant');
+      }
+    });
+	},
   getProfile : function() {
 
     var profile = {
@@ -425,6 +443,8 @@ var Profile = React.createClass({
       publicEmail: (!this.state.profile.publicEmail) ? null : this.state.profile.publicEmail,
       publicWebsite: (!this.state.profile.publicWebsite) ? null : this.state.profile.publicWebsite,
       birthday: (!this.state.profile.birthday) ? null : this.state.profile.birthday,
+
+      participant: this.state.profile.participant,
 
       username: this.state.profile.username,
       firstName: this.state.profile.firstName,
@@ -461,10 +481,12 @@ var Profile = React.createClass({
         this.props.validate((error) => {
           if (!error) {
             this.loading();
+            var profile = JSON.stringify(this.getProfile());
+            console.log('Profile: ', profile);
             var url = api.reverse('user_by_uuid', { uuid : this.state.profile.uuid});
             $.ajax(url, {
               type : 'PATCH',
-              data : JSON.stringify(this.getProfile()),
+              data : profile,
               contentType : 'application/json',
               error : this.loadingError(url, 'Error updating user profile'),
               success : () => {
@@ -515,6 +537,7 @@ var Profile = React.createClass({
     var errorMessageEmail = null;
     var errorMessagePublicEmail = null;
     var errorMessageBirthday = null;
+    var errorMessageParticipant = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageUserName = (
@@ -576,6 +599,11 @@ var Profile = React.createClass({
         <Message
           type="danger"
           messages={this.props.getValidationMessages('birthdayValid')} />
+      );
+      errorMessageParticipant = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('participant')} />
       );
     }
 
@@ -820,7 +848,6 @@ return (
         {this.i18n('Profile.your_profile_allows', 'Your profile allows you to connect, share and discuss ideas with others')}
       </h4>
       <form className="form-horizontal">
-
 
         <div className="form-group oc-form-group oc-edit-group">
           <label
@@ -1068,6 +1095,25 @@ return (
             <br/>
           </div>
         </div>
+
+				<div className="form-group oc-form-group oc-edit-group">
+          <label
+            className="control-label col-sm-3"
+            htmlFor="participant">
+            {this.i18n('Profile.participant', 'Do you want to be a participant?')} <ValidationIndicator valid={this.props.isValid('participant')}/>
+            <span className="oc-form-group-info">
+              {this.i18n('Profile.beaparticipant', 'Indicate, whether you want to participate in experiments.')}
+            </span>
+          </label>
+          <div className="col-sm-9">
+						<Toggle
+							id='participant'
+							defaultChecked={this.state.profile.participant}
+							onChange={this.handleParticipant} />
+            {errorMessageParticipant}
+          </div>
+        </div>
+
 
         <div className="form-group">
           <div className="oc-save-profile-btn-wrapper">

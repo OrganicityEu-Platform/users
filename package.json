@@ -120,6 +120,7 @@
     "react-select": "^0.6.12",
     "react-tag-input": "^1.0.3",
     "react-timeago": "^2.2.1",
+    "react-toggle": "^1.2.3",
     "react-validation-mixin": "5.3.4",
     "redis": "^2.7.1",
     "string.prototype.startswith": "^0.2.0",

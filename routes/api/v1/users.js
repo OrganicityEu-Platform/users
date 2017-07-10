@@ -14,14 +14,16 @@ var hasRole       = require('../../../models/hasRole.js');
 var gravatar      = require('gravatar');
 var configAuth    = require('../../../config/auth.js');
 
+var getToken      = require('../../../lib/GetToken.js');
+var RoleHandler   = require('../../../lib/RoleHandler.js');
+
 var uuid          = require('node-uuid');
 var mailer        = require('nodemailer');
 
-var redis         = require('redis').createClient();
-
 var commons       = require('./commons');
 
-var redis_prefix = 'userapi.roles.';
+var redis         = require('redis').createClient();
+var redis_prefix  = 'userapi.roles.';
 
 var availableRoles = [
   'experimenter',
@@ -36,62 +38,6 @@ var availableRoles = [
 var cron = require('cron');
 
 var https = require('https');
-
-// 3,5 Minutes
-var timeAccessToken = ((3 * 60) + 30);
-
-var getToken = function(callback) {
-
-  console.time('Get token');
-
-  redis.get('oc.users.accessToken', function(err, reply) {
-    if (err || !reply) {
-      console.log('No access token in cache. Renew token!');
-
-      var payload = 'grant_type=client_credentials' +
-          '&client_id=' + config.client_id +
-          '&client_secret=' + config.client_secret;
-
-      var options = {
-        host: 'accounts.organicity.eu',
-        path: '/realms/organicity/protocol/openid-connect/token',
-        port: 443,
-        method: 'POST',
-        headers: {
-          'Content-Type' : 'application/x-www-form-urlencoded',
-          'Content-Length': Buffer.byteLength(payload)
-        }
-      };
-
-      // Call roles endpoint to get the subs for the corresponding role name
-      var req = https.request(options, function(res) {
-        var str = '';
-        res.on('data', function(chunk) {
-          str += chunk;
-        });
-
-        res.on('end', function() {
-          var json = JSON.parse(str);
-          console.timeEnd('Get token');
-          redis.setex('oc.users.accessToken', timeAccessToken, json.access_token, function() {
-            callback(json.access_token);
-          });
-
-        });
-      });
-      req.write(payload);
-      req.end();
-
-      req.on('error', function(e) {
-        console.error(e);
-      });
-
-    } else {
-      console.log('Access token in cache. Reuse!');
-      callback(reply.toString());
-    }
-  });
-};
 
 var getUserRoles = function() {
 
@@ -656,32 +602,40 @@ module.exports = function(router, passport) {
             user.lastName = req.body.lastName;
           }
 
-          // TODO: UPDATE USER DATA ALSO IN KEYCLOAK
-
-          /*
-          if (path) {
-            user.avatar = path;
-          }
-          */
-
-          console.log('Save user:', user);
-
-          user.save(function(err) {
-            if (err) {
-              return next(err);
+          // Calls the permissions endpoint to set the participant permission
+          // Role accounts-permissions:editGlobalRoles required!
+          var handleAddParticipantRole = function(token) {
+            if (req.body.participant) {
+              RoleHandler.addRole(user.sub, 'participant', saveUser, function() {
+                res.status(500).send('Internal Server Error: Cannot add participant role');
+              });
+            } else {
+              RoleHandler.removeRole(user.sub, 'participant', saveUser, function() {
+                res.status(500).send('Internal Server Error: Cannot add participant role');
+              });
             }
-            res.format({
-              'application/json': function() {
-                res.json(user.json());
-              },
-              'default': function() {
-                res.send(406, 'Not Acceptable');
+          }; // handleAddParticipantRole
+
+          // TODO: UPDATE USER DATA ALSO IN KEYCLOAK
+          var saveUser = () => {
+            console.log('Save user:', user);
+            user.save(function(err) {
+              if (err) {
+                return next(err);
               }
+              res.format({
+                'application/json': function() {
+                  res.json(user.json());
+                },
+                'default': function() {
+                  res.send(406, 'Not Acceptable');
+                }
+              });
             });
-          });
+          }; // saveUser
 
+          getToken(handleAddParticipantRole);
         });
-
       });
     }
   );

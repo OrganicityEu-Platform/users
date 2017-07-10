@@ -82,6 +82,8 @@ user.profileClientSchema = {
   publicWebsite   : Joi.string().allow(null).trim().allow('').optional(),
   birthday        : Joi.date().iso().label('Birthday').required(),
 
+  participant        : Joi.boolean().label('Participant').required(),
+
   // Keycloak
   username        : Joi.string().label('Name').required(),
   firstName       : Joi.string().label('First Name').required(),
@@ -105,6 +107,8 @@ user.profileServerSchema = {
   publicEmail     : Joi.string().allow(null).trim().allow('').email().optional(),
   publicWebsite   : Joi.string().allow(null).trim().allow('').optional(),
   birthday        : Joi.date().iso().label('Birthday').required(),
+
+  participant        : Joi.boolean().label('Participant').required(),
 
   // Keycloak
   username        : Joi.string().label('Name').required(),

@@ -9,6 +9,8 @@ var httpClient  = require('../../../lib/HTTPClient.js');
 
 var commons     = require('./commons');
 
+var RoleHandler   = require('../../../lib/RoleHandler.js');
+
 var createError = function(error, description) {
   var o = {
     error: error,
@@ -32,7 +34,7 @@ module.exports = function(router, passport) {
     // STEP ONE:
     var userdata_mongo = req.user.json();
     console.log('1) Got User data from Mongo');
-    console.log('userdata_mongo: ', userdata_mongo);
+    //console.log('userdata_mongo: ', userdata_mongo);
 
     //var optionsCall = {
     //  protocol: config.accounts_token_endpoint.protocol,
@@ -50,29 +52,38 @@ module.exports = function(router, passport) {
     //console.log('responseText2', responseText);
     //var userdata_keycloak = JSON.parse(responseText);
 
-    var o = {
-      uuid :              userdata_mongo.uuid,
+    RoleHandler.hasRole(userdata_mongo.sub, 'participant', function(isParticipant) {
 
-      // Mongo
-      city:               userdata_mongo.city,
-      country:            userdata_mongo.country,
-      profession:         userdata_mongo.profession,
-      professionTitle:    userdata_mongo.professionTitle,
-      interests:          userdata_mongo.interests,
-      gender:             userdata_mongo.gender,
-      publicEmail:        userdata_mongo.publicEmail,
-      publicWebsite:      userdata_mongo.publicWebsite,
-      birthday:           userdata_mongo.birthday,
+      console.log('2) Got Participant role');
 
-      // Keycloak
-      sub:                userdata_mongo.sub,
-      firstName:          userdata_mongo.firstName,
-      lastName:           userdata_mongo.lastName,
-      email:              userdata_mongo.email,
-      username:           userdata_mongo.username,
-    };
+      var o = {
+        uuid :              userdata_mongo.uuid,
 
-    return res.status(200).json(o);
+        // Mongo
+        city:               userdata_mongo.city,
+        country:            userdata_mongo.country,
+        profession:         userdata_mongo.profession,
+        professionTitle:    userdata_mongo.professionTitle,
+        interests:          userdata_mongo.interests,
+        gender:             userdata_mongo.gender,
+        publicEmail:        userdata_mongo.publicEmail,
+        publicWebsite:      userdata_mongo.publicWebsite,
+        birthday:           userdata_mongo.birthday,
+
+        // Keycloak
+        sub:                userdata_mongo.sub,
+        firstName:          userdata_mongo.firstName,
+        lastName:           userdata_mongo.lastName,
+        email:              userdata_mongo.email,
+        username:           userdata_mongo.username,
+
+        participant:        isParticipant
+      };
+
+      return res.status(200).json(o);
+    }, function() {
+      res.status(500).send('Internal Server Error: Cannot add participant role');
+    });
 
     //},  function(status, resp) {
     //  console.log('Internal error message. Status: ', status, 'Response: ', resp);

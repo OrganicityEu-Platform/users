@@ -13,6 +13,7 @@ module.exports = '' +
 '  <link href="' + ui.asset('static/css/font-awesome.min.css') + '" rel="stylesheet">' +
 '  <link href="' + ui.asset('static/css/oc.css') + '" rel="stylesheet">' +
 '  <link href="' + ui.asset('static/css/react-select.css') + '" rel="stylesheet">' +
+'  <link href="' + ui.asset('static/css/react-toggle.css') + '" rel="stylesheet">' +
 '  <link href="' + ui.asset('static/img/favicon.ico') + '" rel="SHORTCUT ICON">' +
 '  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->' +
 '  <!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->' +
