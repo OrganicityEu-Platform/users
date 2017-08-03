@@ -52,6 +52,8 @@ var api_routes = {
   'callback_oauth2'            : prefixes.auth + '/oauth2/callback',
 
   // users routes
+  'reset_password'             : prefixes.users + '/:uuid/reset_password/?',
+
   'users'                      : prefixes.users + '/?',
   'user_interests'             : prefixes.users + '/userinterests',
   'user_info'                  : prefixes.users + '/info/:uuid/?',

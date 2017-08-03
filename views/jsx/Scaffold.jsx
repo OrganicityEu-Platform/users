@@ -215,6 +215,14 @@ var Scaffold = React.createClass({
       );
       linksRight.push(
         <NavItemLink
+          key="change_password"
+          className="nav-profile-btn"
+          to="change_password">
+          {this.i18n('change_password', 'Change password')}
+        </NavItemLink>
+      );
+      linksRight.push(
+        <NavItemLink
           key="logout"
           to="logout"
           className="nav-logout-btn">

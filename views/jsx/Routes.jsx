@@ -19,7 +19,10 @@ import ForgotPassword        from './auth/ForgotPassword.jsx';
 import Login                 from './auth/Login.jsx';
 import LoginExternal         from './auth/LoginExternal.jsx';
 import Signup                from './auth/Signup.jsx';
+
 import Profile               from './auth/Profile.jsx';
+import ChangePassword        from './auth/ChangePassword.jsx';
+
 import UserListView          from './auth/UserListView.jsx';
 import UserEditView          from './auth/UserEditView.jsx';
 
@@ -35,6 +38,9 @@ var Route = Router.Route;
 var routes = (
   <Route handler={Scaffold}>
     <Route name="home"                path={ui.route('home')}                handler={HomeView}              />
+    <Route name="profile"             path={ui.route('profile')}             handler={Profile}               />
+    <Route name="change_password"     path={ui.route('change_password')}     handler={ChangePassword}        />
+
     <Route name="scenarioList"        path={ui.route('scenarioList')}        handler={ScenarioList}          />
     <Route name="scenarioCreate"      path={ui.route('scenarioCreate')}      handler={ScenarioEditView}      />
     <Route name="scenarioEdit"        path={ui.route('scenarioEdit')}        handler={ScenarioEditView}      />
@@ -46,7 +52,6 @@ var routes = (
     <Route name="login"               path={ui.route('login')}               handler={LoginExternal}         />
     <Route name="loginInternal"       path={ui.route('login-internal')}      handler={Login}                 />
     <Route name="signup"              path={ui.route('signup')}              handler={Signup}                />
-    <Route name="profile"             path={ui.route('profile')}             handler={Profile}               />
     <Route name="logout"              path={ui.route('logout')}              handler={Logout}                />
     <Route name="sysinfo"             path={ui.route('sysinfo')}             handler={SysInfo}               />
     <Route name="admin_userList"      path={ui.route('admin_userList')}      handler={UserListView}          />

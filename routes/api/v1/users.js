@@ -530,6 +530,56 @@ module.exports = function(router, passport) {
     }
   );
 
+  router.put(
+    api.route('reset_password'), [isUserOrAdmin, validate(UserJoi.resetPasswordServer), commons.getAccessToken],
+    function(req, res, next) {
+
+      // Hint: req.body has the correct form needed by the endpoint!
+
+      var data = JSON.stringify(req.body);
+
+      var options = {
+        host: 'accounts.organicity.eu',
+        path: '/permissions/users/' + req.user.sub + '/reset_password',
+        port: 443,
+        method: 'PUT',
+        headers: {
+          Authorization: ' Bearer ' + req.access_token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(data)
+        }
+      };
+
+      console.log('URL:', options.path);
+
+      // Call roles endpoint to get the subs for the corresponding role name
+      var req2 = https.request(options, function(res2) {
+        var str = '';
+        res2.on('data', function(chunk) {
+          str += chunk;
+        });
+
+        res2.on('end', function() {
+          //console.log(role);
+          if (res2.statusCode === 204) {
+            res.status(204).send();
+          } else {
+            res.status(400).send(str);
+          }
+        });
+      });
+
+      req2.write(data);
+      req2.end();
+
+      req2.on('error', function(e) {
+        console.error(e);
+      });
+
+    }
+  );
+
   router.patch(
     api.route('user_by_uuid'),
     [isLoggedIn, isUserOrAdmin, validate(UserJoi.profileServer), commons.getAccessToken],

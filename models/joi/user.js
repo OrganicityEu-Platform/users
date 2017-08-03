@@ -68,6 +68,23 @@ user.updatePasswordServer = {
   }
 };
 
+// NEW
+user.resetPassword = {
+  uuid            : Joi.string(),
+  password        : joiPassword,
+  password_repeat : joiPasswordRepeat
+};
+
+// NEW
+user.resetPasswordServer = {
+  options : {
+    allowUnknownBody: false
+  },
+  body: {
+    password        : joiPassword
+  }
+};
+
 user.profileClientSchema = {
   // Mongo
   city            : Joi.string().trim().allow(null).label('City').optional(),
