@@ -19,7 +19,7 @@ var HomeViewHeader = React.createClass({
                 className="col-md-8 col-md-offset-2">
                 <p className="oc-home-view-header-sub-text">
                   <span className="first-letter-uppercase">{this.i18n('explore_share_discuss', 'explore, share and discuss')}</span>
-                  <span className="pink oc-bold">{this.i18n('scenarios_future_cities', 'scenarios for our future cities')}</span>
+                  <span className="pink oc-bold">{this.i18n('scenarios_future_cities', 'our future cities')}</span>
                   </p>
                   </h2>
             </div>
@@ -35,7 +35,7 @@ var HomeViewHeader = React.createClass({
             <h2
               className="col-md-8 col-md-offset-2">
               <p className="oc-home-view-header-sub-text">
-                <span className="first-letter-uppercase">{this.i18n('join_community', 'join the community to')}</span>
+                <span className="first-letter-uppercase">{this.i18n('join_community', 'Join the community to')}</span>
                 <span>{this.i18n('explore_share_discuss', 'explore, share and discuss')}</span>
                 <span className="pink oc-bold">{this.i18n('scenarios_future_cities', 'scenarios for our future cities')}</span>
               </p>
