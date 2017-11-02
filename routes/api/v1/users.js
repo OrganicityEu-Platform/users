@@ -39,6 +39,77 @@ var cron = require('cron');
 
 var https = require('https');
 
+// FIXME: Search for non existing users to remove them!
+// - Create last-refresh-date attribute.
+// - Seach for all users having an older than the last-refresh-date attribute --> remove them from the database
+
+var handleUsers = function(users, done) {
+
+  var handleUser = function(index) {
+
+    if (index < users.length) {
+      var profile = users[index];
+
+      User.findOne({
+        'sub': profile.id
+      }, function(err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (user) {
+
+          // FIXME: Update user wrt. to the keycloak
+
+          //console.log('User found. Update user');
+
+          /*
+          user.username = profile.preferred_username;
+          user.email = profile.email;
+          user.firstName = profile.given_name;
+          user.lastName = profile.family_name;
+
+          user.save(function(err) {
+            if (err) {
+              return done(err);
+            }
+            return done(null, user);
+          });
+          */
+          handleUser(++index);
+        } else {
+
+          console.log('Create new user!');
+          var newUser = new User();
+          newUser.uuid = uuid.v4();
+
+          newUser.sub = profile.id;
+          newUser.username = profile.name;
+          newUser.email = profile.email;
+          newUser.firstName = profile.firstName;
+          newUser.lastName = profile.lastName;
+
+          newUser.save(function(err) {
+            if (err) {
+              return done(err);
+            }
+
+            handleUser(++index);
+          });
+
+        }
+      });
+    } else {
+      return done(null);
+    }
+
+  };
+
+  if (users.length > 0) {
+    handleUser(0);
+  }
+
+};
+
 var getUsers = function() {
 
   console.log('Handle getUsers');
@@ -69,12 +140,19 @@ var getUsers = function() {
         console.log(res.statusCode + ' for get users');
         if (res.statusCode === 200) {
           var users = JSON.parse(str);
-          offset++;
 
-          // If the result ist smaller than 50, we will not get further user when requesting the next chunk
-          if (users.length === 50) {
-            getToken(handle);
+          var i = 0;
+          if (users.length > 0) {
+            handleUsers(users, function() {
+              // console.log('All users handled');
+              // If the result ist smaller than 50, we will not get further user when requesting the next chunk
+              if (users.length === 50) {
+                offset++;
+                getToken(handle);
+              }
+            });
           }
+
         }
       });
     });
