@@ -39,13 +39,60 @@ var cron = require('cron');
 
 var https = require('https');
 
+var getUsers = function() {
+
+  console.log('Handle getUsers');
+
+  var offset = 0;
+
+  var handle = function(token) {
+
+    var options = {
+      host: 'accounts.organicity.eu',
+      path: '/permissions/users?offset=' + (offset * 50),
+      port: 443,
+      method: 'GET',
+      headers: {
+        Authorization: ' Bearer ' + token,
+        Accept: 'application/json'
+      }
+    };
+
+    // Call users endpoint
+    var req = https.request(options, function(res) {
+      var str = '';
+      res.on('data', function(chunk) {
+        str += chunk;
+      });
+
+      res.on('end', function() {
+        console.log(res.statusCode + ' for get users');
+        if (res.statusCode === 200) {
+          var users = JSON.parse(str);
+          offset++;
+
+          // If the result ist smaller than 50, we will not get further user when requesting the next chunk
+          if (users.length === 50) {
+            getToken(handle);
+          }
+        }
+      });
+    });
+    req.end();
+
+    req.on('error', function(e) {
+      console.error(e);
+    });
+  };
+
+  getToken(handle);
+};
+
 var getUserRoles = function() {
 
   console.log('getUserRoles');
 
-  var getSubs = function(token) {
-
-    console.log('getSubs');
+  var handle = function(token) {
 
     for (var index in availableRoles) {
       var role = availableRoles[index];
@@ -92,13 +139,16 @@ var getUserRoles = function() {
     }
   }; // getSubs
 
-  getToken(getSubs);
+  getToken(handle);
 };
 
-var job = cron.job('*/60 * * * * *', getUserRoles);
-job.start();
-// Run the first getting roles
-getUserRoles();
+//getUserRoles();
+//var job = cron.job('*/60 * * * * *', getUserRoles);
+//job.start();
+
+getUsers();
+var job2 = cron.job('*/60 * * * * *', getUsers);
+job2.start();
 
 module.exports = function(router, passport) {
 
