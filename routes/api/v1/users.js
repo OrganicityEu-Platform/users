@@ -110,7 +110,7 @@ var handleUsers = function(users, done) {
 
 };
 
-var getUsers = function() {
+var getUsers = function(done) {
 
   console.log('Handle getUsers');
 
@@ -149,8 +149,16 @@ var getUsers = function() {
               if (users.length === 50) {
                 offset++;
                 getToken(handle);
+              } else {
+                if (done) {
+                  done();
+                }
               }
             });
+          } else {
+            if (done) {
+              done();
+            }
           }
 
         }
@@ -220,13 +228,16 @@ var getUserRoles = function() {
   getToken(handle);
 };
 
-//getUserRoles();
-//var job = cron.job('*/60 * * * * *', getUserRoles);
-//job.start();
+// Get all users and afterwards, get the roles
+var runJobs = function() {
+  getUsers(function() {
+    getUserRoles();
+  });
+};
 
-getUsers();
-var job2 = cron.job('*/60 * * * * *', getUsers);
-job2.start();
+runJobs();
+var job = cron.job('*/60 * * * * *', runJobs);
+job.start();
 
 module.exports = function(router, passport) {
 
