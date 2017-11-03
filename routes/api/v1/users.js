@@ -40,11 +40,21 @@ var cron = require('cron');
 var https = require('https');
 
 // FIXME: Search for non existing users to remove them!
-// - Create last-refresh-date attribute.
-// - Seach for all users having an older than the last-refresh-date attribute --> remove them from the database
+// - Create last-synced-date attribute.
+// - Seach for all users having an date older than the last-synced-date attribute --> remove them from the database
 
-var handleUsers = function(users, done) {
+// https://stackoverflow.com/questions/2943222/find-objects-between-two-dates-mongodb
 
+//db.getCollection('users').find({lastSynced: {
+//  $lt: ISODate("2017-11-03 10:13:00.788Z")
+//}})
+
+//var inputDate = new Date(myDate.toISOString());
+//MyModel.find({
+//  'date': { $lte: inputDate }
+//})
+
+var handleUsers = function(users, lastSyncedDate, done) {
   var handleUser = function(index) {
 
     if (index < users.length) {
@@ -56,26 +66,16 @@ var handleUsers = function(users, done) {
         if (err) {
           return done(err);
         }
+
+        // Skip creation
         if (user) {
-
-          // FIXME: Update user wrt. to the keycloak
-
-          //console.log('User found. Update user');
-
-          /*
-          user.username = profile.preferred_username;
-          user.email = profile.email;
-          user.firstName = profile.given_name;
-          user.lastName = profile.family_name;
-
+          user.lastSynced = lastSyncedDate;
           user.save(function(err) {
             if (err) {
               return done(err);
             }
-            return done(null, user);
+            handleUser(++index);
           });
-          */
-          handleUser(++index);
         } else {
 
           console.log('Create new user!');
@@ -87,6 +87,7 @@ var handleUsers = function(users, done) {
           newUser.email = profile.email;
           newUser.firstName = profile.firstName;
           newUser.lastName = profile.lastName;
+          newUser.lastSynced = lastSyncedDate;
 
           newUser.save(function(err) {
             if (err) {
@@ -115,6 +116,7 @@ var getUsers = function(done) {
   console.log('Handle getUsers');
 
   var offset = 0;
+  var lastSyncedDate = new Date();
 
   var handle = function(token) {
 
@@ -143,7 +145,7 @@ var getUsers = function(done) {
 
           var i = 0;
           if (users.length > 0) {
-            handleUsers(users, function() {
+            handleUsers(users, lastSyncedDate, function() {
               // console.log('All users handled');
               // If the result ist smaller than 50, we will not get further user when requesting the next chunk
               if (users.length === 50) {
@@ -773,8 +775,6 @@ module.exports = function(router, passport) {
             user.birthday = (req.body.birthday === null) ? undefined : req.body.birthday;
           }
 
-          // KEYCLOAK
-
           if (req.body.hasOwnProperty('email')) {
             user.email = req.body.email;
           }
@@ -805,13 +805,15 @@ module.exports = function(router, passport) {
             }
           }; // handleAddParticipantRole
 
-          // TODO: UPDATE USER DATA ALSO IN KEYCLOAK
           var saveUser = function() {
             console.log('Save user:', user);
             user.save(function(err) {
               if (err) {
                 return next(err);
               }
+
+              // FIXME: UPDATE USER DATA ALSO IN KEYCLOAK
+
               res.format({
                 'application/json': function() {
                   res.json(user.json());

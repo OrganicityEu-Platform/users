@@ -27,6 +27,7 @@ var user = mongoose.Schema({
   firstName       : String,
   lastName        : String,
   email           : String,
+  lastSynced      : Date,
 
   // ------------------------------
   // User data from KeyCloak
