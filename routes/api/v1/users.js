@@ -69,7 +69,20 @@ var handleUsers = function(users, lastSyncedDate, done) {
 
         // Skip creation
         if (user) {
+
+          // User has not changed anything since we started the run
+          // Thus, the update is save.
+          // Otherwise, the update is not save, e.g., probably new data where written to keycloak in the meanwhile
+          if (user.lastSynced < lastSyncedDate) {
+            user.username = profile.name;
+            user.email = profile.email;
+            user.firstName = profile.firstName;
+            user.lastName = profile.lastName;
+          }
+
+          // Always set lastSynced
           user.lastSynced = lastSyncedDate;
+
           user.save(function(err) {
             if (err) {
               return done(err);
@@ -226,6 +239,74 @@ var getUserRoles = function() {
       })(role)();
     }
   }; // getSubs
+
+  getToken(handle);
+};
+
+var updateUserInKeycloak = function(user, callback) {
+
+  console.log('update user in keycloak');
+
+  var handle = function(token) {
+
+    // Convert mongo user format to OC permissions JSON format
+    var userKeycloak = {
+      id: user.sub,
+      name: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
+
+    var data = JSON.stringify(userKeycloak);
+
+    var options = {
+      host: 'accounts.organicity.eu',
+      path: '/permissions/users/' + user.sub,
+      port: 443,
+      method: 'PUT',
+      headers: {
+        Authorization: ' Bearer ' + token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+
+    console.log('URL:', options.path);
+
+    // Call roles endpoint to get the subs for the corresponding role name
+    var req = https.request(options, function(res) {
+      var str = '';
+      res.on('data', function(chunk) {
+        str += chunk;
+      });
+
+      res.on('end', function() {
+
+        console.log(res.statusCode);
+        console.log(str);
+        callback();
+
+        /*
+        if (res.statusCode === 204) {
+          res.status(204).send();
+        } else {
+          res.status(400).send(str);
+        }
+        */
+
+      });
+    });
+
+    req.write(data);
+    req.end();
+
+    req.on('error', function(e) {
+      console.error(e);
+    });
+
+  };
 
   getToken(handle);
 };
@@ -791,6 +872,8 @@ module.exports = function(router, passport) {
             user.lastName = req.body.lastName;
           }
 
+          user.lastSynced = new Date();
+
           // Calls the permissions endpoint to set the participant permission
           // Role accounts-permissions:editGlobalRoles required!
           var handleAddParticipantRole = function(token) {
@@ -812,8 +895,6 @@ module.exports = function(router, passport) {
                 return next(err);
               }
 
-              // FIXME: UPDATE USER DATA ALSO IN KEYCLOAK
-
               res.format({
                 'application/json': function() {
                   res.json(user.json());
@@ -822,10 +903,16 @@ module.exports = function(router, passport) {
                   res.send(406, 'Not Acceptable');
                 }
               });
+
             });
           }; // saveUser
 
-          getToken(handleAddParticipantRole);
+          // Update user in Keycloak
+          updateUserInKeycloak(user, function() {
+            // Update participant role, which itself calls the saveUser function to save the user in mongo
+            getToken(handleAddParticipantRole);
+          });
+
         });
       });
     }
