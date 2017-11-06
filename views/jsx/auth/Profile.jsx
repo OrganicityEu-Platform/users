@@ -538,6 +538,7 @@ var Profile = React.createClass({
     var errorMessagePublicEmail = null;
     var errorMessageBirthday = null;
     var errorMessageParticipant = null;
+    var errorMessageInterests = null;
 
     if (this.state.btnClickedOnce) {
       errorMessageUserName = (
@@ -569,6 +570,11 @@ var Profile = React.createClass({
         <Message
           type="danger"
           messages={this.props.getValidationMessages('profession')} />
+      );
+      errorMessageInterests = (
+        <Message
+          type="danger"
+          messages={this.props.getValidationMessages('interests')} />
       );
       errorMessageCountry = (
         <Message
@@ -930,7 +936,7 @@ return (
             htmlFor="location">
             {this.i18n('Profile.my_location', 'Your location')} <ValidationIndicator valid={this.props.isValid('country')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you!')}
+              {this.i18n('Profile.locationInfo', 'Where are you located? This helps experimenters to find you by your age!')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -1050,9 +1056,9 @@ return (
             <label
               className="control-label col-sm-3"
               htmlFor="interests">
-              {this.i18n('Profile.interests', 'Your interests')}
+              {this.i18n('Profile.interests', 'Your interests')} <ValidationIndicator valid={this.props.isValid('interests')}/>
             <span className="oc-form-group-info">
-              {this.i18n('Profile.interestsInfo', 'What are your interests?')}
+              {this.i18n('Profile.interestsInfo', 'Topics in which you would like to be invited to participate.')}
             </span>
           </label>
           <div className="col-sm-9">
@@ -1060,6 +1066,7 @@ return (
               onChange={this.handleChangedInterests}
               value={this.state.profile.interests}
             />
+            {errorMessageInterests}
           </div>
         </div>
 

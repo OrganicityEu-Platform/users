@@ -93,8 +93,8 @@ user.profileClientSchema = {
   professionTitle : Joi.string().allow(null).optional(),
   interests       : Joi.array().min(1).label('Interests').items(Joi.string()),
   gender          : Joi.string().valid('m', 'f', 'o').label('Gender').options(
-    { language: { any: { allowOnly: 'must be Male or Female' } } }
-  ),
+    { language: { any: { allowOnly: 'must be selected.' } } }
+  ).required(),
   publicEmail     : Joi.string().allow(null).trim().allow('').email().optional(),
   publicWebsite   : Joi.string().allow(null).trim().allow('').optional(),
   birthday        : Joi.date().iso().label('Birthday').required(),
