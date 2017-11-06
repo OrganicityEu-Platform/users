@@ -39,21 +39,6 @@ var cron = require('cron');
 
 var https = require('https');
 
-// FIXME: Search for non existing users to remove them!
-// - Create last-synced-date attribute.
-// - Seach for all users having an date older than the last-synced-date attribute --> remove them from the database
-
-// https://stackoverflow.com/questions/2943222/find-objects-between-two-dates-mongodb
-
-//db.getCollection('users').find({lastSynced: {
-//  $lt: ISODate("2017-11-03 10:13:00.788Z")
-//}})
-
-//var inputDate = new Date(myDate.toISOString());
-//MyModel.find({
-//  'date': { $lte: inputDate }
-//})
-
 var handleUsers = function(users, lastSyncedDate, done) {
   var handleUser = function(index) {
 
@@ -158,7 +143,11 @@ var getUsers = function(done) {
 
           var i = 0;
           if (users.length > 0) {
-            handleUsers(users, lastSyncedDate, function() {
+            handleUsers(users, lastSyncedDate, function(err) {
+              if (err) {
+                return done(err);
+              }
+
               // console.log('All users handled');
               // If the result ist smaller than 50, we will not get further user when requesting the next chunk
               if (users.length === 50) {
@@ -166,13 +155,13 @@ var getUsers = function(done) {
                 getToken(handle);
               } else {
                 if (done) {
-                  done();
+                  done(null, lastSyncedDate);
                 }
               }
             });
           } else {
             if (done) {
-              done();
+              done(null, lastSyncedDate);
             }
           }
 
@@ -241,6 +230,26 @@ var getUserRoles = function() {
   }; // getSubs
 
   getToken(handle);
+};
+
+/*
+ * Search for in-keycloak non existing users.
+ *
+ * Search for all users having an date older than the last-synced-date attribute.
+ * This users can be removed, since they do not exist in keycloak anymore
+ */
+var removeUsers = function(lastSyncDate, callback) {
+
+  console.log('Search for non existsing users');
+
+  User.remove({
+    lastSynced: {
+      $lt: lastSyncDate
+    }
+  }, function(err, users) {
+    console.log('Numbe of removed users:', users.result.n);
+  });
+
 };
 
 var updateUserInKeycloak = function(user, callback) {
@@ -313,8 +322,13 @@ var updateUserInKeycloak = function(user, callback) {
 
 // Get all users and afterwards, get the roles
 var runJobs = function() {
-  getUsers(function() {
-    getUserRoles();
+  getUsers(function(err, lastSyncedDate) {
+    if (!err && lastSyncedDate) {
+      console.log('User sync succesful on ', lastSyncedDate);
+      removeUsers(lastSyncedDate, function() {
+        getUserRoles();
+      });
+    }
   });
 };
 
