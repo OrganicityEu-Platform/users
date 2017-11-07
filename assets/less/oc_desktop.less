@@ -105,7 +105,10 @@
   .nav-profile-btn > a {
     .active-link-right;
   }
-  .nav-login-btn > a, .nav-signup-btn > a, .nav-lang-btn > div {
+  .nav-login-btn > a, 
+  .nav-logout-btn > a,   
+  .nav-signup-btn > a, 
+  .nav-lang-btn > div {
     padding: 0px !important;
     .active-link-right;
   }
@@ -133,14 +136,21 @@
     .make-lg-column(6);
     .make-lg-column-offset(3);
   }
-  .navbar-default .navbar-nav > .active > a,
-  .navbar-default .navbar-nav > .active > a:hover,
-  .navbar-default .navbar-nav > .active > a:focus {
-    border-bottom: 1px solid @oc-white;
-    background-color: @oc-white;
+
+  .navbar-default .navbar-nav > a {
     padding-bottom: 0px;
-    color: @oc-magenta;
   }
+  
+  .navbar-default .navbar-nav > li.active > a {
+    border-bottom: 1px solid @oc-white;
+    font-family: 'Cooper Hewitt Semibold';
+    font-weight: bold;
+  }
+  
+  .navbar-default .navbar-nav > li > a:hover {
+    border-bottom: 3px solid @oc-white;
+  }
+  
 }
 
 @media (max-width: 767px) {
