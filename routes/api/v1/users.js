@@ -247,7 +247,7 @@ var removeUsers = function(lastSyncDate, callback) {
       $lt: lastSyncDate
     }
   }, function(err, users) {
-    console.log('Numbe of removed users:', users.result.n);
+    console.log('Number of removed users:', users.result.n);
   });
 
 };

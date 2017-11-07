@@ -13,7 +13,6 @@ var Link = Router.Link;
 import config             from '../../../config/config.js';
 import DocumentTitle      from 'react-document-title';
 
-
 var Logout = React.createClass({
   mixins: [Router.Navigation, LoadingMixin, I18nMixin],
   getInitialState : function() {
@@ -27,9 +26,13 @@ var Logout = React.createClass({
     $.ajax(url, {
       error: this.loadingError(url, failMsg),
       success : () => {
-        this.props.onLogout(); // Scaffold.onLogout
-        this.loadingSuccess(successMsg);
-        this.transitionTo('home');
+        this.props.onLogout();
+        var url = encodeURI(config.host + ":" + config.port + config.contextPath);
+        if(config.host_external && config.port_external) {
+          url = encodeURI(config.host_external + ":" + config.port_external + config.contextPath);
+        }
+        console.log(url);
+        location.href = "https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=" + url;
       }
     });
   },
