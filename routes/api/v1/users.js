@@ -248,6 +248,7 @@ var removeUsers = function(lastSyncDate, callback) {
     }
   }, function(err, users) {
     console.log('Number of removed users:', users.result.n);
+    callback();
   });
 
 };
@@ -346,6 +347,7 @@ module.exports = function(router, passport) {
   // ###############################################################
 
   //router.get(api.route('users'), [isLoggedIn, hasRole(['admin'])], function(req, res, next) {
+  //FIXME: Add auth!
   router.get(api.route('users'), function(req, res, next) {
 
     // Get Roles from redis
@@ -553,6 +555,8 @@ module.exports = function(router, passport) {
 
   var findUser = function(uuid, res, next, success) {
 
+    console.log('findUser:', uuid);
+
     var err;
     User.findOne({ 'uuid' :  uuid }, User.excludeFields, function(err, user) {
       if (user === null) {
@@ -647,8 +651,6 @@ module.exports = function(router, passport) {
         p.image = gravatarUrl;
       }
 */
-
-      console.log(user);
 
       if (user.facebook && user.facebook.public) {
         p.facebook = user.facebook.id;
@@ -1071,7 +1073,7 @@ module.exports = function(router, passport) {
       } else {
         user.favorites.push(req.body.scenario);
         user.save(function(err) {
-          console.log(user);
+          //console.log(user);
           res.status(200).send('OK - favorite set');
         });
       }
@@ -1092,7 +1094,7 @@ module.exports = function(router, passport) {
         if (index > -1) {
           user.favorites.splice(index, 1);
           user.save(function(err) {
-            console.log(user);
+            //console.log(user);
             res.status(200).send('OK - removed set');
           });
         } else {
