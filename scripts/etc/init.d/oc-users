@@ -73,7 +73,7 @@ case "$1" in
       ;;
       *)
         echo "RESTART $NAME (PID $PID)"
-        forever restart --pidFile $PID_PATH $SCRIPT
+        forever restart -c $NODE --pidFile $PID_PATH $SCRIPT
       ;;
     esac
   ;;
