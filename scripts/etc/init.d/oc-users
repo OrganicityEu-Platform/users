@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Organicity Proxy startup script  
+# Organicity Users startup script
 #
 # chkconfig: 345 99 01
-# description: Organicity Proxy startup script
+# description: Organicity Users startup script
 
 export NAME=oc-users
 export SOURCE_DIR=/opt/users
