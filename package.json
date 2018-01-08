@@ -82,7 +82,7 @@
     "joi-validation-strategy": "0.3.3",
     "jquery": "^2.1.4",
     "jwt-decode": "^2.0.1",
-    "mathjs": "^2.1.1",
+    "mathjs": "^3.17.0",
     "method-override": "~1.0.2",
     "moment": "^2.10.6",
     "mongodb": "^2.0.39",
