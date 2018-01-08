@@ -5,12 +5,14 @@
 # chkconfig: 345 99 01
 # description: Organicity Proxy startup script
 
-export NAME=oc-scenarios
-export SOURCE_DIR=/opt/scenarios
+export NAME=oc-users
+export SOURCE_DIR=/opt/users
 export SCRIPT=app.js
 export LOG_DIR=/var/log/organicity
 export PROCESSES_DIR=/opt/processes
 export PID_PATH="$PROCESSES_DIR/$NAME.pid"
+
+export NODE=/root/.nvm/versions/node/v5.8.0/bin/node
 
 # Create folder for processes
 mkdir -p $LOG_DIR
@@ -46,7 +48,7 @@ case "$1" in
     case "$PID" in
       0)
         echo "START $NAME"
-        forever start --pidFile $PID_PATH -a -o $LOG_DIR/$NAME.out -e $LOG_DIR/$NAME.err $SCRIPT
+        forever start -c $NODE --pidFile $PID_PATH -a -o $LOG_DIR/$NAME.out -e $LOG_DIR/$NAME.err $SCRIPT
       ;;
       *)
         echo "$NAME is running already (PID $PID)"
